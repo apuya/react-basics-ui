@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Add custom CSS variables here */
+  }
+}
+
+@layer components {
+  /* Add custom component classes here */
+}
+
+@layer utilities {
+  /* Add custom utility classes here */
+}
