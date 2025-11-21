@@ -2,30 +2,34 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Radio } from './Radio';
 
 const meta: Meta<typeof Radio> = {
-  title: 'Components/Forms/Radio',
+  title: 'Forms/Radio',
   component: Radio,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Radio buttons allow users to select a single option from a set of mutually exclusive choices. Always use within a group with a shared name attribute.',
+      },
+    },
+  },
   tags: ['autodocs'],
   argTypes: {
     label: {
       control: 'text',
-      description: 'Label text',
+      description: 'Label text displayed next to the radio button',
     },
     disabled: {
       control: 'boolean',
-      description: 'Disabled state',
-    },
-    checked: {
-      control: 'boolean',
-      description: 'Checked state',
+      description: 'Disables the radio button',
     },
     name: {
       control: 'text',
-      description: 'Radio group name',
+      description: 'Groups radios together - only one can be selected',
     },
     value: {
       control: 'text',
-      description: 'Radio value',
+      description: 'Value submitted when this option is selected',
     },
   },
 };
@@ -33,8 +37,14 @@ const meta: Meta<typeof Radio> = {
 export default meta;
 type Story = StoryObj<typeof Radio>;
 
-// Default
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic radio button with a label. Use as part of a radio group.',
+      },
+    },
+  },
   args: {
     label: 'Option',
     name: 'default',
@@ -42,16 +52,29 @@ export const Default: Story = {
   },
 };
 
-// Without Label
 export const WithoutLabel: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Radio without visible label. Ensure accessible name is provided via aria-label.',
+      },
+    },
+  },
   args: {
     name: 'no-label',
     value: 'option',
+    'aria-label': 'Option without visible label',
   },
 };
 
-// Checked
 export const Checked: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pre-selected radio button. Use defaultChecked for uncontrolled forms.',
+      },
+    },
+  },
   args: {
     label: 'Selected option',
     name: 'checked',
@@ -60,8 +83,14 @@ export const Checked: Story = {
   },
 };
 
-// Disabled
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disabled radio cannot be selected. Use when an option is temporarily unavailable.',
+      },
+    },
+  },
   args: {
     label: 'Disabled option',
     name: 'disabled',
@@ -71,6 +100,13 @@ export const Disabled: Story = {
 };
 
 export const DisabledChecked: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disabled but selected state. Shows a locked selection that cannot be changed.',
+      },
+    },
+  },
   args: {
     label: 'Disabled selected',
     name: 'disabled-checked',
@@ -80,10 +116,16 @@ export const DisabledChecked: Story = {
   },
 };
 
-// Radio Group Vertical
 export const RadioGroupVertical: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Vertical layout for radio groups. Best for longer lists or when labels vary in length.',
+      },
+    },
+  },
   render: () => (
-    <div className="flex flex-col gap-3">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <Radio name="plan" value="free" label="Free" defaultChecked />
       <Radio name="plan" value="pro" label="Pro" />
       <Radio name="plan" value="enterprise" label="Enterprise" />
@@ -91,10 +133,16 @@ export const RadioGroupVertical: Story = {
   ),
 };
 
-// Radio Group Horizontal
 export const RadioGroupHorizontal: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Horizontal layout for compact radio groups. Best for 3-4 short options.',
+      },
+    },
+  },
   render: () => (
-    <div className="flex gap-6">
+    <div style={{ display: 'flex', gap: '24px' }}>
       <Radio name="size" value="small" label="Small" defaultChecked />
       <Radio name="size" value="medium" label="Medium" />
       <Radio name="size" value="large" label="Large" />
@@ -102,31 +150,37 @@ export const RadioGroupHorizontal: Story = {
   ),
 };
 
-// With Descriptions
 export const WithDescriptions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Radio options with additional descriptive text for complex choices.',
+      },
+    },
+  },
   render: () => (
-    <fieldset className="space-y-4">
-      <legend className="text-sm font-medium mb-2">Select a plan</legend>
-      <div className="flex flex-col gap-4">
-        <div className="flex items-start gap-3">
+    <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+      <legend style={{ fontSize: '14px', fontWeight: 500, marginBottom: '12px' }}>Select a plan</legend>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
           <Radio name="plan-desc" value="free" defaultChecked />
           <div>
-            <label className="text-sm font-medium">Free</label>
-            <p className="text-xs text-gray-500">Basic features for personal use</p>
+            <div style={{ fontSize: '14px', fontWeight: 500 }}>Free</div>
+            <div style={{ fontSize: '12px', color: '#666' }}>Basic features for personal use</div>
           </div>
         </div>
-        <div className="flex items-start gap-3">
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
           <Radio name="plan-desc" value="pro" />
           <div>
-            <label className="text-sm font-medium">Pro - $9/month</label>
-            <p className="text-xs text-gray-500">Advanced features for professionals</p>
+            <div style={{ fontSize: '14px', fontWeight: 500 }}>Pro - $9/month</div>
+            <div style={{ fontSize: '12px', color: '#666' }}>Advanced features for professionals</div>
           </div>
         </div>
-        <div className="flex items-start gap-3">
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
           <Radio name="plan-desc" value="enterprise" />
           <div>
-            <label className="text-sm font-medium">Enterprise - $29/month</label>
-            <p className="text-xs text-gray-500">Custom solutions for large teams</p>
+            <div style={{ fontSize: '14px', fontWeight: 500 }}>Enterprise - $29/month</div>
+            <div style={{ fontSize: '12px', color: '#666' }}>Custom solutions for large teams</div>
           </div>
         </div>
       </div>
@@ -134,22 +188,28 @@ export const WithDescriptions: Story = {
   ),
 };
 
-// Different Groups
 export const MultipleGroups: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Multiple independent radio groups on the same page. Each group has its own name.',
+      },
+    },
+  },
   render: () => (
-    <div className="flex flex-col gap-6">
-      <fieldset>
-        <legend className="text-sm font-medium mb-2">Size</legend>
-        <div className="flex gap-4">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+        <legend style={{ fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Size</legend>
+        <div style={{ display: 'flex', gap: '16px' }}>
           <Radio name="size-group" value="s" label="S" />
           <Radio name="size-group" value="m" label="M" defaultChecked />
           <Radio name="size-group" value="l" label="L" />
           <Radio name="size-group" value="xl" label="XL" />
         </div>
       </fieldset>
-      <fieldset>
-        <legend className="text-sm font-medium mb-2">Color</legend>
-        <div className="flex gap-4">
+      <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+        <legend style={{ fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Color</legend>
+        <div style={{ display: 'flex', gap: '16px' }}>
           <Radio name="color-group" value="red" label="Red" defaultChecked />
           <Radio name="color-group" value="blue" label="Blue" />
           <Radio name="color-group" value="green" label="Green" />
@@ -159,10 +219,16 @@ export const MultipleGroups: Story = {
   ),
 };
 
-// All States
 export const AllStates: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Overview of all radio button states for visual reference.',
+      },
+    },
+  },
   render: () => (
-    <div className="flex flex-col gap-3">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <Radio name="states-1" value="unchecked" label="Unchecked" />
       <Radio name="states-2" value="checked" label="Checked" defaultChecked />
       <Radio name="states-3" value="disabled" label="Disabled" disabled />

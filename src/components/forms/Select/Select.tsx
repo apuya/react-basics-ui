@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 import {
   BASE_CLASSES,
@@ -41,6 +41,25 @@ export const Select = memo(
   ) {
     const selectId = id || (label ? `select-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
 
+    const selectClasses = useMemo(
+      () => cn(
+        BASE_CLASSES,
+        SIZE_STYLES[size],
+        error ? STATE_STYLES.error : STATE_STYLES.default,
+        className
+      ),
+      [size, error, className]
+    );
+
+    const selectStyle = useMemo(
+      () => ({
+        height: `var(--component-input-height-${size})`,
+        paddingInline: 'var(--component-input-padding-inline)',
+        paddingRight: 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))',
+      }),
+      [size]
+    );
+
     return (
       <div className={cn('w-full', wrapperClassName)}>
         {label && (
@@ -57,17 +76,8 @@ export const Select = memo(
             ref={ref}
             id={selectId}
             disabled={disabled}
-            className={cn(
-              BASE_CLASSES,
-              SIZE_STYLES[size],
-              error ? STATE_STYLES.error : STATE_STYLES.default,
-              className
-            )}
-            style={{
-              height: `var(--component-input-height-${size})`,
-              paddingInline: 'var(--component-input-padding-inline)',
-              paddingRight: 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))',
-            }}
+            className={selectClasses}
+            style={selectStyle}
             {...rest}
           >
             {children}

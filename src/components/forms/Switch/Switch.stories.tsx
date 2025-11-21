@@ -2,9 +2,17 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Switch } from './Switch';
 
 const meta: Meta<typeof Switch> = {
-  title: 'Components/Forms/Switch',
+  title: 'Forms/Switch',
   component: Switch,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Switch component for toggling between two states (on/off). Commonly used for settings, preferences, and binary choices. Provides immediate feedback and clear visual indication of state.',
+      },
+    },
+  },
   tags: ['autodocs'],
   argTypes: {
     label: {
@@ -25,36 +33,68 @@ const meta: Meta<typeof Switch> = {
 export default meta;
 type Story = StoryObj<typeof Switch>;
 
-// Default
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic switch with a label. Use for binary on/off settings.',
+      },
+    },
+  },
   args: {
     label: 'Enable notifications',
   },
 };
 
-// Without Label
 export const WithoutLabel: Story = {
-  args: {},
+  parameters: {
+    docs: {
+      description: {
+        story: 'Switch without visible label. Ensure accessible name is provided via aria-label when used.',
+      },
+    },
+  },
+  args: {
+    'aria-label': 'Toggle feature',
+  },
 };
 
-// Checked
 export const Checked: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Switch in checked (on) state. Use defaultChecked for uncontrolled components.',
+      },
+    },
+  },
   args: {
     label: 'Dark mode',
     defaultChecked: true,
   },
 };
 
-// Disabled Off
 export const DisabledOff: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disabled switch in off state. Use when option is unavailable or locked.',
+      },
+    },
+  },
   args: {
     label: 'Disabled option',
     disabled: true,
   },
 };
 
-// Disabled On
 export const DisabledOn: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disabled switch in on state showing a locked enabled setting.',
+      },
+    },
+  },
   args: {
     label: 'Disabled enabled',
     disabled: true,
@@ -62,8 +102,14 @@ export const DisabledOn: Story = {
   },
 };
 
-// Settings Example
 export const SettingsExample: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Common settings panel layout with switches aligned to the right of labels.',
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4 w-64">
       <div className="flex items-center justify-between">
@@ -86,8 +132,14 @@ export const SettingsExample: Story = {
   ),
 };
 
-// Notification Settings
 export const NotificationSettings: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Notification preferences example showing grouped related switches.',
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4 w-80">
       <h3 className="text-sm font-semibold">Notification Preferences</h3>
@@ -101,8 +153,14 @@ export const NotificationSettings: Story = {
   ),
 };
 
-// Privacy Settings
 export const PrivacySettings: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Privacy settings panel with mix of enabled, disabled, and locked options.',
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4 w-80">
       <h3 className="text-sm font-semibold">Privacy Settings</h3>
@@ -116,8 +174,14 @@ export const PrivacySettings: Story = {
   ),
 };
 
-// All States
 export const AllStates: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Overview of all switch states: off, on, disabled off, and disabled on.',
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-3">
       <Switch label="Off" />
@@ -128,8 +192,14 @@ export const AllStates: Story = {
   ),
 };
 
-// Compact List
 export const CompactList: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Compact list layout with dividers, similar to mobile OS settings screens.',
+      },
+    },
+  },
   render: () => (
     <div className="divide-y w-64">
       <div className="flex items-center justify-between py-3">
@@ -152,8 +222,14 @@ export const CompactList: Story = {
   ),
 };
 
-// With Descriptions
 export const WithDescriptions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Switches with descriptive text explaining what each option controls.',
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6 w-80">
       <div className="flex items-start justify-between gap-4">
@@ -180,3 +256,18 @@ export const WithDescriptions: Story = {
     </div>
   ),
 };
+
+export const Required: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Required switch for terms acceptance or mandatory settings. Consider using Checkbox for explicit agreement scenarios.',
+      },
+    },
+  },
+  args: {
+    label: 'I agree to the terms and conditions *',
+    required: true,
+  },
+};
+

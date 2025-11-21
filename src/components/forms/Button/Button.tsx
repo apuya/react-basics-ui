@@ -2,6 +2,7 @@ import { cn } from '@/lib/cn';
 import {
   forwardRef,
   memo,
+  useMemo,
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from 'react';
@@ -31,14 +32,24 @@ export interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
 }
 
 // Memoized spinner component
-const Spinner = memo(({ size }: { size: ButtonSize }) => (
-  <span
-    className={cn(ICON_WRAPPER_CLASSES, ICON_SIZE_STYLES[size], 'animate-spin')}
-    aria-hidden="true"
-  >
-    <span className="h-full w-full rounded-full border-[length:var(--component-button-spinner-border-width)] border-current border-t-transparent" />
-  </span>
-));
+const Spinner = memo(({ size }: { size: ButtonSize }) => {
+  const borderStyle = useMemo(
+    () => ({ borderWidth: 'var(--component-button-spinner-border-width)' }),
+    []
+  );
+
+  return (
+    <span
+      className={cn(ICON_WRAPPER_CLASSES, ICON_SIZE_STYLES[size], 'animate-spin')}
+      aria-hidden="true"
+    >
+      <span 
+        className="h-full w-full rounded-full border-current border-t-transparent"
+        style={borderStyle}
+      />
+    </span>
+  );
+});
 Spinner.displayName = 'Spinner';
 
 // Memoized icon wrapper component
@@ -67,12 +78,30 @@ export const Button = memo(
   ) {
     const isDisabled = disabled || isLoading;
 
-    // Compute button classes
-    const buttonClasses = cn(
-      BASE_CLASSES,
-      SIZE_STYLES[size],
-      VARIANT_STYLES[variant],
-      className
+    const buttonClasses = useMemo(
+      () => cn(
+        BASE_CLASSES,
+        SIZE_STYLES[size],
+        VARIANT_STYLES[variant],
+        isLoading && 'relative',
+        className
+      ),
+      [size, variant, isLoading, className]
+    );
+
+    const paddingStyle = useMemo(
+      () => ({
+        paddingInline: `var(--component-button-padding-inline-${size})`,
+        paddingBlock: 'var(--component-button-padding-block)',
+      }),
+      [size]
+    );
+
+    const contentClasses = 'inline-flex items-center justify-center';
+
+    const contentStyle = useMemo(
+      () => isLoading ? { opacity: 'var(--component-button-loading-opacity)' } : undefined,
+      [isLoading]
     );
 
     return (
@@ -84,11 +113,8 @@ export const Button = memo(
         data-variant={variant}
         data-size={size}
         data-loading={isLoading || undefined}
-        className={cn(buttonClasses, isLoading && 'relative')}
-        style={{
-          paddingInline: `var(--component-button-padding-inline-${size})`,
-          paddingBlock: 'var(--component-button-padding-block)',
-        }}
+        className={buttonClasses}
+        style={paddingStyle}
         {...rest}
       >
         {/* Centered loading spinner */}
@@ -103,12 +129,7 @@ export const Button = memo(
 
         {/* Button content */}
         {children && (
-          <span
-            className={cn(
-              'inline-flex items-center justify-center',
-              isLoading && 'opacity-[var(--component-button-loading-opacity)]'
-            )}
-          >
+          <span className={contentClasses} style={contentStyle}>
             {children}
           </span>
         )}

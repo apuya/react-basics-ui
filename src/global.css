@@ -1160,12 +1160,26 @@ svg {
   --component-badge-text-info: var(--semantic-status-info-dark);
 
   /* Badge - Colors - Accents */
+  --component-badge-bg-blue: var(--semantic-accent-blue-default);
+  --component-badge-text-blue: var(--semantic-text-inverse);
+  --component-badge-bg-cyan: var(--semantic-accent-cyan-default);
+  --component-badge-text-cyan: var(--semantic-text-inverse);
+  --component-badge-bg-emerald: var(--semantic-accent-emerald-default);
+  --component-badge-text-emerald: var(--semantic-text-inverse);
+  --component-badge-bg-fuchsia: var(--semantic-accent-fuchsia-default);
+  --component-badge-text-fuchsia: var(--semantic-text-inverse);
+  --component-badge-bg-gold: var(--semantic-accent-gold-default);
+  --component-badge-text-gold: var(--semantic-text-primary);
   --component-badge-bg-green: var(--semantic-accent-green-default);
   --component-badge-text-green: var(--semantic-text-primary);
   --component-badge-bg-indigo: var(--semantic-accent-indigo-default);
   --component-badge-text-indigo: var(--semantic-text-inverse);
+  --component-badge-bg-lime: var(--semantic-accent-lime-default);
+  --component-badge-text-lime: var(--semantic-text-primary);
   --component-badge-bg-navy: var(--semantic-accent-navy-default);
   --component-badge-text-navy: var(--semantic-text-inverse);
+  --component-badge-bg-amber: var(--semantic-accent-amber-default);
+  --component-badge-text-amber: var(--semantic-text-primary);
   --component-badge-bg-orange: var(--semantic-accent-orange-default);
   --component-badge-text-orange: var(--semantic-text-primary);
   --component-badge-bg-pink: var(--semantic-accent-pink-default);
@@ -1174,32 +1188,60 @@ svg {
   --component-badge-text-purple: var(--semantic-text-inverse);
   --component-badge-bg-red: var(--semantic-accent-red-default);
   --component-badge-text-red: var(--semantic-text-primary);
+  --component-badge-bg-rose: var(--semantic-accent-rose-default);
+  --component-badge-text-rose: var(--semantic-text-primary);
   --component-badge-bg-sand: var(--semantic-accent-sand-default);
   --component-badge-text-sand: var(--semantic-text-primary);
+  --component-badge-bg-sky: var(--semantic-accent-sky-default);
+  --component-badge-text-sky: var(--semantic-text-inverse);
+  --component-badge-bg-slate: var(--semantic-accent-slate-default);
+  --component-badge-text-slate: var(--semantic-text-inverse);
   --component-badge-bg-teal: var(--semantic-accent-teal-default);
   --component-badge-text-teal: var(--semantic-text-inverse);
+  --component-badge-bg-violet: var(--semantic-accent-violet-default);
+  --component-badge-text-violet: var(--semantic-text-inverse);
   --component-badge-bg-yellow: var(--semantic-accent-yellow-default);
   --component-badge-text-yellow: var(--semantic-text-primary);
+  --component-badge-bg-zinc: var(--semantic-accent-zinc-default);
+  --component-badge-text-zinc: var(--semantic-text-inverse);
 
   /* Badge - Sizing */
-  --component-badge-height-small: var(--semantic-height-small);
-  --component-badge-height-default: var(--semantic-height-medium);
-  --component-badge-height-large: var(--semantic-height-large);
-  --component-badge-padding-inline: var(--semantic-space-compact);
-  --component-badge-padding-block: var(--semantic-space-tight);
-  --component-badge-gap: var(--semantic-space-compact);
-  --component-badge-radius: var(--semantic-radius-md);
+  /* Small Size - min-height: 16px, padding: 4px/8px, gap: 8px */
+  --component-badge-height-min-small: var(--semantic-height-small);
+  --component-badge-padding-block-small: var(--semantic-space-tight);
+  --component-badge-padding-inline-small: var(--semantic-space-compact);
+  --component-badge-gap-space-small: var(--semantic-space-compact);
   --component-badge-icon-size-small: var(--semantic-icon-xsmall);
-  --component-badge-icon-size-default: var(--semantic-icon-small);
-  --component-badge-icon-size-large: var(--semantic-icon-medium);
-
-  /* Badge - Typography */
   --component-badge-font-size-small: var(--semantic-text-size-caption);
-  --component-badge-font-size-default: var(--semantic-text-size-small);
-  --component-badge-font-size-large: var(--semantic-text-size-body);
   --component-badge-font-weight-small: var(--semantic-text-weight-regular);
+  --component-badge-line-height-small: var(--semantic-text-line-height-tight);
+
+  /* Default Size - min-height: 24px, padding: 4px/8px, gap: 8px */
+  --component-badge-height-min-default: var(--semantic-height-medium);
+  --component-badge-padding-block-default: var(--semantic-space-tight);
+  --component-badge-padding-inline-default: var(--semantic-space-compact);
+  --component-badge-gap-space-default: var(--semantic-space-compact);
+  --component-badge-icon-size-default: var(--semantic-icon-small);
+  --component-badge-font-size-default: var(--semantic-text-size-small);
   --component-badge-font-weight-default: var(--semantic-text-weight-regular);
+  --component-badge-line-height-default: var(--semantic-text-line-height-normal);
+
+  /* Large Size - height + min-height: 28px, padding: 8px/16px, gap: 8px, flex-shrink: 0 */
+  --component-badge-height-min-large: var(--semantic-height-large);
+  --component-badge-height-large: var(--semantic-height-large);
+  --component-badge-padding-block-large: var(--semantic-space-compact);
+  --component-badge-padding-inline-large: var(--semantic-space-default);
+  --component-badge-gap-space-large: var(--semantic-space-compact);
+  --component-badge-icon-size-large: var(--semantic-icon-medium);
+  --component-badge-font-size-large: var(--semantic-text-size-body);
   --component-badge-font-weight-large: var(--semantic-text-weight-medium);
+  --component-badge-line-height-large: var(--semantic-text-line-height-normal);
+
+  /* Badge - Common */
+  --component-badge-radius: var(--semantic-radius-md);
+
+  --component-badge-close-icon-size: var(--semantic-icon-small);
+  --component-badge-close-icon-stroke-width: var(--semantic-border-width-default);
 
   /* Badge - States */
   --component-badge-hover-opacity: var(--semantic-opacity-hover);
@@ -1729,6 +1771,17 @@ svg {
   --component-formfield-error-color: var(--semantic-text-error);
   --component-formfield-required-color: var(--semantic-status-error-default);
   --component-formfield-gap: var(--semantic-space-tight);
+  --component-formfield-required-indicator-spacing: var(--semantic-space-xs);
+
+  /* FormGroup Component */
+  --component-formgroup-gap: var(--semantic-space-default);
+  --component-formgroup-gap-horizontal: var(--semantic-space-default);
+  --component-formgroup-legend-color: var(--semantic-text-primary);
+  --component-formgroup-legend-size: var(--semantic-text-size-body);
+  --component-formgroup-legend-weight: var(--semantic-text-weight-semibold);
+  --component-formgroup-description-color: var(--semantic-text-secondary);
+  --component-formgroup-description-size: var(--semantic-text-size-small);
+  --component-formgroup-error-color: var(--semantic-text-error);
 
   /* Card Component - Shadow Enhancement */
   --component-card-shadow: var(--semantic-shadow-sm);

@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import {
   INPUT_CLASSES,
   LABEL_CLASSES,
@@ -21,6 +21,23 @@ export const Switch = memo(
   ) {
     const switchId = id || (label ? `switch-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
 
+    const trackStyle = useMemo(
+      () => ({
+        width: 'var(--component-switch-width)',
+        height: 'var(--component-switch-height)',
+        borderRadius: 'var(--component-switch-radius)',
+      }),
+      []
+    );
+
+    const thumbStyle = useMemo(
+      () => ({
+        width: 'var(--component-switch-thumb-size)',
+        height: 'var(--component-switch-thumb-size)',
+      }),
+      []
+    );
+
     return (
       <label
         className={cn(
@@ -40,18 +57,11 @@ export const Switch = memo(
         <span
           className={TRACK_CLASSES}
           aria-hidden="true"
-          style={{
-            width: 'var(--component-switch-width)',
-            height: 'var(--component-switch-height)',
-            borderRadius: 'var(--component-switch-radius)',
-          }}
+          style={trackStyle}
         >
           <span
             className={THUMB_CLASSES}
-            style={{
-              width: 'var(--component-switch-thumb-size)',
-              height: 'var(--component-switch-thumb-size)',
-            }}
+            style={thumbStyle}
           />
         </span>
         {label && <span className={LABEL_CLASSES}>{label}</span>}

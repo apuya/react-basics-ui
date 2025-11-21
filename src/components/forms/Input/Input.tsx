@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import {
   BASE_CLASSES,
   HELPER_CLASSES,
@@ -42,6 +42,53 @@ export const Input = memo(
   ) {
     const inputId = id || (label ? `input-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
 
+    const inputClasses = useMemo(
+      () => cn(
+        BASE_CLASSES,
+        SIZE_STYLES[size],
+        error ? STATE_STYLES.error : STATE_STYLES.default,
+        className
+      ),
+      [size, error, className]
+    );
+
+    const inputStyle = useMemo(
+      () => ({
+        height: `var(--component-input-height-${size})`,
+        paddingInline: leadingIcon || trailingIcon
+          ? undefined
+          : 'var(--component-input-padding-inline)',
+        paddingLeft: leadingIcon
+          ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
+          : undefined,
+        paddingRight: trailingIcon
+          ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
+          : undefined,
+      }),
+      [size, leadingIcon, trailingIcon]
+    );
+
+    const iconWrapperClasses = useMemo(
+      () => ICON_SIZE_STYLES[size],
+      [size]
+    );
+
+    const leadingIconStyle = useMemo(
+      () => ({
+        left: 'var(--component-input-padding-inline)',
+        color: 'var(--component-input-text-placeholder)',
+      }),
+      []
+    );
+
+    const trailingIconStyle = useMemo(
+      () => ({
+        right: 'var(--component-input-padding-inline)',
+        color: 'var(--component-input-text-placeholder)',
+      }),
+      []
+    );
+
     return (
       <div className={cn('w-full', wrapperClassName)}>
         {label && (
@@ -57,9 +104,10 @@ export const Input = memo(
           {leadingIcon && (
             <span
               className={cn(
-                'absolute left-[length:var(--component-input-padding-inline)] top-1/2 -translate-y-1/2 text-[color:var(--component-input-text-placeholder)]',
-                ICON_SIZE_STYLES[size]
+                'absolute top-1/2 -translate-y-1/2',
+                iconWrapperClasses
               )}
+              style={leadingIconStyle}
               aria-hidden="true"
             >
               {leadingIcon}
@@ -70,33 +118,18 @@ export const Input = memo(
             ref={ref}
             id={inputId}
             disabled={disabled}
-            className={cn(
-              BASE_CLASSES,
-              SIZE_STYLES[size],
-              error ? STATE_STYLES.error : STATE_STYLES.default,
-              className
-            )}
-            style={{
-              height: `var(--component-input-height-${size})`,
-              paddingInline: leadingIcon || trailingIcon
-                ? undefined
-                : 'var(--component-input-padding-inline)',
-              paddingLeft: leadingIcon
-                ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
-                : undefined,
-              paddingRight: trailingIcon
-                ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
-                : undefined,
-            }}
+            className={inputClasses}
+            style={inputStyle}
             {...rest}
           />
 
           {trailingIcon && (
             <span
               className={cn(
-                'absolute right-[length:var(--component-input-padding-inline)] top-1/2 -translate-y-1/2 text-[color:var(--component-input-text-placeholder)]',
-                ICON_SIZE_STYLES[size]
+                'absolute top-1/2 -translate-y-1/2',
+                iconWrapperClasses
               )}
+              style={trailingIconStyle}
               aria-hidden="true"
             >
               {trailingIcon}

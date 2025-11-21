@@ -4,9 +4,17 @@ import { Input } from './Input';
 import { Icon } from '@/components/utility/Icon';
 
 const meta: Meta<typeof Input> = {
-  title: 'Components/Forms/Input',
+  title: 'Forms/Input',
   component: Input,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Input component for text entry with support for different sizes, icons, labels, helper text, and error states. Supports all standard HTML input types and provides consistent styling across your application.',
+      },
+    },
+  },
   tags: ['autodocs'],
   argTypes: {
     size: {
@@ -46,15 +54,27 @@ const meta: Meta<typeof Input> = {
 export default meta;
 type Story = StoryObj<typeof Input>;
 
-// Default
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic input with placeholder text. Use for simple text entry fields.',
+      },
+    },
+  },
   args: {
     placeholder: 'Enter text...',
   },
 };
 
-// Sizes
 export const SizeSmall: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Small size input for compact interfaces or inline editing scenarios.',
+      },
+    },
+  },
   args: {
     size: 'small',
     placeholder: 'Small input',
@@ -62,6 +82,13 @@ export const SizeSmall: Story = {
 };
 
 export const SizeMedium: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Medium size (default) for standard form fields. Provides good balance of compactness and usability.',
+      },
+    },
+  },
   args: {
     size: 'medium',
     placeholder: 'Medium input',
@@ -69,14 +96,27 @@ export const SizeMedium: Story = {
 };
 
 export const SizeLarge: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Large size for prominent fields or touch-optimized interfaces. Better accessibility for users with motor impairments.',
+      },
+    },
+  },
   args: {
     size: 'large',
     placeholder: 'Large input',
   },
 };
 
-// With Label
 export const WithLabel: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Input with a label for accessibility and clarity. Always include labels for form inputs.',
+      },
+    },
+  },
   args: {
     label: 'Email address',
     placeholder: 'you@example.com',
@@ -84,8 +124,14 @@ export const WithLabel: Story = {
   },
 };
 
-// With Helper Text
 export const WithHelperText: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Helper text provides additional context or instructions below the input field.',
+      },
+    },
+  },
   args: {
     label: 'Password',
     type: 'password',
@@ -94,8 +140,14 @@ export const WithHelperText: Story = {
   },
 };
 
-// Error State
 export const WithError: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Error state displays validation messages. Use when user input does not meet requirements.',
+      },
+    },
+  },
   args: {
     label: 'Email',
     placeholder: 'you@example.com',
@@ -104,8 +156,14 @@ export const WithError: Story = {
   },
 };
 
-// Disabled
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disabled state prevents user interaction. Use for read-only or locked fields.',
+      },
+    },
+  },
   args: {
     label: 'Username',
     placeholder: 'Enter username',
@@ -114,6 +172,13 @@ export const Disabled: Story = {
 };
 
 export const DisabledWithValue: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disabled input with a pre-filled value. Useful for displaying locked data.',
+      },
+    },
+  },
   args: {
     label: 'Username',
     value: 'johndoe',
@@ -121,8 +186,14 @@ export const DisabledWithValue: Story = {
   },
 };
 
-// With Icons
 export const WithLeadingIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Leading icon provides visual context for the input type or purpose. Common for search or email fields.',
+      },
+    },
+  },
   args: {
     label: 'Search',
     placeholder: 'Search...',
@@ -131,6 +202,13 @@ export const WithLeadingIcon: Story = {
 };
 
 export const WithTrailingIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Trailing icon can indicate status, provide actions, or show input validation.',
+      },
+    },
+  },
   args: {
     label: 'Email',
     placeholder: 'you@example.com',
@@ -139,6 +217,13 @@ export const WithTrailingIcon: Story = {
 };
 
 export const WithBothIcons: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Both leading and trailing icons. Leading for context, trailing for actions like clear or submit.',
+      },
+    },
+  },
   args: {
     label: 'Search users',
     placeholder: 'Search...',
@@ -147,8 +232,14 @@ export const WithBothIcons: Story = {
   },
 };
 
-// Input Types
 export const EmailInput: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Email input type with appropriate icon and placeholder. Provides email-specific keyboard on mobile.',
+      },
+    },
+  },
   args: {
     label: 'Email',
     type: 'email',
@@ -158,6 +249,13 @@ export const EmailInput: Story = {
 };
 
 export const PasswordInput: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Password input type obscures entered text. Essential for secure credential entry.',
+      },
+    },
+  },
   args: {
     label: 'Password',
     type: 'password',
@@ -167,6 +265,13 @@ export const PasswordInput: Story = {
 };
 
 export const PhoneInput: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Phone input type (tel) triggers numeric keyboard on mobile devices for easier phone number entry.',
+      },
+    },
+  },
   args: {
     label: 'Phone',
     type: 'tel',
@@ -175,8 +280,14 @@ export const PhoneInput: Story = {
   },
 };
 
-// Combinations
 export const FullExample: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Complete example combining label, helper text, and leading icon for a polished user experience.',
+      },
+    },
+  },
   args: {
     label: 'Username',
     placeholder: 'Enter username',
@@ -186,6 +297,13 @@ export const FullExample: Story = {
 };
 
 export const FullExampleError: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Complete example in error state showing validation feedback with icon and error message.',
+      },
+    },
+  },
   args: {
     label: 'Username',
     placeholder: 'Enter username',
@@ -195,8 +313,82 @@ export const FullExampleError: Story = {
   },
 };
 
-// All Sizes
+export const Required: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Required input with asterisk indicator. Use HTML5 required attribute for form validation.',
+      },
+    },
+  },
+  args: {
+    label: 'Email address *',
+    type: 'email',
+    placeholder: 'you@example.com',
+    required: true,
+    helperText: 'This field is required',
+  },
+};
+
+export const ReadOnly: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Read-only input allows text selection and copy but prevents editing. Different from disabled - stays focusable.',
+      },
+    },
+  },
+  args: {
+    label: 'Account ID',
+    value: 'ACC-2024-00123',
+    readOnly: true,
+    helperText: 'This value cannot be changed',
+  },
+};
+
+export const ErrorSizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Error state across all input sizes showing consistent validation styling.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '320px' }}>
+      <Input
+        size="small"
+        label="Small with error"
+        placeholder="Small input"
+        error
+        helperText="This field has an error"
+      />
+      <Input
+        size="medium"
+        label="Medium with error"
+        placeholder="Medium input"
+        error
+        helperText="This field has an error"
+      />
+      <Input
+        size="large"
+        label="Large with error"
+        placeholder="Large input"
+        error
+        helperText="This field has an error"
+      />
+    </div>
+  ),
+};
+
 export const AllSizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Comparison of all three input sizes for choosing the right size for your interface.',
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       <Input size="small" placeholder="Small input" />
@@ -206,8 +398,14 @@ export const AllSizes: Story = {
   ),
 };
 
-// Form Example
 export const FormExample: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Complete form example showing consistent styling across multiple input types with labels, icons, and helper text.',
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       <Input

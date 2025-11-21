@@ -2,9 +2,17 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Select } from './Select';
 
 const meta: Meta<typeof Select> = {
-  title: 'Components/Forms/Select',
+  title: 'Forms/Select',
   component: Select,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Select component provides a dropdown menu for choosing from a list of options. Supports different sizes, labels, helper text, error states, and optgroups for organizing options.',
+      },
+    },
+  },
   tags: ['autodocs'],
   argTypes: {
     size: {
@@ -35,8 +43,14 @@ const meta: Meta<typeof Select> = {
 export default meta;
 type Story = StoryObj<typeof Select>;
 
-// Default
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic select dropdown with a placeholder option and multiple choices.',
+      },
+    },
+  },
   args: {
     children: (
       <>
@@ -49,8 +63,14 @@ export const Default: Story = {
   },
 };
 
-// Sizes
 export const SizeSmall: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Small size select for compact layouts or inline forms.',
+      },
+    },
+  },
   args: {
     size: 'small',
     children: (
@@ -64,6 +84,13 @@ export const SizeSmall: Story = {
 };
 
 export const SizeMedium: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Medium size (default) select balances visual presence with space efficiency.',
+      },
+    },
+  },
   args: {
     size: 'medium',
     children: (
@@ -77,6 +104,13 @@ export const SizeMedium: Story = {
 };
 
 export const SizeLarge: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Large size select for prominent fields or touch-optimized interfaces.',
+      },
+    },
+  },
   args: {
     size: 'large',
     children: (
@@ -89,8 +123,14 @@ export const SizeLarge: Story = {
   },
 };
 
-// With Label
 export const WithLabel: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Select with a label for accessibility and clarity. Always label form controls.',
+      },
+    },
+  },
   args: {
     label: 'Country',
     children: (
@@ -105,8 +145,14 @@ export const WithLabel: Story = {
   },
 };
 
-// With Helper Text
 export const WithHelperText: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Helper text provides additional guidance or context about the selection.',
+      },
+    },
+  },
   args: {
     label: 'Plan',
     helperText: 'Choose the plan that fits your needs',
@@ -121,8 +167,14 @@ export const WithHelperText: Story = {
   },
 };
 
-// Error State
 export const WithError: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Error state for validation feedback when selection is required or invalid.',
+      },
+    },
+  },
   args: {
     label: 'Category',
     error: true,
@@ -138,8 +190,14 @@ export const WithError: Story = {
   },
 };
 
-// Disabled
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disabled state prevents user interaction. Use for locked or unavailable options.',
+      },
+    },
+  },
   args: {
     label: 'Country',
     disabled: true,
@@ -154,6 +212,13 @@ export const Disabled: Story = {
 };
 
 export const DisabledWithValue: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disabled select with a pre-selected value showing locked selection.',
+      },
+    },
+  },
   args: {
     label: 'Country',
     disabled: true,
@@ -168,8 +233,14 @@ export const DisabledWithValue: Story = {
   },
 };
 
-// With Optgroups
 export const WithOptgroups: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Optgroups organize related options into labeled categories for better UX with long lists.',
+      },
+    },
+  },
   args: {
     label: 'Car',
     children: (
@@ -189,8 +260,14 @@ export const WithOptgroups: Story = {
   },
 };
 
-// All Sizes
 export const AllSizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Comparison of all select sizes for choosing the appropriate size.',
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       <Select size="small">
@@ -209,8 +286,14 @@ export const AllSizes: Story = {
   ),
 };
 
-// Form Example
 export const FormExample: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Complete form example with multiple selects demonstrating consistent styling.',
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       <Select label="Country" helperText="Where are you located?">
@@ -235,3 +318,68 @@ export const FormExample: Story = {
     </div>
   ),
 };
+
+export const Required: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Required select with asterisk indicator. Use HTML5 required attribute for validation.',
+      },
+    },
+  },
+  args: {
+    label: 'Country *',
+    required: true,
+    helperText: 'This field is required',
+    children: (
+      <>
+        <option value="">Select a country</option>
+        <option value="us">United States</option>
+        <option value="ca">Canada</option>
+        <option value="uk">United Kingdom</option>
+      </>
+    ),
+  },
+};
+
+export const ErrorSizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Error state across all select sizes showing consistent validation styling.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '320px' }}>
+      <Select
+        size="small"
+        label="Small with error"
+        error
+        helperText="This field has an error"
+      >
+        <option value="">Select an option</option>
+        <option value="1">Option 1</option>
+      </Select>
+      <Select
+        size="medium"
+        label="Medium with error"
+        error
+        helperText="This field has an error"
+      >
+        <option value="">Select an option</option>
+        <option value="1">Option 1</option>
+      </Select>
+      <Select
+        size="large"
+        label="Large with error"
+        error
+        helperText="This field has an error"
+      >
+        <option value="">Select an option</option>
+        <option value="1">Option 1</option>
+      </Select>
+    </div>
+  ),
+};
+
