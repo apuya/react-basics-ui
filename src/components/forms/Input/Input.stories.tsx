@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BiSearch, BiEnvelope, BiLock, BiUser, BiPhone, BiX } from 'react-icons/bi';
 import { Input } from './Input';
-import { Icon } from '@/components/utility/Icon';
+import { Icon } from '../../utility/Icon';
 
 const meta: Meta<typeof Input> = {
   title: 'Forms/Input',
@@ -19,7 +19,7 @@ const meta: Meta<typeof Input> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['small', 'medium', 'large'],
+      options: ['small', 'default', 'large'],
       description: 'Size of the input',
     },
     error: {
@@ -81,17 +81,17 @@ export const SizeSmall: Story = {
   },
 };
 
-export const SizeMedium: Story = {
+export const SizeDefault: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Medium size (default) for standard form fields. Provides good balance of compactness and usability.',
+        story: 'Default size for standard form fields. Provides good balance of compactness and usability.',
       },
     },
   },
   args: {
-    size: 'medium',
-    placeholder: 'Medium input',
+    size: 'default',
+    placeholder: 'Default input',
   },
 };
 
@@ -364,9 +364,9 @@ export const ErrorSizes: Story = {
         helperText="This field has an error"
       />
       <Input
-        size="medium"
-        label="Medium with error"
-        placeholder="Medium input"
+        size="default"
+        label="Default with error"
+        placeholder="Default input"
         error
         helperText="This field has an error"
       />
@@ -392,7 +392,7 @@ export const AllSizes: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <Input size="small" placeholder="Small input" />
-      <Input size="medium" placeholder="Medium input" />
+      <Input size="default" placeholder="Default input" />
       <Input size="large" placeholder="Large input" />
     </div>
   ),

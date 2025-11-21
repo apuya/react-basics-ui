@@ -3,7 +3,7 @@ export const BASE_CLASSES =
 
 export const SIZE_STYLES = {
   small: 'text-[length:var(--component-input-font-size-small)]',
-  medium: 'text-[length:var(--component-input-font-size-medium)]',
+  default: 'text-[length:var(--component-input-font-size-default)]',
   large: 'text-[length:var(--component-input-font-size-large)]',
 } as const;
 

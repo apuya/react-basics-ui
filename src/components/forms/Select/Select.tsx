@@ -26,7 +26,7 @@ export interface SelectProps extends Omit<ComponentPropsWithoutRef<'select'>, 's
 export const Select = memo(
   forwardRef<HTMLSelectElement, SelectProps>(function Select(
     {
-      size = 'medium',
+      size = 'default',
       error = false,
       label,
       helperText,

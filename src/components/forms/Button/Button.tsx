@@ -21,7 +21,7 @@ export type ButtonVariant =
   | 'ghost'
   | 'destructive';
 
-export type ButtonSize = 'small' | 'default';
+export type ButtonSize = 'small' | 'default' | 'large';
 
 export interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
   variant?: ButtonVariant;

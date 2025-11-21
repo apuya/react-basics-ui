@@ -140,6 +140,20 @@ export const Default: Story = {
   },
 };
 
+export const Large: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Large buttons for primary CTAs, hero sections, or touch-optimized interfaces.',
+      },
+    },
+  },
+  args: {
+    size: 'large',
+    children: 'Large Button',
+  },
+};
+
 // State Stories
 export const Loading: Story = {
   parameters: {
@@ -255,7 +269,7 @@ export const AllSizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Comparison of button sizes for choosing the right size for your context.',
+        story: 'Comparison of all three button sizes for choosing the right size for your context.',
       },
     },
   },
@@ -263,6 +277,7 @@ export const AllSizes: Story = {
     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
       <Button size="small">Small</Button>
       <Button size="default">Default</Button>
+      <Button size="large">Large</Button>
     </div>
   ),
 };

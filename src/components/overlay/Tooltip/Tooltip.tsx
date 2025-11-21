@@ -31,6 +31,14 @@ export const Tooltip = memo(
         [position, isVisible, className]
       );
 
+      const tooltipStyle = useMemo(
+        () => ({
+          paddingInline: 'var(--component-tooltip-padding-inline)',
+          paddingBlock: 'var(--component-tooltip-padding-block)',
+        }),
+        []
+      );
+
       const handleMouseEnter = useCallback(() => setIsVisible(true), []);
       const handleMouseLeave = useCallback(() => setIsVisible(false), []);
       const handleFocus = useCallback(() => setIsVisible(true), []);
@@ -49,6 +57,7 @@ export const Tooltip = memo(
           <div
             role="tooltip"
             className={tooltipClasses}
+            style={tooltipStyle}
           >
             {content}
           </div>

@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ElementType, type ReactNode } from 'react';
+import { forwardRef, memo, type ReactNode } from 'react';
 import {
   ALIGN_STYLES,
   COLOR_STYLES,
@@ -51,7 +51,7 @@ export const Text = memo(
   ) {
     return (
       <Component
-        ref={ref as React.Ref<HTMLElement & ElementType>}
+        ref={ref as any}
         className={cn(
           SIZE_STYLES[size],
           WEIGHT_STYLES[weight],

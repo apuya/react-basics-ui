@@ -1322,20 +1322,25 @@ svg {
   /* Button - Sizing */
   --component-button-height-small: var(--semantic-height-large);
   --component-button-height-default: var(--semantic-height-xlarge);
+  --component-button-height-large: var(--semantic-height-xxlarge);
   --component-button-padding-inline-small: var(--semantic-space-default);
   --component-button-padding-inline-default: var(--semantic-space-default);
+  --component-button-padding-inline-large: var(--semantic-space-comfortable);
   --component-button-padding-block: var(--semantic-space-tight);
   --component-button-gap: var(--semantic-space-compact);
   --component-button-radius: var(--semantic-radius-lg);
   --component-button-border-width: var(--semantic-border-width-default);
   --component-button-icon-size-small: var(--semantic-icon-small);
   --component-button-icon-size-default: var(--semantic-icon-medium);
+  --component-button-icon-size-large: var(--semantic-icon-large);
 
   /* Button - Typography */
   --component-button-font-size-small: var(--semantic-text-size-body);
   --component-button-font-size-default: var(--semantic-text-size-h4);
+  --component-button-font-size-large: var(--semantic-text-size-h3);
   --component-button-font-weight-small: var(--semantic-text-weight-regular);
   --component-button-font-weight-default: var(--semantic-text-weight-medium);
+  --component-button-font-weight-large: var(--semantic-text-weight-semibold);
 
   /* Button - States */
   --component-button-disabled-opacity: var(--semantic-opacity-disabled);
@@ -1483,6 +1488,20 @@ svg {
   --component-card-radius: var(--semantic-radius-md);
   --component-card-height-min: var(--semantic-height-xxxlarge);
   --component-card-width-min: var(--semantic-width-xlarge);
+  --component-card-border-width: var(--semantic-border-width-default);
+  --component-card-text: var(--semantic-text-primary);
+  --component-card-header-padding-block: var(--semantic-space-default);
+  --component-card-header-padding-inline: var(--semantic-space-default);
+  --component-card-footer-padding-block: var(--semantic-space-default);
+  --component-card-footer-padding-inline: var(--semantic-space-default);
+  --component-card-title-size: var(--semantic-text-size-h4);
+  --component-card-title-weight: var(--semantic-text-weight-semibold);
+  --component-card-description-size: var(--semantic-text-size-small);
+  --component-card-description-weight: var(--semantic-text-weight-regular);
+  --component-card-transition-duration: var(--semantic-duration-normal);
+  --component-card-shadow: var(--semantic-shadow-sm);
+  --component-card-shadow-hover: var(--semantic-shadow-md);
+
 
   /* Table Component */
   /* Table - Colors */
@@ -1625,6 +1644,17 @@ svg {
   --component-modal-title-size: var(--semantic-text-size-h3);
   --component-modal-title-weight: var(--semantic-text-weight-semibold);
   --component-modal-z-index: var(--semantic-z-modal);
+  --component-modal-header-padding-block: var(--semantic-space-default);
+  --component-modal-header-padding-inline: var(--semantic-space-comfortable);
+  --component-modal-footer-padding-block: var(--semantic-space-default);
+  --component-modal-footer-padding-inline: var(--semantic-space-comfortable);
+  --component-modal-content-padding-block: var(--semantic-space-comfortable);
+  --component-modal-content-padding-inline: var(--semantic-space-comfortable);
+  --component-modal-close-button-size: var(--semantic-icon-medium);
+  --component-modal-close-button-hover: var(--semantic-surface-hover);
+  --component-modal-transition-duration: var(--semantic-duration-normal);
+  --component-modal-border-width: var(--semantic-border-width-default);
+
 
   /* Drawer Component */
   --component-drawer-bg: var(--semantic-surface-elevated);
@@ -1658,6 +1688,47 @@ svg {
   --component-popover-radius: var(--semantic-radius-lg);
   --component-popover-shadow: var(--semantic-shadow-lg);
   --component-popover-z-index: var(--semantic-z-popover);
+  --component-popover-border-width: var(--semantic-border-width-default);
+  --component-popover-arrow-size: var(--semantic-space-compact);
+  --component-popover-title-size: var(--semantic-text-size-body);
+  --component-popover-title-weight: var(--semantic-text-weight-semibold);
+  --component-popover-description-size: var(--semantic-text-size-small);
+  --component-popover-description-weight: var(--semantic-text-weight-regular);
+  --component-popover-gap: var(--semantic-space-compact);
+  --component-popover-transition-duration: var(--semantic-duration-fast);
+  --component-popover-max-width: var(--semantic-max-width-sm);
+
+  /* Dropdown/Menu Component */
+  --component-dropdown-bg: var(--semantic-surface-elevated);
+  --component-dropdown-border: var(--semantic-border-subtle);
+  --component-dropdown-text: var(--semantic-text-primary);
+  --component-dropdown-item-bg-default: var(--semantic-surface-transparent);
+  --component-dropdown-item-bg-hover: var(--semantic-surface-hover);
+  --component-dropdown-item-bg-active: var(--semantic-surface-base);
+  --component-dropdown-item-bg-disabled: var(--semantic-surface-transparent);
+  --component-dropdown-item-text-default: var(--semantic-text-primary);
+  --component-dropdown-item-text-hover: var(--semantic-text-primary);
+  --component-dropdown-item-text-active: var(--semantic-text-primary);
+  --component-dropdown-item-text-disabled: var(--semantic-text-disabled);
+  --component-dropdown-divider: var(--semantic-border-disabled);
+  --component-dropdown-padding-block: var(--semantic-space-tight);
+  --component-dropdown-padding-inline: var(--semantic-space-tight);
+  --component-dropdown-gap: var(--semantic-space-tight);
+  --component-dropdown-item-height: var(--semantic-height-medium);
+  --component-dropdown-item-padding-block: var(--semantic-space-compact);
+  --component-dropdown-item-padding-inline: var(--semantic-space-default);
+  --component-dropdown-item-gap: var(--semantic-space-compact);
+  --component-dropdown-icon-size: var(--semantic-icon-small);
+  --component-dropdown-min-width: var(--semantic-width-large);
+  --component-dropdown-max-width: var(--semantic-width-xxlarge);
+  --component-dropdown-radius: var(--semantic-radius-lg);
+  --component-dropdown-shadow: var(--semantic-shadow-lg);
+  --component-dropdown-border-width: var(--semantic-border-width-default);
+  --component-dropdown-item-font-size: var(--semantic-text-size-body);
+  --component-dropdown-item-font-weight: var(--semantic-text-weight-regular);
+  --component-dropdown-item-line-height: var(--semantic-line-height-normal);
+  --component-dropdown-transition-duration: var(--semantic-duration-fast);
+  --component-dropdown-z-index: var(--semantic-z-dropdown);
 
   /* Breadcrumb Component */
   --component-breadcrumb-text-default: var(--semantic-text-secondary);

@@ -6,6 +6,8 @@ export const SIZE_STYLES = {
     'h-[length:var(--component-button-height-small)] text-[length:var(--component-button-font-size-small)] font-[number:var(--component-button-font-weight-small)]',
   default:
     'h-[length:var(--component-button-height-default)] text-[length:var(--component-button-font-size-default)] font-[number:var(--component-button-font-weight-default)]',
+  large:
+    'h-[length:var(--component-button-height-large)] text-[length:var(--component-button-font-size-large)] font-[number:var(--component-button-font-weight-large)]',
 } as const;
 
 export const VARIANT_STYLES = {
@@ -26,4 +28,5 @@ export const ICON_WRAPPER_CLASSES = 'inline-flex items-center justify-center shr
 export const ICON_SIZE_STYLES = {
   small: 'w-[length:var(--component-button-icon-size-small)] h-[length:var(--component-button-icon-size-small)]',
   default: 'w-[length:var(--component-button-icon-size-default)] h-[length:var(--component-button-icon-size-default)]',
+  large: 'w-[length:var(--component-button-icon-size-large)] h-[length:var(--component-button-icon-size-large)]',
 } as const;

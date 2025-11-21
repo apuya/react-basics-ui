@@ -26,7 +26,7 @@ export interface InputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'siz
 export const Input = memo(
   forwardRef<HTMLInputElement, InputProps>(function Input(
     {
-      size = 'medium',
+      size = 'default',
       error = false,
       label,
       helperText,

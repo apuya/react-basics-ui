@@ -1,42 +1,30 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
 import {
   INPUT_CLASSES,
   LABEL_CLASSES,
+  SIZE_THUMB_STYLES,
+  SIZE_TRACK_STYLES,
   THUMB_CLASSES,
   TRACK_CLASSES,
   WRAPPER_CLASSES,
   WRAPPER_DISABLED_CLASSES,
 } from './Switch.styles';
 
-export interface SwitchProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type'> {
+export type SwitchSize = 'small' | 'default' | 'large';
+
+export interface SwitchProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type' | 'size'> {
+  size?: SwitchSize;
   label?: string;
   wrapperClassName?: string;
 }
 
 export const Switch = memo(
   forwardRef<HTMLInputElement, SwitchProps>(function Switch(
-    { label, disabled, className, wrapperClassName, id, ...rest },
+    { size = 'default', label, disabled, className, wrapperClassName, id, ...rest },
     ref
   ) {
     const switchId = id || (label ? `switch-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
-
-    const trackStyle = useMemo(
-      () => ({
-        width: 'var(--component-switch-width)',
-        height: 'var(--component-switch-height)',
-        borderRadius: 'var(--component-switch-radius)',
-      }),
-      []
-    );
-
-    const thumbStyle = useMemo(
-      () => ({
-        width: 'var(--component-switch-thumb-size)',
-        height: 'var(--component-switch-thumb-size)',
-      }),
-      []
-    );
 
     return (
       <label
@@ -55,13 +43,11 @@ export const Switch = memo(
           {...rest}
         />
         <span
-          className={TRACK_CLASSES}
+          className={cn(TRACK_CLASSES, SIZE_TRACK_STYLES[size])}
           aria-hidden="true"
-          style={trackStyle}
         >
           <span
-            className={THUMB_CLASSES}
-            style={thumbStyle}
+            className={cn(THUMB_CLASSES, SIZE_THUMB_STYLES[size])}
           />
         </span>
         {label && <span className={LABEL_CLASSES}>{label}</span>}

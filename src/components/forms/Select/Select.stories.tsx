@@ -17,7 +17,7 @@ const meta: Meta<typeof Select> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['small', 'medium', 'large'],
+      options: ['small', 'default', 'large'],
       description: 'Size of the select',
     },
     error: {
@@ -83,19 +83,19 @@ export const SizeSmall: Story = {
   },
 };
 
-export const SizeMedium: Story = {
+export const SizeDefault: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Medium size (default) select balances visual presence with space efficiency.',
+        story: 'Default size select balances visual presence with space efficiency.',
       },
     },
   },
   args: {
-    size: 'medium',
+    size: 'default',
     children: (
       <>
-        <option value="">Medium select</option>
+        <option value="">Default select</option>
         <option value="1">Option 1</option>
         <option value="2">Option 2</option>
       </>
@@ -274,8 +274,8 @@ export const AllSizes: Story = {
         <option value="">Small select</option>
         <option value="1">Option 1</option>
       </Select>
-      <Select size="medium">
-        <option value="">Medium select</option>
+      <Select size="default">
+        <option value="">Default select</option>
         <option value="1">Option 1</option>
       </Select>
       <Select size="large">
@@ -362,8 +362,8 @@ export const ErrorSizes: Story = {
         <option value="1">Option 1</option>
       </Select>
       <Select
-        size="medium"
-        label="Medium with error"
+        size="default"
+        label="Default with error"
         error
         helperText="This field has an error"
       >
