@@ -1178,22 +1178,22 @@ svg {
 
   /* Badge - Sizing */
   --component-badge-height-small: var(--semantic-height-small);
-  --component-badge-height-medium: var(--semantic-height-medium);
+  --component-badge-height-default: var(--semantic-height-medium);
   --component-badge-height-large: var(--semantic-height-large);
   --component-badge-padding-inline: var(--semantic-space-compact);
   --component-badge-padding-block: var(--semantic-space-tight);
   --component-badge-gap: var(--semantic-space-compact);
   --component-badge-radius: var(--semantic-radius-md);
   --component-badge-icon-size-small: var(--semantic-icon-xsmall);
-  --component-badge-icon-size-medium: var(--semantic-icon-small);
+  --component-badge-icon-size-default: var(--semantic-icon-small);
   --component-badge-icon-size-large: var(--semantic-icon-medium);
 
   /* Badge - Typography */
   --component-badge-font-size-small: var(--semantic-text-size-caption);
-  --component-badge-font-size-medium: var(--semantic-text-size-small);
+  --component-badge-font-size-default: var(--semantic-text-size-small);
   --component-badge-font-size-large: var(--semantic-text-size-body);
   --component-badge-font-weight-small: var(--semantic-text-weight-regular);
-  --component-badge-font-weight-medium: var(--semantic-text-weight-regular);
+  --component-badge-font-weight-default: var(--semantic-text-weight-regular);
   --component-badge-font-weight-large: var(--semantic-text-weight-medium);
 
   /* Badge - States */
@@ -1363,10 +1363,33 @@ svg {
   --component-input-transition-duration: var(--semantic-duration-normal);
 
   /* Checkbox Component */
-  --component-checkbox-fill-default: var(--semantic-surface-elevated);
-  --component-checkbox-fill-active: var(--semantic-brand-secondary-default);
-  --component-checkbox-stroke-default: var(--semantic-brand-secondary-default);
-  --component-checkbox-stroke-active: var(--semantic-surface-elevated);
+  --component-checkbox-bg-default: var(--semantic-surface-elevated);
+  --component-checkbox-bg-checked: var(--semantic-brand-secondary-default);
+  --component-checkbox-bg-indeterminate: var(--semantic-brand-secondary-default);
+  --component-checkbox-bg-disabled: var(--semantic-surface-base);
+  --component-checkbox-bg-hover: var(--semantic-surface-hover);
+  --component-checkbox-border-default: var(--semantic-border-default);
+  --component-checkbox-border-checked: var(--semantic-brand-secondary-default);
+  --component-checkbox-border-indeterminate: var(--semantic-brand-secondary-default);
+  --component-checkbox-border-disabled: var(--semantic-border-disabled);
+  --component-checkbox-border-error: var(--semantic-status-error-default);
+  --component-checkbox-border-hover: var(--semantic-border-emphasis);
+  --component-checkbox-border-focus: var(--semantic-border-focus);
+  --component-checkbox-check-default: var(--semantic-surface-elevated);
+  --component-checkbox-check-disabled: var(--semantic-text-disabled);
+  --component-checkbox-size-small: var(--semantic-icon-medium);
+  --component-checkbox-size-default: var(--semantic-icon-medium);
+  --component-checkbox-size-large: var(--semantic-icon-large);
+  --component-checkbox-gap: var(--semantic-space-compact);
+  --component-checkbox-radius: var(--semantic-radius-sm);
+  --component-checkbox-border-width: var(--semantic-border-width-default);
+  --component-checkbox-label-color: var(--semantic-text-primary);
+  --component-checkbox-label-color-disabled: var(--semantic-text-disabled);
+  --component-checkbox-label-size: var(--semantic-text-size-body);
+  --component-checkbox-label-weight: var(--semantic-text-weight-regular);
+  --component-checkbox-transition-duration: var(--semantic-duration-fast);
+  --component-checkbox-focus-outline-width: var(--semantic-border-width-emphasis);
+  --component-checkbox-focus-outline-offset: var(--semantic-space-tight);
 
   /* Select Component */
   --component-select-bg-default: var(--semantic-surface-elevated);
@@ -1688,6 +1711,161 @@ svg {
   /* Card Component - Shadow Enhancement */
   --component-card-shadow: var(--semantic-shadow-sm);
   --component-card-shadow-hover: var(--semantic-shadow-md);
+
+  /* ============================================
+     LAYOUT COMPONENTS
+     ============================================ */
+
+  /* Box Component */
+  --component-box-bg-default: var(--semantic-surface-elevated);
+  --component-box-bg-transparent: var(--semantic-surface-transparent);
+  --component-box-border-default: var(--semantic-border-subtle);
+  --component-box-border-none: transparent;
+  --component-box-padding-none: var(--semantic-space-none);
+  --component-box-padding-tight: var(--semantic-space-tight);
+  --component-box-padding-compact: var(--semantic-space-compact);
+  --component-box-padding-default: var(--semantic-space-default);
+  --component-box-padding-comfortable: var(--semantic-space-comfortable);
+  --component-box-padding-loose: var(--semantic-space-loose);
+  --component-box-gap-none: var(--semantic-space-none);
+  --component-box-gap-tight: var(--semantic-space-tight);
+  --component-box-gap-compact: var(--semantic-space-compact);
+  --component-box-gap-default: var(--semantic-space-default);
+  --component-box-gap-comfortable: var(--semantic-space-comfortable);
+  --component-box-gap-loose: var(--semantic-space-loose);
+  --component-box-radius-none: var(--semantic-radius-none);
+  --component-box-radius-sm: var(--semantic-radius-sm);
+  --component-box-radius-md: var(--semantic-radius-md);
+  --component-box-radius-lg: var(--semantic-radius-lg);
+  --component-box-radius-xl: var(--semantic-radius-xl);
+  --component-box-radius-full: var(--semantic-radius-full);
+  --component-box-shadow-none: var(--semantic-shadow-none);
+  --component-box-shadow-sm: var(--semantic-shadow-sm);
+  --component-box-shadow-md: var(--semantic-shadow-md);
+  --component-box-shadow-lg: var(--semantic-shadow-lg);
+
+  /* Container Component */
+  --component-container-max-width-xs: var(--semantic-max-width-xs);
+  --component-container-max-width-sm: var(--semantic-max-width-sm);
+  --component-container-max-width-md: var(--semantic-max-width-md);
+  --component-container-max-width-lg: var(--semantic-max-width-lg);
+  --component-container-max-width-xl: var(--semantic-max-width-xl);
+  --component-container-max-width-2xl: var(--semantic-max-width-2xl);
+  --component-container-max-width-full: var(--semantic-max-width-full);
+  --component-container-padding-inline-xs: var(--semantic-space-compact);
+  --component-container-padding-inline-sm: var(--semantic-space-default);
+  --component-container-padding-inline-md: var(--semantic-space-comfortable);
+  --component-container-padding-inline-lg: var(--semantic-space-loose);
+  --component-container-padding-inline-xl: var(--semantic-space-spacious);
+  --component-container-bg: var(--semantic-surface-transparent);
+
+  /* Grid Component */
+  --component-grid-gap-none: var(--semantic-space-none);
+  --component-grid-gap-tight: var(--semantic-space-tight);
+  --component-grid-gap-compact: var(--semantic-space-compact);
+  --component-grid-gap-default: var(--semantic-space-default);
+  --component-grid-gap-comfortable: var(--semantic-space-comfortable);
+  --component-grid-gap-loose: var(--semantic-space-loose);
+  --component-grid-gap-spacious: var(--semantic-space-spacious);
+  --component-grid-columns-1: 1;
+  --component-grid-columns-2: 2;
+  --component-grid-columns-3: 3;
+  --component-grid-columns-4: 4;
+  --component-grid-columns-6: 6;
+  --component-grid-columns-12: 12;
+  --component-grid-auto-fit-min: var(--semantic-width-small);
+  --component-grid-auto-fill-min: var(--semantic-width-small);
+
+  /* Stack Component */
+  --component-stack-gap-none: var(--semantic-space-none);
+  --component-stack-gap-tight: var(--semantic-space-tight);
+  --component-stack-gap-compact: var(--semantic-space-compact);
+  --component-stack-gap-default: var(--semantic-space-default);
+  --component-stack-gap-comfortable: var(--semantic-space-comfortable);
+  --component-stack-gap-loose: var(--semantic-space-loose);
+  --component-stack-gap-spacious: var(--semantic-space-spacious);
+
+  /* ============================================
+     TYPOGRAPHY COMPONENTS
+     ============================================ */
+
+  /* Heading Component */
+  --component-heading-color-default: var(--semantic-text-primary);
+  --component-heading-color-secondary: var(--semantic-text-secondary);
+  --component-heading-color-inverse: var(--semantic-text-inverse);
+  --component-heading-font-family: var(--semantic-typography-font-family-heading);
+  --component-heading-font-size-h1: var(--semantic-text-size-h1);
+  --component-heading-font-size-h2: var(--semantic-text-size-h2);
+  --component-heading-font-size-h3: var(--semantic-text-size-h3);
+  --component-heading-font-size-h4: var(--semantic-text-size-h4);
+  --component-heading-font-weight-light: var(--semantic-text-weight-light);
+  --component-heading-font-weight-regular: var(--semantic-text-weight-regular);
+  --component-heading-font-weight-medium: var(--semantic-text-weight-medium);
+  --component-heading-font-weight-semibold: var(--semantic-text-weight-semibold);
+  --component-heading-font-weight-bold: var(--semantic-text-weight-bold);
+  --component-heading-line-height-tight: var(--semantic-line-height-tight);
+  --component-heading-line-height-compact: var(--semantic-line-height-compact);
+  --component-heading-line-height-normal: var(--semantic-line-height-normal);
+  --component-heading-letter-spacing-tight: var(--semantic-letter-spacing-tight);
+  --component-heading-letter-spacing-normal: var(--semantic-letter-spacing-normal);
+  --component-heading-margin-bottom-default: var(--semantic-space-default);
+  --component-heading-margin-bottom-compact: var(--semantic-space-compact);
+  --component-heading-margin-bottom-none: var(--semantic-space-none);
+
+  /* Text Component */
+  --component-text-color-primary: var(--semantic-text-primary);
+  --component-text-color-secondary: var(--semantic-text-secondary);
+  --component-text-color-tertiary: var(--semantic-text-tertiary);
+  --component-text-color-inverse: var(--semantic-text-inverse);
+  --component-text-color-disabled: var(--semantic-text-disabled);
+  --component-text-color-link: var(--semantic-text-link);
+  --component-text-color-error: var(--semantic-text-error);
+  --component-text-color-warning: var(--semantic-status-warning-dark);
+  --component-text-color-success: var(--semantic-status-success-dark);
+  --component-text-font-family: var(--semantic-typography-font-family-body);
+  --component-text-font-family-mono: var(--semantic-typography-font-family-monospace);
+  --component-text-font-size-caption: var(--semantic-text-size-caption);
+  --component-text-font-size-small: var(--semantic-text-size-small);
+  --component-text-font-size-body: var(--semantic-text-size-body);
+  --component-text-font-size-subtitle: var(--semantic-text-size-subtitle);
+  --component-text-font-weight-light: var(--semantic-text-weight-light);
+  --component-text-font-weight-regular: var(--semantic-text-weight-regular);
+  --component-text-font-weight-medium: var(--semantic-text-weight-medium);
+  --component-text-font-weight-semibold: var(--semantic-text-weight-semibold);
+  --component-text-font-weight-bold: var(--semantic-text-weight-bold);
+  --component-text-line-height-tight: var(--semantic-line-height-tight);
+  --component-text-line-height-normal: var(--semantic-line-height-normal);
+  --component-text-line-height-relaxed: var(--semantic-line-height-relaxed);
+  --component-text-letter-spacing-tight: var(--semantic-letter-spacing-tight);
+  --component-text-letter-spacing-normal: var(--semantic-letter-spacing-normal);
+  --component-text-letter-spacing-wide: var(--semantic-letter-spacing-wide);
+
+  /* Label Component */
+  --component-label-color-default: var(--semantic-text-primary);
+  --component-label-color-disabled: var(--semantic-text-disabled);
+  --component-label-color-error: var(--semantic-text-error);
+  --component-label-font-size-small: var(--semantic-text-size-small);
+  --component-label-font-size-default: var(--semantic-text-size-body);
+  --component-label-font-size-large: var(--semantic-text-size-subtitle);
+  --component-label-font-weight: var(--semantic-text-weight-medium);
+  --component-label-line-height: var(--semantic-line-height-normal);
+  --component-label-margin-bottom: var(--semantic-space-tight);
+  --component-label-required-color: var(--semantic-status-error-default);
+
+  /* ============================================
+     UTILITY COMPONENTS
+     ============================================ */
+
+  /* VisuallyHidden Component */
+  --component-visually-hidden-position: absolute;
+  --component-visually-hidden-width: 1px;
+  --component-visually-hidden-height: 1px;
+  --component-visually-hidden-padding: 0;
+  --component-visually-hidden-margin: -1px;
+  --component-visually-hidden-overflow: hidden;
+  --component-visually-hidden-clip: rect(0, 0, 0, 0);
+  --component-visually-hidden-white-space: nowrap;
+  --component-visually-hidden-border-width: 0;
 }
 
 /* ============================================
