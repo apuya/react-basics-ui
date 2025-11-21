@@ -36,7 +36,7 @@ const Spinner = memo(({ size }: { size: ButtonSize }) => (
     className={cn(ICON_WRAPPER_CLASSES, ICON_SIZE_STYLES[size], 'animate-spin')}
     aria-hidden="true"
   >
-    <span className="h-full w-full rounded-full border-2 border-current border-t-transparent" />
+    <span className="h-full w-full rounded-full border-[length:var(--component-button-spinner-border-width)] border-current border-t-transparent" />
   </span>
 ));
 Spinner.displayName = 'Spinner';
@@ -106,7 +106,7 @@ export const Button = memo(
           <span
             className={cn(
               'inline-flex items-center justify-center',
-              isLoading && 'opacity-0'
+              isLoading && 'opacity-[var(--component-button-loading-opacity)]'
             )}
           >
             {children}

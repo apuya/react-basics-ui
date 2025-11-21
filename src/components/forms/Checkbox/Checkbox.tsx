@@ -10,7 +10,6 @@ import {
   CHECK_ICON_CLASSES,
   HIDDEN_INPUT_CLASSES,
   LABEL_CLASSES,
-  SIZE_STYLES,
   WRAPPER_BASE_CLASSES,
 } from './Checkbox.styles';
 
@@ -77,7 +76,6 @@ export const Checkbox = memo(
     // Compute checkbox classes
     const checkboxClasses = cn(
       CHECKBOX_BASE_CLASSES,
-      SIZE_STYLES[size],
       className
     );
 
@@ -87,6 +85,12 @@ export const Checkbox = memo(
           className={checkboxClasses}
           data-error={error || undefined}
           data-size={size}
+          style={{
+            width: `var(--component-checkbox-size-${size})`,
+            height: `var(--component-checkbox-size-${size})`,
+            borderRadius: 'var(--component-checkbox-radius)',
+            borderWidth: 'var(--component-checkbox-border-width)',
+          }}
         >
           <input
             ref={(node) => {

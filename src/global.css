@@ -1124,6 +1124,11 @@ svg {
   --semantic-scale-normal: var(--primitive-scale-100);
   --semantic-scale-grow: var(--primitive-scale-105);
   --semantic-scale-emphasis: var(--primitive-scale-110);
+  --semantic-scale-hidden: var(--primitive-scale-0);
+  --semantic-scale-visible: var(--primitive-scale-100);
+
+  /* Opacity - Visibility States */
+  --semantic-opacity-visible: var(--primitive-opacity-full);
 
   /* ============================================
      COMPONENT TOKENS
@@ -1295,6 +1300,8 @@ svg {
   --component-button-transition-duration: var(--semantic-duration-normal);
   --component-button-focus-outline-width: var(--semantic-border-width-medium);
   --component-button-focus-outline-offset: var(--semantic-border-width-medium);
+  --component-button-loading-opacity: var(--semantic-opacity-hidden);
+  --component-button-spinner-border-width: var(--semantic-border-width-medium);
 
   /* Icon Component */
   /* Icon - Sizing */
@@ -1390,6 +1397,8 @@ svg {
   --component-checkbox-transition-duration: var(--semantic-duration-fast);
   --component-checkbox-focus-outline-width: var(--semantic-border-width-emphasis);
   --component-checkbox-focus-outline-offset: var(--semantic-space-tight);
+  --component-checkbox-check-opacity-hidden: var(--semantic-opacity-hidden);
+  --component-checkbox-check-opacity-visible: var(--semantic-opacity-visible);
 
   /* Select Component */
   --component-select-bg-default: var(--semantic-surface-elevated);
@@ -1681,6 +1690,15 @@ svg {
   --component-switch-thumb-size: var(--semantic-icon-small);
   --component-switch-radius: var(--semantic-radius-full);
   --component-switch-transition: var(--semantic-duration-fast);
+  --component-switch-border-width: var(--semantic-border-width-medium);
+  --component-switch-disabled-opacity: var(--semantic-opacity-disabled);
+  --component-switch-thumb-offset: 0.125rem;
+  --component-switch-thumb-travel-offset: 6px;
+  --component-switch-gap: var(--semantic-space-compact);
+  --component-switch-label-color: var(--semantic-text-primary);
+  --component-switch-label-size: var(--semantic-text-size-body);
+  --component-switch-label-weight: var(--semantic-text-weight-regular);
+  --component-switch-thumb-shadow: var(--semantic-shadow-sm);
 
   /* Radio Component */
   --component-radio-bg-default: var(--semantic-surface-elevated);
@@ -1696,6 +1714,10 @@ svg {
   --component-radio-label-color: var(--semantic-text-primary);
   --component-radio-label-size: var(--semantic-text-size-body);
   --component-radio-label-weight: var(--semantic-text-weight-regular);
+  --component-radio-border-width: var(--semantic-border-width-medium);
+  --component-radio-disabled-opacity: var(--semantic-opacity-disabled);
+  --component-radio-dot-scale-hidden: var(--semantic-scale-hidden);
+  --component-radio-dot-scale-visible: var(--semantic-scale-visible);
 
   /* FormField Component */
   --component-formfield-label-color: var(--semantic-text-primary);
