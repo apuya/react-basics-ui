@@ -1874,7 +1874,7 @@ svg {
    Primitives stay the same, only semantics change.
    ============================================ */
 
-[data-theme="dark"] {
+[data-mode="dark"] {
   /* ===== COLORS ===== */
 
   /* Brand Colors */
