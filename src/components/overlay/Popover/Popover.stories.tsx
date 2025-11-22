@@ -11,16 +11,37 @@ const meta: Meta<typeof Popover> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A floating overlay component that displays rich content in a portal. Supports 4 sides (top, right, bottom, left) and 3 alignments (start, center, end) for flexible positioning.',
+        component: 'A floating overlay component that displays rich content in a portal. Supports 4 sides (top, right, bottom, left) and 3 alignments (start, center, end) for flexible positioning. Use for tooltips with interactive content, context menus, or any floating UI that requires more than plain text.',
       },
     },
   },
   tags: ['autodocs'],
+  argTypes: {
+    open: {
+      control: 'boolean',
+      description: 'Controls whether the popover is open (controlled mode)',
+    },
+    defaultOpen: {
+      control: 'boolean',
+      description: 'Whether the popover is open by default (uncontrolled mode)',
+    },
+    onOpenChange: {
+      action: 'onOpenChange',
+      description: 'Callback when the open state changes',
+    },
+  },
 };
 
 export default meta;
 
 export const Default = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic popover with default bottom-center positioning. Click the trigger to open.',
+      },
+    },
+  },
   render: () => (
     <Popover>
       <Popover.Trigger>
@@ -133,6 +154,13 @@ export const WithArrow = {
 };
 
 export const RichContent = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'User profile card with avatar, badges, and action button. Demonstrates complex content layouts.',
+      },
+    },
+  },
   render: () => (
     <Popover>
       <Popover.Trigger>
@@ -219,6 +247,13 @@ export const WithCustomContent = {
 };
 
 export const ControlledState = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Programmatically control the popover open state. Useful when you need to close the popover from within its content.',
+      },
+    },
+  },
   render: () => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -322,6 +357,13 @@ export const WithForm = {
 };
 
 export const AllPositions = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Visual overview of all 12 position combinations (4 sides × 3 alignments). Use this to compare positioning options.',
+      },
+    },
+  },
   render: () => (
     <div style={{ 
       display: 'grid', 

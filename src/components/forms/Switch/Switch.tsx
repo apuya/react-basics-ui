@@ -3,6 +3,7 @@ import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
 import {
   INPUT_CLASSES,
   LABEL_CLASSES,
+  SIZE_THUMB_CHECKED_STYLES,
   SIZE_THUMB_STYLES,
   SIZE_TRACK_STYLES,
   THUMB_CLASSES,
@@ -43,7 +44,7 @@ export const Switch = memo(
           {...rest}
         />
         <span
-          className={cn(TRACK_CLASSES, SIZE_TRACK_STYLES[size])}
+          className={cn(TRACK_CLASSES, SIZE_TRACK_STYLES[size], SIZE_THUMB_CHECKED_STYLES[size])}
           aria-hidden="true"
         >
           <span

@@ -1,7 +1,7 @@
-import { cn } from '@/lib/cn';
-import { useClickOutside } from '@/lib/useClickOutside';
-import { useEscapeKey } from '@/lib/useEscapeKey';
 import { forwardRef, memo, useEffect, useMemo, useRef, type ComponentPropsWithoutRef } from 'react';
+import { useClickOutside } from '@/hooks/useClickOutside';
+import { useEscapeKey } from '@/hooks/useEscapeKey';
+import { cn } from '@/lib/cn';
 import { useDropdownContext, type DropdownSide, type DropdownAlign } from './Dropdown';
 import {
   ALIGN_STYLES,

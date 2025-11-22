@@ -9,7 +9,7 @@ const meta: Meta<typeof Select> = {
     docs: {
       description: {
         component:
-          'Select component provides a dropdown menu for choosing from a list of options. Supports different sizes, labels, helper text, error states, and optgroups for organizing options.',
+          'Select component provides a dropdown menu for choosing from a list of options. Uses a compound component pattern with Select.Trigger, Select.Menu, and Select.Option for flexible composition.',
       },
     },
   },
@@ -51,16 +51,16 @@ export const Default: Story = {
       },
     },
   },
-  args: {
-    children: (
-      <>
-        <option value="">Select an option</option>
-        <option value="1">Option 1</option>
-        <option value="2">Option 2</option>
-        <option value="3">Option 3</option>
-      </>
-    ),
-  },
+  render: () => (
+    <Select>
+      <Select.Trigger placeholder="Select an option..." />
+      <Select.Menu>
+        <Select.Option value="1">Option 1</Select.Option>
+        <Select.Option value="2">Option 2</Select.Option>
+        <Select.Option value="3">Option 3</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const SizeSmall: Story = {
@@ -71,16 +71,15 @@ export const SizeSmall: Story = {
       },
     },
   },
-  args: {
-    size: 'small',
-    children: (
-      <>
-        <option value="">Small select</option>
-        <option value="1">Option 1</option>
-        <option value="2">Option 2</option>
-      </>
-    ),
-  },
+  render: () => (
+    <Select size="small">
+      <Select.Trigger placeholder="Small select..." />
+      <Select.Menu>
+        <Select.Option value="1">Option 1</Select.Option>
+        <Select.Option value="2">Option 2</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const SizeDefault: Story = {
@@ -91,16 +90,15 @@ export const SizeDefault: Story = {
       },
     },
   },
-  args: {
-    size: 'default',
-    children: (
-      <>
-        <option value="">Default select</option>
-        <option value="1">Option 1</option>
-        <option value="2">Option 2</option>
-      </>
-    ),
-  },
+  render: () => (
+    <Select size="default">
+      <Select.Trigger placeholder="Default select..." />
+      <Select.Menu>
+        <Select.Option value="1">Option 1</Select.Option>
+        <Select.Option value="2">Option 2</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const SizeLarge: Story = {
@@ -111,16 +109,15 @@ export const SizeLarge: Story = {
       },
     },
   },
-  args: {
-    size: 'large',
-    children: (
-      <>
-        <option value="">Large select</option>
-        <option value="1">Option 1</option>
-        <option value="2">Option 2</option>
-      </>
-    ),
-  },
+  render: () => (
+    <Select size="large">
+      <Select.Trigger placeholder="Large select..." />
+      <Select.Menu>
+        <Select.Option value="1">Option 1</Select.Option>
+        <Select.Option value="2">Option 2</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const WithLabel: Story = {
@@ -131,18 +128,17 @@ export const WithLabel: Story = {
       },
     },
   },
-  args: {
-    label: 'Country',
-    children: (
-      <>
-        <option value="">Select a country</option>
-        <option value="us">United States</option>
-        <option value="ca">Canada</option>
-        <option value="uk">United Kingdom</option>
-        <option value="au">Australia</option>
-      </>
-    ),
-  },
+  render: () => (
+    <Select label="Country">
+      <Select.Trigger placeholder="Select a country..." />
+      <Select.Menu>
+        <Select.Option value="us">United States</Select.Option>
+        <Select.Option value="ca">Canada</Select.Option>
+        <Select.Option value="uk">United Kingdom</Select.Option>
+        <Select.Option value="au">Australia</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const WithHelperText: Story = {
@@ -153,18 +149,16 @@ export const WithHelperText: Story = {
       },
     },
   },
-  args: {
-    label: 'Plan',
-    helperText: 'Choose the plan that fits your needs',
-    children: (
-      <>
-        <option value="">Select a plan</option>
-        <option value="free">Free</option>
-        <option value="pro">Pro - $9/month</option>
-        <option value="enterprise">Enterprise - $29/month</option>
-      </>
-    ),
-  },
+  render: () => (
+    <Select label="Plan" helperText="Choose the plan that fits your needs">
+      <Select.Trigger placeholder="Select a plan..." />
+      <Select.Menu>
+        <Select.Option value="free">Free</Select.Option>
+        <Select.Option value="pro">Pro - $9/month</Select.Option>
+        <Select.Option value="enterprise">Enterprise - $29/month</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const WithError: Story = {
@@ -175,19 +169,16 @@ export const WithError: Story = {
       },
     },
   },
-  args: {
-    label: 'Category',
-    error: true,
-    helperText: 'Please select a category',
-    children: (
-      <>
-        <option value="">Select a category</option>
-        <option value="tech">Technology</option>
-        <option value="design">Design</option>
-        <option value="business">Business</option>
-      </>
-    ),
-  },
+  render: () => (
+    <Select label="Category" error helperText="Please select a category">
+      <Select.Trigger placeholder="Select a category..." />
+      <Select.Menu>
+        <Select.Option value="tech">Technology</Select.Option>
+        <Select.Option value="design">Design</Select.Option>
+        <Select.Option value="business">Business</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const Disabled: Story = {
@@ -198,17 +189,15 @@ export const Disabled: Story = {
       },
     },
   },
-  args: {
-    label: 'Country',
-    disabled: true,
-    children: (
-      <>
-        <option value="">Select a country</option>
-        <option value="us">United States</option>
-        <option value="ca">Canada</option>
-      </>
-    ),
-  },
+  render: () => (
+    <Select label="Country" disabled>
+      <Select.Trigger placeholder="Select a country..." />
+      <Select.Menu>
+        <Select.Option value="us">United States</Select.Option>
+        <Select.Option value="ca">Canada</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const DisabledWithValue: Story = {
@@ -219,45 +208,37 @@ export const DisabledWithValue: Story = {
       },
     },
   },
-  args: {
-    label: 'Country',
-    disabled: true,
-    defaultValue: 'us',
-    children: (
-      <>
-        <option value="">Select a country</option>
-        <option value="us">United States</option>
-        <option value="ca">Canada</option>
-      </>
-    ),
-  },
+  render: () => (
+    <Select label="Country" disabled defaultValue="us">
+      <Select.Trigger placeholder="Select a country..." />
+      <Select.Menu>
+        <Select.Option value="us">United States</Select.Option>
+        <Select.Option value="ca">Canada</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
-export const WithOptgroups: Story = {
+export const WithDisabledOptions: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Optgroups organize related options into labeled categories for better UX with long lists.',
+        story: 'Individual options can be disabled while keeping the select functional.',
       },
     },
   },
-  args: {
-    label: 'Car',
-    children: (
-      <>
-        <option value="">Select a car</option>
-        <optgroup label="Swedish Cars">
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-        </optgroup>
-        <optgroup label="German Cars">
-          <option value="mercedes">Mercedes</option>
-          <option value="audi">Audi</option>
-          <option value="bmw">BMW</option>
-        </optgroup>
-      </>
-    ),
-  },
+  render: () => (
+    <Select label="Car">
+      <Select.Trigger placeholder="Select a car..." />
+      <Select.Menu>
+        <Select.Option value="volvo">Volvo</Select.Option>
+        <Select.Option value="saab" disabled>Saab (Unavailable)</Select.Option>
+        <Select.Option value="mercedes">Mercedes</Select.Option>
+        <Select.Option value="audi">Audi</Select.Option>
+        <Select.Option value="bmw" disabled>BMW (Unavailable)</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const AllSizes: Story = {
@@ -271,16 +252,22 @@ export const AllSizes: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <Select size="small">
-        <option value="">Small select</option>
-        <option value="1">Option 1</option>
+        <Select.Trigger placeholder="Small select..." />
+        <Select.Menu>
+          <Select.Option value="1">Option 1</Select.Option>
+        </Select.Menu>
       </Select>
       <Select size="default">
-        <option value="">Default select</option>
-        <option value="1">Option 1</option>
+        <Select.Trigger placeholder="Default select..." />
+        <Select.Menu>
+          <Select.Option value="1">Option 1</Select.Option>
+        </Select.Menu>
       </Select>
       <Select size="large">
-        <option value="">Large select</option>
-        <option value="1">Option 1</option>
+        <Select.Trigger placeholder="Large select..." />
+        <Select.Menu>
+          <Select.Option value="1">Option 1</Select.Option>
+        </Select.Menu>
       </Select>
     </div>
   ),
@@ -297,49 +284,52 @@ export const FormExample: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <Select label="Country" helperText="Where are you located?">
-        <option value="">Select a country</option>
-        <option value="us">United States</option>
-        <option value="ca">Canada</option>
-        <option value="uk">United Kingdom</option>
+        <Select.Trigger placeholder="Select a country..." />
+        <Select.Menu>
+          <Select.Option value="us">United States</Select.Option>
+          <Select.Option value="ca">Canada</Select.Option>
+          <Select.Option value="uk">United Kingdom</Select.Option>
+        </Select.Menu>
       </Select>
       <Select label="Language">
-        <option value="">Select a language</option>
-        <option value="en">English</option>
-        <option value="es">Spanish</option>
-        <option value="fr">French</option>
+        <Select.Trigger placeholder="Select a language..." />
+        <Select.Menu>
+          <Select.Option value="en">English</Select.Option>
+          <Select.Option value="es">Spanish</Select.Option>
+          <Select.Option value="fr">French</Select.Option>
+        </Select.Menu>
       </Select>
       <Select label="Timezone">
-        <option value="">Select a timezone</option>
-        <option value="pst">Pacific Time (PST)</option>
-        <option value="mst">Mountain Time (MST)</option>
-        <option value="cst">Central Time (CST)</option>
-        <option value="est">Eastern Time (EST)</option>
+        <Select.Trigger placeholder="Select a timezone..." />
+        <Select.Menu>
+          <Select.Option value="pst">Pacific Time (PST)</Select.Option>
+          <Select.Option value="mst">Mountain Time (MST)</Select.Option>
+          <Select.Option value="cst">Central Time (CST)</Select.Option>
+          <Select.Option value="est">Eastern Time (EST)</Select.Option>
+        </Select.Menu>
       </Select>
     </div>
   ),
 };
 
-export const Required: Story = {
+export const WithDefaultValue: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Required select with asterisk indicator. Use HTML5 required attribute for validation.',
+        story: 'Select with a pre-selected default value.',
       },
     },
   },
-  args: {
-    label: 'Country *',
-    required: true,
-    helperText: 'This field is required',
-    children: (
-      <>
-        <option value="">Select a country</option>
-        <option value="us">United States</option>
-        <option value="ca">Canada</option>
-        <option value="uk">United Kingdom</option>
-      </>
-    ),
-  },
+  render: () => (
+    <Select label="Country" defaultValue="ca">
+      <Select.Trigger placeholder="Select a country..." />
+      <Select.Menu>
+        <Select.Option value="us">United States</Select.Option>
+        <Select.Option value="ca">Canada</Select.Option>
+        <Select.Option value="uk">United Kingdom</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const ErrorSizes: Story = {
@@ -351,35 +341,25 @@ export const ErrorSizes: Story = {
     },
   },
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '320px' }}>
-      <Select
-        size="small"
-        label="Small with error"
-        error
-        helperText="This field has an error"
-      >
-        <option value="">Select an option</option>
-        <option value="1">Option 1</option>
+    <div className="flex flex-col gap-4">
+      <Select size="small" label="Small with error" error helperText="This field has an error">
+        <Select.Trigger placeholder="Select an option..." />
+        <Select.Menu>
+          <Select.Option value="1">Option 1</Select.Option>
+        </Select.Menu>
       </Select>
-      <Select
-        size="default"
-        label="Default with error"
-        error
-        helperText="This field has an error"
-      >
-        <option value="">Select an option</option>
-        <option value="1">Option 1</option>
+      <Select size="default" label="Default with error" error helperText="This field has an error">
+        <Select.Trigger placeholder="Select an option..." />
+        <Select.Menu>
+          <Select.Option value="1">Option 1</Select.Option>
+        </Select.Menu>
       </Select>
-      <Select
-        size="large"
-        label="Large with error"
-        error
-        helperText="This field has an error"
-      >
-        <option value="">Select an option</option>
-        <option value="1">Option 1</option>
+      <Select size="large" label="Large with error" error helperText="This field has an error">
+        <Select.Trigger placeholder="Select an option..." />
+        <Select.Menu>
+          <Select.Option value="1">Option 1</Select.Option>
+        </Select.Menu>
       </Select>
     </div>
   ),
 };
-

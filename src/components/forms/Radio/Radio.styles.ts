@@ -6,7 +6,7 @@ export const INPUT_CLASSES =
   'peer sr-only';
 
 export const RADIO_CLASSES =
-  'relative flex items-center justify-center rounded-full border-[length:var(--component-radio-border-width)] border-[color:var(--component-radio-border-default)] bg-[color:var(--component-radio-bg-default)] transition-colors peer-focus-visible:ring-[length:var(--semantic-focus-ring-width)] peer-focus-visible:ring-offset-[length:var(--semantic-focus-ring-offset)] peer-focus-visible:ring-[color:var(--semantic-border-focus)] peer-checked:border-[color:var(--component-radio-border-checked)] peer-checked:bg-[color:var(--component-radio-bg-checked)] peer-disabled:border-[color:var(--component-radio-border-disabled)] peer-disabled:bg-[color:var(--component-radio-bg-disabled)]';
+  'relative flex items-center justify-center rounded-full border-[length:var(--component-radio-border-width)] border-[color:var(--component-radio-border-default)] bg-[color:var(--component-radio-bg-default)] transition-colors peer-focus-visible:ring-[length:var(--semantic-focus-ring-width)] peer-focus-visible:ring-offset-[length:var(--semantic-focus-ring-offset)] peer-focus-visible:ring-[color:var(--semantic-border-focus)] peer-checked:border-[color:var(--component-radio-border-checked)] peer-checked:bg-[color:var(--component-radio-bg-checked)] peer-disabled:border-[color:var(--component-radio-border-disabled)] peer-disabled:bg-[color:var(--component-radio-bg-disabled)] peer-checked:[&>span]:scale-100';
 
 export const SIZE_RADIO_STYLES = {
   small: 'w-[length:var(--component-radio-size-small)] h-[length:var(--component-radio-size-small)]',
@@ -15,7 +15,7 @@ export const SIZE_RADIO_STYLES = {
 } as const;
 
 export const DOT_CLASSES =
-  'absolute rounded-full bg-[color:var(--component-radio-dot)] scale-[var(--component-radio-dot-scale-hidden)] transition-transform peer-checked:scale-[var(--component-radio-dot-scale-visible)]';
+  'absolute rounded-full bg-[color:var(--component-radio-dot)] scale-0 transition-transform';
 
 export const SIZE_DOT_STYLES = {
   small: 'w-[length:var(--component-radio-dot-size-small)] h-[length:var(--component-radio-dot-size-small)]',

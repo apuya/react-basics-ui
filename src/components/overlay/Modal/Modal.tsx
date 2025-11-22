@@ -1,8 +1,3 @@
-import { cn } from '@/lib/cn';
-import { useBodyScrollLock } from '@/lib/useBodyScrollLock';
-import { useEscapeKey } from '@/lib/useEscapeKey';
-import { useFocusTrap } from '@/lib/useFocusTrap';
-import { Portal } from '@/components/utility/Portal';
 import {
   createContext,
   useCallback,
@@ -12,6 +7,11 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { useEscapeKey } from '@/hooks/useEscapeKey';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { cn } from '@/lib/cn';
+import { Portal } from '@/components/utility/Portal';
 import { BiX } from 'react-icons/bi';
 import {
   CLOSE_BUTTON_CLASSES,

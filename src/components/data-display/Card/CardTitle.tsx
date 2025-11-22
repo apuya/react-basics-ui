@@ -1,14 +1,18 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, type ReactNode } from 'react';
+import { Heading } from '../../typography/Heading/Heading';
 import { TITLE_CLASSES } from './Card.styles';
 
-export interface CardTitleProps extends ComponentPropsWithoutRef<'h3'> {}
+export interface CardTitleProps {
+  className?: string;
+  children: ReactNode;
+}
 
 export const CardTitle = memo(
-  forwardRef<HTMLHeadingElement, CardTitleProps>(({ className, children, ...props }, ref) => (
-    <h3 ref={ref} className={cn(TITLE_CLASSES, className)} {...props}>
+  forwardRef<HTMLHeadingElement, CardTitleProps>(({ className, children }, ref) => (
+    <Heading ref={ref} level="h3" className={cn(TITLE_CLASSES, className)}>
       {children}
-    </h3>
+    </Heading>
   ))
 );
 CardTitle.displayName = 'Card.Title';

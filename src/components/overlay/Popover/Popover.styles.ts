@@ -1,7 +1,7 @@
 import type { PopoverSide, PopoverAlign } from './Popover';
 
 export const BASE_CLASSES =
-  'absolute bg-[var(--component-popover-bg)] text-[var(--component-popover-text)] border-[length:var(--component-popover-border-width)] border-[var(--component-popover-border)] rounded-[var(--component-popover-radius)] shadow-[var(--component-popover-shadow)] z-[var(--component-popover-z-index)] max-w-[var(--component-popover-max-width)] opacity-0 pointer-events-none transition-opacity duration-[var(--component-popover-transition-duration)]';
+  'absolute bg-[var(--component-popover-bg)] text-[var(--component-popover-text)] border-[length:var(--component-popover-border-width)] border-[var(--component-popover-border)] rounded-[var(--component-popover-radius)] shadow-[var(--component-popover-shadow)] z-[var(--component-popover-z-index)] min-w-[var(--component-popover-min-width)] max-w-[var(--component-popover-max-width)] opacity-0 pointer-events-none transition-opacity duration-[var(--component-popover-transition-duration)]';
 
 export const VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 

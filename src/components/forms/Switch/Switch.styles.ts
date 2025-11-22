@@ -17,9 +17,15 @@ export const THUMB_CLASSES =
   'absolute top-1/2 left-[length:var(--component-switch-thumb-offset)] -translate-y-1/2 rounded-full bg-[color:var(--component-switch-thumb)] shadow-[shadow:var(--component-switch-thumb-shadow)] transition-transform duration-[var(--component-switch-transition)]';
 
 export const SIZE_THUMB_STYLES = {
-  small: 'w-[length:var(--component-switch-thumb-size-small)] h-[length:var(--component-switch-thumb-size-small)] peer-checked:translate-x-[length:calc(var(--component-switch-width-small)-var(--component-switch-thumb-size-small)-var(--component-switch-thumb-travel-offset))]',
-  default: 'w-[length:var(--component-switch-thumb-size-default)] h-[length:var(--component-switch-thumb-size-default)] peer-checked:translate-x-[length:calc(var(--component-switch-width-default)-var(--component-switch-thumb-size-default)-var(--component-switch-thumb-travel-offset))]',
-  large: 'w-[length:var(--component-switch-thumb-size-large)] h-[length:var(--component-switch-thumb-size-large)] peer-checked:translate-x-[length:calc(var(--component-switch-width-large)-var(--component-switch-thumb-size-large)-var(--component-switch-thumb-travel-offset))]',
+  small: 'w-[length:var(--component-switch-thumb-size-small)] h-[length:var(--component-switch-thumb-size-small)]',
+  default: 'w-[length:var(--component-switch-thumb-size-default)] h-[length:var(--component-switch-thumb-size-default)]',
+  large: 'w-[length:var(--component-switch-thumb-size-large)] h-[length:var(--component-switch-thumb-size-large)]',
+} as const;
+
+export const SIZE_THUMB_CHECKED_STYLES = {
+  small: 'peer-checked:[&>span]:translate-x-[calc(var(--component-switch-width-small)-var(--component-switch-thumb-size-small)-var(--component-switch-thumb-travel-offset))]',
+  default: 'peer-checked:[&>span]:translate-x-[calc(var(--component-switch-width-default)-var(--component-switch-thumb-size-default)-var(--component-switch-thumb-travel-offset))]',
+  large: 'peer-checked:[&>span]:translate-x-[calc(var(--component-switch-width-large)-var(--component-switch-thumb-size-large)-var(--component-switch-thumb-travel-offset))]',
 } as const;
 
 export const LABEL_CLASSES =

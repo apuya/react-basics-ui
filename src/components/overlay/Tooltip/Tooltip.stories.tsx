@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BiInfoCircle, BiHelpCircle } from 'react-icons/bi';
 import { Tooltip } from './Tooltip';
+import { Button } from '../../forms/Button';
+import { Input } from '../../forms/Input';
+import { Label } from '../../forms/Label';
+import { Text } from '../../typography/Text';
 
 const meta = {
   title: 'Overlay/Tooltip',
@@ -23,7 +27,7 @@ type Story = StoryObj;
 export const Default: Story = {
   args: {
     content: 'This is a tooltip',
-    children: <button className="px-4 py-2 bg-blue-600 text-white rounded">Hover me</button>,
+    children: <Button>Hover me</Button>,
   },
   parameters: {
     docs: {
@@ -38,7 +42,7 @@ export const TopPosition: Story = {
   args: {
     content: 'Tooltip on top',
     position: 'top',
-    children: <button className="px-4 py-2 bg-blue-600 text-white rounded">Top</button>,
+    children: <Button>Top</Button>,
   },
   parameters: {
     docs: {
@@ -53,7 +57,7 @@ export const BottomPosition: Story = {
   args: {
     content: 'Tooltip on bottom',
     position: 'bottom',
-    children: <button className="px-4 py-2 bg-blue-600 text-white rounded">Bottom</button>,
+    children: <Button>Bottom</Button>,
   },
   parameters: {
     docs: {
@@ -68,7 +72,7 @@ export const LeftPosition: Story = {
   args: {
     content: 'Tooltip on left',
     position: 'left',
-    children: <button className="px-4 py-2 bg-blue-600 text-white rounded">Left</button>,
+    children: <Button>Left</Button>,
   },
   parameters: {
     docs: {
@@ -83,7 +87,7 @@ export const RightPosition: Story = {
   args: {
     content: 'Tooltip on right',
     position: 'right',
-    children: <button className="px-4 py-2 bg-blue-600 text-white rounded">Right</button>,
+    children: <Button>Right</Button>,
   },
   parameters: {
     docs: {
@@ -97,7 +101,7 @@ export const RightPosition: Story = {
 export const LongContent: Story = {
   args: {
     content: 'This is a longer tooltip with more detailed information',
-    children: <button className="px-4 py-2 bg-blue-600 text-white rounded">Hover me</button>,
+    children: <Button>Hover me</Button>,
   },
   parameters: {
     docs: {
@@ -163,12 +167,7 @@ export const OnDisabledButton: Story = {
   args: {
     content: 'This feature is currently unavailable',
     children: (
-      <button
-        disabled
-        className="px-4 py-2 bg-gray-300 text-gray-500 rounded cursor-not-allowed"
-      >
-        Disabled
-      </button>
+      <Button disabled>Disabled</Button>
     ),
   },
   parameters: {
@@ -184,16 +183,16 @@ export const AllPositions: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-16 p-16">
       <Tooltip content="Top tooltip" position="top">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded">Top</button>
+        <Button>Top</Button>
       </Tooltip>
       <Tooltip content="Right tooltip" position="right">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded">Right</button>
+        <Button>Right</Button>
       </Tooltip>
       <Tooltip content="Bottom tooltip" position="bottom">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded">Bottom</button>
+        <Button>Bottom</Button>
       </Tooltip>
       <Tooltip content="Left tooltip" position="left">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded">Left</button>
+        <Button>Left</Button>
       </Tooltip>
     </div>
   ),
@@ -209,16 +208,15 @@ export const AllPositions: Story = {
 export const FormFieldHelp: Story = {
   render: () => (
     <div className="space-y-2">
-      <label className="flex items-center gap-2 text-sm font-medium">
+      <Label className="flex items-center gap-2">
         Email Address
         <Tooltip content="We'll never share your email" position="right">
           <BiInfoCircle className="w-4 h-4 text-gray-400 cursor-help" />
         </Tooltip>
-      </label>
-      <input
+      </Label>
+      <Input
         type="email"
         placeholder="you@example.com"
-        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     </div>
   ),
@@ -233,7 +231,7 @@ export const FormFieldHelp: Story = {
 
 export const InlineHelp: Story = {
   render: () => (
-    <p className="text-sm max-w-md">
+    <Text size="small" className="max-w-md">
       This feature uses advanced{' '}
       <Tooltip content="Machine learning algorithms analyze patterns in data" position="top">
         <span className="text-blue-600 underline decoration-dotted cursor-help">
@@ -241,7 +239,7 @@ export const InlineHelp: Story = {
         </span>
       </Tooltip>{' '}
       to improve accuracy and performance over time.
-    </p>
+    </Text>
   ),
   parameters: {
     docs: {
@@ -326,7 +324,7 @@ export const ComplexContent: Story = {
         <strong>Pro Tip:</strong> Use keyboard shortcuts for faster navigation
       </div>
     ),
-    children: <button className="px-4 py-2 bg-blue-600 text-white rounded">Tips</button>,
+    children: <Button>Tips</Button>,
   },
   parameters: {
     docs: {

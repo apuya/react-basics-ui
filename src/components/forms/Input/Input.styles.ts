@@ -1,5 +1,5 @@
 export const BASE_CLASSES =
-  'w-full rounded-[length:var(--component-input-radius)] border bg-[color:var(--component-input-bg-default)] text-[color:var(--component-input-text-default)] transition-colors duration-[var(--component-input-transition-duration)] placeholder:text-[color:var(--component-input-text-placeholder)] focus:outline-none disabled:cursor-not-allowed disabled:bg-[color:var(--component-input-bg-disabled)] disabled:text-[color:var(--component-input-text-disabled)]';
+  'w-full rounded-[length:var(--component-input-radius)] border bg-[color:var(--component-input-bg-default)] text-[color:var(--component-input-text-default)] transition-colors duration-[var(--component-input-transition-duration)] placeholder:text-[color:var(--component-input-text-placeholder)] focus:outline-none focus-visible:ring-[length:var(--semantic-focus-ring-width)] focus-visible:ring-offset-[length:var(--semantic-focus-ring-offset)] focus-visible:ring-[color:var(--semantic-border-focus)] disabled:cursor-not-allowed disabled:bg-[color:var(--component-input-bg-disabled)] disabled:text-[color:var(--component-input-text-disabled)] disabled:opacity-[var(--semantic-opacity-disabled)]';
 
 export const SIZE_STYLES = {
   small: 'text-[length:var(--component-input-font-size-small)]',
@@ -29,5 +29,5 @@ export const HELPER_ERROR_CLASSES =
 export const ICON_SIZE_STYLES = {
   small: 'w-[length:var(--component-input-icon-size-small)] h-[length:var(--component-input-icon-size-small)]',
   default: 'w-[length:var(--component-input-icon-size-default)] h-[length:var(--component-input-icon-size-default)]',
-  large: 'w-[length:var(--component-input-icon-size-default)] h-[length:var(--component-input-icon-size-default)]',
+  large: 'w-[length:var(--component-input-icon-size-large)] h-[length:var(--component-input-icon-size-large)]',
 } as const;

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Dropdown } from './Dropdown';
+import { Button } from '../../forms/Button';
+import { Text } from '../../typography/Text';
 import { BiEdit, BiCopy, BiTrash, BiDownload, BiShare, BiCut, BiPaste } from 'react-icons/bi';
 
 const meta: Meta<typeof Dropdown> = {
@@ -31,15 +33,7 @@ export const CompoundComponents: Story = {
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <button style={{ 
-          padding: '0.5rem 1rem', 
-          borderRadius: 'var(--semantic-border-radius-md)',
-          border: '1px solid var(--semantic-color-border-default)',
-          background: 'var(--semantic-color-background-primary)',
-          cursor: 'pointer',
-        }}>
-          Example Menu
-        </button>
+        <Button variant="tertiary">Example Menu</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
         <Dropdown.Item>Regular Item</Dropdown.Item>
@@ -64,15 +58,7 @@ export const Default: Story = {
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <button style={{ 
-          padding: '0.5rem 1rem', 
-          borderRadius: 'var(--semantic-border-radius-md)',
-          border: '1px solid var(--semantic-color-border-default)',
-          background: 'var(--semantic-color-background-primary)',
-          cursor: 'pointer',
-        }}>
-          Open Menu
-        </button>
+        <Button variant="tertiary">Open Menu</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
         <Dropdown.Item>Menu Item 1</Dropdown.Item>
@@ -94,15 +80,7 @@ export const WithIcons: Story = {
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <button style={{ 
-          padding: '0.5rem 1rem', 
-          borderRadius: 'var(--semantic-border-radius-md)',
-          border: '1px solid var(--semantic-color-border-default)',
-          background: 'var(--semantic-color-background-primary)',
-          cursor: 'pointer',
-        }}>
-          Actions
-        </button>
+        <Button variant="tertiary">Actions</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
         <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
@@ -125,15 +103,7 @@ export const WithShortcuts: Story = {
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <button style={{ 
-          padding: '0.5rem 1rem', 
-          borderRadius: 'var(--semantic-border-radius-md)',
-          border: '1px solid var(--semantic-color-border-default)',
-          background: 'var(--semantic-color-background-primary)',
-          cursor: 'pointer',
-        }}>
-          Edit Menu
-        </button>
+        <Button variant="tertiary">Edit Menu</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
         <Dropdown.Item leadingIcon={<BiCut />} shortcut="⌘X">Cut</Dropdown.Item>
@@ -155,15 +125,7 @@ export const WithDividers: Story = {
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <button style={{ 
-          padding: '0.5rem 1rem', 
-          borderRadius: 'var(--semantic-border-radius-md)',
-          border: '1px solid var(--semantic-color-border-default)',
-          background: 'var(--semantic-color-background-primary)',
-          cursor: 'pointer',
-        }}>
-          File Menu
-        </button>
+        <Button variant="tertiary">File Menu</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
         <Dropdown.Item leadingIcon={<BiEdit />}>New File</Dropdown.Item>
@@ -189,21 +151,38 @@ export const WithDisabledItems: Story = {
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <button style={{ 
-          padding: '0.5rem 1rem', 
-          borderRadius: 'var(--semantic-border-radius-md)',
-          border: '1px solid var(--semantic-color-border-default)',
-          background: 'var(--semantic-color-background-primary)',
-          cursor: 'pointer',
-        }}>
-          Options
-        </button>
+        <Button variant="tertiary">Options</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
         <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
         <Dropdown.Item leadingIcon={<BiCopy />} disabled>Copy (Disabled)</Dropdown.Item>
         <Dropdown.Item leadingIcon={<BiDownload />}>Download</Dropdown.Item>
         <Dropdown.Item leadingIcon={<BiTrash />} disabled>Delete (Disabled)</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  ),
+};
+
+export const WithVariants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Dropdown items support different semantic variants: default, danger, warning, success, and info. Use these to communicate the nature of the action.',
+      },
+    },
+  },
+  render: () => (
+    <Dropdown>
+      <Dropdown.Trigger>
+        <Button variant="tertiary">Actions</Button>
+      </Dropdown.Trigger>
+      <Dropdown.Menu>
+        <Dropdown.Item leadingIcon={<BiEdit />}>Edit (Default)</Dropdown.Item>
+        <Dropdown.Item leadingIcon={<BiCopy />} variant="success">Duplicate (Success)</Dropdown.Item>
+        <Dropdown.Item leadingIcon={<BiShare />} variant="info">View Details (Info)</Dropdown.Item>
+        <Dropdown.Item leadingIcon={<BiDownload />} variant="warning">Export All (Warning)</Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item leadingIcon={<BiTrash />} variant="danger">Delete (Danger)</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   ),
@@ -220,15 +199,7 @@ export const CompleteMenu: Story = {
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <button style={{ 
-          padding: '0.5rem 1rem', 
-          borderRadius: 'var(--semantic-border-radius-md)',
-          border: '1px solid var(--semantic-color-border-default)',
-          background: 'var(--semantic-color-background-primary)',
-          cursor: 'pointer',
-        }}>
-          Complete Menu
-        </button>
+        <Button variant="tertiary">Complete Menu</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
         <Dropdown.Item leadingIcon={<BiEdit />} shortcut="⌘E">Edit</Dropdown.Item>
@@ -255,15 +226,7 @@ export const RightAligned: Story = {
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <button style={{ 
-          padding: '0.5rem 1rem', 
-          borderRadius: 'var(--semantic-border-radius-md)',
-          border: '1px solid var(--semantic-color-border-default)',
-          background: 'var(--semantic-color-background-primary)',
-          cursor: 'pointer',
-        }}>
-          Right Aligned
-        </button>
+        <Button variant="tertiary">Right Aligned</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu align="end">
         <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
@@ -347,15 +310,7 @@ export const KeyboardNavigation: Story = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
       <Dropdown>
         <Dropdown.Trigger>
-          <button style={{ 
-            padding: '0.5rem 1rem', 
-            borderRadius: 'var(--semantic-border-radius-md)',
-            border: '1px solid var(--semantic-color-border-default)',
-            background: 'var(--semantic-color-background-primary)',
-            cursor: 'pointer',
-          }}>
-            Try Keyboard Navigation
-          </button>
+          <Button variant="tertiary">Try Keyboard Navigation</Button>
         </Dropdown.Trigger>
         <Dropdown.Menu>
           <Dropdown.Item>Item 1 (Press ↓ to go down)</Dropdown.Item>
@@ -366,14 +321,9 @@ export const KeyboardNavigation: Story = {
           <Dropdown.Item>Item 6 (Press Enter to select)</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-      <div style={{ 
-        fontSize: '0.875rem', 
-        color: 'var(--semantic-color-text-secondary)',
-        textAlign: 'center',
-        maxWidth: '300px',
-      }}>
+      <Text size="small" color="secondary" align="center">
         Open the menu and use Arrow keys, Home, End, Escape, or Enter to navigate.
-      </div>
+      </Text>
     </div>
   ),
 };
@@ -389,20 +339,7 @@ export const CustomTrigger: Story = {
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          border: '1px solid var(--semantic-color-border-default)',
-          background: 'var(--semantic-color-background-primary)',
-          cursor: 'pointer',
-          fontSize: '1.25rem',
-        }}>
-          ⋮
-        </div>
+        <Button variant="tertiary" size="small">⋮</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu align="end">
         <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
@@ -426,15 +363,7 @@ export const MultipleDropdowns: Story = {
     <div style={{ display: 'flex', gap: '1rem' }}>
       <Dropdown>
         <Dropdown.Trigger>
-          <button style={{ 
-            padding: '0.5rem 1rem', 
-            borderRadius: 'var(--semantic-border-radius-md)',
-            border: '1px solid var(--semantic-color-border-default)',
-            background: 'var(--semantic-color-background-primary)',
-            cursor: 'pointer',
-          }}>
-            File
-          </button>
+          <Button variant="tertiary">File</Button>
         </Dropdown.Trigger>
         <Dropdown.Menu>
           <Dropdown.Item>New</Dropdown.Item>
@@ -445,15 +374,7 @@ export const MultipleDropdowns: Story = {
 
       <Dropdown>
         <Dropdown.Trigger>
-          <button style={{ 
-            padding: '0.5rem 1rem', 
-            borderRadius: 'var(--semantic-border-radius-md)',
-            border: '1px solid var(--semantic-color-border-default)',
-            background: 'var(--semantic-color-background-primary)',
-            cursor: 'pointer',
-          }}>
-            Edit
-          </button>
+          <Button variant="tertiary">Edit</Button>
         </Dropdown.Trigger>
         <Dropdown.Menu>
           <Dropdown.Item leadingIcon={<BiCut />}>Cut</Dropdown.Item>
@@ -464,15 +385,7 @@ export const MultipleDropdowns: Story = {
 
       <Dropdown>
         <Dropdown.Trigger>
-          <button style={{ 
-            padding: '0.5rem 1rem', 
-            borderRadius: 'var(--semantic-border-radius-md)',
-            border: '1px solid var(--semantic-color-border-default)',
-            background: 'var(--semantic-color-background-primary)',
-            cursor: 'pointer',
-          }}>
-            View
-          </button>
+          <Button variant="tertiary">View</Button>
         </Dropdown.Trigger>
         <Dropdown.Menu>
           <Dropdown.Item>Zoom In</Dropdown.Item>

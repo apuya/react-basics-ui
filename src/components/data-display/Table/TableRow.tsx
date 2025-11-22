@@ -1,0 +1,25 @@
+import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
+import { cn } from '@/lib/cn';
+import { useTableContext } from './Table';
+import { TABLE_ROW_BASE_CLASSES, TABLE_ROW_VARIANT_STYLES } from './Table.styles';
+
+export interface TableRowProps extends ComponentPropsWithoutRef<'tr'> {}
+
+export const TableRow = memo(
+  forwardRef<HTMLTableRowElement, TableRowProps>(({ className, children, ...props }, ref) => {
+    const { variant } = useTableContext();
+
+    const rowClasses = useMemo(
+      () => cn(TABLE_ROW_BASE_CLASSES, TABLE_ROW_VARIANT_STYLES[variant], className),
+      [variant, className]
+    );
+
+    return (
+      <tr ref={ref} className={rowClasses} {...props}>
+        {children}
+      </tr>
+    );
+  })
+);
+
+TableRow.displayName = 'Table.Row';

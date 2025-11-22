@@ -1,6 +1,3 @@
-import { cn } from '@/lib/cn';
-import { useClickOutside } from '@/lib/useClickOutside';
-import { useEscapeKey } from '@/lib/useEscapeKey';
 import {
   createContext,
   forwardRef,
@@ -13,6 +10,8 @@ import {
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from 'react';
+import { useEscapeKey } from '@/hooks/useEscapeKey';
+import { cn } from '@/lib/cn';
 import { BiX } from 'react-icons/bi';
 import {
   BASE_CLASSES,
@@ -49,14 +48,14 @@ export interface PopoverTitleProps extends ComponentPropsWithoutRef<'h3'> {}
 export interface PopoverDescriptionProps extends ComponentPropsWithoutRef<'p'> {}
 export interface PopoverCloseProps extends ComponentPropsWithoutRef<'button'> {}
 
-interface PopoverContextValue {
+export interface PopoverContextValue {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }
 
 const PopoverContext = createContext<PopoverContextValue | undefined>(undefined);
 
-const usePopoverContext = () => {
+export const usePopoverContext = () => {
   const context = useContext(PopoverContext);
   if (!context) {
     throw new Error('Popover components must be used within a Popover');
@@ -67,15 +66,23 @@ const usePopoverContext = () => {
 // Popover Trigger Component
 const PopoverTrigger = memo(
   forwardRef<HTMLButtonElement, PopoverTriggerProps>(
-    ({ asChild, children, onClick, ...props }, ref) => {
+    ({ asChild, children, onMouseEnter, onMouseLeave, ...props }, ref) => {
       const { isOpen, setIsOpen } = usePopoverContext();
 
-      const handleClick = useCallback(
+      const handleMouseEnter = useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
-          setIsOpen(!isOpen);
-          onClick?.(e);
+          setIsOpen(true);
+          onMouseEnter?.(e);
         },
-        [isOpen, setIsOpen, onClick]
+        [setIsOpen, onMouseEnter]
+      );
+
+      const handleMouseLeave = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+          setIsOpen(false);
+          onMouseLeave?.(e);
+        },
+        [setIsOpen, onMouseLeave]
       );
 
       return (
@@ -84,7 +91,8 @@ const PopoverTrigger = memo(
           type="button"
           aria-expanded={isOpen}
           aria-haspopup="dialog"
-          onClick={handleClick}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           {...props}
         >
           {children}
@@ -98,7 +106,7 @@ PopoverTrigger.displayName = 'Popover.Trigger';
 // Popover Content Component
 const PopoverContent = memo(
   forwardRef<HTMLDivElement, PopoverContentProps>(
-    ({ side = 'bottom', align = 'center', className, children, ...props }, _ref) => {
+    ({ side = 'bottom', align = 'center', className, children, onMouseEnter, onMouseLeave, ...props }, _ref) => {
       const { isOpen, setIsOpen } = usePopoverContext();
       const contentRef = useRef<HTMLDivElement>(null!);
 
@@ -121,7 +129,22 @@ const PopoverContent = memo(
         [side, align, isOpen, className]
       );
 
-      useClickOutside(contentRef, () => setIsOpen(false));
+      const handleMouseEnter = useCallback(
+        (e: React.MouseEvent<HTMLDivElement>) => {
+          setIsOpen(true);
+          onMouseEnter?.(e);
+        },
+        [setIsOpen, onMouseEnter]
+      );
+
+      const handleMouseLeave = useCallback(
+        (e: React.MouseEvent<HTMLDivElement>) => {
+          setIsOpen(false);
+          onMouseLeave?.(e);
+        },
+        [setIsOpen, onMouseLeave]
+      );
+
       useEscapeKey(() => setIsOpen(false), isOpen);
 
       if (!isOpen) return null;
@@ -133,6 +156,8 @@ const PopoverContent = memo(
           aria-modal="false"
           className={popoverClasses}
           style={popoverStyle}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           {...props}
         >
           {children}

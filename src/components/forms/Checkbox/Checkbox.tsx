@@ -71,7 +71,7 @@ export const Checkbox = memo(
     ref
   ) {
     // Generate ID if not provided (for label association)
-    const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
+    const checkboxId = id || (label ? `checkbox-${String(label).toLowerCase().replace(/\s+/g, '-')}` : undefined);
 
     // Compute checkbox classes
     const checkboxClasses = cn(
