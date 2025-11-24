@@ -72,19 +72,6 @@ export const Small: Story = {
   },
 };
 
-export const Medium: Story = {
-  args: {
-    size: 'md',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Medium-sized spinner (default size), appropriate for most use cases.',
-      },
-    },
-  },
-};
-
 export const Large: Story = {
   args: {
     size: 'lg',
@@ -106,19 +93,6 @@ export const ExtraLarge: Story = {
     docs: {
       description: {
         story: 'Extra large spinner, ideal for full-page loading overlays.',
-      },
-    },
-  },
-};
-
-export const DefaultColor: Story = {
-  args: {
-    color: 'default',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Spinner with default color scheme using the primary theme color.',
       },
     },
   },

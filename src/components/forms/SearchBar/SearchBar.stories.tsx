@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { SearchBar } from './SearchBar';
+import { Tabs } from '../../navigation/Tabs';
 
 const meta: Meta<typeof SearchBar> = {
   title: 'Forms/SearchBar',
@@ -123,6 +124,48 @@ export const WithClearButton: Story = {
   },
 };
 
+export const WithTabs: Story = {
+  render: () => {
+    const [value, setValue] = useState('');
+    const [activeFilter, setActiveFilter] = useState('all');
+
+    return (
+      <div className="w-full max-w-2xl space-y-4">
+        <div className="relative">
+          <SearchBar
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="Search..."
+            showClearButton={false}
+            className="pr-[280px]"
+          />
+          <div className="absolute right-4 top-1/2 -translate-y-1/2">
+            <Tabs value={activeFilter} onChange={setActiveFilter} size="sm">
+              <Tabs.List>
+                <Tabs.Tab value="all">All</Tabs.Tab>
+                <Tabs.Tab value="images">Images</Tabs.Tab>
+                <Tabs.Tab value="videos">Videos</Tabs.Tab>
+              </Tabs.List>
+            </Tabs>
+          </div>
+        </div>
+        {value && (
+          <div className="text-sm text-gray-600">
+            Searching "{value}" in: <span className="font-medium capitalize">{activeFilter}</span>
+          </div>
+        )}
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Search bar with integrated tabs for filtering search results. Tabs are positioned inside the search bar for a compact, unified interface similar to modern search engines.',
+      },
+    },
+  },
+};
+
 export const WithSearchButton: Story = {
   render: () => {
     const [value, setValue] = useState('');
@@ -146,7 +189,7 @@ export const WithSearchButton: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Search bar with a search button. Click the button or press Enter to trigger search.',
+        story: 'Search bar with a search button. Click the button or press Enter to trigger search. Note: Button may overlap at smaller widths.',
       },
     },
   },

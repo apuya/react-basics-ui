@@ -1,18 +1,16 @@
-import type { BadgeVariant, BadgeSize } from './Badge';
-
 export const BASE_CLASSES =
   'inline-flex justify-center items-center content-center flex-wrap rounded-[var(--component-badge-radius)] transition-colors duration-[var(--component-badge-transition-duration)] whitespace-nowrap';
 
-export const SIZE_STYLES: Record<BadgeSize, string> = {
-  small: 
+export const SIZE_STYLES = {
+  small:
     'min-h-[var(--component-badge-height-min-small)] gap-[var(--component-badge-gap-space-small)] text-[length:var(--component-badge-font-size-small)] font-[var(--component-badge-font-weight-small)] leading-[var(--component-badge-line-height-small)]',
-  default: 
+  default:
     'min-h-[var(--component-badge-height-min-default)] gap-[var(--component-badge-gap-space-default)] text-[length:var(--component-badge-font-size-default)] font-[var(--component-badge-font-weight-default)] leading-[var(--component-badge-line-height-default)]',
-  large: 
+  large:
     'h-[var(--component-badge-height-large)] min-h-[var(--component-badge-height-min-large)] gap-[var(--component-badge-gap-space-large)] text-[length:var(--component-badge-font-size-large)] font-[var(--component-badge-font-weight-large)] leading-[var(--component-badge-line-height-large)] flex-shrink-0',
-};
+} as const;
 
-export const VARIANT_STYLES: Record<Exclude<BadgeVariant, `${string}-dismissible`>, string> = {
+export const VARIANT_STYLES = {
   primary: 'bg-[var(--component-badge-bg-primary)] text-[var(--component-badge-text-primary)]',
   secondary: 'bg-[var(--component-badge-bg-secondary)] text-[var(--component-badge-text-secondary)]',
   neutral: 'bg-[var(--component-badge-bg-neutral)] text-[var(--component-badge-text-neutral)]',
@@ -42,6 +40,38 @@ export const VARIANT_STYLES: Record<Exclude<BadgeVariant, `${string}-dismissible
   violet: 'bg-[var(--component-badge-bg-violet)] text-[var(--component-badge-text-violet)]',
   yellow: 'bg-[var(--component-badge-bg-yellow)] text-[var(--component-badge-text-yellow)]',
   zinc: 'bg-[var(--component-badge-bg-zinc)] text-[var(--component-badge-text-zinc)]',
-};
+} as const;
 
-export const ICON_STYLES = 'w-[1em] h-[1em]';
+export const PADDING_TOKENS = {
+  small: {
+    paddingInline: 'var(--component-badge-padding-inline-small)',
+    paddingBlock: 'var(--component-badge-padding-block-small)',
+  },
+  default: {
+    paddingInline: 'var(--component-badge-padding-inline-default)',
+    paddingBlock: 'var(--component-badge-padding-block-default)',
+  },
+  large: {
+    paddingInline: 'var(--component-badge-padding-inline-large)',
+    paddingBlock: 'var(--component-badge-padding-block-large)',
+  },
+} as const;
+
+export const ICON_SIZE_TOKENS = {
+  small: {
+    height: 'var(--component-badge-icon-size-small)',
+    width: 'var(--component-badge-icon-size-small)',
+  },
+  default: {
+    height: 'var(--component-badge-icon-size-default)',
+    width: 'var(--component-badge-icon-size-default)',
+  },
+  large: {
+    height: 'var(--component-badge-icon-size-large)',
+    width: 'var(--component-badge-icon-size-large)',
+  },
+} as const;
+
+// Derive types from style objects
+export type BadgeVariant = keyof typeof VARIANT_STYLES;
+export type BadgeSize = keyof typeof SIZE_STYLES;

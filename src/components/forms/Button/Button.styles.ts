@@ -1,5 +1,5 @@
 export const BASE_CLASSES =
-  'inline-flex items-center justify-center gap-[length:var(--component-button-gap)] rounded-[length:var(--component-button-radius)] border border-transparent font-[number:var(--component-button-font-weight-default)] transition-colors duration-[var(--component-button-transition-duration)] focus-visible:outline-none focus-visible:ring-[length:var(--semantic-focus-ring-width)] focus-visible:ring-offset-[length:var(--semantic-focus-ring-offset)] focus-visible:ring-[color:var(--semantic-border-focus)] disabled:cursor-not-allowed disabled:opacity-[var(--component-button-disabled-opacity)]';
+  'inline-flex items-center justify-center gap-[length:var(--component-button-gap)] rounded-[length:var(--component-button-radius)] border border-transparent font-[number:var(--component-button-font-weight-default)] transition-colors duration-[var(--component-button-transition-duration)] focus-visible:outline-none focus-visible:ring-[length:var(--component-button-focus-ring-width)] focus-visible:ring-offset-[length:var(--component-button-focus-ring-offset)] focus-visible:ring-[color:var(--component-button-focus-ring-color)] disabled:cursor-not-allowed disabled:opacity-[var(--component-button-disabled-opacity)]';
 
 export const SIZE_STYLES = {
   small:
@@ -24,6 +24,14 @@ export const VARIANT_STYLES = {
 } as const;
 
 export const ICON_WRAPPER_CLASSES = 'inline-flex items-center justify-center shrink-0';
+
+export const SPINNER_WRAPPER_CLASSES = 'inline-flex items-center justify-center shrink-0 animate-spin';
+
+export const SPINNER_CLASSES = 'h-full w-full rounded-[var(--component-button-spinner-radius)] border-current border-t-transparent';
+
+export const SPINNER_BORDER_STYLE = { borderWidth: 'var(--component-button-spinner-border-width)' };
+
+export const CONTENT_CLASSES = 'inline-flex items-center justify-center';
 
 export const ICON_SIZE_STYLES = {
   small: 'w-[length:var(--component-button-icon-size-small)] h-[length:var(--component-button-icon-size-small)]',

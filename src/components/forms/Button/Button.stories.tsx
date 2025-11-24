@@ -23,7 +23,7 @@ const meta: Meta<typeof Button> = {
     },
     size: {
       control: 'select',
-      options: ['small', 'default'],
+      options: ['small', 'default', 'large'],
       description: 'The size of the button',
     },
     disabled: {
@@ -227,44 +227,6 @@ export const IconOnly: Story = {
 };
 
 // Comprehensive Stories
-export const AllVariants: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Overview of all button variants for visual comparison.',
-      },
-    },
-  },
-  render: () => (
-    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="tertiary">Tertiary</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="destructive">Destructive</Button>
-    </div>
-  ),
-};
-
-export const AllVariantsDisabled: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'All variants in disabled state showing consistent disabled styling.',
-      },
-    },
-  },
-  render: () => (
-    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-      <Button variant="primary" disabled>Primary</Button>
-      <Button variant="secondary" disabled>Secondary</Button>
-      <Button variant="tertiary" disabled>Tertiary</Button>
-      <Button variant="ghost" disabled>Ghost</Button>
-      <Button variant="destructive" disabled>Destructive</Button>
-    </div>
-  ),
-};
-
 export const AllSizes: Story = {
   parameters: {
     docs: {
@@ -274,7 +236,7 @@ export const AllSizes: Story = {
     },
   },
   render: () => (
-    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap: 'var(--semantic-space-default)', alignItems: 'center' }}>
       <Button size="small">Small</Button>
       <Button size="default">Default</Button>
       <Button size="large">Large</Button>
@@ -291,7 +253,7 @@ export const LoadingVariants: Story = {
     },
   },
   render: () => (
-    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: 'var(--semantic-space-default)', flexWrap: 'wrap' }}>
       <Button variant="primary" isLoading>Primary</Button>
       <Button variant="secondary" isLoading>Secondary</Button>
       <Button variant="tertiary" isLoading>Tertiary</Button>
@@ -310,7 +272,7 @@ export const WithIcons: Story = {
     },
   },
   render: () => (
-    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: 'var(--semantic-space-default)', flexWrap: 'wrap' }}>
       <Button leadingIcon={<BiCheck />}>Confirm</Button>
       <Button trailingIcon={<BiX />}>Cancel</Button>
       <Button leadingIcon={<BiPlus />} trailingIcon={<BiDownload />}>Add & Download</Button>
@@ -327,9 +289,105 @@ export const ButtonGroup: Story = {
     },
   },
   render: () => (
-    <div style={{ display: 'flex', gap: '12px' }}>
+    <div style={{ display: 'flex', gap: 'var(--semantic-space-default)' }}>
       <Button variant="secondary">Cancel</Button>
       <Button variant="primary">Save Changes</Button>
+    </div>
+  ),
+};
+
+// Edge Case Stories
+export const LongText: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Button with long text content to test text wrapping and overflow behavior.',
+      },
+    },
+  },
+  args: {
+    children: 'This is a very long button label that tests text overflow behavior',
+  },
+};
+
+export const AsLink: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Button rendered as an anchor element for navigation. Uses polymorphic `as` prop.',
+      },
+    },
+  },
+  render: () => (
+    <Button as="a" href="#" onClick={(e) => e.preventDefault()}>
+      Navigate to Page
+    </Button>
+  ),
+};
+
+export const IconOnlySizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Icon-only buttons in all sizes. Ensure proper touch targets and visual balance.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', gap: 'var(--semantic-space-default)', alignItems: 'center' }}>
+      <Button size="small" leadingIcon={<BiSearch />} aria-label="Search small" />
+      <Button size="default" leadingIcon={<BiSearch />} aria-label="Search default" />
+      <Button size="large" leadingIcon={<BiSearch />} aria-label="Search large" />
+    </div>
+  ),
+};
+
+export const DisabledLoading: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disabled button in loading state. Shows that loading takes precedence over disabled styling.',
+      },
+    },
+  },
+  args: {
+    disabled: true,
+    isLoading: true,
+    children: 'Processing...',
+  },
+};
+
+export const RTLSupport: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Button in RTL (right-to-left) context. Icons should mirror appropriately.',
+      },
+    },
+  },
+  render: () => (
+    <div dir="rtl" style={{ display: 'flex', gap: 'var(--semantic-space-default)' }}>
+      <Button leadingIcon={<BiPlus />}>إضافة عنصر</Button>
+      <Button trailingIcon={<BiDownload />}>تحميل</Button>
+    </div>
+  ),
+};
+
+export const AllVariantsWithIcons: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'All variants with leading icons to verify icon color consistency.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', gap: 'var(--semantic-space-default)', flexWrap: 'wrap' }}>
+      <Button variant="primary" leadingIcon={<BiCheck />}>Primary</Button>
+      <Button variant="secondary" leadingIcon={<BiCheck />}>Secondary</Button>
+      <Button variant="tertiary" leadingIcon={<BiCheck />}>Tertiary</Button>
+      <Button variant="ghost" leadingIcon={<BiCheck />}>Ghost</Button>
+      <Button variant="destructive" leadingIcon={<BiX />}>Delete</Button>
     </div>
   ),
 };

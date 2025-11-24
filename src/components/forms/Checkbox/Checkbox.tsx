@@ -2,23 +2,34 @@ import { cn } from '@/lib/cn';
 import {
   forwardRef,
   memo,
+  useMemo,
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from 'react';
 import {
   CHECKBOX_BASE_CLASSES,
+  CHECKBOX_SIZE_STYLES,
   CHECK_ICON_CLASSES,
   HIDDEN_INPUT_CLASSES,
+  ICON_CLASSES,
   LABEL_CLASSES,
   WRAPPER_BASE_CLASSES,
 } from './Checkbox.styles';
 
+/** Available checkbox sizes */
 export type CheckboxSize = 'small' | 'default' | 'large';
 
+/**
+ * Props for the Checkbox component
+ */
 export interface CheckboxProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'> {
+  /** The size of the checkbox */
   size?: CheckboxSize;
+  /** Label content for the checkbox */
   label?: ReactNode;
+  /** Whether the checkbox is in an error state */
   error?: boolean;
+  /** Whether the checkbox is in an indeterminate state */
   indeterminate?: boolean;
 }
 
@@ -31,7 +42,7 @@ const CheckIcon = memo(() => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    className="h-3/4 w-3/4"
+    className={ICON_CLASSES}
     aria-hidden="true"
   >
     <polyline points="3,8 6,11 13,4" />
@@ -48,7 +59,7 @@ const IndeterminateIcon = memo(() => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    className="h-3/4 w-3/4"
+    className={ICON_CLASSES}
     aria-hidden="true"
   >
     <line x1="4" y1="8" x2="12" y2="8" />
@@ -56,6 +67,26 @@ const IndeterminateIcon = memo(() => (
 ));
 IndeterminateIcon.displayName = 'IndeterminateIcon';
 
+/**
+ * A checkbox component for binary choices or multiple selections.
+ * Supports multiple sizes, indeterminate state, error state, and flexible label content.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <Checkbox label="Accept terms" />
+ *
+ * // With indeterminate state
+ * <Checkbox label="Select all" indeterminate />
+ *
+ * // Different sizes
+ * <Checkbox size="small" label="Small" />
+ * <Checkbox size="large" label="Large" />
+ *
+ * // Error state
+ * <Checkbox label="Required field" error />
+ * ```
+ */
 export const Checkbox = memo(
   forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
     {
@@ -71,13 +102,19 @@ export const Checkbox = memo(
     ref
   ) {
     // Generate ID if not provided (for label association)
-    const checkboxId = id || (label ? `checkbox-${String(label).toLowerCase().replace(/\s+/g, '-')}` : undefined);
+    const checkboxId = useMemo(
+      () => id || (label ? `checkbox-${String(label).toLowerCase().replace(/\s+/g, '-')}` : undefined),
+      [id, label]
+    );
 
     // Compute checkbox classes
-    const checkboxClasses = cn(
-      CHECKBOX_BASE_CLASSES,
-      className
+    const checkboxClasses = useMemo(
+      () => cn(CHECKBOX_BASE_CLASSES, className),
+      [className]
     );
+
+    // Get size-specific styles
+    const sizeStyle = CHECKBOX_SIZE_STYLES[size];
 
     return (
       <label className={WRAPPER_BASE_CLASSES}>
@@ -85,12 +122,7 @@ export const Checkbox = memo(
           className={checkboxClasses}
           data-error={error || undefined}
           data-size={size}
-          style={{
-            width: `var(--component-checkbox-size-${size})`,
-            height: `var(--component-checkbox-size-${size})`,
-            borderRadius: 'var(--component-checkbox-radius)',
-            borderWidth: 'var(--component-checkbox-border-width)',
-          }}
+          style={sizeStyle}
         >
           <input
             ref={(node) => {
@@ -121,7 +153,7 @@ export const Checkbox = memo(
 
         {/* Label */}
         {label && (
-          <span className={cn(LABEL_CLASSES, 'peer')}>
+          <span className={LABEL_CLASSES}>
             {label}
           </span>
         )}

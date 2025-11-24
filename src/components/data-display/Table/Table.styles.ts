@@ -1,5 +1,5 @@
 export const TABLE_BASE_CLASSES =
-  'w-full caption-bottom text-[length:var(--component-table-cell-font-size-md)]';
+  'w-full caption-bottom rounded-[var(--component-table-radius)] overflow-hidden';
 
 export const TABLE_HEAD_BASE_CLASSES =
   'bg-[var(--component-table-header-bg)]';
@@ -20,25 +20,22 @@ export const TABLE_ROW_VARIANT_STYLES = {
 } as const;
 
 export const TABLE_HEADER_BASE_CLASSES =
-  'h-12 px-[var(--component-table-padding-md)] text-left align-middle font-[var(--component-table-header-font-weight)] text-[var(--component-table-header-text)]';
+  'h-12 align-middle';
 
-export const TABLE_HEADER_SIZE_STYLES = {
-  sm: 'h-8 px-[var(--component-table-padding-sm)] text-[length:var(--component-table-cell-font-size-sm)]',
-  md: 'h-12 px-[var(--component-table-padding-md)] text-[length:var(--component-table-cell-font-size-md)]',
-  lg: 'h-14 px-[var(--component-table-padding-lg)] text-[length:var(--component-table-cell-font-size-lg)]',
-} as const;
+export const TABLE_HEADER_TAB_CLASSES =
+  'hover:bg-gray-50 active:bg-gray-100 transition-colors';
 
 export const TABLE_CELL_BASE_CLASSES =
-  'p-[var(--component-table-padding-md)] align-middle text-[var(--component-table-cell-text)]';
+  'p-[var(--component-table-padding-md)] align-middle';
 
 export const TABLE_CELL_SIZE_STYLES = {
-  sm: 'p-[var(--component-table-padding-sm)] text-[length:var(--component-table-cell-font-size-sm)]',
-  md: 'p-[var(--component-table-padding-md)] text-[length:var(--component-table-cell-font-size-md)]',
-  lg: 'p-[var(--component-table-padding-lg)] text-[length:var(--component-table-cell-font-size-lg)]',
+  sm: 'p-[var(--component-table-padding-sm)]',
+  md: 'p-[var(--component-table-padding-md)]',
+  lg: 'p-[var(--component-table-padding-lg)]',
 } as const;
 
 export const TABLE_FOOTER_BASE_CLASSES =
-  'border-t bg-[var(--component-table-footer-bg)] font-medium text-[var(--component-table-footer-text)]';
+  'border-t bg-[var(--component-table-footer-bg)]';
 
 export const TABLE_VARIANT_BORDER_STYLES = {
   default: '',

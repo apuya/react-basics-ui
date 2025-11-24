@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Tabs } from './Tabs';
+import { BiHome, BiChat, BiCog } from 'react-icons/bi';
 
 const meta = {
   title: 'Navigation/Tabs',
@@ -8,7 +9,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'Tabs organize content into multiple sections and allow users to navigate between them. Supports multiple visual variants (default, line, enclosed, soft), sizes (sm, md, lg), and horizontal/vertical orientations.',
+        component: 'Tabs organize content into multiple sections and allow users to navigate between them. Supports sizes (sm, md, lg) and horizontal/vertical orientations.',
       },
     },
   },
@@ -21,11 +22,6 @@ const meta = {
     value: {
       control: 'text',
       description: 'The selected tab value (controlled mode)',
-    },
-    variant: {
-      control: 'select',
-      options: ['default', 'line', 'enclosed', 'soft'],
-      description: 'Visual style variant of the tabs',
     },
     size: {
       control: 'select',
@@ -92,143 +88,6 @@ export const Default: Story = {
   ),
 };
 
-export const LineVariant: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Line variant with underline indicator. Clean, minimal style for content-heavy interfaces.',
-      },
-    },
-  },
-  render: () => (
-    <Tabs defaultValue="overview" variant="line">
-      <Tabs.List>
-        <Tabs.Tab value="overview">Overview</Tabs.Tab>
-        <Tabs.Tab value="analytics">Analytics</Tabs.Tab>
-        <Tabs.Tab value="reports">Reports</Tabs.Tab>
-        <Tabs.Tab value="notifications">Notifications</Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panels>
-        <Tabs.Panel value="overview">Overview content</Tabs.Panel>
-        <Tabs.Panel value="analytics">Analytics dashboard</Tabs.Panel>
-        <Tabs.Panel value="reports">Reports and insights</Tabs.Panel>
-        <Tabs.Panel value="notifications">Notification settings</Tabs.Panel>
-      </Tabs.Panels>
-    </Tabs>
-  ),
-};
-
-export const EnclosedVariant: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Enclosed variant with bordered tabs. Good for card-style layouts where tabs connect to content below.',
-      },
-    },
-  },
-  render: () => (
-    <Tabs defaultValue="profile" variant="enclosed">
-      <Tabs.List>
-        <Tabs.Tab value="profile">Profile</Tabs.Tab>
-        <Tabs.Tab value="billing">Billing</Tabs.Tab>
-        <Tabs.Tab value="settings">Settings</Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panels>
-        <Tabs.Panel value="profile">
-          <div className="p-4 border border-t-0 rounded-b-md">
-            <h4 className="font-medium mb-2">Profile Information</h4>
-            <p className="text-sm text-gray-600">Update your personal details.</p>
-          </div>
-        </Tabs.Panel>
-        <Tabs.Panel value="billing">
-          <div className="p-4 border border-t-0 rounded-b-md">
-            <h4 className="font-medium mb-2">Billing Information</h4>
-            <p className="text-sm text-gray-600">Manage your subscription and invoices.</p>
-          </div>
-        </Tabs.Panel>
-        <Tabs.Panel value="settings">
-          <div className="p-4 border border-t-0 rounded-b-md">
-            <h4 className="font-medium mb-2">Application Settings</h4>
-            <p className="text-sm text-gray-600">Configure your preferences.</p>
-          </div>
-        </Tabs.Panel>
-      </Tabs.Panels>
-    </Tabs>
-  ),
-};
-
-export const SoftVariant: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Soft variant with subtle background highlights. Provides a gentle, modern appearance.',
-      },
-    },
-  },
-  render: () => (
-    <Tabs defaultValue="general" variant="soft">
-      <Tabs.List>
-        <Tabs.Tab value="general">General</Tabs.Tab>
-        <Tabs.Tab value="security">Security</Tabs.Tab>
-        <Tabs.Tab value="integrations">Integrations</Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panels>
-        <Tabs.Panel value="general">General settings panel</Tabs.Panel>
-        <Tabs.Panel value="security">Security configurations</Tabs.Panel>
-        <Tabs.Panel value="integrations">Third-party integrations</Tabs.Panel>
-      </Tabs.Panels>
-    </Tabs>
-  ),
-};
-
-export const SmallSize: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Small-sized tabs for compact UIs or secondary navigation.',
-      },
-    },
-  },
-  render: () => (
-    <Tabs defaultValue="tab1" size="sm">
-      <Tabs.List>
-        <Tabs.Tab value="tab1">Tab One</Tabs.Tab>
-        <Tabs.Tab value="tab2">Tab Two</Tabs.Tab>
-        <Tabs.Tab value="tab3">Tab Three</Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panels>
-        <Tabs.Panel value="tab1">Small tab content 1</Tabs.Panel>
-        <Tabs.Panel value="tab2">Small tab content 2</Tabs.Panel>
-        <Tabs.Panel value="tab3">Small tab content 3</Tabs.Panel>
-      </Tabs.Panels>
-    </Tabs>
-  ),
-};
-
-export const LargeSize: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large-sized tabs for prominent primary navigation.',
-      },
-    },
-  },
-  render: () => (
-    <Tabs defaultValue="tab1" size="lg">
-      <Tabs.List>
-        <Tabs.Tab value="tab1">Tab One</Tabs.Tab>
-        <Tabs.Tab value="tab2">Tab Two</Tabs.Tab>
-        <Tabs.Tab value="tab3">Tab Three</Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panels>
-        <Tabs.Panel value="tab1">Large tab content 1</Tabs.Panel>
-        <Tabs.Panel value="tab2">Large tab content 2</Tabs.Panel>
-        <Tabs.Panel value="tab3">Large tab content 3</Tabs.Panel>
-      </Tabs.Panels>
-    </Tabs>
-  ),
-};
-
 export const Vertical: Story = {
   parameters: {
     docs: {
@@ -279,27 +138,27 @@ export const WithIcons: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Tabs with icons for enhanced visual recognition. Pass icons via the icon prop.',
+        story: 'Tabs with leading icons for enhanced visual recognition.',
       },
     },
   },
   render: () => (
     <Tabs defaultValue="home">
       <Tabs.List>
-        <Tabs.Tab value="home" icon={<span>🏠</span>}>
+        <Tabs.Tab value="home" leadingIcon={<BiHome />}>
           Home
         </Tabs.Tab>
-        <Tabs.Tab value="messages" icon={<span>💬</span>}>
+        <Tabs.Tab value="messages" leadingIcon={<BiChat />}>
           Messages
         </Tabs.Tab>
-        <Tabs.Tab value="settings" icon={<span>⚙️</span>}>
+        <Tabs.Tab value="settings" leadingIcon={<BiCog />}>
           Settings
         </Tabs.Tab>
       </Tabs.List>
       <Tabs.Panels>
-        <Tabs.Panel value="home">Home content</Tabs.Panel>
-        <Tabs.Panel value="messages">Messages content</Tabs.Panel>
-        <Tabs.Panel value="settings">Settings content</Tabs.Panel>
+        <Tabs.Panel value="home"><div className="py-4">Home content</div></Tabs.Panel>
+        <Tabs.Panel value="messages"><div className="py-4">Messages content</div></Tabs.Panel>
+        <Tabs.Panel value="settings"><div className="py-4">Settings content</div></Tabs.Panel>
       </Tabs.Panels>
     </Tabs>
   ),
@@ -323,19 +182,19 @@ export const Disabled: Story = {
         <Tabs.Tab value="another">Another Tab</Tabs.Tab>
       </Tabs.List>
       <Tabs.Panels>
-        <Tabs.Panel value="active">This tab is active</Tabs.Panel>
-        <Tabs.Panel value="disabled">This tab is disabled</Tabs.Panel>
-        <Tabs.Panel value="another">Another active tab</Tabs.Panel>
+        <Tabs.Panel value="active"><div className="py-4">This tab is active</div></Tabs.Panel>
+        <Tabs.Panel value="disabled"><div className="py-4">This tab is disabled</div></Tabs.Panel>
+        <Tabs.Panel value="another"><div className="py-4">Another active tab</div></Tabs.Panel>
       </Tabs.Panels>
     </Tabs>
   ),
 };
 
-export const AllSizes: Story = {
+export const Sizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Comparison of all tab sizes (sm, md, lg) with the soft variant to demonstrate button-like appearance.',
+        story: 'Comparison of all tab sizes: small, medium (default), and large.',
       },
     },
   },
@@ -343,7 +202,7 @@ export const AllSizes: Story = {
     <div className="flex flex-col gap-8">
       <div>
         <p className="text-sm font-medium mb-2">Small</p>
-        <Tabs defaultValue="tab1" size="sm" variant="soft">
+        <Tabs defaultValue="tab1" size="sm">
           <Tabs.List>
             <Tabs.Tab value="tab1">Account</Tabs.Tab>
             <Tabs.Tab value="tab2">Password</Tabs.Tab>
@@ -353,7 +212,7 @@ export const AllSizes: Story = {
       </div>
       <div>
         <p className="text-sm font-medium mb-2">Medium (default)</p>
-        <Tabs defaultValue="tab1" size="md" variant="soft">
+        <Tabs defaultValue="tab1" size="md">
           <Tabs.List>
             <Tabs.Tab value="tab1">Account</Tabs.Tab>
             <Tabs.Tab value="tab2">Password</Tabs.Tab>
@@ -363,7 +222,7 @@ export const AllSizes: Story = {
       </div>
       <div>
         <p className="text-sm font-medium mb-2">Large</p>
-        <Tabs defaultValue="tab1" size="lg" variant="soft">
+        <Tabs defaultValue="tab1" size="lg">
           <Tabs.List>
             <Tabs.Tab value="tab1">Account</Tabs.Tab>
             <Tabs.Tab value="tab2">Password</Tabs.Tab>

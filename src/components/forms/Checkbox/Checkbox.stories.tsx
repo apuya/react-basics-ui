@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Checkbox } from './Checkbox';
+import { Text } from '../../typography/Text';
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Forms/Checkbox',
@@ -194,7 +195,7 @@ export const AllSizes: Story = {
     },
   },
   render: () => (
-    <div className="flex flex-col gap-3">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
       <Checkbox size="small" label="Small checkbox" />
       <Checkbox size="default" label="Default checkbox" />
       <Checkbox size="large" label="Large checkbox" />
@@ -211,7 +212,7 @@ export const AllStates: Story = {
     },
   },
   render: () => (
-    <div className="flex flex-col gap-3">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
       <Checkbox label="Unchecked" />
       <Checkbox label="Checked" defaultChecked />
       <Checkbox label="Indeterminate" indeterminate />
@@ -231,8 +232,10 @@ export const CheckboxGroup: Story = {
     },
   },
   render: () => (
-    <fieldset className="space-y-3">
-      <legend className="text-sm font-medium mb-2">Select your interests</legend>
+    <fieldset style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
+      <legend style={{ marginBottom: 'var(--semantic-space-compact)' }}>
+        <Text weight="medium">Select your interests</Text>
+      </legend>
       <Checkbox label="Technology" defaultChecked />
       <Checkbox label="Design" />
       <Checkbox label="Business" defaultChecked />
@@ -251,9 +254,9 @@ export const SelectAllPattern: Story = {
     },
   },
   render: () => (
-    <div className="space-y-3">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
       <Checkbox label="Select all" indeterminate />
-      <div className="ml-6 space-y-2">
+      <div style={{ marginLeft: 'var(--semantic-space-comfortable)', display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-compact)' }}>
         <Checkbox label="Item 1" defaultChecked />
         <Checkbox label="Item 2" defaultChecked />
         <Checkbox label="Item 3" />
@@ -272,12 +275,12 @@ export const TermsExample: Story = {
     },
   },
   render: () => (
-    <div className="flex flex-col gap-3 max-w-sm">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)', maxWidth: '24rem' }}>
       <Checkbox
         label={
           <span>
             I agree to the{' '}
-            <a href="#" className="text-blue-600 hover:underline">
+            <a href="#" style={{ color: 'var(--semantic-status-info-default)', textDecoration: 'underline' }}>
               Terms of Service
             </a>
           </span>
@@ -287,7 +290,7 @@ export const TermsExample: Story = {
         label={
           <span>
             I agree to the{' '}
-            <a href="#" className="text-blue-600 hover:underline">
+            <a href="#" style={{ color: 'var(--semantic-status-info-default)', textDecoration: 'underline' }}>
               Privacy Policy
             </a>
           </span>
@@ -307,9 +310,9 @@ export const SettingsPanel: Story = {
     },
   },
   render: () => (
-    <div className="flex flex-col gap-4 w-80">
-      <h3 className="text-sm font-semibold">Notification Settings</h3>
-      <div className="space-y-3">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)', width: '20rem' }}>
+      <Text as="strong" weight="semibold">Notification Settings</Text>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
         <Checkbox label="Email notifications" defaultChecked />
         <Checkbox label="Push notifications" defaultChecked />
         <Checkbox label="SMS notifications" />
@@ -328,9 +331,9 @@ export const PermissionList: Story = {
     },
   },
   render: () => (
-    <div className="flex flex-col gap-4 w-80">
-      <h3 className="text-sm font-semibold">User Permissions</h3>
-      <div className="space-y-3">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)', width: '20rem' }}>
+      <Text as="strong" weight="semibold">User Permissions</Text>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
         <Checkbox label="Read" defaultChecked />
         <Checkbox label="Write" defaultChecked />
         <Checkbox label="Delete" />
@@ -349,8 +352,8 @@ export const FormExample: Story = {
     },
   },
   render: () => (
-    <form className="flex flex-col gap-4 w-80">
-      <div className="space-y-3">
+    <form style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)', width: '20rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
         <Checkbox label="Remember me" />
         <Checkbox
           label="I agree to receive updates via email"
@@ -360,7 +363,7 @@ export const FormExample: Story = {
           label={
             <span>
               I accept the{' '}
-              <a href="#" className="text-blue-600 hover:underline">
+              <a href="#" style={{ color: 'var(--semantic-status-info-default)', textDecoration: 'underline' }}>
                 terms and conditions
               </a>
             </span>
@@ -368,7 +371,7 @@ export const FormExample: Story = {
           error
         />
       </div>
-      <p className="text-xs text-red-500">Please accept the terms to continue</p>
+      <Text as="p" size="caption" color="error">Please accept the terms to continue</Text>
     </form>
   ),
 };
@@ -382,7 +385,7 @@ export const ErrorSizes: Story = {
     },
   },
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
       <Checkbox size="small" label="Small with error" error />
       <Checkbox size="default" label="Default with error" error />
       <Checkbox size="large" label="Large with error" error />
@@ -399,7 +402,7 @@ export const IndeterminateSizes: Story = {
     },
   },
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
       <Checkbox size="small" label="Small indeterminate" indeterminate />
       <Checkbox size="default" label="Default indeterminate" indeterminate />
       <Checkbox size="large" label="Large indeterminate" indeterminate />

@@ -6,11 +6,30 @@ import {
   TAB_LIST_ORIENTATION_STYLES,
 } from './Tabs.styles';
 
+/**
+ * Props for the TabList component.
+ */
 export interface TabListProps extends ComponentPropsWithoutRef<'div'> {}
 
+/**
+ * Container for Tab buttons with keyboard navigation support.
+ *
+ * Implements ARIA tablist pattern with full keyboard navigation:
+ * - Arrow keys (Left/Right for horizontal, Up/Down for vertical)
+ * - Home/End keys to navigate to first/last tab
+ * - Automatic focus management
+ *
+ * @example
+ * ```tsx
+ * <Tabs.List>
+ *   <Tabs.Tab value="tab1">Tab 1</Tabs.Tab>
+ *   <Tabs.Tab value="tab2">Tab 2</Tabs.Tab>
+ * </Tabs.List>
+ * ```
+ */
 export const TabList = memo(
   forwardRef<HTMLDivElement, TabListProps>(({ className, children, ...props }, ref) => {
-    const { orientation, activeTab, setActiveTab, tabsOrder } = useTabsContext();
+    const { orientation, activeTab, setActiveTab, tabsOrderRef } = useTabsContext();
     const listRef = useRef<HTMLDivElement>(null);
 
     const tabListClasses = useMemo(
@@ -28,6 +47,7 @@ export const TabList = memo(
       const handleKeyDown = (e: KeyboardEvent) => {
         if (!listRef.current?.contains(document.activeElement)) return;
 
+        const tabsOrder = tabsOrderRef.current;
         const currentIndex = tabsOrder.indexOf(activeTab);
         if (currentIndex === -1) return;
 
@@ -38,13 +58,11 @@ export const TabList = memo(
         switch (e.key) {
           case nextKey:
             e.preventDefault();
-            const nextIndex = (currentIndex + 1) % tabsOrder.length;
-            setActiveTab(tabsOrder[nextIndex]);
+            setActiveTab(tabsOrder[(currentIndex + 1) % tabsOrder.length]);
             break;
           case prevKey:
             e.preventDefault();
-            const prevIndex = (currentIndex - 1 + tabsOrder.length) % tabsOrder.length;
-            setActiveTab(tabsOrder[prevIndex]);
+            setActiveTab(tabsOrder[(currentIndex - 1 + tabsOrder.length) % tabsOrder.length]);
             break;
           case 'Home':
             e.preventDefault();
@@ -59,7 +77,7 @@ export const TabList = memo(
 
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
-    }, [activeTab, setActiveTab, tabsOrder, orientation]);
+    }, [activeTab, setActiveTab, tabsOrderRef, orientation]);
 
     return (
       <div

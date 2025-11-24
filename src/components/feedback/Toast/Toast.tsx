@@ -1,17 +1,17 @@
 import { forwardRef, memo, useMemo } from 'react';
 import { BiCheckCircle, BiErrorCircle, BiInfoCircle, BiXCircle, BiX } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
+import { Text } from '@/components/typography/Text';
 import {
   BASE_CLASSES,
   VARIANT_STYLES,
   ICON_CLASSES,
   CONTENT_CLASSES,
-  TITLE_CLASSES,
-  DESCRIPTION_CLASSES,
   CLOSE_BUTTON_CLASSES,
   CLOSE_ICON_CLASSES,
 } from './Toast.styles';
 
+/** Available toast variants for different notification types. */
 export type ToastVariant = 'success' | 'error' | 'warning' | 'info' | 'default';
 
 const VARIANT_ICONS: Record<ToastVariant, React.ComponentType<{ className?: string }>> = {
@@ -22,14 +22,32 @@ const VARIANT_ICONS: Record<ToastVariant, React.ComponentType<{ className?: stri
   default: BiInfoCircle,
 };
 
+const PADDING_STYLE = {
+  paddingInline: 'var(--component-toast-padding-inline)',
+  paddingBlock: 'var(--component-toast-padding-block)',
+} as const;
+
 export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+  /** Visual variant of the toast. @default 'default' */
   variant?: ToastVariant;
+  /** Title text of the toast notification. */
   title?: React.ReactNode;
+  /** Description text of the toast notification. */
   description?: React.ReactNode;
+  /** Callback when close button is clicked. */
   onClose?: () => void;
+  /** Whether to show the variant icon. @default true */
   showIcon?: boolean;
 }
 
+/**
+ * A toast notification component for displaying temporary messages.
+ *
+ * @example
+ * ```tsx
+ * <Toast variant="success" title="Saved" description="Your changes have been saved." onClose={() => {}} />
+ * ```
+ */
 export const Toast = memo(
   forwardRef<HTMLDivElement, ToastProps>(
     (
@@ -48,29 +66,23 @@ export const Toast = memo(
       const Icon = VARIANT_ICONS[variant];
 
       const toastClasses = useMemo(
-      () => cn(BASE_CLASSES, VARIANT_STYLES[variant], className),
-      [variant, className]
-    );
+        () => cn(BASE_CLASSES, VARIANT_STYLES[variant], className),
+        [variant, className]
+      );
 
-    const paddingStyle = useMemo(
-      () => ({
-        paddingInline: 'var(--component-toast-padding-inline)',
-        paddingBlock: 'var(--component-toast-padding-block)',
-      }),
-      []
-    );      return (
+      return (
         <div
           ref={ref}
           role="alert"
           aria-live="polite"
           className={toastClasses}
-          style={paddingStyle}
+          style={PADDING_STYLE}
           {...props}
         >
           {showIcon && <Icon className={ICON_CLASSES} />}
           <div className={CONTENT_CLASSES}>
-            {title && <div className={TITLE_CLASSES}>{title}</div>}
-            {description && <div className={DESCRIPTION_CLASSES}>{description}</div>}
+            {title && <Text as="div" size="body" weight="semibold" className="mb-1">{title}</Text>}
+            {description && <Text as="div" size="small" weight="regular" className="opacity-90">{description}</Text>}
             {children}
           </div>
           {onClose && (

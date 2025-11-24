@@ -16,8 +16,11 @@ import {
   BASE_CLASSES,
   CLEAR_BUTTON_BASE_CLASSES,
   CLEAR_BUTTON_SIZE_STYLES,
+  ICON_SIZE_STYLES,
+  LEADING_ICON_CONTAINER_CLASSES,
   SHORTCUT_BADGE_CLASSES,
   SIZE_STYLES,
+  TRAILING_CONTAINER_CLASSES,
 } from './SearchBar.styles';
 
 export type SearchBarSize = 'small' | 'default' | 'large';
@@ -34,13 +37,6 @@ export interface SearchBarProps extends Omit<ComponentPropsWithoutRef<'input'>, 
   onSearch?: (value: string) => void;
   wrapperClassName?: string;
 }
-
-// Map SearchBar sizes to Icon sizes
-const ICON_SIZE_MAP: Record<SearchBarSize, 'sm' | 'md' | 'lg'> = {
-  small: 'sm',
-  default: 'md',
-  large: 'md',
-};
 
 // Map SearchBar sizes to Spinner sizes
 const SPINNER_SIZE_MAP: Record<SearchBarSize, 'xs' | 'sm' | 'md'> = {
@@ -86,18 +82,19 @@ export const SearchBar = memo(
       [size, className]
     );
 
+    const iconClasses = useMemo(() => ICON_SIZE_STYLES[size], [size]);
+
     const inputStyle = useMemo(() => {
-      const baseLeftPadding = 'calc(var(--component-searchbar-padding-inline) * 2 + var(--component-searchbar-icon-size-default))';
+      const iconSizeVar = `var(--component-searchbar-icon-size-${size})`;
+      const baseLeftPadding = `calc(var(--component-searchbar-padding-inline) * 2 + ${iconSizeVar})`;
       
       let rightPadding = 'var(--component-searchbar-padding-inline)';
       
       // Calculate right padding based on visible elements
       if (showSearchButton) {
-        rightPadding = size === 'small' 
-          ? 'calc(var(--component-searchbar-padding-inline) + 60px)'
-          : size === 'large'
-          ? 'calc(var(--component-searchbar-padding-inline) + 80px)'
-          : 'calc(var(--component-searchbar-padding-inline) + 70px)';
+        // Approximate button widths: small ~60px, default ~70px, large ~80px
+        const buttonWidth = size === 'small' ? '60px' : size === 'large' ? '80px' : '70px';
+        rightPadding = `calc(var(--component-searchbar-padding-inline) + ${buttonWidth})`;
       } else {
         const elementCount = [
           isLoading,
@@ -107,8 +104,7 @@ export const SearchBar = memo(
         
         if (elementCount > 0) {
           const spacing = 'var(--component-searchbar-padding-inline)';
-          const iconSize = size === 'small' ? '20px' : size === 'large' ? '28px' : '24px';
-          rightPadding = `calc(${spacing} + (${iconSize} + ${spacing}) * ${elementCount})`;
+          rightPadding = `calc(${spacing} + (${iconSizeVar} + ${spacing}) * ${elementCount})`;
         }
       }
 
@@ -119,7 +115,6 @@ export const SearchBar = memo(
       };
     }, [size, isLoading, showClearButton, showSearchButton, showShortcut, hasValue]);
 
-    const iconSize = useMemo(() => ICON_SIZE_MAP[size], [size]);
     const spinnerSize = useMemo(() => SPINNER_SIZE_MAP[size], [size]);
     const buttonSize = useMemo(() => BUTTON_SIZE_MAP[size], [size]);
 
@@ -156,14 +151,10 @@ export const SearchBar = memo(
       <div className={cn('w-full', wrapperClassName)}>
         <div className="relative">
           {/* Leading Icon (Search Icon) */}
-          <div
-            className="absolute top-1/2 -translate-y-1/2"
-            style={{
-              left: 'var(--component-searchbar-padding-inline)',
-              color: 'var(--component-searchbar-text-placeholder)',
-            }}
-          >
-            {leadingIcon || <Icon icon={BiSearch} size={iconSize} color="inherit" />}
+          <div className={LEADING_ICON_CONTAINER_CLASSES}>
+            <div className={iconClasses}>
+              {leadingIcon || <Icon icon={BiSearch} className="w-full h-full" color="inherit" />}
+            </div>
           </div>
 
           {/* Input Field */}
@@ -183,10 +174,7 @@ export const SearchBar = memo(
           />
 
           {/* Trailing Elements Container */}
-          <div
-            className="absolute top-1/2 -translate-y-1/2 flex items-center gap-2"
-            style={{ right: 'var(--component-searchbar-padding-inline)' }}
-          >
+          <div className={TRAILING_CONTAINER_CLASSES}>
             {/* Loading Spinner */}
             {isLoading && <Spinner size={spinnerSize} color="default" />}
 
@@ -199,7 +187,9 @@ export const SearchBar = memo(
                 aria-label="Clear search"
                 tabIndex={-1}
               >
-                <Icon icon={BiX} size={iconSize} color="inherit" />
+                <div className={iconClasses}>
+                  <Icon icon={BiX} className="w-full h-full" color="inherit" />
+                </div>
               </button>
             )}
 
