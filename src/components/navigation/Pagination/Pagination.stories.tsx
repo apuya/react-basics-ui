@@ -189,66 +189,6 @@ export const Minimal: Story = {
   },
 };
 
-export const CustomLabels: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Pagination with custom text labels for previous/next buttons.',
-      },
-    },
-  },
-  render: () => {
-    const [page, setPage] = useState(1);
-    const totalPages = 8;
-
-    return (
-      <Pagination totalPages={totalPages} page={page} onChange={setPage}>
-        <Pagination.List>
-          <Pagination.Previous>
-            <span>← Prev</span>
-          </Pagination.Previous>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <Pagination.Item key={i + 1} page={i + 1}>
-              {i + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next>
-            <span>Next →</span>
-          </Pagination.Next>
-        </Pagination.List>
-      </Pagination>
-    );
-  },
-};
-
-export const FirstAndLast: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Pagination with first/last page buttons for quick navigation to extremes.',
-      },
-    },
-  },
-  render: () => {
-    const [page, setPage] = useState(5);
-    const totalPages = 15;
-
-    return (
-      <Pagination totalPages={totalPages} page={page} onChange={setPage} showFirstLast>
-        <Pagination.List>
-          <Pagination.Item page={1}>First</Pagination.Item>
-          <Pagination.Previous />
-          <Pagination.Item page={Math.max(1, page - 1)} />
-          <Pagination.Item page={page} />
-          <Pagination.Item page={Math.min(totalPages, page + 1)} />
-          <Pagination.Next />
-          <Pagination.Item page={totalPages}>Last</Pagination.Item>
-        </Pagination.List>
-      </Pagination>
-    );
-  },
-};
-
 export const LargeDataset: Story = {
   parameters: {
     docs: {

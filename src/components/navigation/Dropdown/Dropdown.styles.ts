@@ -1,3 +1,15 @@
+/**
+ * Style constants and utilities for Dropdown components.
+ * 
+ * Provides:
+ * - CSS class strings for Tailwind
+ * - CSS-in-JS style objects for design tokens
+ * - Variant style definitions for theming
+ * - Positioning and layout utilities
+ * 
+ * All styles use CSS variables from the design token system for consistency.
+ */
+
 export type DropdownItemState = 'default' | 'hover' | 'active' | 'disabled';
 export type DropdownItemVariant = 'default' | 'danger' | 'warning' | 'success' | 'info';
 
@@ -7,10 +19,17 @@ export const BASE_CLASSES =
 export const VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 
 export const SIDE_STYLES = {
-  top: 'bottom-full mb-2',
-  bottom: 'top-full mt-2',
-  left: 'right-full mr-2',
-  right: 'left-full ml-2',
+  top: 'bottom-full',
+  bottom: 'top-full',
+  left: 'right-full',
+  right: 'left-full',
+} as const;
+
+export const SIDE_GAP_STYLE = {
+  marginTop: 'var(--component-dropdown-gap)',
+  marginBottom: 'var(--component-dropdown-gap)',
+  marginLeft: 'var(--component-dropdown-gap)',
+  marginRight: 'var(--component-dropdown-gap)',
 } as const;
 
 export const ALIGN_STYLES = {
@@ -33,59 +52,59 @@ export const ITEM_STATE_STYLES: Record<DropdownItemState, string> = {
   disabled: 'bg-[var(--component-dropdown-item-bg-disabled)] text-[var(--component-dropdown-item-text-disabled)] cursor-not-allowed opacity-[var(--semantic-opacity-disabled)]',
 };
 
-export const ITEM_VARIANT_STYLES: Record<DropdownItemVariant, { default: string; hover: string; active: string }> = {
+export const ITEM_VARIANT_STYLES: Record<DropdownItemVariant, { default: string; hoverClasses: string; activeClasses: string }> = {
   default: {
     default: 'bg-[var(--component-dropdown-item-bg-default)] text-[var(--component-dropdown-item-text-default)]',
-    hover: 'bg-[var(--component-dropdown-item-bg-hover)] text-[var(--component-dropdown-item-text-hover)]',
-    active: 'bg-[var(--component-dropdown-item-bg-active)] text-[var(--component-dropdown-item-text-active)]',
+    hoverClasses: 'hover:bg-[var(--component-dropdown-item-bg-hover)] hover:text-[var(--component-dropdown-item-text-hover)]',
+    activeClasses: 'active:bg-[var(--component-dropdown-item-bg-active)] active:text-[var(--component-dropdown-item-text-active)]',
   },
   danger: {
     default: 'bg-[var(--component-dropdown-item-bg-danger-default)] text-[var(--component-dropdown-item-text-danger)]',
-    hover: 'bg-[var(--component-dropdown-item-bg-danger-hover)] text-[var(--component-dropdown-item-text-danger)]',
-    active: 'bg-[var(--component-dropdown-item-bg-danger-active)] text-[var(--component-dropdown-item-text-danger)]',
+    hoverClasses: 'hover:bg-[var(--component-dropdown-item-bg-danger-hover)] hover:text-[var(--component-dropdown-item-text-danger)]',
+    activeClasses: 'active:bg-[var(--component-dropdown-item-bg-danger-active)] active:text-[var(--component-dropdown-item-text-danger)]',
   },
   warning: {
     default: 'bg-[var(--component-dropdown-item-bg-warning-default)] text-[var(--component-dropdown-item-text-warning)]',
-    hover: 'bg-[var(--component-dropdown-item-bg-warning-hover)] text-[var(--component-dropdown-item-text-warning)]',
-    active: 'bg-[var(--component-dropdown-item-bg-warning-active)] text-[var(--component-dropdown-item-text-warning)]',
+    hoverClasses: 'hover:bg-[var(--component-dropdown-item-bg-warning-hover)] hover:text-[var(--component-dropdown-item-text-warning)]',
+    activeClasses: 'active:bg-[var(--component-dropdown-item-bg-warning-active)] active:text-[var(--component-dropdown-item-text-warning)]',
   },
   success: {
     default: 'bg-[var(--component-dropdown-item-bg-success-default)] text-[var(--component-dropdown-item-text-success)]',
-    hover: 'bg-[var(--component-dropdown-item-bg-success-hover)] text-[var(--component-dropdown-item-text-success)]',
-    active: 'bg-[var(--component-dropdown-item-bg-success-active)] text-[var(--component-dropdown-item-text-success)]',
+    hoverClasses: 'hover:bg-[var(--component-dropdown-item-bg-success-hover)] hover:text-[var(--component-dropdown-item-text-success)]',
+    activeClasses: 'active:bg-[var(--component-dropdown-item-bg-success-active)] active:text-[var(--component-dropdown-item-text-success)]',
   },
   info: {
     default: 'bg-[var(--component-dropdown-item-bg-info-default)] text-[var(--component-dropdown-item-text-info)]',
-    hover: 'bg-[var(--component-dropdown-item-bg-info-hover)] text-[var(--component-dropdown-item-text-info)]',
-    active: 'bg-[var(--component-dropdown-item-bg-info-active)] text-[var(--component-dropdown-item-text-info)]',
+    hoverClasses: 'hover:bg-[var(--component-dropdown-item-bg-info-hover)] hover:text-[var(--component-dropdown-item-text-info)]',
+    activeClasses: 'active:bg-[var(--component-dropdown-item-bg-info-active)] active:text-[var(--component-dropdown-item-text-info)]',
   },
 };
 
-export const ICON_VARIANT_STYLES: Record<DropdownItemVariant, { default: string; hover: string; active: string }> = {
+export const ICON_VARIANT_STYLES: Record<DropdownItemVariant, { default: string; hoverClasses: string; activeClasses: string }> = {
   default: {
     default: 'text-[var(--component-dropdown-item-icon-default)]',
-    hover: 'text-[var(--component-dropdown-item-icon-hover)]',
-    active: 'text-[var(--component-dropdown-item-icon-active)]',
+    hoverClasses: 'group-hover:text-[var(--component-dropdown-item-icon-hover)]',
+    activeClasses: 'group-active:text-[var(--component-dropdown-item-icon-active)]',
   },
   danger: {
     default: 'text-[var(--component-dropdown-item-icon-danger)]',
-    hover: 'text-[var(--component-dropdown-item-icon-danger)]',
-    active: 'text-[var(--component-dropdown-item-icon-danger)]',
+    hoverClasses: 'group-hover:text-[var(--component-dropdown-item-icon-danger)]',
+    activeClasses: 'group-active:text-[var(--component-dropdown-item-icon-danger)]',
   },
   warning: {
     default: 'text-[var(--component-dropdown-item-icon-warning)]',
-    hover: 'text-[var(--component-dropdown-item-icon-warning)]',
-    active: 'text-[var(--component-dropdown-item-icon-warning)]',
+    hoverClasses: 'group-hover:text-[var(--component-dropdown-item-icon-warning)]',
+    activeClasses: 'group-active:text-[var(--component-dropdown-item-icon-warning)]',
   },
   success: {
     default: 'text-[var(--component-dropdown-item-icon-success)]',
-    hover: 'text-[var(--component-dropdown-item-icon-success)]',
-    active: 'text-[var(--component-dropdown-item-icon-success)]',
+    hoverClasses: 'group-hover:text-[var(--component-dropdown-item-icon-success)]',
+    activeClasses: 'group-active:text-[var(--component-dropdown-item-icon-success)]',
   },
   info: {
     default: 'text-[var(--component-dropdown-item-icon-info)]',
-    hover: 'text-[var(--component-dropdown-item-icon-info)]',
-    active: 'text-[var(--component-dropdown-item-icon-info)]',
+    hoverClasses: 'group-hover:text-[var(--component-dropdown-item-icon-info)]',
+    activeClasses: 'group-active:text-[var(--component-dropdown-item-icon-info)]',
   },
 };
 
@@ -93,4 +112,56 @@ export const DIVIDER_CLASSES = 'h-px bg-[var(--component-dropdown-divider)]';
 
 export const ICON_WRAPPER_CLASSES = 'shrink-0';
 
-export const SHORTCUT_CLASSES = 'ml-auto text-[var(--semantic-text-tertiary)] text-[length:var(--semantic-text-size-small)]';
+export const SHORTCUT_CLASSES = 'ml-auto';
+
+// MenuItem padding and gap styles using tokens
+export const MENU_ITEM_PADDING_STYLE = {
+  paddingInline: 'var(--component-dropdown-item-padding-inline)',
+  paddingBlock: 'var(--component-dropdown-item-padding-block)',
+} as const;
+
+export const MENU_ITEM_GAP_STYLE = {
+  marginBlock: 'var(--component-dropdown-gap)',
+} as const;
+
+// SearchBar container padding
+export const SEARCH_CONTAINER_PADDING_STYLE = {
+  paddingInline: 'var(--component-dropdown-padding-inline)',
+  paddingBlock: 'calc(var(--component-dropdown-item-padding-block) * 0.75)',
+} as const;
+
+// Header text styles
+export const HEADER_TEXT_STYLE = {
+  color: 'var(--component-dropdown-header-text-color)',
+  fontSize: 'var(--component-dropdown-header-font-size)',
+  fontWeight: 'var(--component-dropdown-header-font-weight)',
+  lineHeight: 'var(--component-dropdown-header-line-height)',
+  letterSpacing: 'var(--component-dropdown-header-letter-spacing)',
+  fontFamily: 'var(--semantic-font-family-base)',
+} as const;
+
+// Description text styles
+export const DESCRIPTION_TEXT_STYLE = {
+  color: 'var(--component-dropdown-description-text-color)',
+  fontSize: 'var(--component-dropdown-description-font-size)',
+  fontWeight: 'var(--component-dropdown-description-font-weight)',
+  lineHeight: 'var(--component-dropdown-description-line-height)',
+  letterSpacing: 'var(--component-dropdown-description-letter-spacing)',
+  fontFamily: 'var(--semantic-font-family-base)',
+} as const;
+
+// Item style generator
+export const ITEM_STYLE = (hasDescription: boolean) => ({
+  minHeight: 'var(--component-dropdown-item-height)',
+  height: hasDescription ? 'auto' : 'var(--component-dropdown-item-height)',
+  paddingInline: 'var(--component-dropdown-item-padding-inline)',
+  paddingBlock: 'var(--component-dropdown-item-padding-block)',
+  gap: 'var(--component-dropdown-item-gap)',
+  borderRadius: 'var(--component-dropdown-item-radius)',
+} as const);
+
+// Icon style
+export const ICON_STYLE = {
+  width: 'var(--component-dropdown-icon-size)',
+  height: 'var(--component-dropdown-icon-size)',
+} as const;

@@ -1,69 +1,45 @@
-import {
-  forwardRef,
-  memo,
-  useMemo,
-  useCallback,
-  type ComponentPropsWithoutRef,
-} from 'react';
-import { cn } from '@/lib/cn';
+import { forwardRef, memo, useCallback, type ComponentPropsWithoutRef } from 'react';
+import { BiChevronLeft } from 'react-icons/bi';
 import { usePaginationContext } from './Pagination';
-import {
-  PAGINATION_ITEM_BASE_CLASSES,
-  PAGINATION_ITEM_SIZE_STYLES,
-  PAGINATION_ITEM_VARIANT_STYLES,
-  PAGINATION_NAV_BUTTON_CLASSES,
-} from './Pagination.styles';
+import { Button } from '@/components/forms/Button';
+import { Icon } from '@/components/utility/Icon';
+import { PAGINATION_TO_BUTTON_SIZE } from './Pagination.styles';
 
 export interface PaginationPreviousProps extends ComponentPropsWithoutRef<'button'> {}
 
-const ChevronLeftIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={2}
-    stroke="currentColor"
-    className="h-4 w-4"
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-  </svg>
-);
-
+/**
+ * Previous page navigation button. Disabled on first page.
+ *
+ * @example
+ * ```tsx
+ * <Pagination.Previous />
+ * <Pagination.Previous>← Back</Pagination.Previous>
+ * ```
+ */
 export const PaginationPrevious = memo(
   forwardRef<HTMLButtonElement, PaginationPreviousProps>(({ className, children, ...props }, ref) => {
-    const { currentPage, goToPage, size } = usePaginationContext();
+    const { currentPage, goToPage, size } = usePaginationContext('Previous');
     const isDisabled = currentPage === 1;
 
     const handleClick = useCallback(() => {
       goToPage(currentPage - 1);
     }, [goToPage, currentPage]);
 
-    const buttonClasses = useMemo(
-      () =>
-        cn(
-          PAGINATION_ITEM_BASE_CLASSES,
-          PAGINATION_ITEM_SIZE_STYLES[size],
-          PAGINATION_ITEM_VARIANT_STYLES.ghost,
-          PAGINATION_NAV_BUTTON_CLASSES,
-          className
-        ),
-      [size, className]
-    );
-
     return (
       <li>
-        <button
+        <Button
           ref={ref}
-          type="button"
+          variant="tabs"
+          size={PAGINATION_TO_BUTTON_SIZE[size]}
           aria-label="Go to previous page"
           disabled={isDisabled}
           onClick={handleClick}
-          className={buttonClasses}
+          leadingIcon={<Icon icon={BiChevronLeft} size="sm" color="inherit" />}
+          className={className}
           {...props}
         >
-          <ChevronLeftIcon />
-          {children || <span>Previous</span>}
-        </button>
+          {children || 'Previous'}
+        </Button>
       </li>
     );
   })

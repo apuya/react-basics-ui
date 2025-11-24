@@ -26,7 +26,8 @@ export type ButtonVariant =
   | 'secondary'
   | 'tertiary'
   | 'ghost'
-  | 'destructive';
+  | 'destructive'
+  | 'tabs';
 
 /** Available button sizes */
 export type ButtonSize = 'small' | 'default' | 'large';

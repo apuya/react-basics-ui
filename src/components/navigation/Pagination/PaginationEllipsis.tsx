@@ -1,16 +1,29 @@
 import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
+import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
 import { usePaginationContext } from './Pagination';
 import {
   PAGINATION_ELLIPSIS_BASE_CLASSES,
   PAGINATION_ELLIPSIS_SIZE_STYLES,
+  PAGINATION_TO_ICON_SIZE,
 } from './Pagination.styles';
+import { Icon } from '@/components/utility/Icon';
 
 export interface PaginationEllipsisProps extends ComponentPropsWithoutRef<'span'> {}
 
+/**
+ * Ellipsis indicator for truncated page ranges.
+ *
+ * @example
+ * ```tsx
+ * <Pagination.Item page={1} />
+ * <Pagination.Ellipsis />
+ * <Pagination.Item page={10} />
+ * ```
+ */
 export const PaginationEllipsis = memo(
   forwardRef<HTMLSpanElement, PaginationEllipsisProps>(({ className, ...props }, ref) => {
-    const { size } = usePaginationContext();
+    const { size } = usePaginationContext('Ellipsis');
 
     const ellipsisClasses = useMemo(
       () => cn(PAGINATION_ELLIPSIS_BASE_CLASSES, PAGINATION_ELLIPSIS_SIZE_STYLES[size], className),
@@ -18,16 +31,9 @@ export const PaginationEllipsis = memo(
     );
 
     return (
-      <li>
+      <li role="presentation">
         <span ref={ref} aria-hidden className={ellipsisClasses} {...props}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            className="h-4 w-4"
-          >
-            <path d="M6 12a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
+          <Icon icon={BiDotsHorizontalRounded} size={PAGINATION_TO_ICON_SIZE[size]} color="inherit" />
         </span>
       </li>
     );

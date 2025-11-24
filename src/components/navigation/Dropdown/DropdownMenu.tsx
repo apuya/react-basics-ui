@@ -1,113 +1,132 @@
-import { forwardRef, memo, useEffect, useMemo, useRef, type ComponentPropsWithoutRef } from 'react';
-import { useClickOutside } from '@/hooks/useClickOutside';
-import { useEscapeKey } from '@/hooks/useEscapeKey';
+import { forwardRef, useEffect, useRef, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
-import { useDropdownContext, type DropdownSide, type DropdownAlign } from './Dropdown';
+import { useClickOutsideWithExclusions } from '@/hooks/useClickOutsideWithExclusions';
+import { useEscapeKey } from '@/hooks/useEscapeKey';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
+import { useMenuKeyboardNavigation } from '@/hooks/useMenuKeyboardNavigation';
+import { useDropdownContext, type DropdownAlign, type DropdownSide } from './Dropdown';
 import {
   ALIGN_STYLES,
   BASE_CLASSES,
   MENU_WRAPPER_CLASSES,
+  SIDE_GAP_STYLE,
   SIDE_STYLES,
   VISIBLE_CLASS,
 } from './Dropdown.styles';
 
+/**
+ * Props for the DropdownMenu component.
+ */
 export interface DropdownMenuProps extends ComponentPropsWithoutRef<'div'> {
+  /** Position of the menu relative to the trigger */
   side?: DropdownSide;
+  /** Alignment of the menu relative to the trigger */
   align?: DropdownAlign;
+  /** Maximum height of the menu (enables scrolling). Defaults to token value. */
+  maxHeight?: string | number;
+  /** Enable enter/exit animations. Defaults to true. */
+  enableAnimation?: boolean;
 }
 
-export const DropdownMenu = memo(
-  forwardRef<HTMLDivElement, DropdownMenuProps>(
-    ({ side = 'bottom', align = 'start', className, children, ...props }, forwardedRef) => {
-      const { isOpen, setIsOpen } = useDropdownContext();
+/**
+ * Menu container that displays dropdown items with positioning and keyboard navigation.
+ * 
+ * Features:
+ * - Click-outside detection to close menu
+ * - Escape key to close
+ * - Arrow key navigation between items
+ * - Home/End key navigation to first/last items
+ * - Flexible positioning (top/bottom/left/right)
+ * - Flexible alignment (start/center/end)
+ * 
+ * @example
+ * ```tsx
+ * <Dropdown.Menu side="bottom" align="start">
+ *   <Dropdown.Item>Option 1</Dropdown.Item>
+ *   <Dropdown.Item>Option 2</Dropdown.Item>
+ * </Dropdown.Menu>
+ * ```
+ */
+
+export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
+  ({ side = 'bottom', align = 'start', maxHeight, enableAnimation = true, className, children, ...props }, forwardedRef) => {
+      const { isOpen, setIsOpen, triggerRef, menuId } = useDropdownContext();
       const menuRef = useRef<HTMLDivElement>(null!);
+      
+      // Merge external ref with internal menu ref
+      const mergedRef = useMergedRefs(forwardedRef, menuRef);
 
-      const menuStyle = useMemo(
-        () => ({
-          paddingInline: 'var(--component-dropdown-padding-inline)',
-          paddingBlock: 'var(--component-dropdown-padding-block)',
-        }),
-        []
+      // Calculate menu wrapper style with optional max-height and scrolling
+      const menuWrapperStyle: React.CSSProperties = {
+        maxHeight: maxHeight
+          ? (typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight)
+          : 'var(--component-dropdown-max-height)',
+        overflowY: 'auto',
+      };
+
+      const menuStyle: React.CSSProperties = {
+        paddingInline: 'var(--component-dropdown-padding-inline)',
+        paddingBlock: 'var(--component-dropdown-padding-block)',
+        ...(side === 'top' || side === 'bottom'
+          ? { marginTop: SIDE_GAP_STYLE.marginTop, marginBottom: SIDE_GAP_STYLE.marginBottom }
+          : { marginLeft: SIDE_GAP_STYLE.marginLeft, marginRight: SIDE_GAP_STYLE.marginRight }),
+      };
+
+      const menuClasses = cn(
+        BASE_CLASSES,
+        SIDE_STYLES[side],
+        ALIGN_STYLES[align],
+        enableAnimation && 'transition-all duration-[var(--component-dropdown-transition-duration)]',
+        enableAnimation && !isOpen && 'scale-[var(--component-dropdown-animation-scale)]',
+        isOpen && VISIBLE_CLASS,
+        className
       );
 
-      const menuClasses = useMemo(
-        () => cn(
-          BASE_CLASSES,
-          SIDE_STYLES[side],
-          ALIGN_STYLES[align],
-          isOpen && VISIBLE_CLASS,
-          className
-        ),
-        [side, align, isOpen, className]
-      );
-
-      useClickOutside(menuRef, () => setIsOpen(false));
+      // Close menu when clicking outside (excluding trigger) or pressing Escape
+      useClickOutsideWithExclusions(menuRef, () => setIsOpen(false), [triggerRef]);
       useEscapeKey(() => setIsOpen(false), isOpen);
-
-      // Keyboard navigation
+      
+      /**
+       * Focus management: Move focus to first menu item when menu opens.
+       * Returns focus to trigger when menu closes.
+       */
       useEffect(() => {
-        if (!isOpen) return;
+        if (!isOpen || !menuRef.current) return;
 
-        const handleKeyDown = (e: KeyboardEvent) => {
-          const items = menuRef.current?.querySelectorAll<HTMLButtonElement>(
-            '[role="menuitem"]:not([disabled])'
-          );
-          if (!items || items.length === 0) return;
-
-          const currentIndex = Array.from(items).indexOf(document.activeElement as HTMLButtonElement);
-
-          switch (e.key) {
-            case 'ArrowDown':
-              e.preventDefault();
-              const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % items.length;
-              items[nextIndex]?.focus();
-              break;
-            case 'ArrowUp':
-              e.preventDefault();
-              const prevIndex = currentIndex === -1 ? items.length - 1 : (currentIndex - 1 + items.length) % items.length;
-              items[prevIndex]?.focus();
-              break;
-            case 'Home':
-              e.preventDefault();
-              items[0]?.focus();
-              break;
-            case 'End':
-              e.preventDefault();
-              items[items.length - 1]?.focus();
-              break;
-          }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-        return () => document.removeEventListener('keydown', handleKeyDown);
+        // Focus first enabled menu item when menu opens
+        const firstItem = menuRef.current.querySelector<HTMLButtonElement>(
+          '[role="menuitem"]:not([disabled])'
+        );
+        
+        if (firstItem) {
+          // Small delay to ensure DOM is ready
+          requestAnimationFrame(() => {
+            firstItem.focus();
+          });
+        }
       }, [isOpen]);
+
+      // Keyboard navigation for menu items
+      useMenuKeyboardNavigation(menuRef, isOpen);
 
       if (!isOpen) return null;
 
       return (
         <div
-          ref={(node) => {
-            if (node) menuRef.current = node;
-            if (typeof forwardedRef === 'function') {
-              forwardedRef(node);
-            } else if (forwardedRef) {
-              forwardedRef.current = node;
-            }
-          }}
-          id="dropdown-menu"
+          ref={mergedRef}
+          id={menuId}
           role="menu"
           aria-orientation="vertical"
           className={menuClasses}
           style={menuStyle}
           {...props}
         >
-          <div className={MENU_WRAPPER_CLASSES}>
+          <div className={MENU_WRAPPER_CLASSES} style={menuWrapperStyle}>
             {children}
           </div>
         </div>
       );
     }
-  )
 );
 
 DropdownMenu.displayName = 'Dropdown.Menu';

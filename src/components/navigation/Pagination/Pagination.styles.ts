@@ -13,7 +13,6 @@ export const PAGINATION_ITEM_SIZE_STYLES = {
 export const PAGINATION_ITEM_VARIANT_STYLES = {
   default: 'bg-[var(--component-pagination-bg-default)] text-[var(--component-pagination-text-default)] border border-[var(--component-pagination-border-default)] hover:bg-[var(--component-pagination-bg-hover)] hover:border-[var(--component-pagination-border-hover)] hover:text-[var(--component-pagination-text-hover)]',
   active: 'bg-[var(--component-pagination-bg-active)] text-[var(--component-pagination-text-active)] border border-[var(--component-pagination-border-active)]',
-  ghost: 'text-[var(--component-pagination-text-default)] hover:bg-[var(--component-pagination-bg-hover)] hover:text-[var(--component-pagination-text-hover)]',
 } as const;
 
 export const PAGINATION_ELLIPSIS_BASE_CLASSES =
@@ -25,5 +24,16 @@ export const PAGINATION_ELLIPSIS_SIZE_STYLES = {
   lg: 'h-11 w-11 text-base',
 } as const;
 
-export const PAGINATION_NAV_BUTTON_CLASSES =
-  'gap-1 pl-2.5';
+/** Maps pagination size to button size */
+export const PAGINATION_TO_BUTTON_SIZE = {
+  sm: 'small',
+  md: 'default',
+  lg: 'large',
+} as const;
+
+/** Maps pagination size to icon size */
+export const PAGINATION_TO_ICON_SIZE = {
+  sm: 'xs',
+  md: 'sm',
+  lg: 'md',
+} as const;

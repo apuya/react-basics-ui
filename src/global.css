@@ -1339,6 +1339,20 @@ svg {
   --component-button-icon-destructive-hover: var(--semantic-status-error-dark);
   --component-button-icon-destructive-disabled: var(--semantic-status-error-alpha);
 
+  /* Button - Tabs Variant */
+  --component-button-bg-tabs-default: var(--component-tabs-bg-default);
+  --component-button-bg-tabs-hover: var(--component-tabs-bg-hover);
+  --component-button-bg-tabs-active: var(--component-tabs-bg-active);
+  --component-button-bg-tabs-disabled: var(--component-tabs-bg-disabled);
+  --component-button-border-tabs-default: var(--component-tabs-border-default);
+  --component-button-border-tabs-hover: var(--component-tabs-border-hover);
+  --component-button-border-tabs-active: var(--component-tabs-border-active);
+  --component-button-border-tabs-disabled: var(--component-tabs-border-disabled);
+  --component-button-text-tabs-default: var(--component-tabs-text-default);
+  --component-button-text-tabs-hover: var(--component-tabs-text-hover);
+  --component-button-text-tabs-active: var(--component-tabs-text-active);
+  --component-button-text-tabs-disabled: var(--component-tabs-text-disabled);
+
   /* Button - Sizing */
   --component-button-height-small: var(--semantic-height-default);
   --component-button-height-default: var(--semantic-height-medium);
@@ -1627,7 +1641,7 @@ svg {
   --component-tabs-bg-hover: var(--semantic-surface-alt);
   --component-tabs-bg-active: var(--semantic-surface-base);
   --component-tabs-bg-disabled: var(--semantic-surface-transparent);
-  --component-tabs-text-default: var(--semantic-text-secondary);
+  --component-tabs-text-default: var(--semantic-text-primary);
   --component-tabs-text-hover: var(--semantic-text-primary);
   --component-tabs-text-active: var(--semantic-text-primary);
   --component-tabs-text-disabled: var(--semantic-text-disabled);
@@ -1958,6 +1972,7 @@ svg {
   --component-dropdown-icon-size: var(--semantic-icon-small);
   --component-dropdown-min-width: var(--semantic-width-large);
   --component-dropdown-max-width: var(--semantic-width-xxlarge);
+  --component-dropdown-max-height: 400px;
   --component-dropdown-radius: var(--semantic-radius-lg);
   --component-dropdown-shadow: var(--semantic-shadow-lg);
   --component-dropdown-border-width: var(--semantic-border-width-default);
@@ -1965,7 +1980,22 @@ svg {
   --component-dropdown-item-font-weight: var(--semantic-text-weight-regular);
   --component-dropdown-item-line-height: var(--semantic-line-height-normal);
   --component-dropdown-transition-duration: var(--semantic-duration-fast);
+  --component-dropdown-animation-scale: 0.95;
   --component-dropdown-z-index: var(--semantic-z-dropdown);
+
+  /* Dropdown Header/Section */
+  --component-dropdown-header-text-color: var(--semantic-text-secondary);
+  --component-dropdown-header-font-size: var(--semantic-text-size-small);
+  --component-dropdown-header-font-weight: var(--semantic-text-weight-medium);
+  --component-dropdown-header-line-height: var(--semantic-line-height-normal);
+  --component-dropdown-header-letter-spacing: 0;
+
+  /* Dropdown Description/Trailing Text */
+  --component-dropdown-description-text-color: var(--semantic-text-secondary);
+  --component-dropdown-description-font-size: var(--semantic-text-size-caption);
+  --component-dropdown-description-font-weight: var(--semantic-text-weight-regular);
+  --component-dropdown-description-line-height: var(--semantic-line-height-normal);
+  --component-dropdown-description-letter-spacing: 0;
 
   /* Breadcrumb Component */
   --component-breadcrumb-text-default: var(--semantic-text-secondary);

@@ -1,14 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Dropdown } from './Dropdown';
+import { Dropdown, DropdownContext } from './Dropdown';
+import { type ReactNode, useRef } from 'react';
+
+const MockDropdownWrapper = ({ children }: { children: ReactNode }) => {
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  return (
+    <DropdownContext.Provider value={{ 
+      isOpen: true, 
+      setIsOpen: () => {}, 
+      triggerRef, 
+      menuId: 'mock-menu-id'
+    }}>
+      <div className="relative flex items-center justify-center" style={{ minHeight: '350px', width: '100%', maxWidth: '350px' }}>
+        <div>
+          {children}
+        </div>
+      </div>
+    </DropdownContext.Provider>
+  );
+};
 
 /**
- * DropdownMenu is a subcomponent designed for compound use within the Dropdown component.
- * It contains the dropdown items and manages keyboard navigation, positioning, and click-outside behavior.
- * 
- * **Important**: This component requires the DropdownContext provided by the parent Dropdown component.
- * It should always be used as `<Dropdown.Menu>` within a `<Dropdown>` wrapper.
- * 
- * @see Use the main Dropdown component stories for complete usage examples
+ * DropdownMenu contains dropdown items and manages positioning and keyboard navigation.
+ * Must be used within Dropdown.
  */
 const meta = {
   title: 'Navigation/Dropdown/Subcomponents/DropdownMenu',
@@ -18,36 +32,25 @@ const meta = {
     docs: {
       description: {
         component: `
-The DropdownMenu component is a compound subcomponent that must be used within a Dropdown parent.
-It renders the menu container with items and handles all menu interactions.
-
-### Compound Usage Pattern
-
-\`\`\`tsx
-<Dropdown>
-  <Dropdown.Trigger>Menu</Dropdown.Trigger>
-  <Dropdown.Menu side="bottom" align="start">
-    <Dropdown.Item>Option 1</Dropdown.Item>
-    <Dropdown.Item>Option 2</Dropdown.Item>
-  </Dropdown.Menu>
-</Dropdown>
-\`\`\`
+Menu container with items, positioning, keyboard navigation, and click-outside handling.
 
 ### Features
 - Keyboard navigation (Arrow keys, Home, End, Escape)
-- Click-outside detection to close menu
-- Flexible positioning with side and align props
-- Focus management for accessibility
-- Portal rendering for z-index stacking
-
-### Positioning
-- \`side\`: Position relative to trigger (top, right, bottom, left)
-- \`align\`: Alignment along the positioning axis (start, center, end)
+- Flexible positioning (side and align props)
+- Scrollable with maxHeight
+- Focus management
         `,
       },
     },
   },
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: '400px', padding: '2rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     side: {
       control: 'select',
@@ -86,14 +89,13 @@ export const Default: Story = {
     align: 'start',
   },
   render: (args) => (
-    <Dropdown defaultOpen>
-      <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+    <MockDropdownWrapper>
       <Dropdown.Menu {...args}>
         <Dropdown.Item>New File</Dropdown.Item>
         <Dropdown.Item>Save</Dropdown.Item>
         <Dropdown.Item>Export</Dropdown.Item>
       </Dropdown.Menu>
-    </Dropdown>
+    </MockDropdownWrapper>
   ),
   parameters: {
     docs: {
@@ -109,14 +111,13 @@ export const Default: Story = {
  */
 export const TopPosition: Story = {
   render: () => (
-    <Dropdown defaultOpen>
-      <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+    <MockDropdownWrapper>
       <Dropdown.Menu side="top" align="start">
         <Dropdown.Item>Option 1</Dropdown.Item>
         <Dropdown.Item>Option 2</Dropdown.Item>
         <Dropdown.Item>Option 3</Dropdown.Item>
       </Dropdown.Menu>
-    </Dropdown>
+    </MockDropdownWrapper>
   ),
   parameters: {
     docs: {
@@ -132,14 +133,13 @@ export const TopPosition: Story = {
  */
 export const RightPosition: Story = {
   render: () => (
-    <Dropdown defaultOpen>
-      <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+    <MockDropdownWrapper>
       <Dropdown.Menu side="right" align="start">
         <Dropdown.Item>Option 1</Dropdown.Item>
         <Dropdown.Item>Option 2</Dropdown.Item>
         <Dropdown.Item>Option 3</Dropdown.Item>
       </Dropdown.Menu>
-    </Dropdown>
+    </MockDropdownWrapper>
   ),
   parameters: {
     docs: {
@@ -155,14 +155,13 @@ export const RightPosition: Story = {
  */
 export const CenterAligned: Story = {
   render: () => (
-    <Dropdown defaultOpen>
-      <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+    <MockDropdownWrapper>
       <Dropdown.Menu side="bottom" align="center">
         <Dropdown.Item>Center Option 1</Dropdown.Item>
         <Dropdown.Item>Center Option 2</Dropdown.Item>
         <Dropdown.Item>Center Option 3</Dropdown.Item>
       </Dropdown.Menu>
-    </Dropdown>
+    </MockDropdownWrapper>
   ),
   parameters: {
     docs: {
@@ -178,14 +177,13 @@ export const CenterAligned: Story = {
  */
 export const EndAligned: Story = {
   render: () => (
-    <Dropdown defaultOpen>
-      <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+    <MockDropdownWrapper>
       <Dropdown.Menu side="bottom" align="end">
         <Dropdown.Item>End Option 1</Dropdown.Item>
         <Dropdown.Item>End Option 2</Dropdown.Item>
         <Dropdown.Item>End Option 3</Dropdown.Item>
       </Dropdown.Menu>
-    </Dropdown>
+    </MockDropdownWrapper>
   ),
   parameters: {
     docs: {
@@ -201,8 +199,7 @@ export const EndAligned: Story = {
  */
 export const WithKeyboardNavigation: Story = {
   render: () => (
-    <Dropdown defaultOpen>
-      <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+    <MockDropdownWrapper>
       <Dropdown.Menu>
         <Dropdown.Item>First Item (Home key jumps here)</Dropdown.Item>
         <Dropdown.Item>Second Item</Dropdown.Item>
@@ -210,7 +207,7 @@ export const WithKeyboardNavigation: Story = {
         <Dropdown.Item>Fourth Item</Dropdown.Item>
         <Dropdown.Item>Last Item (End key jumps here)</Dropdown.Item>
       </Dropdown.Menu>
-    </Dropdown>
+    </MockDropdownWrapper>
   ),
   parameters: {
     docs: {
@@ -231,8 +228,7 @@ export const WithKeyboardNavigation: Story = {
  */
 export const WithComplexContent: Story = {
   render: () => (
-    <Dropdown defaultOpen>
-      <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+    <MockDropdownWrapper>
       <Dropdown.Menu>
         <Dropdown.Item leadingIcon={
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -248,7 +244,7 @@ export const WithComplexContent: Story = {
         }>
           Duplicate
         </Dropdown.Item>
-        <Dropdown.Divider />
+        <Dropdown.MenuItem variant="divider" />
         <Dropdown.Item leadingIcon={
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -257,12 +253,67 @@ export const WithComplexContent: Story = {
           Delete
         </Dropdown.Item>
       </Dropdown.Menu>
-    </Dropdown>
+    </MockDropdownWrapper>
   ),
   parameters: {
     docs: {
       description: {
         story: 'Menu containing items with icons, keyboard shortcuts, and dividers for visual grouping.',
+      },
+    },
+  },
+};
+
+/**
+ * Menu with custom max-height enabling scrolling for long lists.
+ * The menu will scroll when content exceeds the specified height.
+ */
+export const WithMaxHeight: StoryObj<typeof Dropdown.Menu> = {
+  render: () => (
+    <MockDropdownWrapper>
+      <Dropdown.Menu maxHeight={200}>
+        <Dropdown.Item>Item 1</Dropdown.Item>
+        <Dropdown.Item>Item 2</Dropdown.Item>
+        <Dropdown.Item>Item 3</Dropdown.Item>
+        <Dropdown.Item>Item 4</Dropdown.Item>
+        <Dropdown.Item>Item 5</Dropdown.Item>
+        <Dropdown.Item>Item 6</Dropdown.Item>
+        <Dropdown.Item>Item 7</Dropdown.Item>
+        <Dropdown.Item>Item 8</Dropdown.Item>
+        <Dropdown.Item>Item 9</Dropdown.Item>
+        <Dropdown.Item>Item 10</Dropdown.Item>
+        <Dropdown.Item>Item 11</Dropdown.Item>
+        <Dropdown.Item>Item 12</Dropdown.Item>
+      </Dropdown.Menu>
+    </MockDropdownWrapper>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates max-height configuration with scrollable content for long menus.',
+      },
+    },
+  },
+};
+
+/**
+ * Menu without animations for reduced motion preferences.
+ */
+export const WithoutAnimation: StoryObj<typeof Dropdown.Menu> = {
+  render: () => (
+    <MockDropdownWrapper>
+      <Dropdown.Menu enableAnimation={false}>
+        <Dropdown.Item>Profile</Dropdown.Item>
+        <Dropdown.Item>Settings</Dropdown.Item>
+        <Dropdown.MenuItem variant="divider" />
+        <Dropdown.Item>Logout</Dropdown.Item>
+      </Dropdown.Menu>
+    </MockDropdownWrapper>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disable animations for accessibility and reduced motion preferences.',
       },
     },
   },

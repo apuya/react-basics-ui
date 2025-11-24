@@ -1,57 +1,43 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Dropdown } from './Dropdown';
+import { DropdownErrorBoundary } from './DropdownErrorBoundary';
 import { Button } from '../../forms/Button';
 import { Text } from '../../typography/Text';
-import { BiEdit, BiCopy, BiTrash, BiDownload, BiShare, BiCut, BiPaste } from 'react-icons/bi';
+import { BiEdit, BiCopy, BiTrash, BiDownload, BiShare, BiCut, BiPaste, BiCheck } from 'react-icons/bi';
 
 const meta: Meta<typeof Dropdown> = {
   title: 'Navigation/Dropdown',
   component: Dropdown,
   parameters: {
     layout: 'centered',
+    viewport: {
+      defaultViewport: 'responsive',
+    },
     docs: {
       description: {
-        component: 'A dropdown menu component with keyboard navigation support. Built using the compound component pattern with `Dropdown.Trigger`, `Dropdown.Menu`, `Dropdown.Item`, and `Dropdown.Divider` subcomponents. Supports icons, keyboard shortcuts, disabled states, and full keyboard navigation (Arrow keys, Home, End, Escape).',
+        component: 'A dropdown menu component with keyboard navigation support. Built using the compound component pattern with `Dropdown.Trigger`, `Dropdown.Menu`, `Dropdown.Item`, and `Dropdown.MenuItem` subcomponents. Supports icons, keyboard shortcuts, disabled states, variants, checkboxes, descriptions, and full keyboard navigation.',
       },
     },
   },
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: '450px', padding: '2rem', width: '100%', maxWidth: '400px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
 type Story = StoryObj<typeof Dropdown>;
 
-// Compound Component Overview
-export const CompoundComponents: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Dropdown is built using the compound component pattern. It consists of: `Dropdown` (root container), `Dropdown.Trigger` (button/element that opens the menu), `Dropdown.Menu` (menu container with positioning), `Dropdown.Item` (individual menu items), and `Dropdown.Divider` (visual separator).',
-      },
-    },
-  },
-  render: () => (
-    <Dropdown>
-      <Dropdown.Trigger>
-        <Button variant="tertiary">Example Menu</Button>
-      </Dropdown.Trigger>
-      <Dropdown.Menu>
-        <Dropdown.Item>Regular Item</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiEdit />}>Item with Icon</Dropdown.Item>
-        <Dropdown.Item shortcut="⌘K">Item with Shortcut</Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item disabled>Disabled Item</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-  ),
-};
-
-// Basic Examples
+// Basic Usage
 export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Basic dropdown menu with simple text items. Click the trigger to open the menu.',
+        story: 'Basic dropdown menu with simple text items.',
       },
     },
   },
@@ -61,187 +47,156 @@ export const Default: Story = {
         <Button variant="tertiary">Open Menu</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
-        <Dropdown.Item>Menu Item 1</Dropdown.Item>
-        <Dropdown.Item>Menu Item 2</Dropdown.Item>
-        <Dropdown.Item>Menu Item 3</Dropdown.Item>
+        <Dropdown.Item>New File</Dropdown.Item>
+        <Dropdown.Item>Open File</Dropdown.Item>
+        <Dropdown.Item>Save</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   ),
 };
 
-export const WithIcons: Story = {
+// All Features Combined
+export const CompleteExample: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Dropdown items with leading icons for better visual recognition of actions.',
+        story: 'Comprehensive example showing icons, shortcuts, variants, dividers, disabled states, checkboxes, and descriptions all in one menu.',
       },
     },
   },
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <Button variant="tertiary">Actions</Button>
+        <Button variant="tertiary">Actions Menu</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
-        <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiCopy />}>Copy</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiDownload />}>Download</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiShare />}>Share</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-  ),
-};
-
-export const WithShortcuts: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Dropdown items with keyboard shortcuts displayed on the right side. Useful for showing power users available keyboard commands.',
-      },
-    },
-  },
-  render: () => (
-    <Dropdown>
-      <Dropdown.Trigger>
-        <Button variant="tertiary">Edit Menu</Button>
-      </Dropdown.Trigger>
-      <Dropdown.Menu>
-        <Dropdown.Item leadingIcon={<BiCut />} shortcut="⌘X">Cut</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiCopy />} shortcut="⌘C">Copy</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiPaste />} shortcut="⌘V">Paste</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-  ),
-};
-
-export const WithDividers: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Use dividers to group related menu items and create visual separation between different action categories.',
-      },
-    },
-  },
-  render: () => (
-    <Dropdown>
-      <Dropdown.Trigger>
-        <Button variant="tertiary">File Menu</Button>
-      </Dropdown.Trigger>
-      <Dropdown.Menu>
-        <Dropdown.Item leadingIcon={<BiEdit />}>New File</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiCopy />}>Duplicate</Dropdown.Item>
+        <Dropdown.MenuItem variant="header" title="File Actions" description="Manage your files" />
+        <Dropdown.Item leadingIcon={<BiEdit />} shortcut="⌘N">
+          New File
+        </Dropdown.Item>
+        <Dropdown.Item leadingIcon={<BiCopy />} shortcut="⌘D" checked={true}>
+          Auto-save Enabled
+        </Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item leadingIcon={<BiDownload />}>Export</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiShare />}>Share</Dropdown.Item>
+        <Dropdown.MenuItem variant="header" title="Export Options" />
+        <Dropdown.Item 
+          leadingIcon={<BiDownload />} 
+          variant="success"
+          description="Download as PDF"
+        >
+          Export Document
+        </Dropdown.Item>
+        <Dropdown.Item leadingIcon={<BiShare />} variant="info" disabled>
+          Share (Coming Soon)
+        </Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item leadingIcon={<BiTrash />}>Delete</Dropdown.Item>
+        <Dropdown.Item leadingIcon={<BiTrash />} variant="danger" shortcut="⌘⌫">
+          Delete File
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   ),
 };
 
-export const WithDisabledItems: Story = {
+// Semantic Variants
+export const ItemVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Disabled items are visually muted and cannot be interacted with. Use for actions that are contextually unavailable.',
+        story: 'All available semantic variants: default, success, info, warning, and danger.',
       },
     },
   },
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <Button variant="tertiary">Options</Button>
+        <Button variant="tertiary">Variants</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
-        <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiCopy />} disabled>Copy (Disabled)</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiDownload />}>Download</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiTrash />} disabled>Delete (Disabled)</Dropdown.Item>
+        <Dropdown.Item variant="default">Default Action</Dropdown.Item>
+        <Dropdown.Item variant="success" leadingIcon={<BiCheck />}>Success Action</Dropdown.Item>
+        <Dropdown.Item variant="info" leadingIcon={<BiShare />}>Info Action</Dropdown.Item>
+        <Dropdown.Item variant="warning" leadingIcon={<BiDownload />}>Warning Action</Dropdown.Item>
+        <Dropdown.Item variant="danger" leadingIcon={<BiTrash />}>Danger Action</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   ),
 };
 
-export const WithVariants: Story = {
+// Positioning
+export const Positioning: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Dropdown items support different semantic variants: default, danger, warning, success, and info. Use these to communicate the nature of the action.',
+        story: 'Menus can be positioned on different sides and aligned to start, center, or end.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <Dropdown>
+        <Dropdown.Trigger>
+          <Button variant="tertiary" size="small">Bottom Start</Button>
+        </Dropdown.Trigger>
+        <Dropdown.Menu side="bottom" align="start">
+          <Dropdown.Item>Item 1</Dropdown.Item>
+          <Dropdown.Item>Item 2</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+      
+      <Dropdown>
+        <Dropdown.Trigger>
+          <Button variant="tertiary" size="small">Bottom End</Button>
+        </Dropdown.Trigger>
+        <Dropdown.Menu side="bottom" align="end">
+          <Dropdown.Item>Item 1</Dropdown.Item>
+          <Dropdown.Item>Item 2</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+      
+      <Dropdown>
+        <Dropdown.Trigger>
+          <Button variant="tertiary" size="small">Right Start</Button>
+        </Dropdown.Trigger>
+        <Dropdown.Menu side="right" align="start">
+          <Dropdown.Item>Item 1</Dropdown.Item>
+          <Dropdown.Item>Item 2</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </div>
+  ),
+};
+
+// Scrollable Long List
+export const ScrollableLongList: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Menu with maxHeight constraint for long lists.',
       },
     },
   },
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <Button variant="tertiary">Actions</Button>
+        <Button variant="tertiary">Countries</Button>
       </Dropdown.Trigger>
-      <Dropdown.Menu>
-        <Dropdown.Item leadingIcon={<BiEdit />}>Edit (Default)</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiCopy />} variant="success">Duplicate (Success)</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiShare />} variant="info">View Details (Info)</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiDownload />} variant="warning">Export All (Warning)</Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item leadingIcon={<BiTrash />} variant="danger">Delete (Danger)</Dropdown.Item>
+      <Dropdown.Menu maxHeight={250}>
+        {['United States', 'United Kingdom', 'Canada', 'Australia', 'Germany', 'France', 
+          'Italy', 'Spain', 'Japan', 'China', 'India', 'Brazil', 'Mexico'].map((country) => (
+          <Dropdown.Item key={country}>{country}</Dropdown.Item>
+        ))}
       </Dropdown.Menu>
     </Dropdown>
   ),
 };
 
-export const CompleteMenu: Story = {
+// Real-World Examples
+export const UserAccountMenu: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Example showing all features combined: icons, shortcuts, dividers, and disabled states in a single menu.',
-      },
-    },
-  },
-  render: () => (
-    <Dropdown>
-      <Dropdown.Trigger>
-        <Button variant="tertiary">Complete Menu</Button>
-      </Dropdown.Trigger>
-      <Dropdown.Menu>
-        <Dropdown.Item leadingIcon={<BiEdit />} shortcut="⌘E">Edit</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiCopy />} shortcut="⌘C">Copy</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiCut />} shortcut="⌘X" disabled>Cut (Disabled)</Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item leadingIcon={<BiDownload />}>Download</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiShare />} shortcut="⌘⇧S">Share</Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item leadingIcon={<BiTrash />}>Delete</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-  ),
-};
-
-export const RightAligned: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Menu aligned to the end of the trigger button. Useful when the trigger is positioned near the right edge of the viewport.',
-      },
-    },
-  },
-  render: () => (
-    <Dropdown>
-      <Dropdown.Trigger>
-        <Button variant="tertiary">Right Aligned</Button>
-      </Dropdown.Trigger>
-      <Dropdown.Menu align="end">
-        <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiCopy />}>Copy</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiTrash />}>Delete</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-  ),
-};
-
-export const UserMenu: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Example of a user account menu with custom trigger styling, header information, and account actions.',
+        story: 'User account menu with custom trigger, header, and sign-out action.',
       },
     },
   },
@@ -253,16 +208,16 @@ export const UserMenu: Story = {
           alignItems: 'center',
           gap: '0.5rem',
           padding: '0.5rem 0.75rem', 
-          borderRadius: 'var(--semantic-border-radius-md)',
-          border: '1px solid var(--semantic-color-border-default)',
-          background: 'var(--semantic-color-background-primary)',
+          borderRadius: 'var(--semantic-radius-md)',
+          border: '1px solid var(--semantic-border-default)',
+          background: 'var(--semantic-surface-primary)',
           cursor: 'pointer',
         }}>
           <div style={{ 
             width: '32px', 
             height: '32px', 
             borderRadius: '50%',
-            backgroundColor: 'var(--semantic-color-primary-default)',
+            backgroundColor: 'var(--semantic-accent-blue-default)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -276,63 +231,27 @@ export const UserMenu: Story = {
         </div>
       </Dropdown.Trigger>
       <Dropdown.Menu align="end">
-        <div style={{ 
-          padding: '0.5rem 0.75rem', 
-          borderBottom: '1px solid var(--semantic-color-border-default)',
-          marginBottom: '0.25rem',
-        }}>
-          <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>John Doe</div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--semantic-color-text-secondary)' }}>
-            john.doe@example.com
-          </div>
-        </div>
-        <Dropdown.Item>Profile</Dropdown.Item>
-        <Dropdown.Item>Settings</Dropdown.Item>
-        <Dropdown.Item>Billing</Dropdown.Item>
+        <Dropdown.MenuItem 
+          variant="header" 
+          title="John Doe" 
+          description="john.doe@example.com" 
+        />
+        <Dropdown.Item>My Profile</Dropdown.Item>
+        <Dropdown.Item>Account Settings</Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item>Help & Support</Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item>Sign Out</Dropdown.Item>
+        <Dropdown.Item variant="danger">Sign Out</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   ),
 };
 
-export const KeyboardNavigation: Story = {
+export const ContextMenu: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates full keyboard navigation support. Use Arrow keys to move between items, Home/End for first/last item, Enter to select, and Escape to close.',
-      },
-    },
-  },
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
-      <Dropdown>
-        <Dropdown.Trigger>
-          <Button variant="tertiary">Try Keyboard Navigation</Button>
-        </Dropdown.Trigger>
-        <Dropdown.Menu>
-          <Dropdown.Item>Item 1 (Press ↓ to go down)</Dropdown.Item>
-          <Dropdown.Item>Item 2 (Press ↑ to go up)</Dropdown.Item>
-          <Dropdown.Item>Item 3 (Press Home for first)</Dropdown.Item>
-          <Dropdown.Item>Item 4 (Press End for last)</Dropdown.Item>
-          <Dropdown.Item>Item 5 (Press Esc to close)</Dropdown.Item>
-          <Dropdown.Item>Item 6 (Press Enter to select)</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-      <Text size="small" color="secondary" align="center">
-        Open the menu and use Arrow keys, Home, End, Escape, or Enter to navigate.
-      </Text>
-    </div>
-  ),
-};
-
-export const CustomTrigger: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'The trigger can be any custom element. This example shows a circular icon button trigger.',
+        story: 'Context menu example with various actions and keyboard shortcuts.',
       },
     },
   },
@@ -342,57 +261,96 @@ export const CustomTrigger: Story = {
         <Button variant="tertiary" size="small">⋮</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu align="end">
-        <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
-        <Dropdown.Item leadingIcon={<BiCopy />}>Duplicate</Dropdown.Item>
+        <Dropdown.Item leadingIcon={<BiEdit />} shortcut="⌘E">Edit</Dropdown.Item>
+        <Dropdown.Item leadingIcon={<BiCopy />} shortcut="⌘D">Duplicate</Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item leadingIcon={<BiTrash />}>Delete</Dropdown.Item>
+        <Dropdown.Item leadingIcon={<BiDownload />} variant="success">Export</Dropdown.Item>
+        <Dropdown.Item leadingIcon={<BiShare />} variant="info">Share</Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item leadingIcon={<BiTrash />} variant="danger" shortcut="⌘⌫">Delete</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   ),
 };
 
-export const MultipleDropdowns: Story = {
+// Advanced Features
+export const WithSearchAndFooter: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Multiple independent dropdowns can coexist. Only one menu is open at a time.',
+        story: 'Menu with search input and custom footer for advanced filtering.',
       },
     },
   },
   render: () => (
-    <div style={{ display: 'flex', gap: '1rem' }}>
-      <Dropdown>
-        <Dropdown.Trigger>
-          <Button variant="tertiary">File</Button>
-        </Dropdown.Trigger>
-        <Dropdown.Menu>
-          <Dropdown.Item>New</Dropdown.Item>
-          <Dropdown.Item>Open</Dropdown.Item>
-          <Dropdown.Item>Save</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+    <Dropdown>
+      <Dropdown.Trigger>
+        <Button variant="tertiary">Select Option</Button>
+      </Dropdown.Trigger>
+      <Dropdown.Menu maxHeight={300}>
+        <Dropdown.MenuItem variant="search" searchPlaceholder="Search options..." />
+        <Dropdown.Item checked={true}>Option 1 (Selected)</Dropdown.Item>
+        <Dropdown.Item checked={false}>Option 2</Dropdown.Item>
+        <Dropdown.Item checked={false}>Option 3</Dropdown.Item>
+        <Dropdown.Item>Option 4</Dropdown.Item>
+        <Dropdown.Item>Option 5</Dropdown.Item>
+        <Dropdown.MenuItem 
+          variant="footer" 
+          footerActionLabel="View All Options"
+        />
+      </Dropdown.Menu>
+    </Dropdown>
+  ),
+};
 
-      <Dropdown>
-        <Dropdown.Trigger>
-          <Button variant="tertiary">Edit</Button>
-        </Dropdown.Trigger>
-        <Dropdown.Menu>
-          <Dropdown.Item leadingIcon={<BiCut />}>Cut</Dropdown.Item>
-          <Dropdown.Item leadingIcon={<BiCopy />}>Copy</Dropdown.Item>
-          <Dropdown.Item leadingIcon={<BiPaste />}>Paste</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+/**
+ * Dropdown without animations for accessibility.
+ */
+export const ReducedMotion: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disable animations for users who prefer reduced motion.',
+      },
+    },
+  },
+  render: () => (
+    <Dropdown>
+      <Dropdown.Trigger>
+        <Button variant="tertiary">No Animation</Button>
+      </Dropdown.Trigger>
+      <Dropdown.Menu enableAnimation={false}>
+        <Dropdown.Item>Profile</Dropdown.Item>
+        <Dropdown.Item>Settings</Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item>Sign Out</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  ),
+};
 
+/**
+ * Dropdown wrapped in error boundary for graceful error handling.
+ */
+export const WithErrorBoundary: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Error boundary wrapper to prevent crashes and provide fallback UI.',
+      },
+    },
+  },
+  render: () => (
+    <DropdownErrorBoundary>
       <Dropdown>
         <Dropdown.Trigger>
-          <Button variant="tertiary">View</Button>
+          <Button variant="tertiary">Protected Menu</Button>
         </Dropdown.Trigger>
         <Dropdown.Menu>
-          <Dropdown.Item>Zoom In</Dropdown.Item>
-          <Dropdown.Item>Zoom Out</Dropdown.Item>
-          <Dropdown.Item>Reset</Dropdown.Item>
+          <Dropdown.Item>Safe Item 1</Dropdown.Item>
+          <Dropdown.Item>Safe Item 2</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-    </div>
+    </DropdownErrorBoundary>
   ),
 };

@@ -18,7 +18,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'tertiary', 'ghost', 'destructive'],
+      options: ['primary', 'secondary', 'tertiary', 'ghost', 'destructive', 'tabs'],
       description: 'The visual style variant of the button',
     },
     size: {
@@ -108,6 +108,20 @@ export const Destructive: Story = {
   args: {
     variant: 'destructive',
     children: 'Delete Item',
+  },
+};
+
+export const Tabs: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs variant styled to match tab triggers. Use for buttons that need visual consistency with tab components.',
+      },
+    },
+  },
+  args: {
+    variant: 'tabs',
+    children: 'Tab Button',
   },
 };
 
@@ -259,6 +273,7 @@ export const LoadingVariants: Story = {
       <Button variant="tertiary" isLoading>Tertiary</Button>
       <Button variant="ghost" isLoading>Ghost</Button>
       <Button variant="destructive" isLoading>Destructive</Button>
+      <Button variant="tabs" isLoading>Tabs</Button>
     </div>
   ),
 };
@@ -388,6 +403,7 @@ export const AllVariantsWithIcons: Story = {
       <Button variant="tertiary" leadingIcon={<BiCheck />}>Tertiary</Button>
       <Button variant="ghost" leadingIcon={<BiCheck />}>Ghost</Button>
       <Button variant="destructive" leadingIcon={<BiX />}>Delete</Button>
+      <Button variant="tabs" leadingIcon={<BiCheck />}>Tabs</Button>
     </div>
   ),
 };
