@@ -1,0 +1,86 @@
+import {
+  useMemo,
+  useEffect,
+  type ReactNode,
+  type ComponentPropsWithoutRef,
+  forwardRef,
+  memo,
+} from 'react';
+import { cn } from '@/lib/cn';
+import { createComponentContext } from '@/lib/createComponentContext';
+import { useAccordionContext } from './Accordion';
+import { ACCORDION_ITEM_BASE_CLASSES, ACCORDION_ITEM_VARIANT_STYLES } from './Accordion.styles';
+
+export interface AccordionItemProps extends ComponentPropsWithoutRef<'div'> {
+  /** Unique value identifying this accordion item */
+  value: string;
+  children: ReactNode;
+  /** Whether this item is disabled */
+  disabled?: boolean;
+}
+
+interface AccordionItemContextValue {
+  value: string;
+  isOpen: boolean;
+  disabled: boolean;
+}
+
+const { Context: AccordionItemContext, useContext: useAccordionItemContext } =
+  createComponentContext<AccordionItemContextValue>('AccordionItem');
+
+export { useAccordionItemContext };
+
+export const AccordionItem = memo(
+  forwardRef<HTMLDivElement, AccordionItemProps>(({ value, children, className, style, disabled = false, ...props }, ref) => {
+    const { activeItems, variant, disabledItems } = useAccordionContext();
+    const isOpen = activeItems.includes(value);
+
+    // Register/unregister disabled state with parent
+    useEffect(() => {
+      disabledItems.set(value, disabled);
+      return () => {
+        disabledItems.delete(value);
+      };
+    }, [value, disabled, disabledItems]);
+
+    const contextValue = useMemo(
+      () => ({
+        value,
+        isOpen,
+        disabled,
+      }),
+      [value, isOpen, disabled]
+    );
+
+    const itemClasses = useMemo(
+      () => cn(
+        ACCORDION_ITEM_BASE_CLASSES,
+        ACCORDION_ITEM_VARIANT_STYLES[variant as keyof typeof ACCORDION_ITEM_VARIANT_STYLES],
+        disabled && 'opacity-50 pointer-events-none',
+        className
+      ),
+      [variant, disabled, className]
+    );
+
+    // Apply inline spacing for separated variant to ensure JIT compilation
+    const inlineStyle = useMemo(
+      () => ({
+        ...style,
+        ...(variant === 'separated' && {
+          marginBottom: 'var(--component-accordion-gap)',
+        }),
+      }),
+      [style, variant]
+    );
+
+    return (
+      <AccordionItemContext.Provider value={contextValue}>
+        <div ref={ref} className={itemClasses} style={inlineStyle} {...props}>
+          {children}
+        </div>
+      </AccordionItemContext.Provider>
+    );
+  })
+);
+
+AccordionItem.displayName = 'Accordion.Item';

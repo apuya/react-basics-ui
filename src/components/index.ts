@@ -1,23 +1,8 @@
-// Layout
-export * from './layout';
+// Basic components (default export - production ready)
+export * from './basic';
 
-// Typography
-export * from './typography';
+// Namespaced exports for advanced and experimental components
+import * as AdvancedComponents from './advanced';
+import * as ExperimentalComponents from './experimental';
 
-// Forms
-export * from './forms';
-
-// Feedback
-export * from './feedback';
-
-// Overlay
-export * from './overlay';
-
-// Navigation
-export * from './navigation';
-
-// Data Display
-export * from './data-display';
-
-// Utility
-export * from './utility';
+export { AdvancedComponents as Advanced, ExperimentalComponents as Experimental };
