@@ -5,7 +5,7 @@ import { usePaginationContext } from './Pagination';
 import {
   PAGINATION_ELLIPSIS_BASE_CLASSES,
   PAGINATION_ELLIPSIS_SIZE_STYLES,
-  PAGINATION_TO_ICON_SIZE,
+  PAGINATION_SIZE_MAPPINGS,
 } from './Pagination.styles';
 import { Icon } from '@/components/basic/utility/Icon';
 
@@ -33,7 +33,7 @@ export const PaginationEllipsis = memo(
     return (
       <li role="presentation">
         <span ref={ref} aria-hidden className={ellipsisClasses} {...props}>
-          <Icon icon={BiDotsHorizontalRounded} size={PAGINATION_TO_ICON_SIZE[size]} color="inherit" />
+          <Icon icon={BiDotsHorizontalRounded} size={PAGINATION_SIZE_MAPPINGS[size].icon} color="inherit" />
         </span>
       </li>
     );

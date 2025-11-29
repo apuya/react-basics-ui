@@ -11,6 +11,18 @@ export const FILL_BASE_CLASSES =
   'h-full transition-all duration-[var(--component-progress-transition)] ease-in-out rounded-[var(--component-progress-radius)]';
 
 /**
+ * Classes for the Progress value text display
+ */
+export const VALUE_TEXT_CLASSES = 'mt-1 text-xs text-right';
+
+/**
+ * Inline styles for the value text (CSS variables need inline styles for runtime)
+ */
+export const VALUE_TEXT_STYLES = {
+  color: 'var(--semantic-text-secondary)',
+} as const;
+
+/**
  * Size styles for the Progress component
  */
 export const SIZE_STYLES = {

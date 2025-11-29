@@ -1,5 +1,5 @@
 import { forwardRef, memo } from 'react';
-import { Heading, type HeadingLevel, type HeadingColor, type HeadingProps } from '@/components/basic/typography/Heading';
+import { Heading, type HeadingLevel, type HeadingProps } from '@/components/basic/typography/Heading';
 
 export interface AccordionTitleProps extends Omit<HeadingProps, 'as' | 'level'> {
   /** Heading level for semantic HTML. @default 'h6' */

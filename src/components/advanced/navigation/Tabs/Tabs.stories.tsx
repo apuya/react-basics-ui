@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Tabs } from './Tabs';
-import { BiHome, BiChat, BiCog } from 'react-icons/bi';
+import { BiHome, BiChat, BiCog, BiChevronRight, BiNotification } from 'react-icons/bi';
 
 const meta = {
   title: 'Navigation/Tabs',
@@ -230,6 +231,142 @@ export const Sizes: Story = {
           </Tabs.List>
         </Tabs>
       </div>
+    </div>
+  ),
+};
+
+export const Controlled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Controlled mode where parent component manages the active tab state. Demonstrates the onChange callback.',
+      },
+    },
+  },
+  render: function ControlledStory() {
+    const [activeTab, setActiveTab] = useState('profile');
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="text-sm bg-gray-100 p-2 rounded">
+          Current tab: <strong>{activeTab}</strong>
+        </div>
+        <Tabs value={activeTab} onChange={setActiveTab}>
+          <Tabs.List>
+            <Tabs.Tab value="profile">Profile</Tabs.Tab>
+            <Tabs.Tab value="settings">Settings</Tabs.Tab>
+            <Tabs.Tab value="notifications">Notifications</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panels>
+            <Tabs.Panel value="profile">
+              <div className="py-4">
+                <h3 className="text-lg font-medium mb-2">Profile</h3>
+                <p className="text-sm text-gray-600">
+                  Your profile information and public details.
+                </p>
+              </div>
+            </Tabs.Panel>
+            <Tabs.Panel value="settings">
+              <div className="py-4">
+                <h3 className="text-lg font-medium mb-2">Settings</h3>
+                <p className="text-sm text-gray-600">
+                  Customize your application preferences.
+                </p>
+              </div>
+            </Tabs.Panel>
+            <Tabs.Panel value="notifications">
+              <div className="py-4">
+                <h3 className="text-lg font-medium mb-2">Notifications</h3>
+                <p className="text-sm text-gray-600">
+                  Manage your notification preferences.
+                </p>
+              </div>
+            </Tabs.Panel>
+          </Tabs.Panels>
+        </Tabs>
+        <div className="flex gap-2">
+          <button
+            className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={() => setActiveTab('profile')}
+          >
+            Go to Profile
+          </button>
+          <button
+            className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={() => setActiveTab('settings')}
+          >
+            Go to Settings
+          </button>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const WithTrailingIcons: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tabs can display trailing icons, useful for showing badges or indicators.',
+      },
+    },
+  },
+  render: () => (
+    <Tabs defaultValue="inbox">
+      <Tabs.List>
+        <Tabs.Tab value="inbox" trailingIcon={<span className="bg-blue-500 text-white text-xs px-1.5 py-0.5 rounded-full">5</span>}>
+          Inbox
+        </Tabs.Tab>
+        <Tabs.Tab value="sent" trailingIcon={<BiChevronRight />}>
+          Sent
+        </Tabs.Tab>
+        <Tabs.Tab value="alerts" leadingIcon={<BiNotification />} trailingIcon={<span className="bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">!</span>}>
+          Alerts
+        </Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panels>
+        <Tabs.Panel value="inbox"><div className="py-4">5 new messages in your inbox</div></Tabs.Panel>
+        <Tabs.Panel value="sent"><div className="py-4">View sent messages</div></Tabs.Panel>
+        <Tabs.Panel value="alerts"><div className="py-4">Important alerts requiring attention</div></Tabs.Panel>
+      </Tabs.Panels>
+    </Tabs>
+  ),
+};
+
+export const KeyboardNavigation: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates keyboard navigation. Focus the tabs and use Arrow keys to navigate, Home/End for first/last tab, Enter/Space to activate.',
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="text-sm bg-blue-50 p-3 rounded border border-blue-200">
+        <strong>Keyboard shortcuts:</strong>
+        <ul className="mt-2 list-disc list-inside text-gray-600">
+          <li>Arrow Left/Right: Navigate between tabs (horizontal)</li>
+          <li>Arrow Up/Down: Navigate between tabs (vertical)</li>
+          <li>Home: Go to first tab</li>
+          <li>End: Go to last tab</li>
+          <li>Enter/Space: Activate focused tab</li>
+        </ul>
+      </div>
+      <Tabs defaultValue="tab1">
+        <Tabs.List>
+          <Tabs.Tab value="tab1">First Tab</Tabs.Tab>
+          <Tabs.Tab value="tab2">Second Tab</Tabs.Tab>
+          <Tabs.Tab value="tab3">Third Tab</Tabs.Tab>
+          <Tabs.Tab value="tab4">Fourth Tab</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panels>
+          <Tabs.Panel value="tab1"><div className="py-4">Content for the first tab</div></Tabs.Panel>
+          <Tabs.Panel value="tab2"><div className="py-4">Content for the second tab</div></Tabs.Panel>
+          <Tabs.Panel value="tab3"><div className="py-4">Content for the third tab</div></Tabs.Panel>
+          <Tabs.Panel value="tab4"><div className="py-4">Content for the fourth tab</div></Tabs.Panel>
+        </Tabs.Panels>
+      </Tabs>
     </div>
   ),
 };

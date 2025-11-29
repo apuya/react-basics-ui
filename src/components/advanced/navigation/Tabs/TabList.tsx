@@ -1,5 +1,14 @@
-import { forwardRef, memo, useMemo, useEffect, useRef, type ComponentPropsWithoutRef } from 'react';
+import {
+  forwardRef,
+  memo,
+  useMemo,
+  useRef,
+  useCallback,
+  type ComponentPropsWithoutRef,
+  type KeyboardEvent,
+} from 'react';
 import { cn } from '@/lib/cn';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { useTabsContext } from './Tabs';
 import {
   TAB_LIST_BASE_CLASSES,
@@ -28,76 +37,86 @@ export interface TabListProps extends ComponentPropsWithoutRef<'div'> {}
  * ```
  */
 export const TabList = memo(
-  forwardRef<HTMLDivElement, TabListProps>(({ className, children, ...props }, ref) => {
-    const { orientation, activeTab, setActiveTab, tabsOrderRef } = useTabsContext();
-    const listRef = useRef<HTMLDivElement>(null);
+  forwardRef<HTMLDivElement, TabListProps>(
+    ({ className, children, onKeyDown, ...props }, ref) => {
+      const { orientation, activeTab, setActiveTab, tabsOrderRef } = useTabsContext();
+      const listRef = useRef<HTMLDivElement>(null);
+      const mergedRef = useMergedRefs(ref, listRef);
 
-    const tabListClasses = useMemo(
-      () =>
-        cn(
-          TAB_LIST_BASE_CLASSES,
-          TAB_LIST_ORIENTATION_STYLES[orientation as keyof typeof TAB_LIST_ORIENTATION_STYLES],
-          className
-        ),
-      [orientation, className]
-    );
+      const tabListClasses = useMemo(
+        () =>
+          cn(
+            TAB_LIST_BASE_CLASSES,
+            TAB_LIST_ORIENTATION_STYLES[orientation as keyof typeof TAB_LIST_ORIENTATION_STYLES],
+            className
+          ),
+        [orientation, className]
+      );
 
-    // Keyboard navigation
-    useEffect(() => {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (!listRef.current?.contains(document.activeElement)) return;
+      // Keyboard navigation handler using React onKeyDown
+      const handleKeyDown = useCallback(
+        (e: KeyboardEvent<HTMLDivElement>) => {
+          const tabsOrder = tabsOrderRef.current;
+          const currentIndex = tabsOrder.indexOf(activeTab);
 
-        const tabsOrder = tabsOrderRef.current;
-        const currentIndex = tabsOrder.indexOf(activeTab);
-        if (currentIndex === -1) return;
+          // Call user's onKeyDown handler if provided
+          onKeyDown?.(e);
 
-        const isHorizontal = orientation === 'horizontal';
-        const nextKey = isHorizontal ? 'ArrowRight' : 'ArrowDown';
-        const prevKey = isHorizontal ? 'ArrowLeft' : 'ArrowUp';
+          if (currentIndex === -1) return;
 
-        switch (e.key) {
-          case nextKey:
-            e.preventDefault();
-            setActiveTab(tabsOrder[(currentIndex + 1) % tabsOrder.length]);
-            break;
-          case prevKey:
-            e.preventDefault();
-            setActiveTab(tabsOrder[(currentIndex - 1 + tabsOrder.length) % tabsOrder.length]);
-            break;
-          case 'Home':
-            e.preventDefault();
-            setActiveTab(tabsOrder[0]);
-            break;
-          case 'End':
-            e.preventDefault();
-            setActiveTab(tabsOrder[tabsOrder.length - 1]);
-            break;
-        }
-      };
+          const isHorizontal = orientation === 'horizontal';
+          const nextKey = isHorizontal ? 'ArrowRight' : 'ArrowDown';
+          const prevKey = isHorizontal ? 'ArrowLeft' : 'ArrowUp';
 
-      document.addEventListener('keydown', handleKeyDown);
-      return () => document.removeEventListener('keydown', handleKeyDown);
-    }, [activeTab, setActiveTab, tabsOrderRef, orientation]);
+          let newIndex: number | null = null;
 
-    return (
-      <div
-        ref={(node) => {
-          if (node) listRef.current = node;
-          if (typeof ref === 'function') {
-            ref(node);
-          } else if (ref) {
-            ref.current = node;
+          switch (e.key) {
+            case nextKey:
+              e.preventDefault();
+              newIndex = (currentIndex + 1) % tabsOrder.length;
+              break;
+            case prevKey:
+              e.preventDefault();
+              newIndex = (currentIndex - 1 + tabsOrder.length) % tabsOrder.length;
+              break;
+            case 'Home':
+              e.preventDefault();
+              newIndex = 0;
+              break;
+            case 'End':
+              e.preventDefault();
+              newIndex = tabsOrder.length - 1;
+              break;
           }
-        }}
-        role="tablist"
-        aria-orientation={orientation}
-        className={tabListClasses}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  })
+
+          if (newIndex !== null) {
+            const newTabValue = tabsOrder[newIndex];
+            setActiveTab(newTabValue);
+
+            // Focus the newly selected tab button
+            const tabButton = listRef.current?.querySelector(
+              `[data-tab-value="${newTabValue}"]`
+            ) as HTMLElement | null;
+            tabButton?.focus();
+          }
+        },
+        [activeTab, setActiveTab, tabsOrderRef, orientation, onKeyDown]
+      );
+
+      return (
+        <div
+          ref={mergedRef}
+          role="tablist"
+          aria-orientation={orientation}
+          className={tabListClasses}
+          onKeyDown={handleKeyDown}
+          {...props}
+        >
+          {children}
+        </div>
+      );
+    }
+  )
 );
 
 TabList.displayName = 'Tabs.List';

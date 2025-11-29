@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Progress } from './Progress';
 import { useState, useEffect } from 'react';
-import { Button } from '../../forms/Button';
 
 const meta = {
   title: 'Feedback/Progress',
@@ -11,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Progress component for displaying progress indicators with support for different sizes, variants, and optional value display.',
+          'Progress bar component for displaying completion status. Supports different sizes, color variants, and optional value display.',
       },
     },
   },
@@ -19,59 +18,52 @@ const meta = {
   argTypes: {
     value: {
       control: { type: 'range', min: 0, max: 100, step: 1 },
-      description: 'The current value of the progress (0-100)',
+      description: 'Current progress value (0-100)',
     },
     max: {
       control: 'number',
-      description: 'The maximum value of the progress',
-      table: {
-        defaultValue: { summary: '100' },
-      },
+      description: 'Maximum value',
+      table: { defaultValue: { summary: '100' } },
     },
     size: {
       control: 'select',
       options: ['sm', 'default', 'lg'],
-      description: 'The size variant of the progress bar',
-      table: {
-        defaultValue: { summary: 'default' },
-      },
+      description: 'Size of the progress bar',
+      table: { defaultValue: { summary: 'default' } },
     },
     variant: {
       control: 'select',
       options: ['default', 'success', 'warning', 'error'],
-      description: 'The color variant of the progress bar',
-      table: {
-        defaultValue: { summary: 'default' },
-      },
+      description: 'Color variant',
+      table: { defaultValue: { summary: 'default' } },
     },
     showValue: {
       control: 'boolean',
-      description: 'Whether to show the progress value as text',
-      table: {
-        defaultValue: { summary: 'false' },
-      },
+      description: 'Show percentage value',
+      table: { defaultValue: { summary: 'false' } },
     },
     label: {
       control: 'text',
-      description: 'Custom label for accessibility',
+      description: 'Accessibility label',
     },
   },
 } satisfies Meta<typeof Progress>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+type StoryWithRender = StoryObj<typeof Progress>;
 
 export const Default: Story = {
   args: {
     value: 50,
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default progress bar at 50%.',
-      },
-    },
-  },
+  decorators: [
+    (Story) => (
+      <div className="w-80">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const WithValue: Story = {
@@ -79,32 +71,32 @@ export const WithValue: Story = {
     value: 75,
     showValue: true,
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Progress bar with percentage value displayed.',
-      },
-    },
-  },
+  decorators: [
+    (Story) => (
+      <div className="w-80">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
-export const AllVariants: Story = {
+export const Variants: StoryWithRender = {
   render: () => (
-    <div className="flex flex-col gap-4 w-full max-w-md">
+    <div className="w-80 space-y-4">
       <div>
-        <p className="text-sm mb-2 text-[var(--semantic-text-secondary)]">Default</p>
+        <span className="text-sm text-gray-500 mb-1 block">Default</span>
         <Progress value={60} showValue />
       </div>
       <div>
-        <p className="text-sm mb-2 text-[var(--semantic-text-secondary)]">Success</p>
+        <span className="text-sm text-gray-500 mb-1 block">Success</span>
         <Progress value={100} variant="success" showValue />
       </div>
       <div>
-        <p className="text-sm mb-2 text-[var(--semantic-text-secondary)]">Warning</p>
+        <span className="text-sm text-gray-500 mb-1 block">Warning</span>
         <Progress value={45} variant="warning" showValue />
       </div>
       <div>
-        <p className="text-sm mb-2 text-[var(--semantic-text-secondary)]">Error</p>
+        <span className="text-sm text-gray-500 mb-1 block">Error</span>
         <Progress value={20} variant="error" showValue />
       </div>
     </div>
@@ -112,25 +104,25 @@ export const AllVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'All available progress variants: default, success, warning, and error.',
+        story: 'All color variants for different states.',
       },
     },
   },
 };
 
-export const AllSizes: Story = {
+export const Sizes: StoryWithRender = {
   render: () => (
-    <div className="flex flex-col gap-4 w-full max-w-md">
+    <div className="w-80 space-y-4">
       <div>
-        <p className="text-sm mb-2 text-[var(--semantic-text-secondary)]">Small</p>
+        <span className="text-sm text-gray-500 mb-1 block">Small</span>
         <Progress value={60} size="sm" />
       </div>
       <div>
-        <p className="text-sm mb-2 text-[var(--semantic-text-secondary)]">Default</p>
+        <span className="text-sm text-gray-500 mb-1 block">Default</span>
         <Progress value={60} size="default" />
       </div>
       <div>
-        <p className="text-sm mb-2 text-[var(--semantic-text-secondary)]">Large</p>
+        <span className="text-sm text-gray-500 mb-1 block">Large</span>
         <Progress value={60} size="lg" />
       </div>
     </div>
@@ -138,145 +130,70 @@ export const AllSizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Progress bars in different sizes: small, default, and large.',
+        story: 'Available size variants.',
       },
     },
   },
 };
 
-export const DifferentValues: Story = {
+export const ProgressSteps: StoryWithRender = {
   render: () => (
-    <div className="flex flex-col gap-4 w-full max-w-md">
+    <div className="w-80 space-y-4">
       <Progress value={0} showValue />
       <Progress value={25} showValue />
       <Progress value={50} showValue />
       <Progress value={75} showValue />
-      <Progress value={100} showValue />
+      <Progress value={100} variant="success" showValue />
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Progress bars showing different completion percentages.',
+        story: 'Progress bar at different completion levels.',
       },
     },
   },
 };
 
-export const WithLabel: Story = {
-  args: {
-    value: 65,
-    label: 'Upload progress',
-    showValue: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Progress bar with an accessibility label.',
-      },
-    },
-  },
-};
-
-export const CustomMax: Story = {
-  args: {
-    value: 30,
-    max: 50,
-    showValue: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Progress bar with custom maximum value (30 out of 50 = 60%).',
-      },
-    },
-  },
-};
-
-export const Animated: Story = {
+export const Animated: StoryWithRender = {
   render: () => {
-    const [progress, setProgress] = useState(0);
+    const [value, setValue] = useState(0);
 
     useEffect(() => {
       const timer = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 100) return 0;
-          return prev + 1;
-        });
-      }, 50);
-
+        setValue((prev) => (prev >= 100 ? 0 : prev + 2));
+      }, 100);
       return () => clearInterval(timer);
     }, []);
 
     return (
-      <div className="w-full max-w-md">
-        <Progress value={progress} showValue />
+      <div className="w-80">
+        <Progress value={value} showValue />
       </div>
     );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Animated progress bar that continuously updates.',
+        story: 'Animated progress bar demonstrating smooth transitions.',
       },
     },
   },
 };
 
-export const Interactive: Story = {
+export const FileUpload: StoryWithRender = {
   render: () => {
     const [progress, setProgress] = useState(0);
-
-    return (
-      <div className="w-full max-w-md">
-        <Progress value={progress} showValue className="mb-4" />
-        <div className="flex gap-2">
-          <Button
-            size="small"
-            onClick={() => setProgress((prev) => Math.max(0, prev - 10))}
-          >
-            -10
-          </Button>
-          <Button
-            size="small"
-            onClick={() => setProgress((prev) => Math.min(100, prev + 10))}
-          >
-            +10
-          </Button>
-          <Button
-            size="small"
-            variant="secondary"
-            onClick={() => setProgress(0)}
-          >
-            Reset
-          </Button>
-        </div>
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Interactive progress bar with controls to adjust the value.',
-      },
-    },
-  },
-};
-
-export const FileUploadSimulation: Story = {
-  render: () => {
-    const [progress, setProgress] = useState(0);
-    const [isUploading, setIsUploading] = useState(false);
+    const [status, setStatus] = useState<'idle' | 'uploading' | 'complete'>('idle');
 
     const simulateUpload = () => {
       setProgress(0);
-      setIsUploading(true);
-
+      setStatus('uploading');
       const interval = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {
             clearInterval(interval);
-            setIsUploading(false);
+            setStatus('complete');
             return 100;
           }
           return prev + Math.random() * 15;
@@ -285,73 +202,65 @@ export const FileUploadSimulation: Story = {
     };
 
     return (
-      <div className="w-full max-w-md">
-        <div className="mb-2">
-          <p className="text-sm font-medium mb-1">Uploading file...</p>
-          <Progress
-            value={progress}
-            variant={progress === 100 ? 'success' : 'default'}
-            showValue
-          />
+      <div className="w-80 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium">document.pdf</span>
+          <span className="text-xs text-gray-500">
+            {status === 'complete' ? 'Complete' : status === 'uploading' ? 'Uploading...' : 'Ready'}
+          </span>
         </div>
-        <Button
+        <Progress
+          value={progress}
+          variant={status === 'complete' ? 'success' : 'default'}
+          showValue
+        />
+        <button
           onClick={simulateUpload}
-          disabled={isUploading}
-          variant="primary"
-          size="small"
+          disabled={status === 'uploading'}
+          className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
         >
-          {isUploading ? 'Uploading...' : progress === 100 ? 'Upload Complete' : 'Start Upload'}
-        </Button>
+          {status === 'complete' ? 'Upload Again' : status === 'uploading' ? 'Uploading...' : 'Upload'}
+        </button>
       </div>
     );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Simulated file upload with progress indication.',
+        story: 'File upload progress simulation.',
       },
     },
   },
 };
 
-export const MultiStep: Story = {
+export const MultiStepForm: StoryWithRender = {
   render: () => {
-    const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
-    const [currentStep, setCurrentStep] = useState(1);
-    const progress = (currentStep / steps.length) * 100;
+    const steps = ['Account', 'Profile', 'Preferences', 'Review'];
+    const [current, setCurrent] = useState(1);
+    const progress = (current / steps.length) * 100;
 
     return (
-      <div className="w-full max-w-md">
-        <div className="mb-4">
-          <div className="flex justify-between text-sm text-[var(--semantic-text-secondary)] mb-2">
-            <span>Step {currentStep} of {steps.length}</span>
-            <span>{steps[currentStep - 1]}</span>
-          </div>
-          <Progress value={progress} variant={progress === 100 ? 'success' : 'default'} />
+      <div className="w-80 space-y-4">
+        <div className="flex justify-between text-sm">
+          <span className="font-medium">{steps[current - 1]}</span>
+          <span className="text-gray-500">Step {current} of {steps.length}</span>
         </div>
+        <Progress value={progress} variant={current === steps.length ? 'success' : 'default'} />
         <div className="flex gap-2">
-          <Button
-            size="small"
-            onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
-            disabled={currentStep === 1}
+          <button
+            onClick={() => setCurrent((prev) => Math.max(1, prev - 1))}
+            disabled={current === 1}
+            className="px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
           >
-            Previous
-          </Button>
-          <Button
-            size="small"
-            variant="primary"
-            onClick={() => setCurrentStep((prev) => Math.min(steps.length, prev + 1))}
-            disabled={currentStep === steps.length}
+            Back
+          </button>
+          <button
+            onClick={() => setCurrent((prev) => Math.min(steps.length, prev + 1))}
+            disabled={current === steps.length}
+            className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
           >
-            Next
-          </Button>
-          <Button
-            size="small"
-            variant="secondary"
-            onClick={() => setCurrentStep(1)}
-          >
-            Reset
-          </Button>
+            {current === steps.length ? 'Complete' : 'Next'}
+          </button>
         </div>
       </div>
     );
@@ -359,22 +268,36 @@ export const MultiStep: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Progress bar used for multi-step form or wizard.',
+        story: 'Progress bar for multi-step form wizard.',
       },
     },
   },
 };
 
-export const WithCustomStyling: Story = {
-  args: {
-    value: 70,
-    showValue: true,
-    className: 'h-6',
+export const StorageUsage: StoryWithRender = {
+  render: () => {
+    const used = 7.2;
+    const total = 10;
+    const percentage = (used / total) * 100;
+    const variant = percentage > 90 ? 'error' : percentage > 70 ? 'warning' : 'default';
+
+    return (
+      <div className="w-80 p-4 border border-gray-200 rounded-lg space-y-3">
+        <div className="flex justify-between items-center">
+          <span className="font-medium">Storage</span>
+          <span className="text-sm text-gray-500">{used} GB of {total} GB</span>
+        </div>
+        <Progress value={percentage} variant={variant} />
+        <p className="text-xs text-gray-500">
+          {(total - used).toFixed(1)} GB available
+        </p>
+      </div>
+    );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Progress bar with custom height using className.',
+        story: 'Storage usage indicator with dynamic variant based on usage level.',
       },
     },
   },

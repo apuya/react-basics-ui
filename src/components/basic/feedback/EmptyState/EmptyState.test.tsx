@@ -227,24 +227,28 @@ describe('EmptyState', () => {
       });
     });
 
-    it('should apply proper title styles', () => {
-      const { container } = render(<EmptyState title="Test Title" />);
+    it('should apply proper title spacing', () => {
+      render(<EmptyState title="Test Title" />);
       const title = screen.getByText('Test Title');
-      expect(title).toHaveStyle({
-        fontSize: 'var(--semantic-text-size-heading-3)',
-        lineHeight: 'var(--semantic-line-height-tight)',
+      // Title uses Heading component, spacing on wrapper div
+      const titleWrapper = title.parentElement;
+      expect(titleWrapper).toHaveStyle({
+        marginBottom: 'var(--semantic-space-compact)',
       });
+      // Verify it's an h3 element (rendered by Heading component)
+      expect(title.tagName).toBe('H3');
     });
 
-    it('should apply proper description styles', () => {
-      const { container } = render(
-        <EmptyState description="Test Description" />
-      );
+    it('should apply proper description spacing', () => {
+      render(<EmptyState description="Test Description" />);
       const description = screen.getByText('Test Description');
-      expect(description).toHaveStyle({
-        fontSize: 'var(--semantic-text-size-body)',
-        lineHeight: 'var(--semantic-line-height-normal)',
+      // Description uses Text component, spacing on wrapper div
+      const descriptionWrapper = description.parentElement;
+      expect(descriptionWrapper).toHaveStyle({
+        marginBottom: 'var(--semantic-space-default)',
       });
+      // Verify it's a p element (rendered by Text component)
+      expect(description.tagName).toBe('P');
     });
   });
 });

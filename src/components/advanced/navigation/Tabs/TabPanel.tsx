@@ -44,6 +44,7 @@ export const TabPanel = memo(
         role="tabpanel"
         id={`tabpanel-${value}`}
         aria-labelledby={`tab-${value}`}
+        tabIndex={0}
         className={cn(TAB_PANEL_BASE_CLASSES, className)}
         {...props}
       >

@@ -11,7 +11,7 @@ export interface ListProps extends ComponentPropsWithoutRef<'ul'> {
 
 const ListRoot = memo(
   forwardRef<HTMLUListElement | HTMLOListElement, ListProps>(
-    ({ variant = 'default', ordered = false, className, children, ...props }, ref) => {
+    ({ variant = 'default', ordered = false, className, style, children, ...props }, ref) => {
       const Component = (ordered ? 'ol' : 'ul') as ElementType;
 
       const listClasses = useMemo(
@@ -29,6 +29,10 @@ const ListRoot = memo(
           ref={ref}
           data-variant={variant}
           className={listClasses}
+          style={{
+            gap: 'var(--component-list-gap)',
+            ...style,
+          }}
           {...props}
         >
           {children}

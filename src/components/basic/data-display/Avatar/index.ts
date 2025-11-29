@@ -1,4 +1,4 @@
-export { Avatar } from './Avatar';
+export { Avatar, AvatarContext, useAvatarContext } from './Avatar';
 export type { AvatarProps } from './Avatar';
 export type { AvatarImageProps } from './AvatarImage';
 export type { AvatarFallbackProps } from './AvatarFallback';

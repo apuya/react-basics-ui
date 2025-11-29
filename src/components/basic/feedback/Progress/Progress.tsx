@@ -4,13 +4,15 @@ import {
   memo,
   useMemo,
 } from 'react';
-import { cn } from '@/lib';
+import { cn } from '@/lib/cn';
 import {
   FILL_BASE_CLASSES,
   type ProgressSize,
   type ProgressVariant,
   SIZE_STYLES,
   TRACK_BASE_CLASSES,
+  VALUE_TEXT_CLASSES,
+  VALUE_TEXT_STYLES,
   VARIANT_STYLES,
 } from './Progress.styles';
 
@@ -112,7 +114,8 @@ export const Progress = memo(
         </div>
         {showValue && (
           <div
-            className="mt-1 text-xs text-[var(--semantic-text-secondary)] text-right"
+            className={VALUE_TEXT_CLASSES}
+            style={VALUE_TEXT_STYLES}
             aria-hidden="true"
           >
             {Math.round(percentage)}%

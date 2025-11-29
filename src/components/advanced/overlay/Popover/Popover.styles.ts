@@ -12,12 +12,6 @@ export const SIDE_STYLES: Record<PopoverSide, string> = {
   right: 'left-full ml-2',
 };
 
-export const ALIGN_STYLES: Record<PopoverAlign, string> = {
-  start: '',
-  center: '',
-  end: '',
-};
-
 // Combined side + align positioning
 export const POSITION_STYLES: Record<PopoverSide, Record<PopoverAlign, string>> = {
   top: {

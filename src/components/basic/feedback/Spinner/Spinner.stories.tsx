@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A loading spinner component that provides visual feedback during asynchronous operations. Supports multiple sizes and color variants with proper accessibility labels.',
+          'A loading spinner component that provides visual feedback during asynchronous operations. Supports multiple sizes and color variants with proper accessibility.',
       },
     },
   },
@@ -19,15 +19,18 @@ const meta = {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       description: 'Size of the spinner',
+      table: { defaultValue: { summary: 'md' } },
     },
     color: {
       control: 'select',
       options: ['default', 'inverse', 'inherit'],
       description: 'Color variant of the spinner',
+      table: { defaultValue: { summary: 'default' } },
     },
     label: {
       control: 'text',
       description: 'Accessible label for screen readers',
+      table: { defaultValue: { summary: 'Loading...' } },
     },
   },
 } satisfies Meta<typeof Spinner>;
@@ -37,160 +40,63 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default spinner with medium size and default color.',
-      },
-    },
-  },
 };
 
-export const ExtraSmall: Story = {
-  args: {
-    size: 'xs',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Extra small spinner, ideal for inline use within text or small buttons.',
-      },
-    },
-  },
-};
-
-export const Small: Story = {
-  args: {
-    size: 'sm',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Small spinner, suitable for compact UI elements.',
-      },
-    },
-  },
-};
-
-export const Large: Story = {
-  args: {
-    size: 'lg',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large spinner, good for prominent loading states.',
-      },
-    },
-  },
-};
-
-export const ExtraLarge: Story = {
-  args: {
-    size: 'xl',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Extra large spinner, ideal for full-page loading overlays.',
-      },
-    },
-  },
-};
-
-export const InverseColor: Story = {
-  args: {
-    color: 'inverse',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Spinner with inverse color, suitable for dark backgrounds.',
-      },
-    },
-  },
-  decorators: [
-    (Story) => (
-      <div className="bg-gray-900 p-8 rounded">
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const InheritColor: Story = {
-  args: {
-    color: 'inherit',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Spinner that inherits the current text color from its parent.',
-      },
-    },
-  },
-  decorators: [
-    (Story) => (
-      <div className="text-blue-600">
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const CustomLabel: Story = {
-  args: {
-    label: 'Processing your request...',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Spinner with a custom accessibility label for screen readers.',
-      },
-    },
-  },
-};
-
-export const AllSizes: Story = {
+export const Sizes: Story = {
   render: () => (
-    <div className="flex items-center gap-8">
-      <Spinner size="xs" />
-      <Spinner size="sm" />
-      <Spinner size="md" />
-      <Spinner size="lg" />
-      <Spinner size="xl" />
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of all available spinner sizes from extra small to extra large.',
-      },
-    },
-  },
-};
-
-export const AllColors: Story = {
-  render: () => (
-    <div className="flex items-center gap-8">
+    <div className="flex items-center gap-6">
       <div className="flex flex-col items-center gap-2">
-        <Spinner color="default" />
-        <span className="text-sm text-gray-600">Default</span>
+        <Spinner size="xs" />
+        <span className="text-xs text-gray-500">xs</span>
       </div>
-      <div className="flex flex-col items-center gap-2 bg-gray-900 p-4 rounded">
-        <Spinner color="inverse" />
-        <span className="text-sm text-white">Inverse</span>
+      <div className="flex flex-col items-center gap-2">
+        <Spinner size="sm" />
+        <span className="text-xs text-gray-500">sm</span>
       </div>
-      <div className="flex flex-col items-center gap-2 text-purple-600">
-        <Spinner color="inherit" />
-        <span className="text-sm">Inherit</span>
+      <div className="flex flex-col items-center gap-2">
+        <Spinner size="md" />
+        <span className="text-xs text-gray-500">md</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <Spinner size="lg" />
+        <span className="text-xs text-gray-500">lg</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <Spinner size="xl" />
+        <span className="text-xs text-gray-500">xl</span>
       </div>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Comparison of all available color variants: default, inverse, and inherit.',
+        story: 'All available spinner sizes.',
+      },
+    },
+  },
+};
+
+export const Colors: Story = {
+  render: () => (
+    <div className="flex items-center gap-8">
+      <div className="flex flex-col items-center gap-2 p-4">
+        <Spinner color="default" />
+        <span className="text-xs text-gray-500">Default</span>
+      </div>
+      <div className="flex flex-col items-center gap-2 bg-gray-900 p-4 rounded-lg">
+        <Spinner color="inverse" />
+        <span className="text-xs text-white">Inverse</span>
+      </div>
+      <div className="flex flex-col items-center gap-2 text-purple-600 p-4">
+        <Spinner color="inherit" />
+        <span className="text-xs">Inherit</span>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Color variants: default for light backgrounds, inverse for dark backgrounds, inherit for custom colors.',
       },
     },
   },
@@ -198,33 +104,60 @@ export const AllColors: Story = {
 
 export const InButton: Story = {
   render: () => (
-    <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50">
-      <Spinner size="sm" color="inverse" />
-      Loading...
-    </button>
+    <div className="flex gap-4">
+      <button
+        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-60"
+        disabled
+      >
+        <Spinner size="sm" color="inverse" />
+        Saving...
+      </button>
+      <button
+        className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-60"
+        disabled
+      >
+        <Spinner size="sm" color="default" />
+        Loading...
+      </button>
+    </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Example of spinner used within a button to indicate a loading state.',
+        story: 'Spinner used within buttons to indicate loading state.',
       },
     },
   },
 };
 
-export const InCard: Story = {
+export const InlineWithText: Story = {
   render: () => (
-    <div className="w-64 p-8 border border-gray-200 rounded-lg shadow-sm">
-      <div className="flex flex-col items-center gap-4">
+    <p className="text-gray-700 flex items-center gap-2">
+      <Spinner size="xs" /> Loading your data...
+    </p>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Extra small spinner used inline with text.',
+      },
+    },
+  },
+};
+
+export const ContentLoading: Story = {
+  render: () => (
+    <div className="w-72 p-6 border border-gray-200 rounded-lg shadow-sm">
+      <div className="flex flex-col items-center gap-3">
         <Spinner size="lg" />
-        <p className="text-sm text-gray-600 text-center">Loading your content...</p>
+        <p className="text-sm text-gray-600">Loading content...</p>
       </div>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Example of spinner used in a card component for content loading.',
+        story: 'Spinner used for content area loading state.',
       },
     },
   },
@@ -232,11 +165,13 @@ export const InCard: Story = {
 
 export const FullPageOverlay: Story = {
   render: () => (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-      <div className="bg-white rounded-lg p-8 shadow-xl">
-        <div className="flex flex-col items-center gap-4">
-          <Spinner size="xl" />
-          <p className="text-gray-700 font-medium">Please wait...</p>
+    <div className="relative w-[400px] h-[300px] bg-gray-100 rounded-lg overflow-hidden">
+      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+        <div className="bg-white rounded-lg p-6 shadow-xl">
+          <div className="flex flex-col items-center gap-3">
+            <Spinner size="xl" />
+            <p className="text-gray-700 font-medium">Please wait...</p>
+          </div>
         </div>
       </div>
     </div>
@@ -244,7 +179,7 @@ export const FullPageOverlay: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Example of spinner used in a full-page loading overlay.',
+        story: 'Full-page loading overlay pattern (shown in a container for demo).',
       },
     },
   },

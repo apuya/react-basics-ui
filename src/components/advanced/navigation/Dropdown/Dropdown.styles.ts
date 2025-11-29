@@ -10,7 +10,6 @@
  * All styles use CSS variables from the design token system for consistency.
  */
 
-export type DropdownItemState = 'default' | 'hover' | 'active' | 'disabled';
 export type DropdownItemVariant = 'default' | 'danger' | 'warning' | 'success' | 'info';
 
 export const BASE_CLASSES =
@@ -44,13 +43,6 @@ export const MENU_WRAPPER_CLASSES = 'flex flex-col';
 
 export const ITEM_BASE_CLASSES =
   'flex items-center text-[length:var(--component-dropdown-item-font-size)] font-[var(--component-dropdown-item-font-weight)] leading-[var(--component-dropdown-item-line-height)] cursor-pointer transition-colors outline-none';
-
-export const ITEM_STATE_STYLES: Record<DropdownItemState, string> = {
-  default: 'bg-[var(--component-dropdown-item-bg-default)] text-[var(--component-dropdown-item-text-default)]',
-  hover: 'bg-[var(--component-dropdown-item-bg-hover)] text-[var(--component-dropdown-item-text-hover)]',
-  active: 'bg-[var(--component-dropdown-item-bg-active)] text-[var(--component-dropdown-item-text-active)]',
-  disabled: 'bg-[var(--component-dropdown-item-bg-disabled)] text-[var(--component-dropdown-item-text-disabled)] cursor-not-allowed opacity-[var(--semantic-opacity-disabled)]',
-};
 
 export const ITEM_VARIANT_STYLES: Record<DropdownItemVariant, { default: string; hoverClasses: string; activeClasses: string }> = {
   default: {
@@ -152,8 +144,8 @@ export const DESCRIPTION_TEXT_STYLE = {
 
 // Item style generator
 export const ITEM_STYLE = (hasDescription: boolean) => ({
-  minHeight: 'var(--component-dropdown-item-height)',
-  height: hasDescription ? 'auto' : 'var(--component-dropdown-item-height)',
+  minHeight: '32px',
+  height: hasDescription ? 'auto' : '32px',
   paddingInline: 'var(--component-dropdown-item-padding-inline)',
   paddingBlock: 'var(--component-dropdown-item-padding-block)',
   gap: 'var(--component-dropdown-item-gap)',

@@ -4,6 +4,7 @@ import {
   useMemo,
   type ReactNode,
   type ComponentPropsWithoutRef,
+  type CSSProperties,
 } from 'react';
 import { cn } from '@/lib/cn';
 import { Portal } from '@/components/basic/utility/Portal';
@@ -20,8 +21,8 @@ export interface AutocompleteListProps extends ComponentPropsWithoutRef<'div'> {
 
 export const AutocompleteList = memo(
   forwardRef<HTMLDivElement, AutocompleteListProps>(
-    ({ children, className, ...props }, forwardedRef) => {
-      const { isOpen, listRef } = useAutocompleteContext();
+    ({ children, className, style, ...props }, forwardedRef) => {
+      const { isOpen, listRef, listId } = useAutocompleteContext();
 
       const listClasses = useMemo(
         () =>
@@ -31,6 +32,15 @@ export const AutocompleteList = memo(
             className
           ),
         [isOpen, className]
+      );
+
+      const listStyle = useMemo<CSSProperties>(
+        () => ({
+          paddingBlock: 'var(--component-autocomplete-padding-block)',
+          paddingInline: 'var(--component-autocomplete-padding-inline)',
+          ...style,
+        }),
+        [style]
       );
 
       return (
@@ -44,8 +54,10 @@ export const AutocompleteList = memo(
                 forwardedRef.current = node;
               }
             }}
+            id={listId}
             role="listbox"
             className={listClasses}
+            style={listStyle}
             {...props}
           >
             {children}

@@ -1,18 +1,26 @@
 import type { SpinnerSize, SpinnerColor } from './Spinner';
 
 export const BASE_CLASSES =
-  'inline-block border-[length:var(--component-spinner-border-width)] border-solid border-[color:var(--component-spinner-border-color)] border-t-[color:var(--component-spinner-border-top-color)] rounded-full animate-spin';
+  'inline-block rounded-full animate-spin';
 
 export const SIZE_STYLES: Record<SpinnerSize, string> = {
-  xs: 'size-[var(--component-spinner-size-xs)]',
-  sm: 'size-[var(--component-spinner-size-sm)]',
-  md: 'size-[var(--component-spinner-size-md)]',
-  lg: 'size-[var(--component-spinner-size-lg)]',
-  xl: 'size-[var(--component-spinner-size-xl)]',
+  xs: 'size-3',
+  sm: 'size-4',
+  md: 'size-6',
+  lg: 'size-8',
+  xl: 'size-12',
+};
+
+export const BORDER_WIDTH_STYLES: Record<SpinnerSize, string> = {
+  xs: 'border',
+  sm: 'border-2',
+  md: 'border-2',
+  lg: 'border-[3px]',
+  xl: 'border-4',
 };
 
 export const COLOR_STYLES: Record<SpinnerColor, string> = {
-  default: '[--component-spinner-border-color:var(--component-spinner-color-default)] [--component-spinner-border-top-color:var(--component-spinner-color-default-top)]',
-  inverse: '[--component-spinner-border-color:var(--component-spinner-color-inverse)] [--component-spinner-border-top-color:var(--component-spinner-color-inverse-top)]',
-  inherit: '[--component-spinner-border-color:currentColor] [--component-spinner-border-top-color:transparent]',
+  default: 'border-gray-200 border-t-blue-600',
+  inverse: 'border-white/30 border-t-white',
+  inherit: 'border-current/30 border-t-current',
 };

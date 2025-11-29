@@ -8,6 +8,12 @@ describe('Skeleton', () => {
     expect(container.firstChild).toBeInTheDocument();
   });
 
+  it('applies background color via inline style', () => {
+    const { container } = render(<Skeleton />);
+    const skeleton = container.firstChild as HTMLElement;
+    expect(skeleton).toHaveStyle({ backgroundColor: 'var(--component-skeleton-bg)' });
+  });
+
   it('applies default variant (rectangle)', () => {
     const { container } = render(<Skeleton />);
     const skeleton = container.firstChild as HTMLElement;
@@ -23,12 +29,13 @@ describe('Skeleton', () => {
   it('applies rounded variant', () => {
     const { container } = render(<Skeleton variant="rounded" />);
     const skeleton = container.firstChild as HTMLElement;
-    expect(skeleton).toHaveClass('rounded-[var(--semantic-border-radius-md)]');
+    expect(skeleton).toHaveClass('rounded-md');
   });
 
   it('applies text variant', () => {
     const { container } = render(<Skeleton variant="text" />);
     const skeleton = container.firstChild as HTMLElement;
+    expect(skeleton).toHaveClass('rounded-sm');
     expect(skeleton).toHaveClass('h-[1em]');
   });
 

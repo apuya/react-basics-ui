@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Dropdown } from './Dropdown';
 import { DropdownErrorBoundary } from './DropdownErrorBoundary';
-import { Button } from '../../forms/Button';
-import { Text } from '../../typography/Text';
+import { Button } from '@/components/basic/forms/Button';
+import { Text } from '@/components/basic/typography/Text';
 import { BiEdit, BiCopy, BiTrash, BiDownload, BiShare, BiCut, BiPaste, BiCheck } from 'react-icons/bi';
 
 const meta: Meta<typeof Dropdown> = {
@@ -70,7 +71,7 @@ export const CompleteExample: Story = {
         <Button variant="tertiary">Actions Menu</Button>
       </Dropdown.Trigger>
       <Dropdown.Menu>
-        <Dropdown.MenuItem variant="header" title="File Actions" description="Manage your files" />
+        <Dropdown.MenuItem variant="header" label="File Actions" description="Manage your files" />
         <Dropdown.Item leadingIcon={<BiEdit />} shortcut="⌘N">
           New File
         </Dropdown.Item>
@@ -78,7 +79,7 @@ export const CompleteExample: Story = {
           Auto-save Enabled
         </Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.MenuItem variant="header" title="Export Options" />
+        <Dropdown.MenuItem variant="header" label="Export Options" />
         <Dropdown.Item 
           leadingIcon={<BiDownload />} 
           variant="success"
@@ -233,7 +234,7 @@ export const UserAccountMenu: Story = {
       <Dropdown.Menu align="end">
         <Dropdown.MenuItem 
           variant="header" 
-          title="John Doe" 
+          label="John Doe" 
           description="john.doe@example.com" 
         />
         <Dropdown.Item>My Profile</Dropdown.Item>
@@ -278,29 +279,58 @@ export const WithSearchAndFooter: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Menu with search input and custom footer for advanced filtering.',
+        story: 'Menu with search input, interactive checkboxes, and custom footer.',
       },
     },
   },
-  render: () => (
-    <Dropdown>
-      <Dropdown.Trigger>
-        <Button variant="tertiary">Select Option</Button>
-      </Dropdown.Trigger>
-      <Dropdown.Menu maxHeight={300}>
-        <Dropdown.MenuItem variant="search" searchPlaceholder="Search options..." />
-        <Dropdown.Item checked={true}>Option 1 (Selected)</Dropdown.Item>
-        <Dropdown.Item checked={false}>Option 2</Dropdown.Item>
-        <Dropdown.Item checked={false}>Option 3</Dropdown.Item>
-        <Dropdown.Item>Option 4</Dropdown.Item>
-        <Dropdown.Item>Option 5</Dropdown.Item>
-        <Dropdown.MenuItem 
-          variant="footer" 
-          footerActionLabel="View All Options"
-        />
-      </Dropdown.Menu>
-    </Dropdown>
-  ),
+  render: () => {
+    const [selected, setSelected] = useState<string[]>(['Option 1']);
+    
+    const toggleOption = (option: string) => {
+      setSelected(prev => 
+        prev.includes(option) 
+          ? prev.filter(o => o !== option)
+          : [...prev, option]
+      );
+    };
+    
+    return (
+      <Dropdown>
+        <Dropdown.Trigger>
+          <Button variant="tertiary">Select Options ({selected.length})</Button>
+        </Dropdown.Trigger>
+        <Dropdown.Menu maxHeight={300}>
+          <Dropdown.MenuItem variant="search" searchPlaceholder="Search options..." />
+          <Dropdown.Item 
+            checked={selected.includes('Option 1')} 
+            onCheckedChange={() => toggleOption('Option 1')}
+          >
+            Option 1
+          </Dropdown.Item>
+          <Dropdown.Item 
+            checked={selected.includes('Option 2')} 
+            onCheckedChange={() => toggleOption('Option 2')}
+          >
+            Option 2
+          </Dropdown.Item>
+          <Dropdown.Item 
+            checked={selected.includes('Option 3')} 
+            onCheckedChange={() => toggleOption('Option 3')}
+          >
+            Option 3
+          </Dropdown.Item>
+          <Dropdown.Item>Option 4 (no checkbox)</Dropdown.Item>
+          <Dropdown.Item>Option 5 (no checkbox)</Dropdown.Item>
+          <Dropdown.MenuItem 
+            variant="footer" 
+            label={`${selected.length} selected`}
+            footerActionLabel="Clear All"
+            onFooterAction={() => setSelected([])}
+          />
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  },
 };
 
 /**

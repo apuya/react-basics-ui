@@ -3,6 +3,7 @@ import {
   useMemo,
   useCallback,
   useRef,
+  forwardRef,
   type ComponentPropsWithoutRef,
 } from 'react';
 import { cn } from '@/lib/cn';
@@ -142,67 +143,72 @@ export interface TabsProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChan
   orientation?: 'horizontal' | 'vertical';
 }
 
-const TabsRoot = ({
-  defaultValue = '',
-  value,
-  onChange,
-  size = 'md',
-  orientation = 'horizontal',
-  className,
-  children,
-  ...props
-}: TabsProps) => {
-  const [internalValue, setInternalValue] = useState(defaultValue);
-  const tabsOrderRef = useRef<string[]>([]);
-  const isControlled = value !== undefined;
-  const activeTab = isControlled ? value : internalValue;
-
-  const setActiveTab = useCallback(
-    (newValue: string) => {
-      if (!isControlled) {
-        setInternalValue(newValue);
-      }
-      onChange?.(newValue);
+const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(
+  (
+    {
+      defaultValue = '',
+      value,
+      onChange,
+      size = 'md',
+      orientation = 'horizontal',
+      className,
+      children,
+      ...props
     },
-    [isControlled, onChange]
-  );
+    ref
+  ) => {
+    const [internalValue, setInternalValue] = useState(defaultValue);
+    const tabsOrderRef = useRef<string[]>([]);
+    const isControlled = value !== undefined;
+    const activeTab = isControlled ? value : internalValue;
 
-  const registerTab = useCallback((tabValue: string) => {
-    if (!tabsOrderRef.current.includes(tabValue)) {
-      tabsOrderRef.current = [...tabsOrderRef.current, tabValue];
-    }
-  }, []);
+    const setActiveTab = useCallback(
+      (newValue: string) => {
+        if (!isControlled) {
+          setInternalValue(newValue);
+        }
+        onChange?.(newValue);
+      },
+      [isControlled, onChange]
+    );
 
-  const contextValue = useMemo(
-    () => ({
-      activeTab,
-      setActiveTab,
-      size,
-      orientation,
-      registerTab,
-      tabsOrderRef,
-    }),
-    [activeTab, setActiveTab, size, orientation, registerTab]
-  );
+    const registerTab = useCallback((tabValue: string) => {
+      if (!tabsOrderRef.current.includes(tabValue)) {
+        tabsOrderRef.current = [...tabsOrderRef.current, tabValue];
+      }
+    }, []);
 
-  const tabsClasses = useMemo(
-    () =>
-      cn(
-        'flex',
-        orientation === 'vertical' ? 'flex-row gap-[var(--component-tabs-gap)]' : 'flex-col',
-        className
-      ),
-    [orientation, className]
-  );
+    const contextValue = useMemo(
+      () => ({
+        activeTab,
+        setActiveTab,
+        size,
+        orientation,
+        registerTab,
+        tabsOrderRef,
+      }),
+      [activeTab, setActiveTab, size, orientation, registerTab]
+    );
 
-  return (
-    <TabsContext.Provider value={contextValue}>
-      <div className={tabsClasses} {...props}>
-        {children}
-      </div>
-    </TabsContext.Provider>
-  );
-};
+    const tabsClasses = useMemo(
+      () =>
+        cn(
+          'flex',
+          orientation === 'vertical' ? 'flex-row gap-[var(--component-tabs-gap)]' : 'flex-col',
+          className
+        ),
+      [orientation, className]
+    );
+
+    return (
+      <TabsContext.Provider value={contextValue}>
+        <div ref={ref} className={tabsClasses} {...props}>
+          {children}
+        </div>
+      </TabsContext.Provider>
+    );
+  }
+);
 
 TabsRoot.displayName = 'Tabs';
 

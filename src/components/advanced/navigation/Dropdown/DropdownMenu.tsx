@@ -86,25 +86,34 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
       useClickOutsideWithExclusions(menuRef, () => setIsOpen(false), [triggerRef]);
       useEscapeKey(() => setIsOpen(false), isOpen);
       
+      // Track previous open state for focus management
+      const prevIsOpenRef = useRef(isOpen);
+      
       /**
-       * Focus management: Move focus to first menu item when menu opens.
-       * Returns focus to trigger when menu closes.
+       * Focus management: 
+       * - Move focus to first menu item when menu opens
+       * - Return focus to trigger when menu closes
        */
       useEffect(() => {
-        if (!isOpen || !menuRef.current) return;
-
-        // Focus first enabled menu item when menu opens
-        const firstItem = menuRef.current.querySelector<HTMLButtonElement>(
-          '[role="menuitem"]:not([disabled])'
-        );
+        const wasOpen = prevIsOpenRef.current;
+        prevIsOpenRef.current = isOpen;
         
-        if (firstItem) {
-          // Small delay to ensure DOM is ready
-          requestAnimationFrame(() => {
-            firstItem.focus();
-          });
+        if (isOpen && !wasOpen && menuRef.current) {
+          // Menu just opened - focus first enabled menu item
+          const firstItem = menuRef.current.querySelector<HTMLButtonElement>(
+            '[role="menuitem"]:not([disabled]), [role="menuitemcheckbox"]:not([disabled])'
+          );
+          
+          if (firstItem) {
+            requestAnimationFrame(() => {
+              firstItem.focus();
+            });
+          }
+        } else if (!isOpen && wasOpen && triggerRef.current) {
+          // Menu just closed - return focus to trigger
+          triggerRef.current.focus();
         }
-      }, [isOpen]);
+      }, [isOpen, triggerRef]);
 
       // Keyboard navigation for menu items
       useMenuKeyboardNavigation(menuRef, isOpen);

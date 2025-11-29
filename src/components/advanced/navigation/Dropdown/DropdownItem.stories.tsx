@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Dropdown, DropdownContext } from './Dropdown';
-import { type ReactNode, useRef } from 'react';
+import { type ReactNode, useRef, useState } from 'react';
 
 const MockDropdownWrapper = ({ children }: { children: ReactNode }) => {
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -276,20 +276,58 @@ export const MixedStates: Story = {
 };
 
 /**
- * Items with checkbox indicators.
+ * Interactive checkbox items (controlled mode).
  */
-export const WithCheckbox: Story = {
+export const WithCheckboxControlled: Story = {
+  render: () => {
+    const [sidebar, setSidebar] = useState(true);
+    const [toolbar, setToolbar] = useState(false);
+    const [notifications, setNotifications] = useState(true);
+    
+    return (
+      <MockDropdownWrapper>
+        <Dropdown.Item checked={sidebar} onCheckedChange={setSidebar}>
+          Show Sidebar
+        </Dropdown.Item>
+        <Dropdown.Item checked={toolbar} onCheckedChange={setToolbar}>
+          Show Toolbar
+        </Dropdown.Item>
+        <Dropdown.Item checked={notifications} onCheckedChange={setNotifications}>
+          Enable Notifications
+        </Dropdown.Item>
+      </MockDropdownWrapper>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Controlled checkbox items with `checked` and `onCheckedChange`. Click to toggle - state is managed externally.',
+      },
+    },
+  },
+};
+
+/**
+ * Uncontrolled checkbox items with defaultChecked.
+ */
+export const WithCheckboxUncontrolled: Story = {
   render: () => (
     <MockDropdownWrapper>
-      <Dropdown.Item checked={true}>Show Sidebar</Dropdown.Item>
-      <Dropdown.Item checked={false}>Show Toolbar</Dropdown.Item>
-      <Dropdown.Item checked={true}>Enable Notifications</Dropdown.Item>
+      <Dropdown.Item defaultChecked={true} onCheckedChange={(checked) => console.log('Sidebar:', checked)}>
+        Show Sidebar
+      </Dropdown.Item>
+      <Dropdown.Item defaultChecked={false} onCheckedChange={(checked) => console.log('Toolbar:', checked)}>
+        Show Toolbar
+      </Dropdown.Item>
+      <Dropdown.Item defaultChecked={true} onCheckedChange={(checked) => console.log('Notifications:', checked)}>
+        Enable Notifications
+      </Dropdown.Item>
     </MockDropdownWrapper>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Items with checkbox indicators for toggle options. Use checked={true} for selected, checked={false} for unselected.',
+        story: 'Uncontrolled checkbox items using `defaultChecked`. Click to toggle - state is managed internally. Use `onCheckedChange` to listen for changes.',
       },
     },
   },
@@ -319,20 +357,33 @@ export const WithDescription: Story = {
  * Items with both checkbox and description.
  */
 export const WithCheckboxAndDescription: Story = {
-  render: () => (
-    <MockDropdownWrapper>
-      <Dropdown.Item checked={true} description="Receive email notifications">
-        Email Alerts
-      </Dropdown.Item>
-      <Dropdown.Item checked={false} description="Get push notifications on mobile">
-        Push Notifications
-      </Dropdown.Item>
-    </MockDropdownWrapper>
-  ),
+  render: () => {
+    const [email, setEmail] = useState(true);
+    const [push, setPush] = useState(false);
+    
+    return (
+      <MockDropdownWrapper>
+        <Dropdown.Item 
+          checked={email} 
+          onCheckedChange={setEmail}
+          description="Receive email notifications"
+        >
+          Email Alerts
+        </Dropdown.Item>
+        <Dropdown.Item 
+          checked={push} 
+          onCheckedChange={setPush}
+          description="Get push notifications on mobile"
+        >
+          Push Notifications
+        </Dropdown.Item>
+      </MockDropdownWrapper>
+    );
+  },
   parameters: {
     docs: {
       description: {
-        story: 'Combining checkbox indicators with descriptions for rich toggle options.',
+        story: 'Combining checkbox indicators with descriptions for rich toggle options. Click to toggle!',
       },
     },
   },

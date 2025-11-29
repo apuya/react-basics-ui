@@ -16,7 +16,7 @@ export interface CardProps extends ComponentPropsWithoutRef<'div'> {
 // Main Card Component
 const CardRoot = memo(
   forwardRef<HTMLDivElement, CardProps>(
-    ({ variant = 'default', className, children, ...props }, ref) => {
+    ({ variant = 'default', className, style, children, ...props }, ref) => {
       const cardClasses = useMemo(
         () => cn(BASE_CLASSES, VARIANT_STYLES[variant], className),
         [variant, className]
@@ -27,6 +27,10 @@ const CardRoot = memo(
           ref={ref}
           data-variant={variant}
           className={cardClasses}
+          style={{
+            gap: 'var(--component-card-gap)',
+            ...style,
+          }}
           {...props}
         >
           {children}

@@ -5,13 +5,17 @@ import {
   memo,
   useMemo,
 } from 'react';
-import { cn } from '@/lib';
+import { cn } from '@/lib/cn';
+import { Heading } from '@/components/basic/typography/Heading';
+import { Text } from '@/components/basic/typography/Text';
 import {
-  ACTION_WRAPPER_CLASSES,
+  ACTION_WRAPPER_STYLES,
   BASE_CLASSES,
-  DESCRIPTION_CLASSES,
+  CONTAINER_STYLES,
+  DESCRIPTION_SPACING_STYLES,
   ICON_WRAPPER_CLASSES,
-  TITLE_CLASSES,
+  ICON_WRAPPER_STYLES,
+  TITLE_SPACING_STYLES,
 } from './EmptyState.styles';
 
 export interface EmptyStateProps
@@ -77,10 +81,7 @@ export const EmptyState = memo(
       <div
         ref={ref}
         className={containerClasses}
-        style={{
-          paddingBlock: 'var(--semantic-space-comfortable)',
-          paddingInline: 'var(--semantic-space-default)',
-        }}
+        style={CONTAINER_STYLES}
         {...rest}
       >
         {/* Icon */}
@@ -88,6 +89,7 @@ export const EmptyState = memo(
           <div
             className={ICON_WRAPPER_CLASSES}
             style={{
+              ...ICON_WRAPPER_STYLES,
               fontSize: `${iconSize}px`,
             }}
             aria-hidden="true"
@@ -100,33 +102,25 @@ export const EmptyState = memo(
         {hasContent && (
           <div className="flex flex-col items-center">
             {title && (
-              <h3
-                className={TITLE_CLASSES}
-                style={{
-                  fontSize: 'var(--semantic-text-size-heading-3)',
-                  lineHeight: 'var(--semantic-line-height-tight)',
-                }}
-              >
-                {title}
-              </h3>
+              <div style={TITLE_SPACING_STYLES}>
+                <Heading as="h3" level="h3">
+                  {title}
+                </Heading>
+              </div>
             )}
             {description && (
-              <p
-                className={DESCRIPTION_CLASSES}
-                style={{
-                  fontSize: 'var(--semantic-text-size-body)',
-                  lineHeight: 'var(--semantic-line-height-normal)',
-                }}
-              >
-                {description}
-              </p>
+              <div style={DESCRIPTION_SPACING_STYLES} className="max-w-md">
+                <Text as="p" size="body" color="secondary">
+                  {description}
+                </Text>
+              </div>
             )}
             {children}
           </div>
         )}
 
         {/* Action */}
-        {action && <div className={ACTION_WRAPPER_CLASSES}>{action}</div>}
+        {action && <div style={ACTION_WRAPPER_STYLES}>{action}</div>}
       </div>
     );
   })

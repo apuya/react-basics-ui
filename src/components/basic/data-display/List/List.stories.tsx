@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BiCheck, BiStar, BiUser } from 'react-icons/bi';
+import { Heading } from '../../typography/Heading/Heading';
+import { Text } from '../../typography/Text/Text';
 import { List } from './List';
 
 const meta = {
-  title: 'Data Display/List',
+  title: 'Basic/Data Display/List',
   component: List,
   parameters: {
     layout: 'padded',
@@ -38,9 +40,9 @@ export const Default: Story = {
   args: {},
   render: () => (
     <List>
-      <List.Item>First item</List.Item>
-      <List.Item>Second item</List.Item>
-      <List.Item>Third item</List.Item>
+      <List.Item><Text>First item</Text></List.Item>
+      <List.Item><Text>Second item</Text></List.Item>
+      <List.Item><Text>Third item</Text></List.Item>
     </List>
   ),
 };
@@ -49,9 +51,9 @@ export const Ordered: Story = {
   args: {},
   render: () => (
     <List ordered>
-      <List.Item>Step one</List.Item>
-      <List.Item>Step two</List.Item>
-      <List.Item>Step three</List.Item>
+      <List.Item><Text>Step one</Text></List.Item>
+      <List.Item><Text>Step two</Text></List.Item>
+      <List.Item><Text>Step three</Text></List.Item>
     </List>
   ),
 };
@@ -61,35 +63,35 @@ export const AllVariants: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-8">
       <div>
-        <h3 className="text-sm font-medium mb-2">Default</h3>
+        <Heading as="h3" level="h6">Default</Heading>
         <List>
-          <List.Item>Item one</List.Item>
-          <List.Item>Item two</List.Item>
-          <List.Item>Item three</List.Item>
+          <List.Item><Text>Item one</Text></List.Item>
+          <List.Item><Text>Item two</Text></List.Item>
+          <List.Item><Text>Item three</Text></List.Item>
         </List>
       </div>
       <div>
-        <h3 className="text-sm font-medium mb-2">Divided</h3>
+        <Heading as="h3" level="h6">Divided</Heading>
         <List variant="divided">
-          <List.Item>Item one</List.Item>
-          <List.Item>Item two</List.Item>
-          <List.Item>Item three</List.Item>
+          <List.Item><Text>Item one</Text></List.Item>
+          <List.Item><Text>Item two</Text></List.Item>
+          <List.Item><Text>Item three</Text></List.Item>
         </List>
       </div>
       <div>
-        <h3 className="text-sm font-medium mb-2">Bordered</h3>
+        <Heading as="h3" level="h6">Bordered</Heading>
         <List variant="bordered">
-          <List.Item>Item one</List.Item>
-          <List.Item>Item two</List.Item>
-          <List.Item>Item three</List.Item>
+          <List.Item><Text>Item one</Text></List.Item>
+          <List.Item><Text>Item two</Text></List.Item>
+          <List.Item><Text>Item three</Text></List.Item>
         </List>
       </div>
       <div>
-        <h3 className="text-sm font-medium mb-2">Interactive</h3>
+        <Heading as="h3" level="h6">Interactive</Heading>
         <List variant="interactive">
-          <List.Item>Hover me</List.Item>
-          <List.Item>And me</List.Item>
-          <List.Item>Me too!</List.Item>
+          <List.Item><Text>Hover me</Text></List.Item>
+          <List.Item><Text>And me</Text></List.Item>
+          <List.Item><Text>Me too!</Text></List.Item>
         </List>
       </div>
     </div>
@@ -102,15 +104,15 @@ export const WithIcons: Story = {
     <List variant="divided">
       <List.Item>
         <BiCheck className="text-green-600" />
-        <span>Task completed</span>
+        <Text>Task completed</Text>
       </List.Item>
       <List.Item>
         <BiCheck className="text-green-600" />
-        <span>Tests passing</span>
+        <Text>Tests passing</Text>
       </List.Item>
       <List.Item>
         <BiCheck className="text-green-600" />
-        <span>Documentation updated</span>
+        <Text>Documentation updated</Text>
       </List.Item>
     </List>
   ),
@@ -120,27 +122,27 @@ export const FeatureList: Story = {
   args: {},
   render: () => (
     <div className="max-w-md">
-      <h2 className="text-lg font-semibold mb-4">Premium Features</h2>
+      <Heading as="h2" level="h5">Premium Features</Heading>
       <List variant="divided">
         <List.Item>
           <BiStar className="text-yellow-500" />
           <div className="flex flex-col">
-            <span className="font-medium">Unlimited projects</span>
-            <span className="text-sm text-gray-600">Create as many as you need</span>
+            <Text weight="medium">Unlimited projects</Text>
+            <Text size="small" color="secondary">Create as many as you need</Text>
           </div>
         </List.Item>
         <List.Item>
           <BiStar className="text-yellow-500" />
           <div className="flex flex-col">
-            <span className="font-medium">Priority support</span>
-            <span className="text-sm text-gray-600">Get help when you need it</span>
+            <Text weight="medium">Priority support</Text>
+            <Text size="small" color="secondary">Get help when you need it</Text>
           </div>
         </List.Item>
         <List.Item>
           <BiStar className="text-yellow-500" />
           <div className="flex flex-col">
-            <span className="font-medium">Advanced analytics</span>
-            <span className="text-sm text-gray-600">Track your performance</span>
+            <Text weight="medium">Advanced analytics</Text>
+            <Text size="small" color="secondary">Track your performance</Text>
           </div>
         </List.Item>
       </List>
@@ -155,15 +157,15 @@ export const InteractiveMenu: Story = {
       <List variant="interactive">
         <List.Item>
           <BiUser />
-          <span>Profile Settings</span>
+          <Text>Profile Settings</Text>
         </List.Item>
         <List.Item>
           <BiUser />
-          <span>Account Preferences</span>
+          <Text>Account Preferences</Text>
         </List.Item>
         <List.Item>
           <BiUser />
-          <span>Privacy & Security</span>
+          <Text>Privacy & Security</Text>
         </List.Item>
       </List>
     </div>
@@ -176,19 +178,19 @@ export const NestedList: Story = {
     <List ordered>
       <List.Item>
         <div className="flex flex-col gap-2">
-          <span>Main item one</span>
+          <Text>Main item one</Text>
           <List>
-            <List.Item>Sub-item 1a</List.Item>
-            <List.Item>Sub-item 1b</List.Item>
+            <List.Item><Text>Sub-item 1a</Text></List.Item>
+            <List.Item><Text>Sub-item 1b</Text></List.Item>
           </List>
         </div>
       </List.Item>
       <List.Item>
         <div className="flex flex-col gap-2">
-          <span>Main item two</span>
+          <Text>Main item two</Text>
           <List>
-            <List.Item>Sub-item 2a</List.Item>
-            <List.Item>Sub-item 2b</List.Item>
+            <List.Item><Text>Sub-item 2a</Text></List.Item>
+            <List.Item><Text>Sub-item 2b</Text></List.Item>
           </List>
         </div>
       </List.Item>
@@ -203,20 +205,20 @@ export const MixedContent: Story = {
       <List variant="bordered">
         <List.Item>
           <div className="flex items-center justify-between w-full">
-            <span>Task item</span>
-            <span className="text-sm text-gray-500">Due today</span>
+            <Text>Task item</Text>
+            <Text size="small" color="secondary">Due today</Text>
           </div>
         </List.Item>
         <List.Item>
           <div className="flex items-center justify-between w-full">
-            <span>Another task</span>
-            <span className="text-sm text-gray-500">Due tomorrow</span>
+            <Text>Another task</Text>
+            <Text size="small" color="secondary">Due tomorrow</Text>
           </div>
         </List.Item>
         <List.Item>
           <div className="flex items-center justify-between w-full">
-            <span>Final task</span>
-            <span className="text-sm text-green-600">Completed</span>
+            <Text>Final task</Text>
+            <Text size="small" color="success">Completed</Text>
           </div>
         </List.Item>
       </List>

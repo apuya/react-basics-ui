@@ -1,6 +1,4 @@
 import {
-  createContext,
-  useContext,
   useState,
   useMemo,
   useCallback,
@@ -9,6 +7,7 @@ import {
   type ComponentPropsWithoutRef,
 } from 'react';
 import { cn } from '@/lib/cn';
+import { createComponentContext } from '@/lib/createComponentContext';
 import { PaginationList } from './PaginationList';
 import { PaginationItem } from './PaginationItem';
 import { PaginationEllipsis } from './PaginationEllipsis';
@@ -36,15 +35,16 @@ export interface PaginationContextValue {
   size: PaginationSize;
 }
 
-const PaginationContext = createContext<PaginationContextValue | undefined>(undefined);
+const { Context: PaginationContext, useContext: usePaginationContextInternal } =
+  createComponentContext<PaginationContextValue>('Pagination');
 
 export const usePaginationContext = (componentName?: string) => {
-  const context = useContext(PaginationContext);
-  if (!context) {
+  try {
+    return usePaginationContextInternal();
+  } catch {
     const name = componentName ? `<Pagination.${componentName}>` : 'Pagination sub-components';
     throw new Error(`${name} must be used within a <Pagination> component`);
   }
-  return context;
 };
 
 /**

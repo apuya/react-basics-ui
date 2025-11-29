@@ -1,37 +1,56 @@
 import {
-  createContext,
-  useContext,
   useState,
   useMemo,
   useCallback,
   useRef,
   useEffect,
+  useId,
   type ComponentPropsWithoutRef,
 } from 'react';
+import { createComponentContext } from '@/lib/createComponentContext';
+import { useControlledState } from '@/hooks/useControlledState';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
+import { FormFieldWrapper } from '@/components/basic/forms/FormFieldWrapper';
 import { cn } from '@/lib/cn';
 import { AutocompleteInput } from './AutocompleteInput';
 import { AutocompleteList } from './AutocompleteList';
 import { AutocompleteOption } from './AutocompleteOption';
 import { AutocompleteEmpty } from './AutocompleteEmpty';
 
-export interface AutocompleteOption {
+/**
+ * Data structure for autocomplete options
+ */
+export interface AutocompleteOptionData {
   value: string;
   label: string;
   disabled?: boolean;
 }
 
+export type AutocompleteSize = 'small' | 'default' | 'large';
+
+/**
+ * Main Autocomplete component props
+ */
 export interface AutocompleteProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
   value?: string | string[];
   defaultValue?: string | string[];
   onChange?: (value: string | string[]) => void;
-  options?: AutocompleteOption[];
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  options?: AutocompleteOptionData[];
   multiple?: boolean;
   placeholder?: string;
   disabled?: boolean;
-  filter?: (option: AutocompleteOption, query: string) => boolean;
+  filter?: (option: AutocompleteOptionData, query: string) => boolean;
   emptyMessage?: string;
+  // FormField integration
+  label?: string;
+  helperText?: string;
+  error?: boolean;
+  id?: string;
+  size?: AutocompleteSize;
 }
 
 interface AutocompleteContextValue {
@@ -42,24 +61,24 @@ interface AutocompleteContextValue {
   query: string;
   setQuery: (query: string) => void;
   multiple: boolean;
-  filteredOptions: AutocompleteOption[];
+  disabled: boolean;
+  error: boolean;
+  size: AutocompleteSize;
+  options: AutocompleteOptionData[];
+  filteredOptions: AutocompleteOptionData[];
   highlightedIndex: number;
   setHighlightedIndex: (index: number | ((prev: number) => number)) => void;
   inputRef: React.RefObject<HTMLInputElement>;
   listRef: React.RefObject<HTMLDivElement>;
+  listId: string;
 }
 
-const AutocompleteContext = createContext<AutocompleteContextValue | undefined>(undefined);
+const { Context: AutocompleteContext, useContext: useAutocompleteContext } =
+  createComponentContext<AutocompleteContextValue>('Autocomplete');
 
-export const useAutocompleteContext = () => {
-  const context = useContext(AutocompleteContext);
-  if (!context) {
-    throw new Error('Autocomplete sub-components must be used within an Autocomplete component');
-  }
-  return context;
-};
+export { useAutocompleteContext };
 
-const defaultFilter = (option: AutocompleteOption, query: string) => {
+const defaultFilter = (option: AutocompleteOptionData, query: string) => {
   return option.label.toLowerCase().includes(query.toLowerCase());
 };
 
@@ -67,35 +86,47 @@ const AutocompleteRoot = ({
   value,
   defaultValue,
   onChange,
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
   options = [],
   multiple = false,
   placeholder,
   disabled = false,
   filter = defaultFilter,
   emptyMessage = 'No results found',
+  label,
+  helperText,
+  error = false,
+  id: providedId,
+  size = 'default',
   className,
   children,
   ...props
 }: AutocompleteProps) => {
-  const [internalValue, setInternalValue] = useState<string[]>(() => {
-    if (defaultValue === undefined) return [];
-    return Array.isArray(defaultValue) ? defaultValue : [defaultValue];
-  });
+  const autoId = useId();
+  const inputId = providedId || autoId;
+  const listId = useId();
   const [query, setQuery] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
 
   const inputRef = useRef<HTMLInputElement>(null!);
   const listRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
 
-  const isControlled = value !== undefined;
-  const selectedValue = useMemo(() => {
-    if (isControlled) {
-      return Array.isArray(value) ? value : value ? [value] : [];
-    }
-    return internalValue;
-  }, [isControlled, value, internalValue]);
+  // Use useControlledState for value management
+  const [selectedValue, setSelectedValue] = useControlledState<string[]>(
+    value ? (Array.isArray(value) ? value : [value]) : undefined,
+    defaultValue ? (Array.isArray(defaultValue) ? defaultValue : [defaultValue]) : [],
+    (newVal) => onChange?.(multiple ? newVal : newVal[0] || '')
+  );
+
+  // Use useControlledState for open state management
+  const [isOpen, setIsOpen] = useControlledState(
+    controlledOpen,
+    defaultOpen,
+    onOpenChange
+  );
 
   const filteredOptions = useMemo(() => {
     if (!query) return options;
@@ -104,40 +135,36 @@ const AutocompleteRoot = ({
 
   const selectOption = useCallback(
     (optionValue: string) => {
-      const newValue = (() => {
-        if (multiple) {
-          if (selectedValue.includes(optionValue)) {
-            return selectedValue.filter((v) => v !== optionValue);
-          }
-          return [...selectedValue, optionValue];
-        }
-        return [optionValue];
-      })();
+      if (disabled) return;
+      
+      const newValue = multiple
+        ? selectedValue.includes(optionValue)
+          ? selectedValue.filter((v) => v !== optionValue)
+          : [...selectedValue, optionValue]
+        : [optionValue];
 
-      if (!isControlled) {
-        setInternalValue(newValue);
-      }
-
-      if (onChange) {
-        onChange(multiple ? newValue : (newValue[0] || ''));
-      }
+      setSelectedValue(newValue);
 
       if (!multiple) {
         setIsOpen(false);
         setQuery('');
       }
     },
-    [multiple, selectedValue, isControlled, onChange]
+    [multiple, selectedValue, setSelectedValue, setIsOpen, disabled]
   );
 
   useClickOutside(containerRef, () => {
-    setIsOpen(false);
-    setQuery('');
+    if (!disabled) {
+      setIsOpen(false);
+      setQuery('');
+    }
   });
 
   useEscapeKey(() => {
-    setIsOpen(false);
-    setQuery('');
+    if (!disabled) {
+      setIsOpen(false);
+      setQuery('');
+    }
   }, isOpen);
 
   // Reset highlighted index when filtered options change
@@ -154,13 +181,18 @@ const AutocompleteRoot = ({
       query,
       setQuery,
       multiple,
+      disabled,
+      error,
+      size,
+      options,
       filteredOptions,
       highlightedIndex,
       setHighlightedIndex,
       inputRef,
       listRef,
+      listId,
     }),
-    [isOpen, selectedValue, selectOption, query, multiple, filteredOptions, highlightedIndex]
+    [isOpen, setIsOpen, selectedValue, selectOption, query, multiple, disabled, error, size, options, filteredOptions, highlightedIndex, listId]
   );
 
   const autocompleteClasses = useMemo(
@@ -169,11 +201,18 @@ const AutocompleteRoot = ({
   );
 
   return (
-    <AutocompleteContext.Provider value={contextValue}>
-      <div ref={containerRef} className={autocompleteClasses} {...props}>
-        {children}
-      </div>
-    </AutocompleteContext.Provider>
+    <FormFieldWrapper
+      label={label}
+      helperText={helperText}
+      error={error}
+      inputId={inputId}
+    >
+      <AutocompleteContext.Provider value={contextValue}>
+        <div ref={containerRef} className={autocompleteClasses} {...props}>
+          {children}
+        </div>
+      </AutocompleteContext.Provider>
+    </FormFieldWrapper>
   );
 };
 

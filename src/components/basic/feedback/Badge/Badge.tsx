@@ -4,7 +4,6 @@ import {
   memo,
   useCallback,
   useMemo,
-  useState,
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from "react";
@@ -23,23 +22,29 @@ function getTextContent(node: ReactNode): string {
 import {
   BASE_CLASSES,
   SIZE_STYLES,
-  VARIANT_STYLES,
+  COLOR_STYLES_BY_VARIANT,
+  STYLE_VARIANT_CLASSES,
   PADDING_TOKENS,
   ICON_SIZE_TOKENS,
-  type BadgeVariant,
+  type BadgeColor,
   type BadgeSize,
+  type BadgeStyleVariant,
 } from './Badge.styles';
 
-export type { BadgeVariant, BadgeSize };
+export type { BadgeColor, BadgeSize, BadgeStyleVariant };
+
+// Legacy type alias for backwards compatibility
+export type BadgeVariant = BadgeColor;
 
 export interface BadgeProps extends ComponentPropsWithoutRef<"span"> {
-  variant?: BadgeVariant;
+  /** @deprecated Use `color` instead */
+  variant?: BadgeColor;
+  color?: BadgeColor;
+  styleVariant?: BadgeStyleVariant;
   size?: BadgeSize;
   leadingIcon?: ReactNode;
   trailingIcon?: ReactNode;
   dismissible?: boolean;
-  visible?: boolean;
-  defaultVisible?: boolean;
   onDismiss?: () => void;
   disabled?: boolean;
   className?: string;
@@ -59,13 +64,13 @@ export const Badge = memo(
     {
       children,
       className,
-      variant = "neutral",
+      variant,
+      color = "neutral",
+      styleVariant = "subtle",
       size = "default",
       leadingIcon,
       trailingIcon,
       dismissible = false,
-      visible,
-      defaultVisible = true,
       onDismiss,
       disabled = false,
       onClick,
@@ -73,20 +78,26 @@ export const Badge = memo(
     },
     ref
   ) {
-    const [internalVisible, setInternalVisible] = useState(defaultVisible);
-    const isControlled = visible !== undefined;
-    const isVisible = isControlled ? visible : internalVisible;
+    // Support legacy `variant` prop as alias for `color`
+    const resolvedColor = variant ?? color;
+
+    // Get color styles based on styleVariant - optimized single lookup
+    const colorStyles = useMemo(
+      () => COLOR_STYLES_BY_VARIANT[styleVariant][resolvedColor],
+      [styleVariant, resolvedColor]
+    );
 
     const badgeClasses = useMemo(
       () => cn(
         BASE_CLASSES,
         SIZE_STYLES[size],
-        VARIANT_STYLES[variant],
+        STYLE_VARIANT_CLASSES[styleVariant],
+        colorStyles,
         dismissible && !disabled && "cursor-pointer hover:opacity-[var(--component-badge-hover-opacity)]",
         disabled && "opacity-50 cursor-not-allowed",
         className
       ),
-      [size, variant, dismissible, disabled, className]
+      [size, styleVariant, colorStyles, dismissible, disabled, className]
     );
 
     const handleClick = useCallback(
@@ -94,13 +105,10 @@ export const Badge = memo(
         if (disabled) return;
         if (dismissible) {
           onDismiss?.();
-          if (!isControlled && !onDismiss) {
-            setInternalVisible(false);
-          }
         }
         onClick?.(e);
       },
-      [dismissible, onDismiss, onClick, disabled, isControlled]
+      [dismissible, onDismiss, onClick, disabled]
     );
 
     const handleKeyDown = useCallback(
@@ -108,15 +116,10 @@ export const Badge = memo(
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onDismiss?.();
-          if (!isControlled && !onDismiss) {
-            setInternalVisible(false);
-          }
         }
       },
-      [onDismiss, isControlled]
+      [onDismiss]
     );
-
-    if (!isVisible) return null;
 
     return (
       <span

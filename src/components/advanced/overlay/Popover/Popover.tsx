@@ -1,17 +1,19 @@
 import {
-  createContext,
   forwardRef,
   memo,
   useCallback,
-  useContext,
+  useId,
   useMemo,
   useRef,
   useState,
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from 'react';
+import { useClickOutsideWithExclusions } from '@/hooks/useClickOutsideWithExclusions';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { cn } from '@/lib/cn';
+import { createComponentContext } from '@/lib/createComponentContext';
 import { BiX } from 'react-icons/bi';
 import {
   BASE_CLASSES,
@@ -29,18 +31,22 @@ export type PopoverAlign = 'start' | 'center' | 'end';
 
 export interface PopoverProps {
   children: ReactNode;
+  /** Initial open state for uncontrolled mode */
   defaultOpen?: boolean;
+  /** Controlled open state */
   open?: boolean;
+  /** Callback when open state changes */
   onOpenChange?: (open: boolean) => void;
 }
 
-export interface PopoverTriggerProps extends ComponentPropsWithoutRef<'button'> {
-  asChild?: boolean;
-}
+export interface PopoverTriggerProps extends ComponentPropsWithoutRef<'button'> {}
 
 export interface PopoverContentProps extends ComponentPropsWithoutRef<'div'> {
+  /** Position relative to trigger */
   side?: PopoverSide;
+  /** Alignment relative to trigger */
   align?: PopoverAlign;
+  /** Show arrow pointing to trigger (not implemented yet) */
   showArrow?: boolean;
 }
 
@@ -51,23 +57,24 @@ export interface PopoverCloseProps extends ComponentPropsWithoutRef<'button'> {}
 export interface PopoverContextValue {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  contentId: string;
+  titleId: string;
+  descriptionId: string;
+  triggerRef: React.RefObject<HTMLButtonElement | null>;
+  contentRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const PopoverContext = createContext<PopoverContextValue | undefined>(undefined);
+const { Context: PopoverContext, useContext: usePopoverContext } =
+  createComponentContext<PopoverContextValue>('Popover');
 
-export const usePopoverContext = () => {
-  const context = useContext(PopoverContext);
-  if (!context) {
-    throw new Error('Popover components must be used within a Popover');
-  }
-  return context;
-};
+export { usePopoverContext };
 
 // Popover Trigger Component
 const PopoverTrigger = memo(
   forwardRef<HTMLButtonElement, PopoverTriggerProps>(
-    ({ asChild, children, onMouseEnter, onMouseLeave, ...props }, ref) => {
-      const { isOpen, setIsOpen } = usePopoverContext();
+    ({ children, className, onMouseEnter, onMouseLeave, onFocus, onBlur, ...props }, ref) => {
+      const { isOpen, setIsOpen, contentId, triggerRef, contentRef } = usePopoverContext();
+      const mergedRef = useMergedRefs(ref, triggerRef);
 
       const handleMouseEnter = useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -85,14 +92,39 @@ const PopoverTrigger = memo(
         [setIsOpen, onMouseLeave]
       );
 
+      const handleFocus = useCallback(
+        (e: React.FocusEvent<HTMLButtonElement>) => {
+          setIsOpen(true);
+          onFocus?.(e);
+        },
+        [setIsOpen, onFocus]
+      );
+
+      const handleBlur = useCallback(
+        (e: React.FocusEvent<HTMLButtonElement>) => {
+          // Don't close if focus moves to content
+          const relatedTarget = e.relatedTarget as Node | null;
+          if (contentRef.current?.contains(relatedTarget)) {
+            return;
+          }
+          setIsOpen(false);
+          onBlur?.(e);
+        },
+        [setIsOpen, onBlur, contentRef]
+      );
+
       return (
         <button
-          ref={ref}
+          ref={mergedRef}
           type="button"
           aria-expanded={isOpen}
           aria-haspopup="dialog"
+          aria-controls={isOpen ? contentId : undefined}
+          className={className}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           {...props}
         >
           {children}
@@ -106,9 +138,9 @@ PopoverTrigger.displayName = 'Popover.Trigger';
 // Popover Content Component
 const PopoverContent = memo(
   forwardRef<HTMLDivElement, PopoverContentProps>(
-    ({ side = 'bottom', align = 'center', className, children, onMouseEnter, onMouseLeave, ...props }, _ref) => {
-      const { isOpen, setIsOpen } = usePopoverContext();
-      const contentRef = useRef<HTMLDivElement>(null!);
+    ({ side = 'bottom', align = 'center', className, children, onMouseEnter, onMouseLeave, ...props }, ref) => {
+      const { isOpen, setIsOpen, contentId, titleId, descriptionId, contentRef } = usePopoverContext();
+      const mergedRef = useMergedRefs(ref, contentRef);
 
       const popoverStyle = useMemo(
         () => ({
@@ -151,9 +183,12 @@ const PopoverContent = memo(
 
       return (
         <div
-          ref={contentRef}
+          ref={mergedRef}
+          id={contentId}
           role="dialog"
           aria-modal="false"
+          aria-labelledby={titleId}
+          aria-describedby={descriptionId}
           className={popoverClasses}
           style={popoverStyle}
           onMouseEnter={handleMouseEnter}
@@ -171,11 +206,15 @@ PopoverContent.displayName = 'Popover.Content';
 // Popover Title Component
 const PopoverTitle = memo(
   forwardRef<HTMLHeadingElement, PopoverTitleProps>(
-    ({ className, children, ...props }, ref) => (
-      <h3 ref={ref} className={cn(TITLE_CLASSES, className)} {...props}>
-        {children}
-      </h3>
-    )
+    ({ className, children, ...props }, ref) => {
+      const { titleId } = usePopoverContext();
+
+      return (
+        <h3 ref={ref} id={titleId} className={cn(TITLE_CLASSES, className)} {...props}>
+          {children}
+        </h3>
+      );
+    }
   )
 );
 PopoverTitle.displayName = 'Popover.Title';
@@ -184,6 +223,8 @@ PopoverTitle.displayName = 'Popover.Title';
 const PopoverDescription = memo(
   forwardRef<HTMLParagraphElement, PopoverDescriptionProps>(
     ({ className, children, ...props }, ref) => {
+      const { descriptionId } = usePopoverContext();
+
       const descriptionStyle = useMemo(
         () => ({ marginTop: 'var(--component-popover-gap)' }),
         []
@@ -192,6 +233,7 @@ const PopoverDescription = memo(
       return (
         <p
           ref={ref}
+          id={descriptionId}
           className={cn(DESCRIPTION_CLASSES, className)}
           style={descriptionStyle}
           {...props}
@@ -220,8 +262,8 @@ const PopoverClose = memo(
 
       const iconStyle = useMemo(
         () => ({
-          width: 'var(--component-popover-arrow-size)',
-          height: 'var(--component-popover-arrow-size)',
+          width: 'var(--component-popover-close-size, 1rem)',
+          height: 'var(--component-popover-close-size, 1rem)',
         }),
         []
       );
@@ -246,8 +288,16 @@ PopoverClose.displayName = 'Popover.Close';
 // Main Popover Component
 const PopoverRoot = ({ children, defaultOpen = false, open, onOpenChange }: PopoverProps) => {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const isControlled = open !== undefined;
   const isOpen = isControlled ? open : internalOpen;
+
+  // Generate unique IDs for ARIA
+  const uniqueId = useId();
+  const contentId = `popover-content-${uniqueId}`;
+  const titleId = `popover-title-${uniqueId}`;
+  const descriptionId = `popover-desc-${uniqueId}`;
 
   const setIsOpen = useCallback(
     (newOpen: boolean) => {
@@ -259,9 +309,20 @@ const PopoverRoot = ({ children, defaultOpen = false, open, onOpenChange }: Popo
     [isControlled, onOpenChange]
   );
 
+  // Close on click outside (excluding trigger to prevent race conditions)
+  useClickOutsideWithExclusions(
+    contentRef as React.RefObject<HTMLDivElement>,
+    () => {
+      if (isOpen) {
+        setIsOpen(false);
+      }
+    },
+    [triggerRef]
+  );
+
   const contextValue = useMemo(
-    () => ({ isOpen, setIsOpen }),
-    [isOpen, setIsOpen]
+    () => ({ isOpen, setIsOpen, contentId, titleId, descriptionId, triggerRef, contentRef }),
+    [isOpen, setIsOpen, contentId, titleId, descriptionId]
   );
 
   return (

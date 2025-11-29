@@ -5,3 +5,5 @@ export type { PaginationItemProps } from './PaginationItem';
 export type { PaginationEllipsisProps } from './PaginationEllipsis';
 export type { PaginationPreviousProps } from './PaginationPrevious';
 export type { PaginationNextProps } from './PaginationNext';
+export { usePagination } from './usePagination';
+export type { UsePaginationOptions, PaginationPageItem, PaginationEllipsisItem, PaginationItem as PaginationPageItemType } from './usePagination';

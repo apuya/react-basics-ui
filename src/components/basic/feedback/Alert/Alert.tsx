@@ -7,10 +7,14 @@ import {
   useMemo,
 } from 'react';
 import { BiX } from 'react-icons/bi';
-import { cn } from '@/lib';
+import { cn } from '@/lib/cn';
 import {
   BASE_CLASSES,
+  BODY_STYLES,
+  CONTAINER_STYLES,
   ICON_COLOR_STYLES,
+  ICON_SIZE_STYLE,
+  TITLE_STYLES,
   type AlertVariant,
   VARIANT_ICONS,
   VARIANT_STYLES,
@@ -85,20 +89,14 @@ export const Alert = memo(
         ref={ref}
         role="alert"
         className={alertClasses}
-        style={{
-          paddingBlock: 'var(--component-alert-padding-block)',
-          paddingInline: 'var(--component-alert-padding-inline)',
-          gap: 'var(--component-alert-gap)',
-        }}
+        style={CONTAINER_STYLES}
         {...rest}
       >
         {/* Icon */}
         {showIcon && (
           <span
             className={cn('flex-shrink-0', ICON_COLOR_STYLES[variant])}
-            style={{
-              fontSize: 'var(--component-alert-icon-size)',
-            }}
+            style={ICON_SIZE_STYLE}
             aria-hidden="true"
           >
             <IconComponent />
@@ -111,10 +109,7 @@ export const Alert = memo(
             {title && (
               <div
                 className="font-[var(--component-alert-title-weight)]"
-                style={{
-                  fontSize: 'var(--component-alert-title-size)',
-                  lineHeight: 'var(--component-alert-title-line-height)',
-                }}
+                style={TITLE_STYLES}
               >
                 {title}
               </div>
@@ -123,8 +118,7 @@ export const Alert = memo(
               <div
                 className="font-[var(--component-alert-body-weight)]"
                 style={{
-                  fontSize: 'var(--component-alert-body-size)',
-                  lineHeight: 'var(--component-alert-body-line-height)',
+                  ...BODY_STYLES,
                   marginTop: title ? 'var(--semantic-space-tight)' : '0',
                 }}
               >
@@ -135,8 +129,7 @@ export const Alert = memo(
               <div
                 className="font-[var(--component-alert-body-weight)]"
                 style={{
-                  fontSize: 'var(--component-alert-body-size)',
-                  lineHeight: 'var(--component-alert-body-line-height)',
+                  ...BODY_STYLES,
                   marginTop: title ? 'var(--semantic-space-tight)' : '0',
                 }}
               >
@@ -152,12 +145,10 @@ export const Alert = memo(
             type="button"
             onClick={handleClose}
             className={cn(
-              'flex-shrink-0 inline-flex items-center justify-center rounded-sm opacity-70 hover:opacity-100 transition-opacity',
+              'flex-shrink-0 inline-flex items-center justify-center rounded-sm opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-1',
               ICON_COLOR_STYLES[variant]
             )}
-            style={{
-              fontSize: 'var(--component-alert-icon-size)',
-            }}
+            style={ICON_SIZE_STYLE}
             aria-label="Close alert"
           >
             <BiX />
@@ -169,5 +160,3 @@ export const Alert = memo(
 );
 
 Alert.displayName = 'Alert';
-
-export type { AlertVariant };

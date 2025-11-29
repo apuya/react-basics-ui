@@ -1,2 +1,3 @@
 export { Alert } from './Alert';
-export type { AlertProps, AlertVariant } from './Alert';
+export type { AlertProps } from './Alert';
+export type { AlertVariant } from './Alert.styles';

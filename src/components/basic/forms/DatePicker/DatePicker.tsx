@@ -1,100 +1,220 @@
-import { cn } from '@/lib/cn';
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
+import { memo, useCallback, useId, useMemo, useRef, useState } from 'react';
+import { DatePickerContext } from './DatePickerContext';
 import {
-  BASE_CLASSES,
-  HELPER_CLASSES,
-  HELPER_ERROR_CLASSES,
-  LABEL_CLASSES,
-  LABEL_ERROR_CLASSES,
-  SIZE_STYLES,
-  STATE_STYLES,
+  WRAPPER_CLASSES,
 } from './DatePicker.styles';
+import type {
+  DatePickerProps,
+  DatePickerContextValue,
+  DateRange,
+  DatePickerVariant,
+  DatePickerSize,
+} from './DatePicker.types';
 
-export type DatePickerSize = keyof typeof SIZE_STYLES;
+/**
+ * DatePicker - Main compound component for date selection
+ * 
+ * Supports 4 variants:
+ * - `single`: Single calendar, single date selection
+ * - `single-range`: Single calendar, date range selection
+ * - `double-range`: Double calendar, date range selection
+ * - `double-presets`: Double calendar with presets sidebar
+ * 
+ * @example
+ * ```tsx
+ * // Single date picker
+ * <DatePicker variant="single" onChange={setDate}>
+ *   <DatePickerTrigger placeholder="Select date" />
+ *   <DatePickerContent>
+ *     <Calendar />
+ *   </DatePickerContent>
+ * </DatePicker>
+ * 
+ * // Range with presets
+ * <DatePicker variant="double-presets" onRangeChange={setRange}>
+ *   <DatePickerTrigger placeholder="Select range" />
+ *   <DatePickerContent>
+ *     <DatePickerPresets />
+ *     <div>
+ *       <Calendar variant="dual" />
+ *       <DatePickerConfirmation />
+ *     </div>
+ *   </DatePickerContent>
+ * </DatePicker>
+ * ```
+ */
+export const DatePicker = memo(function DatePicker({
+  children,
+  variant = 'single',
+  defaultOpen = false,
+  open,
+  onOpenChange,
+  value,
+  defaultValue = null,
+  rangeValue,
+  defaultRangeValue = { start: null, end: null },
+  onChange,
+  onRangeChange,
+  minDate,
+  maxDate,
+  disabledDates,
+  firstDayOfWeek = 0,
+  size = 'default',
+  disabled = false,
+  error = false,
+  closeOnSelect = true,
+}: DatePickerProps) {
+  // Generate unique IDs
+  const id = useId();
+  const triggerId = `datepicker-trigger-${id}`;
+  const contentId = `datepicker-content-${id}`;
 
-export interface DatePickerProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size' | 'type'> {
-  /** Size of the date picker */
-  size?: DatePickerSize;
-  /** Error state */
-  error?: boolean;
-  /** Label text */
-  label?: string;
-  /** Helper or error text */
-  helperText?: string;
-  /** Wrapper div className */
-  wrapperClassName?: string;
-  /** Minimum selectable date (YYYY-MM-DD) */
-  min?: string;
-  /** Maximum selectable date (YYYY-MM-DD) */
-  max?: string;
-}
+  // Refs
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-export const DatePicker = memo(
-  forwardRef<HTMLInputElement, DatePickerProps>(function DatePicker(
-    {
-      size = 'default',
-      error = false,
-      label,
-      helperText,
-      className,
-      wrapperClassName,
-      id,
-      disabled,
-      min,
-      max,
-      ...rest
+  // Open state (controlled or uncontrolled)
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isOpen = open !== undefined ? open : internalOpen;
+
+  const setIsOpen = useCallback(
+    (newOpen: boolean) => {
+      if (open === undefined) {
+        setInternalOpen(newOpen);
+      }
+      onOpenChange?.(newOpen);
     },
-    ref
-  ) {
-    const inputId = id || (label ? `datepicker-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
+    [open, onOpenChange]
+  );
 
-    const inputClasses = useMemo(
-      () => cn(
-        BASE_CLASSES,
-        SIZE_STYLES[size],
-        error ? STATE_STYLES.error : STATE_STYLES.default,
-        className
-      ),
-      [size, error, className]
-    );
+  // Single date state (controlled or uncontrolled)
+  const [internalDate, setInternalDate] = useState<Date | null>(defaultValue);
+  const selectedDate = value !== undefined ? value : internalDate;
 
-    const inputStyle = useMemo(
-      () => ({
-        height: `var(--component-input-height-${size})`,
-        paddingInline: 'var(--component-input-padding-inline)',
-      }),
-      [size]
-    );
+  const setSelectedDate = useCallback(
+    (date: Date | null) => {
+      if (value === undefined) {
+        setInternalDate(date);
+      }
+      onChange?.(date);
+      
+      // Close on select for single mode
+      if (closeOnSelect && variant === 'single' && date) {
+        setIsOpen(false);
+      }
+    },
+    [value, onChange, closeOnSelect, variant, setIsOpen]
+  );
 
-    return (
-      <div className={cn('w-full', wrapperClassName)}>
-        {label && (
-          <label
-            htmlFor={inputId}
-            className={error ? LABEL_ERROR_CLASSES : LABEL_CLASSES}
-          >
-            {label}
-          </label>
-        )}
-        <input
-          ref={ref}
-          id={inputId}
-          type="date"
-          className={inputClasses}
-          style={inputStyle}
-          disabled={disabled}
-          min={min}
-          max={max}
-          {...rest}
-        />
-        {helperText && (
-          <p className={error ? HELPER_ERROR_CLASSES : HELPER_CLASSES}>
-            {helperText}
-          </p>
-        )}
+  // Date range state (controlled or uncontrolled)
+  const [internalRange, setInternalRange] = useState<DateRange>(defaultRangeValue);
+  const selectedRange = rangeValue !== undefined ? rangeValue : internalRange;
+
+  const setSelectedRange = useCallback(
+    (range: DateRange) => {
+      if (rangeValue === undefined) {
+        setInternalRange(range);
+      }
+      onRangeChange?.(range);
+    },
+    [rangeValue, onRangeChange]
+  );
+
+  // Hover state for range preview
+  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
+
+  // Display state (month/year being viewed)
+  const now = new Date();
+  const [displayMonth, setDisplayMonth] = useState(
+    selectedDate?.getMonth() ?? selectedRange.start?.getMonth() ?? now.getMonth()
+  );
+  const [displayYear, setDisplayYear] = useState(
+    selectedDate?.getFullYear() ?? selectedRange.start?.getFullYear() ?? now.getFullYear()
+  );
+
+  // Secondary display state for dual calendar (next month)
+  const secondaryDisplayMonth = displayMonth === 11 ? 0 : displayMonth + 1;
+  const secondaryDisplayYear = displayMonth === 11 ? displayYear + 1 : displayYear;
+
+  // Confirm handler (for range modes)
+  const onConfirm = useCallback(() => {
+    setIsOpen(false);
+  }, [setIsOpen]);
+
+  // Cancel handler
+  const onCancel = useCallback(() => {
+    // Reset to previous value if needed
+    setIsOpen(false);
+  }, [setIsOpen]);
+
+  // Build context value
+  const contextValue = useMemo<DatePickerContextValue>(
+    () => ({
+      isOpen,
+      setIsOpen,
+      variant: variant as DatePickerVariant,
+      size: size as DatePickerSize,
+      disabled,
+      error,
+      selectedDate,
+      setSelectedDate,
+      selectedRange,
+      setSelectedRange,
+      hoveredDate,
+      setHoveredDate,
+      displayMonth,
+      displayYear,
+      setDisplayMonth,
+      setDisplayYear,
+      secondaryDisplayMonth,
+      secondaryDisplayYear,
+      minDate,
+      maxDate,
+      disabledDates,
+      firstDayOfWeek,
+      triggerRef,
+      contentRef,
+      contentId,
+      triggerId,
+      closeOnSelect,
+      onConfirm,
+      onCancel,
+    }),
+    [
+      isOpen,
+      setIsOpen,
+      variant,
+      size,
+      disabled,
+      error,
+      selectedDate,
+      setSelectedDate,
+      selectedRange,
+      setSelectedRange,
+      hoveredDate,
+      displayMonth,
+      displayYear,
+      secondaryDisplayMonth,
+      secondaryDisplayYear,
+      minDate,
+      maxDate,
+      disabledDates,
+      firstDayOfWeek,
+      contentId,
+      triggerId,
+      closeOnSelect,
+      onConfirm,
+      onCancel,
+    ]
+  );
+
+  return (
+    <DatePickerContext.Provider value={contextValue}>
+      <div className={WRAPPER_CLASSES}>
+        {children}
       </div>
-    );
-  })
-);
+    </DatePickerContext.Provider>
+  );
+});
 
 DatePicker.displayName = 'DatePicker';

@@ -1,420 +1,706 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { DatePicker } from './DatePicker';
+import { DatePickerTrigger } from './DatePickerTrigger';
+import { DatePickerContent } from './DatePickerContent';
+import { Calendar } from './Calendar';
+import { DatePickerPresets, DEFAULT_PRESETS } from './DatePickerPresets';
+import { DatePickerConfirmation } from './DatePickerConfirmation';
+import type { DateRange } from './DatePicker.types';
+import {
+  CONTENT_ROW_CLASSES,
+  CONTENT_ROW_STYLE,
+  PRESETS_WRAPPER_CLASSES,
+  PRESETS_WRAPPER_STYLE,
+} from './DatePicker.styles';
 
 const meta: Meta<typeof DatePicker> = {
-  title: 'Forms/DatePicker',
+  title: 'Forms/DatePicker/DatePicker',
   component: DatePicker,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'DatePicker component for selecting dates with support for different sizes, labels, helper text, error states, and min/max date constraints. Uses the native HTML date input for consistent browser behavior and accessibility.',
+        component: `
+A compound component for date selection with support for single dates and date ranges.
+
+## Variants
+- \`single\` - Single calendar with single date selection
+- \`single-range\` - Single calendar with date range selection
+- \`double-range\` - Dual calendar with date range selection
+- \`double-presets\` - Dual calendar with presets sidebar
+
+## Compound Components
+- \`DatePicker\` - Root component that provides context
+- \`DatePickerTrigger\` - Button that opens the picker
+- \`DatePickerContent\` - Popover container
+- \`Calendar\` - Calendar grid (single or dual variant)
+- \`DatePickerPresets\` - Quick preset selections
+- \`DatePickerConfirmation\` - Date inputs with cancel/apply buttons
+        `,
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
+    variant: {
+      control: 'select',
+      options: ['single', 'single-range', 'double-range', 'double-presets'],
+      description: 'Layout variant for the date picker',
+    },
     size: {
       control: 'select',
       options: ['small', 'default', 'large'],
-      description: 'Size of the date picker',
-    },
-    error: {
-      control: 'boolean',
-      description: 'Error state',
+      description: 'Size of the trigger button',
     },
     disabled: {
       control: 'boolean',
-      description: 'Disabled state',
+      description: 'Whether the date picker is disabled',
     },
-    label: {
-      control: 'text',
-      description: 'Label text',
+    error: {
+      control: 'boolean',
+      description: 'Whether to show error state',
     },
-    helperText: {
-      control: 'text',
-      description: 'Helper or error text',
-    },
-    min: {
-      control: 'text',
-      description: 'Minimum selectable date (YYYY-MM-DD)',
-    },
-    max: {
-      control: 'text',
-      description: 'Maximum selectable date (YYYY-MM-DD)',
+    closeOnSelect: {
+      control: 'boolean',
+      description: 'Whether to close on date selection (single mode only)',
     },
   },
-  decorators: [(Story) => <div style={{ width: '320px' }}><Story /></div>],
 };
 
 export default meta;
 type Story = StoryObj<typeof DatePicker>;
 
-export const Default: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Basic date picker without label or helper text. Simple date selection interface.',
-      },
-    },
-  },
-  args: {},
-};
+// ============================================================================
+// Single Date Picker
+// ============================================================================
 
-export const WithLabel: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Date picker with a descriptive label for better form context and accessibility.',
-      },
-    },
-  },
-  args: {
-    label: 'Select Date',
-  },
-};
-
-export const WithHelperText: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Date picker with helper text to provide additional guidance or context to users.',
-      },
-    },
-  },
-  args: {
-    label: 'Appointment Date',
-    helperText: 'Select your preferred appointment date',
+export const Single: Story = {
+  render: () => {
+    const [date, setDate] = useState<Date | null>(null);
+    
+    return (
+      <div style={{ minHeight: '400px' }}>
+        <DatePicker variant="single" value={date} onChange={setDate}>
+          <DatePickerTrigger placeholder="Select date" />
+          <DatePickerContent>
+            <Calendar
+              selectedDate={date}
+              onDateSelect={(d) => setDate(d)}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
   },
 };
 
-export const WithValue: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Date picker with a pre-selected date value in YYYY-MM-DD format.',
-      },
-    },
-  },
-  args: {
-    label: 'Birth Date',
-    defaultValue: '1990-01-15',
-  },
-};
-
-export const SizeSmall: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Small size date picker for compact layouts or inline forms.',
-      },
-    },
-  },
-  args: {
-    size: 'small',
-    label: 'Date',
+export const SingleWithValue: Story = {
+  render: () => {
+    const [date, setDate] = useState<Date | null>(new Date());
+    
+    return (
+      <div style={{ minHeight: '400px' }}>
+        <DatePicker variant="single" value={date} onChange={setDate}>
+          <DatePickerTrigger placeholder="Select date" />
+          <DatePickerContent>
+            <Calendar
+              selectedDate={date}
+              onDateSelect={(d) => setDate(d)}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
   },
 };
 
-export const SizeDefault: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default size date picker, recommended for most form use cases.',
-      },
-    },
-  },
-  args: {
-    size: 'default',
-    label: 'Date',
+// ============================================================================
+// Single Range Picker
+// ============================================================================
+
+export const SingleRange: Story = {
+  render: () => {
+    const [range, setRange] = useState<DateRange>({ start: null, end: null });
+    const [startValue, setStartValue] = useState('');
+    const [endValue, setEndValue] = useState('');
+    
+    const handleDateSelect = (date: Date) => {
+      if (!range.start || (range.start && range.end)) {
+        setRange({ start: date, end: null });
+        setStartValue(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+        setEndValue('');
+      } else {
+        const newRange = date < range.start 
+          ? { start: date, end: range.start }
+          : { start: range.start, end: date };
+        setRange(newRange);
+        setStartValue(newRange.start!.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+        setEndValue(newRange.end!.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+      }
+    };
+    
+    return (
+      <div style={{ minHeight: '450px' }}>
+        <DatePicker variant="single-range" rangeValue={range} onRangeChange={setRange}>
+          <DatePickerTrigger placeholder="Select date range" />
+          <DatePickerContent>
+            <Calendar
+              selectedRange={range}
+              onDateSelect={handleDateSelect}
+              isRangeMode
+            />
+            <DatePickerConfirmation
+              stacked
+              startDateValue={startValue}
+              endDateValue={endValue}
+              onStartDateChange={setStartValue}
+              onEndDateChange={setEndValue}
+              onCancel={() => {
+                setRange({ start: null, end: null });
+                setStartValue('');
+                setEndValue('');
+              }}
+              onApply={() => console.log('Applied:', range)}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
   },
 };
 
-export const SizeLarge: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large size date picker for prominent form fields or touch interfaces.',
-      },
-    },
-  },
-  args: {
-    size: 'large',
-    label: 'Date',
+// ============================================================================
+// Double Range Picker
+// ============================================================================
+
+export const DoubleRange: Story = {
+  render: () => {
+    const [range, setRange] = useState<DateRange>({ start: null, end: null });
+    const [startValue, setStartValue] = useState('');
+    const [endValue, setEndValue] = useState('');
+    
+    const handleDateSelect = (date: Date) => {
+      if (!range.start || (range.start && range.end)) {
+        setRange({ start: date, end: null });
+        setStartValue(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+        setEndValue('');
+      } else {
+        const newRange = date < range.start 
+          ? { start: date, end: range.start }
+          : { start: range.start, end: date };
+        setRange(newRange);
+        setStartValue(newRange.start!.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+        setEndValue(newRange.end!.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+      }
+    };
+    
+    return (
+      <div style={{ minHeight: '450px' }}>
+        <DatePicker variant="double-range" rangeValue={range} onRangeChange={setRange}>
+          <DatePickerTrigger placeholder="Select date range" />
+          <DatePickerContent>
+            <Calendar
+              variant="dual"
+              selectedRange={range}
+              onDateSelect={handleDateSelect}
+              isRangeMode
+            />
+            <DatePickerConfirmation
+              startDateValue={startValue}
+              endDateValue={endValue}
+              onStartDateChange={setStartValue}
+              onEndDateChange={setEndValue}
+              onCancel={() => {
+                setRange({ start: null, end: null });
+                setStartValue('');
+                setEndValue('');
+              }}
+              onApply={() => console.log('Applied:', range)}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
   },
 };
 
-export const ErrorState: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Date picker in error state with error message. Use when date validation fails.',
-      },
-    },
-  },
-  args: {
-    label: 'Start Date',
-    error: true,
-    helperText: 'Please select a valid start date',
+// ============================================================================
+// Double with Presets
+// ============================================================================
+
+export const DoublePresets: Story = {
+  render: () => {
+    const [range, setRange] = useState<DateRange>({ start: null, end: null });
+    const [selectedPreset, setSelectedPreset] = useState<string | undefined>();
+    const [startValue, setStartValue] = useState('');
+    const [endValue, setEndValue] = useState('');
+    
+    const handleDateSelect = (date: Date) => {
+      setSelectedPreset(undefined);
+      if (!range.start || (range.start && range.end)) {
+        setRange({ start: date, end: null });
+        setStartValue(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+        setEndValue('');
+      } else {
+        const newRange = date < range.start 
+          ? { start: date, end: range.start }
+          : { start: range.start, end: date };
+        setRange(newRange);
+        setStartValue(newRange.start!.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+        setEndValue(newRange.end!.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+      }
+    };
+    
+    const handlePresetSelect = (presetRange: DateRange) => {
+      setRange(presetRange);
+      if (presetRange.start) {
+        setStartValue(presetRange.start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+      }
+      if (presetRange.end) {
+        setEndValue(presetRange.end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+      }
+    };
+    
+    return (
+      <div style={{ minHeight: '450px' }}>
+        <DatePicker variant="double-presets" rangeValue={range} onRangeChange={setRange}>
+          <DatePickerTrigger placeholder="Select date range" />
+          <DatePickerContent>
+            {/* Row: Presets | Calendars */}
+            <div className={CONTENT_ROW_CLASSES} style={CONTENT_ROW_STYLE}>
+              {/* Presets wrapper for height constraint */}
+              <div className={PRESETS_WRAPPER_CLASSES} style={PRESETS_WRAPPER_STYLE}>
+                <DatePickerPresets
+                  variant="positioned"
+                  presets={DEFAULT_PRESETS}
+                  selectedPreset={selectedPreset}
+                  onPresetSelect={(presetRange) => {
+                    handlePresetSelect(presetRange);
+                    const preset = DEFAULT_PRESETS.find(p => {
+                      const value = p.getValue();
+                      return value.start?.getTime() === presetRange.start?.getTime() &&
+                             value.end?.getTime() === presetRange.end?.getTime();
+                    });
+                    setSelectedPreset(preset?.label);
+                  }}
+                />
+              </div>
+              <Calendar
+                variant="dual"
+                selectedRange={range}
+                onDateSelect={handleDateSelect}
+                isRangeMode
+              />
+            </div>
+            {/* Footer: Confirmation spanning full width */}
+            <DatePickerConfirmation
+              startDateValue={startValue}
+              endDateValue={endValue}
+              onStartDateChange={setStartValue}
+              onEndDateChange={setEndValue}
+              onCancel={() => {
+                setRange({ start: null, end: null });
+                setStartValue('');
+                setEndValue('');
+                setSelectedPreset(undefined);
+              }}
+              onApply={() => console.log('Applied:', range)}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
   },
 };
+
+// ============================================================================
+// Sizes
+// ============================================================================
+
+export const SmallSize: Story = {
+  render: () => {
+    const [date, setDate] = useState<Date | null>(null);
+    
+    return (
+      <div style={{ minHeight: '400px' }}>
+        <DatePicker variant="single" size="small" value={date} onChange={setDate}>
+          <DatePickerTrigger placeholder="Select date" />
+          <DatePickerContent>
+            <Calendar
+              selectedDate={date}
+              onDateSelect={(d) => setDate(d)}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
+  },
+};
+
+export const LargeSize: Story = {
+  render: () => {
+    const [date, setDate] = useState<Date | null>(null);
+    
+    return (
+      <div style={{ minHeight: '400px' }}>
+        <DatePicker variant="single" size="large" value={date} onChange={setDate}>
+          <DatePickerTrigger placeholder="Select date" />
+          <DatePickerContent>
+            <Calendar
+              selectedDate={date}
+              onDateSelect={(d) => setDate(d)}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
+  },
+};
+
+// ============================================================================
+// States
+// ============================================================================
 
 export const Disabled: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Disabled date picker that cannot be interacted with.',
-      },
-    },
-  },
-  args: {
-    label: 'Locked Date',
-    disabled: true,
-    defaultValue: '2024-01-01',
-    helperText: 'This date cannot be changed',
+  render: () => {
+    return (
+      <div style={{ minHeight: '400px' }}>
+        <DatePicker variant="single" disabled>
+          <DatePickerTrigger placeholder="Select date" />
+          <DatePickerContent>
+            <Calendar />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
   },
 };
 
-export const WithMinDate: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Date picker with minimum date constraint. Users can only select dates from today onwards.',
-      },
-    },
+export const Error: Story = {
+  render: () => {
+    const [date, setDate] = useState<Date | null>(null);
+    
+    return (
+      <div style={{ minHeight: '400px' }}>
+        <DatePicker variant="single" error value={date} onChange={setDate}>
+          <DatePickerTrigger placeholder="Select date" />
+          <DatePickerContent>
+            <Calendar
+              selectedDate={date}
+              onDateSelect={(d) => setDate(d)}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
   },
-  args: {
-    label: 'Future Date',
-    min: new Date().toISOString().split('T')[0],
-    helperText: 'Select a date from today onwards',
+};
+
+// ============================================================================
+// Min/Max Date Constraints
+// ============================================================================
+
+export const WithMinDate: Story = {
+  render: () => {
+    const [date, setDate] = useState<Date | null>(null);
+    const today = new Date();
+    
+    return (
+      <div style={{ minHeight: '400px' }}>
+        <p className="text-sm text-gray-500 mb-4">Cannot select dates before today</p>
+        <DatePicker variant="single" value={date} onChange={setDate} minDate={today}>
+          <DatePickerTrigger placeholder="Select future date" />
+          <DatePickerContent>
+            <Calendar
+              selectedDate={date}
+              onDateSelect={setDate}
+              minDate={today}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
   },
 };
 
 export const WithMaxDate: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Date picker with maximum date constraint. Users can only select dates up to today.',
-      },
-    },
-  },
-  args: {
-    label: 'Past Date',
-    max: new Date().toISOString().split('T')[0],
-    helperText: 'Select a date up to today',
+  render: () => {
+    const [date, setDate] = useState<Date | null>(null);
+    const today = new Date();
+    
+    return (
+      <div style={{ minHeight: '400px' }}>
+        <p className="text-sm text-gray-500 mb-4">Cannot select dates after today</p>
+        <DatePicker variant="single" value={date} onChange={setDate} maxDate={today}>
+          <DatePickerTrigger placeholder="Select past date" />
+          <DatePickerContent>
+            <Calendar
+              selectedDate={date}
+              onDateSelect={setDate}
+              maxDate={today}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
   },
 };
 
 export const WithDateRange: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Date picker with both min and max constraints, limiting selection to a specific date range.',
-      },
-    },
-  },
-  args: {
-    label: 'Available Dates',
-    min: '2024-01-01',
-    max: '2024-12-31',
-    helperText: 'Select a date within 2024',
-  },
-};
-
-export const Required: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Required date picker field. Useful in forms that need date validation.',
-      },
-    },
-  },
-  args: {
-    label: 'Required Date',
-    required: true,
-    helperText: 'This field is required',
-  },
-};
-
-// Interactive Examples
-
-export const Controlled: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Controlled date picker with external state management. The selected date is displayed below.',
-      },
-    },
-  },
   render: () => {
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState<Date | null>(null);
+    const minDate = new Date(2025, 10, 1); // Nov 1, 2025
+    const maxDate = new Date(2025, 11, 31); // Dec 31, 2025
     
     return (
-      <div>
+      <div style={{ minHeight: '400px' }}>
+        <p className="text-sm text-gray-500 mb-4">Only dates in Nov-Dec 2025 can be selected</p>
         <DatePicker
-          label="Select Date"
+          variant="single"
           value={date}
-          onChange={(e) => setDate(e.target.value)}
-          helperText="Choose any date"
-        />
-        {date && (
-          <p className="mt-4 text-sm text-[color:var(--semantic-text-secondary)]">
-            Selected: {new Date(date).toLocaleDateString('en-US', { 
-              weekday: 'long', 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
-            })}
-          </p>
-        )}
+          onChange={setDate}
+          minDate={minDate}
+          maxDate={maxDate}
+        >
+          <DatePickerTrigger placeholder="Select date" />
+          <DatePickerContent>
+            <Calendar
+              selectedDate={date}
+              onDateSelect={setDate}
+              minDate={minDate}
+              maxDate={maxDate}
+            />
+          </DatePickerContent>
+        </DatePicker>
       </div>
     );
   },
 };
 
-export const DateRangeForm: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Example showing start and end date pickers working together to form a date range selector.',
-      },
-    },
-  },
+// ============================================================================
+// Controlled Mode
+// ============================================================================
+
+export const ControlledOpen: Story = {
   render: () => {
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [date, setDate] = useState<Date | null>(null);
+    const [isOpen, setIsOpen] = useState(false);
     
     return (
-      <div className="space-y-4">
+      <div style={{ minHeight: '400px' }}>
+        <div className="flex gap-2 mb-4">
+          <button
+            className="px-3 py-1 text-sm border rounded hover:bg-gray-50"
+            onClick={() => setIsOpen(true)}
+          >
+            Open Picker
+          </button>
+          <button
+            className="px-3 py-1 text-sm border rounded hover:bg-gray-50"
+            onClick={() => setIsOpen(false)}
+          >
+            Close Picker
+          </button>
+        </div>
         <DatePicker
-          label="Start Date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          max={endDate || undefined}
-          helperText="Select start date"
-        />
-        <DatePicker
-          label="End Date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          min={startDate || undefined}
-          helperText="Select end date"
-        />
-        {startDate && endDate && (
-          <div className="mt-4 p-3 rounded-md bg-[color:var(--semantic-surface-elevated)] text-sm">
-            <strong>Selected Range:</strong><br />
-            {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
-          </div>
-        )}
+          variant="single"
+          value={date}
+          onChange={setDate}
+          open={isOpen}
+          onOpenChange={setIsOpen}
+        >
+          <DatePickerTrigger placeholder="Controlled open state" />
+          <DatePickerContent>
+            <Calendar selectedDate={date} onDateSelect={setDate} />
+          </DatePickerContent>
+        </DatePicker>
       </div>
     );
   },
-};
-
-export const BirthdayPicker: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Birthday date picker with max date set to 18 years ago, useful for age verification.',
+        story: 'The open state can be controlled externally via `open` and `onOpenChange` props.',
       },
     },
-  },
-  render: () => {
-    const eighteenYearsAgo = new Date();
-    eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
-    
-    return (
-      <DatePicker
-        label="Date of Birth"
-        max={eighteenYearsAgo.toISOString().split('T')[0]}
-        helperText="Must be 18 years or older"
-      />
-    );
   },
 };
 
-export const BookingForm: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Real-world booking form example with check-in and check-out dates.',
-      },
-    },
-  },
+export const DefaultOpen: Story = {
   render: () => {
-    const [checkIn, setCheckIn] = useState('');
-    const [checkOut, setCheckOut] = useState('');
-    const today = new Date().toISOString().split('T')[0];
-    
-    const minCheckOut = checkIn || today;
+    const [date, setDate] = useState<Date | null>(null);
     
     return (
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-[color:var(--semantic-text-primary)]">
-          Book Your Stay
-        </h3>
-        <DatePicker
-          label="Check-in Date"
-          value={checkIn}
-          onChange={(e) => {
-            setCheckIn(e.target.value);
-            if (checkOut && e.target.value >= checkOut) {
-              setCheckOut('');
-            }
-          }}
-          min={today}
-          helperText="Select your arrival date"
-        />
-        <DatePicker
-          label="Check-out Date"
-          value={checkOut}
-          onChange={(e) => setCheckOut(e.target.value)}
-          min={minCheckOut}
-          disabled={!checkIn}
-          helperText={!checkIn ? 'Please select check-in date first' : 'Select your departure date'}
-        />
-        {checkIn && checkOut && (
-          <div className="mt-4 p-4 rounded-md bg-[color:var(--semantic-status-success-alpha)] text-sm">
-            <strong className="text-[color:var(--semantic-status-success-default)]">Booking Summary</strong><br />
-            <div className="mt-2 text-[color:var(--semantic-text-primary)]">
-              Check-in: {new Date(checkIn).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}<br />
-              Check-out: {new Date(checkOut).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}<br />
-              <strong>Nights: {Math.ceil((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / (1000 * 60 * 60 * 24))}</strong>
-            </div>
-          </div>
-        )}
+      <div style={{ minHeight: '400px' }}>
+        <DatePicker variant="single" value={date} onChange={setDate} defaultOpen>
+          <DatePickerTrigger placeholder="Opens by default" />
+          <DatePickerContent>
+            <Calendar selectedDate={date} onDateSelect={setDate} />
+          </DatePickerContent>
+        </DatePicker>
       </div>
     );
   },
-};
-
-export const AllSizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Comparison of all available date picker sizes.',
+        story: 'The picker can be set to open by default using `defaultOpen`.',
       },
     },
   },
-  render: () => (
-    <div className="space-y-4">
-      <DatePicker
-        size="small"
-        label="Small"
-        defaultValue="2024-01-15"
-      />
-      <DatePicker
-        size="default"
-        label="Default"
-        defaultValue="2024-01-15"
-      />
-      <DatePicker
-        size="large"
-        label="Large"
-        defaultValue="2024-01-15"
-      />
-    </div>
-  ),
+};
+
+// ============================================================================
+// First Day of Week
+// ============================================================================
+
+export const MondayFirstDay: Story = {
+  render: () => {
+    const [date, setDate] = useState<Date | null>(null);
+    
+    return (
+      <div style={{ minHeight: '400px' }}>
+        <DatePicker variant="single" value={date} onChange={setDate} firstDayOfWeek={1}>
+          <DatePickerTrigger placeholder="Week starts Monday" />
+          <DatePickerContent>
+            <Calendar
+              selectedDate={date}
+              onDateSelect={setDate}
+              firstDayOfWeek={1}
+            />
+          </DatePickerContent>
+        </DatePicker>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Calendar can start on Monday (or any other day) using `firstDayOfWeek`.',
+      },
+    },
+  },
+};
+
+// ============================================================================
+// All Variants Showcase
+// ============================================================================
+
+export const AllVariants: Story = {
+  render: () => {
+    const [singleDate, setSingleDate] = useState<Date | null>(null);
+    const [singleRange, setSingleRange] = useState<DateRange>({ start: null, end: null });
+    const [doubleRange, setDoubleRange] = useState<DateRange>({ start: null, end: null });
+    const [presetsRange, setPresetsRange] = useState<DateRange>({ start: null, end: null });
+
+    const formatDate = (d: Date) =>
+      d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    const handleRangeSelect =
+      (range: DateRange, setRange: (r: DateRange) => void) => (date: Date) => {
+        if (!range.start || (range.start && range.end)) {
+          setRange({ start: date, end: null });
+        } else {
+          const newRange =
+            date < range.start
+              ? { start: date, end: range.start }
+              : { start: range.start, end: date };
+          setRange(newRange);
+        }
+      };
+
+    return (
+      <div className="flex flex-col gap-8" style={{ minHeight: '500px' }}>
+        {/* Single */}
+        <div>
+          <p className="text-sm font-medium mb-2">Single Date</p>
+          <DatePicker variant="single" value={singleDate} onChange={setSingleDate}>
+            <DatePickerTrigger placeholder="Select date" />
+            <DatePickerContent>
+              <Calendar selectedDate={singleDate} onDateSelect={setSingleDate} />
+            </DatePickerContent>
+          </DatePicker>
+        </div>
+
+        {/* Single Range */}
+        <div>
+          <p className="text-sm font-medium mb-2">Single Range</p>
+          <DatePicker variant="single-range" rangeValue={singleRange} onRangeChange={setSingleRange}>
+            <DatePickerTrigger placeholder="Select range" />
+            <DatePickerContent>
+              <Calendar
+                selectedRange={singleRange}
+                onDateSelect={handleRangeSelect(singleRange, setSingleRange)}
+                isRangeMode
+              />
+              <DatePickerConfirmation
+                startDateValue={singleRange.start ? formatDate(singleRange.start) : ''}
+                endDateValue={singleRange.end ? formatDate(singleRange.end) : ''}
+                onCancel={() => setSingleRange({ start: null, end: null })}
+                onApply={() => console.log('Single range:', singleRange)}
+              />
+            </DatePickerContent>
+          </DatePicker>
+        </div>
+
+        {/* Double Range */}
+        <div>
+          <p className="text-sm font-medium mb-2">Double Range</p>
+          <DatePicker variant="double-range" rangeValue={doubleRange} onRangeChange={setDoubleRange}>
+            <DatePickerTrigger placeholder="Select range" />
+            <DatePickerContent>
+              <Calendar
+                variant="dual"
+                selectedRange={doubleRange}
+                onDateSelect={handleRangeSelect(doubleRange, setDoubleRange)}
+                isRangeMode
+              />
+              <DatePickerConfirmation
+                startDateValue={doubleRange.start ? formatDate(doubleRange.start) : ''}
+                endDateValue={doubleRange.end ? formatDate(doubleRange.end) : ''}
+                onCancel={() => setDoubleRange({ start: null, end: null })}
+                onApply={() => console.log('Double range:', doubleRange)}
+              />
+            </DatePickerContent>
+          </DatePicker>
+        </div>
+
+        {/* Double with Presets */}
+        <div>
+          <p className="text-sm font-medium mb-2">Double with Presets</p>
+          <DatePicker variant="double-presets" rangeValue={presetsRange} onRangeChange={setPresetsRange}>
+            <DatePickerTrigger placeholder="Select range" />
+            <DatePickerContent>
+              <div className={CONTENT_ROW_CLASSES}>
+                <DatePickerPresets
+                  presets={DEFAULT_PRESETS}
+                  onPresetSelect={setPresetsRange}
+                />
+                <Calendar
+                  variant="dual"
+                  selectedRange={presetsRange}
+                  onDateSelect={handleRangeSelect(presetsRange, setPresetsRange)}
+                  isRangeMode
+                />
+              </div>
+              <DatePickerConfirmation
+                startDateValue={presetsRange.start ? formatDate(presetsRange.start) : ''}
+                endDateValue={presetsRange.end ? formatDate(presetsRange.end) : ''}
+                onCancel={() => setPresetsRange({ start: null, end: null })}
+                onApply={() => console.log('Presets range:', presetsRange)}
+              />
+            </DatePickerContent>
+          </DatePicker>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'All four variants displayed together for comparison.',
+      },
+    },
+  },
 };

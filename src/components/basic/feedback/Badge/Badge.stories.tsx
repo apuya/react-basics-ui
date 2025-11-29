@@ -10,13 +10,13 @@ const meta = {
     docs: {
       description: {
         component:
-          'A badge component for displaying labels, counts, or status indicators. Supports 29 color variants, multiple sizes, optional icons, and dismissible functionality.',
+          'Badge component for displaying labels, counts, or status indicators. Supports 29 colors, 4 style variants, multiple sizes, icons, and dismissible functionality.',
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
-    variant: {
+    color: {
       control: 'select',
       options: [
         'primary', 'secondary', 'neutral', 'success', 'warning', 'error', 'info',
@@ -24,244 +24,216 @@ const meta = {
         'navy', 'amber', 'orange', 'pink', 'purple', 'red', 'rose', 'sand',
         'sky', 'slate', 'teal', 'violet', 'yellow', 'zinc',
       ],
-      description: 'Color variant of the badge',
+      description: 'Color of the badge',
+      table: { defaultValue: { summary: 'primary' } },
+    },
+    styleVariant: {
+      control: 'select',
+      options: ['subtle', 'solid', 'outline', 'subtle-outline'],
+      description: 'Visual style variant',
+      table: { defaultValue: { summary: 'subtle' } },
     },
     size: {
       control: 'select',
       options: ['small', 'default', 'large'],
       description: 'Size of the badge',
+      table: { defaultValue: { summary: 'default' } },
     },
     dismissible: {
       control: 'boolean',
-      description: 'Whether the badge can be dismissed',
+      description: 'Show dismiss button',
     },
     disabled: {
       control: 'boolean',
-      description: 'Whether the badge is disabled',
-    },
-    visible: {
-      control: 'boolean',
-      description: 'Controlled visibility state',
-    },
-    defaultVisible: {
-      control: 'boolean',
-      description: 'Initial visibility for uncontrolled mode',
-    },
-    children: {
-      control: 'text',
-      description: 'Content of the badge',
-    },
-    leadingIcon: {
-      description: 'Icon displayed before the content',
-    },
-    trailingIcon: {
-      description: 'Icon displayed after the content',
-    },
-    onDismiss: {
-      description: 'Callback when dismissible badge is clicked',
+      description: 'Disabled state',
     },
   },
 } satisfies Meta<typeof Badge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+type StoryWithRender = StoryObj<typeof Badge>;
 
-// Base Examples
 export const Default: Story = {
   args: {
     children: 'Badge',
   },
 };
 
-export const AllVariants: Story = {
+export const StyleVariants: StoryWithRender = {
   render: () => (
-    <div className="flex flex-wrap gap-2 max-w-3xl">
-      <Badge variant="primary">Primary</Badge>
-      <Badge variant="secondary">Secondary</Badge>
-      <Badge variant="neutral">Neutral</Badge>
-      <Badge variant="success">Success</Badge>
-      <Badge variant="warning">Warning</Badge>
-      <Badge variant="error">Error</Badge>
-      <Badge variant="info">Info</Badge>
-      <Badge variant="blue">Blue</Badge>
-      <Badge variant="cyan">Cyan</Badge>
-      <Badge variant="emerald">Emerald</Badge>
-      <Badge variant="fuchsia">Fuchsia</Badge>
-      <Badge variant="gold">Gold</Badge>
-      <Badge variant="green">Green</Badge>
-      <Badge variant="indigo">Indigo</Badge>
-      <Badge variant="lime">Lime</Badge>
-      <Badge variant="navy">Navy</Badge>
-      <Badge variant="amber">Amber</Badge>
-      <Badge variant="orange">Orange</Badge>
-      <Badge variant="pink">Pink</Badge>
-      <Badge variant="purple">Purple</Badge>
-      <Badge variant="red">Red</Badge>
-      <Badge variant="rose">Rose</Badge>
-      <Badge variant="sand">Sand</Badge>
-      <Badge variant="sky">Sky</Badge>
-      <Badge variant="slate">Slate</Badge>
-      <Badge variant="teal">Teal</Badge>
-      <Badge variant="violet">Violet</Badge>
-      <Badge variant="yellow">Yellow</Badge>
-      <Badge variant="zinc">Zinc</Badge>
+    <div className="space-y-4">
+      <div>
+        <span className="text-sm text-gray-500 mb-2 block">Subtle</span>
+        <div className="flex flex-wrap gap-2">
+          <Badge styleVariant="subtle" color="primary">Primary</Badge>
+          <Badge styleVariant="subtle" color="success">Success</Badge>
+          <Badge styleVariant="subtle" color="warning">Warning</Badge>
+          <Badge styleVariant="subtle" color="error">Error</Badge>
+          <Badge styleVariant="subtle" color="info">Info</Badge>
+        </div>
+      </div>
+      <div>
+        <span className="text-sm text-gray-500 mb-2 block">Solid</span>
+        <div className="flex flex-wrap gap-2">
+          <Badge styleVariant="solid" color="primary">Primary</Badge>
+          <Badge styleVariant="solid" color="success">Success</Badge>
+          <Badge styleVariant="solid" color="warning">Warning</Badge>
+          <Badge styleVariant="solid" color="error">Error</Badge>
+          <Badge styleVariant="solid" color="info">Info</Badge>
+        </div>
+      </div>
+      <div>
+        <span className="text-sm text-gray-500 mb-2 block">Outline</span>
+        <div className="flex flex-wrap gap-2">
+          <Badge styleVariant="outline" color="primary">Primary</Badge>
+          <Badge styleVariant="outline" color="success">Success</Badge>
+          <Badge styleVariant="outline" color="warning">Warning</Badge>
+          <Badge styleVariant="outline" color="error">Error</Badge>
+          <Badge styleVariant="outline" color="info">Info</Badge>
+        </div>
+      </div>
+      <div>
+        <span className="text-sm text-gray-500 mb-2 block">Subtle Outline</span>
+        <div className="flex flex-wrap gap-2">
+          <Badge styleVariant="subtle-outline" color="primary">Primary</Badge>
+          <Badge styleVariant="subtle-outline" color="success">Success</Badge>
+          <Badge styleVariant="subtle-outline" color="warning">Warning</Badge>
+          <Badge styleVariant="subtle-outline" color="error">Error</Badge>
+          <Badge styleVariant="subtle-outline" color="info">Info</Badge>
+        </div>
+      </div>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'All 29 available badge color variants.',
+        story: 'Four style variants with semantic colors.',
       },
     },
   },
 };
 
-export const AllSizes: Story = {
+export const AllColors: StoryWithRender = {
+  render: () => (
+    <div className="flex flex-wrap gap-2 max-w-xl">
+      {[
+        'primary', 'secondary', 'neutral', 'success', 'warning', 'error', 'info',
+        'blue', 'cyan', 'emerald', 'fuchsia', 'gold', 'green', 'indigo', 'lime',
+        'navy', 'amber', 'orange', 'pink', 'purple', 'red', 'rose', 'sand',
+        'sky', 'slate', 'teal', 'violet', 'yellow', 'zinc',
+      ].map((color) => (
+        <Badge key={color} color={color as any}>
+          {color.charAt(0).toUpperCase() + color.slice(1)}
+        </Badge>
+      ))}
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'All 29 available badge colors.',
+      },
+    },
+  },
+};
+
+export const Sizes: StoryWithRender = {
   render: () => (
     <div className="flex items-center gap-4">
-      <Badge size="small" variant="primary">Small</Badge>
-      <Badge size="default" variant="primary">Default</Badge>
-      <Badge size="large" variant="primary">Large</Badge>
+      <Badge size="small" color="primary">Small</Badge>
+      <Badge size="default" color="primary">Default</Badge>
+      <Badge size="large" color="primary">Large</Badge>
     </div>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'All available badge sizes.',
-      },
-    },
-  },
 };
 
-// Icon Examples
-export const WithLeadingIcon: Story = {
-  args: {
-    variant: 'success',
-    leadingIcon: <BiCheckCircle />,
-    children: 'Verified',
-  },
-};
-
-export const WithTrailingIcon: Story = {
-  args: {
-    variant: 'primary',
-    children: 'Premium',
-    trailingIcon: <BiStar />,
-  },
-};
-
-export const WithBothIcons: Story = {
-  args: {
-    variant: 'success',
-    leadingIcon: <BiCheckCircle />,
-    children: 'Verified User',
-    trailingIcon: <BiStar />,
-  },
-};
-
-export const IconOnly: Story = {
+export const WithIcons: StoryWithRender = {
   render: () => (
-    <div className="flex gap-2 items-center">
-      <Badge variant="success" leadingIcon={<BiCheckCircle />} />
-      <Badge variant="error" leadingIcon={<BiX />} />
-      <Badge variant="info" leadingIcon={<BiInfoCircle />} />
-      <Badge variant="warning" leadingIcon={<BiErrorCircle />} />
-      <Badge variant="primary" leadingIcon={<BiStar />} />
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        <Badge color="success" leadingIcon={<BiCheckCircle />}>Verified</Badge>
+        <Badge color="primary" trailingIcon={<BiStar />}>Premium</Badge>
+        <Badge color="info" leadingIcon={<BiInfoCircle />}>Info</Badge>
+        <Badge color="error" leadingIcon={<BiErrorCircle />}>Error</Badge>
+      </div>
+      <div className="flex gap-2">
+        <span className="text-sm text-gray-500">Icon only:</span>
+        <Badge color="success" leadingIcon={<BiCheckCircle />} />
+        <Badge color="error" leadingIcon={<BiX />} />
+        <Badge color="primary" leadingIcon={<BiStar />} />
+      </div>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Icon-only badges without text content.',
+        story: 'Badges with leading icons, trailing icons, or icon-only.',
       },
     },
   },
 };
 
-// Dismissible Examples
-export const Dismissible: Story = {
-  args: {
-    variant: 'primary',
-    dismissible: true,
-    children: 'Removable Tag',
-    onDismiss: () => console.log('Badge dismissed'),
+export const Dismissible: StoryWithRender = {
+  render: () => (
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        <Badge styleVariant="subtle" color="primary" dismissible>Subtle</Badge>
+        <Badge styleVariant="solid" color="primary" dismissible>Solid</Badge>
+        <Badge styleVariant="outline" color="primary" dismissible>Outline</Badge>
+      </div>
+      <div className="flex items-center gap-4">
+        <Badge size="small" color="success" dismissible>Small</Badge>
+        <Badge size="default" color="success" dismissible>Default</Badge>
+        <Badge size="large" color="success" dismissible>Large</Badge>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Dismissible badges with close button.',
+      },
+    },
   },
 };
 
-export const DismissibleVariants: Story = {
+export const StatusIndicators: StoryWithRender = {
   render: () => (
     <div className="flex flex-wrap gap-2">
-      <Badge variant="primary" dismissible onDismiss={() => console.log('dismissed')}>Primary</Badge>
-      <Badge variant="success" dismissible onDismiss={() => console.log('dismissed')}>Success</Badge>
-      <Badge variant="warning" dismissible onDismiss={() => console.log('dismissed')}>Warning</Badge>
-      <Badge variant="error" dismissible onDismiss={() => console.log('dismissed')}>Error</Badge>
-      <Badge variant="info" dismissible onDismiss={() => console.log('dismissed')}>Info</Badge>
-      <Badge variant="neutral" dismissible onDismiss={() => console.log('dismissed')}>Neutral</Badge>
+      <Badge color="success" leadingIcon={<BiCheckCircle />}>Active</Badge>
+      <Badge color="warning" leadingIcon={<BiInfoCircle />}>Pending</Badge>
+      <Badge color="error" leadingIcon={<BiX />}>Inactive</Badge>
+      <Badge color="info" leadingIcon={<BiInfoCircle />}>Draft</Badge>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Dismissible badge variants with close functionality.',
+        story: 'Common status indicator patterns.',
       },
     },
   },
 };
 
-export const DismissibleSizes: Story = {
+export const CountBadge: StoryWithRender = {
   render: () => (
-    <div className="flex flex-col gap-3 items-start">
-      <Badge variant="primary" dismissible size="small" onDismiss={() => console.log('dismissed')}>
-        Small
-      </Badge>
-      <Badge variant="primary" dismissible size="default" onDismiss={() => console.log('dismissed')}>
-        Default
-      </Badge>
-      <Badge variant="primary" dismissible size="large" onDismiss={() => console.log('dismissed')}>
-        Large
-      </Badge>
+    <div className="flex items-center gap-4">
+      <Badge color="error" size="small">3</Badge>
+      <Badge color="error">12</Badge>
+      <Badge color="error" size="large">99+</Badge>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Dismissible badges in all sizes.',
+        story: 'Notification count badges.',
       },
     },
   },
 };
 
-// Use Case Examples
-export const CountBadge: Story = {
-  args: {
-    variant: 'error',
-    children: '99+',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Badge displaying a count for notifications.',
-      },
-    },
-  },
-};
-
-export const StatusBadge: Story = {
-  args: {
-    variant: 'success',
-    leadingIcon: <BiCheckCircle />,
-    children: 'Active',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Badge indicating status with icon and text.',
-      },
-    },
-  },
-};
-
-export const NotificationBadge: Story = {
+export const NotificationIcon: StoryWithRender = {
   render: () => (
     <div className="relative inline-block">
       <button className="p-2 text-gray-600 hover:text-gray-900">
@@ -274,11 +246,7 @@ export const NotificationBadge: Story = {
           />
         </svg>
       </button>
-      <Badge
-        variant="error"
-        size="small"
-        className="absolute -top-1 -right-1 min-w-[1.25rem] h-5 px-1"
-      >
+      <Badge color="error" size="small" className="absolute -top-1 -right-1 min-w-5 h-5 px-1">
         5
       </Badge>
     </div>
@@ -286,7 +254,7 @@ export const NotificationBadge: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Notification badge positioned on a bell icon.',
+        story: 'Badge positioned as notification indicator.',
       },
     },
   },
@@ -294,33 +262,9 @@ export const NotificationBadge: Story = {
 
 export const Disabled: Story = {
   args: {
-    variant: 'primary',
+    color: 'primary',
     dismissible: true,
     disabled: true,
     children: 'Disabled Badge',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Disabled badge that cannot be dismissed.',
-      },
-    },
-  },
-};
-
-export const UncontrolledDismiss: Story = {
-  render: () => (
-    <div className="flex flex-wrap gap-2">
-      <Badge variant="primary" dismissible>Auto-hide 1</Badge>
-      <Badge variant="success" dismissible>Auto-hide 2</Badge>
-      <Badge variant="warning" dismissible>Auto-hide 3</Badge>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Uncontrolled dismissible badges that auto-hide when clicked (no onDismiss callback).',
-      },
-    },
   },
 };

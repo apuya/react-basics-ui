@@ -1638,6 +1638,83 @@ svg {
   --component-select-helper-default: var(--semantic-text-secondary);
   --component-select-helper-error: var(--semantic-text-error);
 
+  /* DatePicker Component */
+  /* DatePicker - Colors */
+  --component-datepicker-bg-default: var(--semantic-surface-elevated);
+  --component-datepicker-border-default: var(--semantic-border-default);
+  --component-datepicker-header-text: var(--semantic-text-primary);
+  --component-datepicker-header-icon: var(--semantic-text-secondary);
+  --component-datepicker-header-icon-hover: var(--semantic-text-primary);
+  --component-datepicker-weekday-text: var(--semantic-text-secondary);
+  --component-datepicker-cell-text-default: var(--semantic-text-primary);
+  --component-datepicker-cell-text-disabled: var(--semantic-text-disabled);
+  --component-datepicker-cell-text-selected: var(--semantic-text-inverse);
+  --component-datepicker-cell-text-hover: var(--semantic-text-inverse);
+  --component-datepicker-cell-bg-default: transparent;
+  --component-datepicker-cell-bg-hover: #333333;
+  --component-datepicker-cell-bg-selected: #222222;
+  --component-datepicker-cell-bg-range: #ECECEC;
+  --component-datepicker-cell-bg-today: #ECECEC;
+  --component-datepicker-cell-bg-today-hover: #333333;
+  --component-datepicker-cell-text-today-hover: var(--semantic-text-inverse);
+  --component-datepicker-preset-text: var(--semantic-text-primary);
+  --component-datepicker-preset-text-hover: var(--semantic-text-primary);
+  --component-datepicker-preset-text-active: var(--semantic-text-primary);
+  --component-datepicker-preset-bg-hover: var(--semantic-surface-hover);
+  --component-datepicker-preset-bg-active: var(--semantic-surface-pressed);
+  --component-datepicker-divider: var(--semantic-border-subtle);
+  /* DatePicker - Sizing */
+  --component-datepicker-width: 320px;
+  --component-datepicker-width-double: 640px;
+  --component-datepicker-padding: var(--semantic-space-default);
+  --component-datepicker-calendar-padding-block: 16px;
+  --component-datepicker-calendar-padding-inline: 16px;
+  --component-datepicker-gap: var(--semantic-space-compact);
+  --component-datepicker-radius: var(--semantic-radius-md);
+  --component-datepicker-border-width: var(--semantic-border-width-default);
+  --component-datepicker-shadow: var(--semantic-shadow-lg);
+  /* DatePicker - Header */
+  --component-datepicker-header-height: 40px;
+  --component-datepicker-header-font-size: var(--semantic-text-size-subtitle);
+  --component-datepicker-header-font-weight: var(--semantic-text-weight-semibold);
+  --component-datepicker-header-icon-size: 20px;
+  --component-datepicker-nav-button-size: 32px;
+  --component-datepicker-header-padding-block: 8px;
+  --component-datepicker-header-padding-inline: 8px;
+  --component-datepicker-header-gap: 8px;
+  /* DatePicker - Weekdays / Day Headers */
+  --component-datepicker-weekday-height: 32px;
+  --component-datepicker-weekday-font-size: var(--semantic-text-size-small);
+  --component-datepicker-weekday-font-weight: var(--semantic-text-weight-medium);
+  --component-datepicker-day-header-height: 40px;
+  /* DatePicker - Cell Header (weekday labels) */
+  --component-datepicker-cell-header-text: #19181A;
+  --component-datepicker-cell-header-font-size: 12px;
+  --component-datepicker-cell-header-font-weight: 700;
+  /* DatePicker - Cells */
+  --component-datepicker-cell-min-width: 40px;
+  --component-datepicker-cell-min-height: 40px;
+  --component-datepicker-cell-padding-block: 8px;
+  --component-datepicker-cell-padding-inline: 8px;
+  --component-datepicker-cell-radius-default: 0;
+  --component-datepicker-cell-radius-selected: 4px;
+  --component-datepicker-cell-font-size: var(--semantic-text-size-body);
+  --component-datepicker-cell-font-weight: var(--semantic-text-weight-regular);
+  --component-datepicker-cell-gap: 0;
+  /* DatePicker - Presets */
+  --component-datepicker-preset-width-min: 280px;
+  --component-datepicker-preset-item-height-min: 28px;
+  --component-datepicker-preset-padding-block: 8px;
+  --component-datepicker-preset-padding-inline: 8px;
+  --component-datepicker-preset-gap: 4px;
+  --component-datepicker-preset-font-size: var(--semantic-text-size-body);
+  --component-datepicker-preset-radius: var(--semantic-radius-sm);
+  /* DatePicker - Footer */
+  --component-datepicker-footer-padding: var(--semantic-space-default);
+  --component-datepicker-footer-gap: var(--semantic-space-compact);
+  /* DatePicker - Transitions */
+  --component-datepicker-transition-duration: var(--semantic-duration-fast);
+
   /* Text Area Component */
   --component-textarea-bg-default: var(--semantic-surface-elevated);
   --component-textarea-bg-disabled: var(--semantic-surface-base);
@@ -1979,6 +2056,7 @@ svg {
   --component-autocomplete-option-text-default: var(--semantic-text-primary);
   --component-autocomplete-option-text-selected: var(--semantic-brand-secondary-default);
   --component-autocomplete-empty-text: var(--semantic-text-tertiary);
+  --component-autocomplete-input-padding-inline: var(--semantic-space-default);
   --component-autocomplete-padding-block: var(--semantic-space-tight);
   --component-autocomplete-padding-inline: var(--semantic-space-tight);
   --component-autocomplete-option-padding-block: var(--semantic-space-compact);

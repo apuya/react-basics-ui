@@ -3,7 +3,7 @@ import { BiChevronLeft } from 'react-icons/bi';
 import { usePaginationContext } from './Pagination';
 import { Button } from '@/components/basic/forms/Button';
 import { Icon } from '@/components/basic/utility/Icon';
-import { PAGINATION_TO_BUTTON_SIZE } from './Pagination.styles';
+import { PAGINATION_SIZE_MAPPINGS } from './Pagination.styles';
 
 export interface PaginationPreviousProps extends ComponentPropsWithoutRef<'button'> {}
 
@@ -30,11 +30,11 @@ export const PaginationPrevious = memo(
         <Button
           ref={ref}
           variant="tabs"
-          size={PAGINATION_TO_BUTTON_SIZE[size]}
+          size={PAGINATION_SIZE_MAPPINGS[size].button}
           aria-label="Go to previous page"
           disabled={isDisabled}
           onClick={handleClick}
-          leadingIcon={<Icon icon={BiChevronLeft} size="sm" color="inherit" />}
+          leadingIcon={<Icon icon={BiChevronLeft} size={PAGINATION_SIZE_MAPPINGS[size].icon} color="inherit" />}
           className={className}
           {...props}
         >

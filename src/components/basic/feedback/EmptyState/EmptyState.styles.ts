@@ -5,25 +5,43 @@ export const BASE_CLASSES =
   'flex flex-col items-center justify-center text-center';
 
 /**
+ * Container padding styles using design tokens
+ */
+export const CONTAINER_STYLES = {
+  paddingBlock: 'var(--semantic-space-comfortable)',
+  paddingInline: 'var(--semantic-space-default)',
+} as const;
+
+/**
  * Icon wrapper classes
  */
 export const ICON_WRAPPER_CLASSES =
-  'flex items-center justify-center mb-[var(--semantic-space-default)] text-[var(--semantic-text-tertiary)]';
+  'flex items-center justify-center text-[var(--semantic-text-tertiary)]';
 
 /**
- * Title classes
+ * Icon wrapper styles - margin applied inline
  */
-export const TITLE_CLASSES =
-  'text-[var(--semantic-text-primary)] font-[var(--semantic-text-weight-semibold)] mb-[var(--semantic-space-compact)]';
+export const ICON_WRAPPER_STYLES = {
+  marginBottom: 'var(--semantic-space-default)',
+} as const;
 
 /**
- * Description classes
+ * Title spacing styles (typography handled by Heading component)
  */
-export const DESCRIPTION_CLASSES =
-  'text-[var(--semantic-text-secondary)] font-[var(--semantic-text-weight-regular)] mb-[var(--semantic-space-default)] max-w-md';
+export const TITLE_SPACING_STYLES = {
+  marginBottom: 'var(--semantic-space-compact)',
+} as const;
 
 /**
- * Action wrapper classes
+ * Description spacing styles (typography handled by Text component)
  */
-export const ACTION_WRAPPER_CLASSES =
-  'mt-[var(--semantic-space-compact)]';
+export const DESCRIPTION_SPACING_STYLES = {
+  marginBottom: 'var(--semantic-space-default)',
+} as const;
+
+/**
+ * Action wrapper styles - margin applied inline
+ */
+export const ACTION_WRAPPER_STYLES = {
+  marginTop: 'var(--semantic-space-compact)',
+} as const;

@@ -101,6 +101,7 @@ export const Tab = memo(
           aria-disabled={disabled}
           aria-controls={`tabpanel-${value}`}
           id={`tab-${value}`}
+          data-tab-value={value}
           tabIndex={isActive ? 0 : -1}
           disabled={disabled}
           onClick={handleClick}

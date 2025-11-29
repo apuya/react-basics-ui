@@ -49,3 +49,35 @@ export const ICON_COLOR_STYLES = {
  * Alert variant type derived from VARIANT_STYLES keys
  */
 export type AlertVariant = keyof typeof VARIANT_STYLES;
+
+/**
+ * Title content styles using design tokens
+ */
+export const TITLE_STYLES = {
+  fontSize: 'var(--component-alert-title-size)',
+  lineHeight: 'var(--component-alert-title-line-height)',
+} as const;
+
+/**
+ * Body content styles using design tokens
+ */
+export const BODY_STYLES = {
+  fontSize: 'var(--component-alert-body-size)',
+  lineHeight: 'var(--component-alert-body-line-height)',
+} as const;
+
+/**
+ * Container layout styles using design tokens
+ */
+export const CONTAINER_STYLES = {
+  paddingBlock: 'var(--component-alert-padding-block)',
+  paddingInline: 'var(--component-alert-padding-inline)',
+  gap: 'var(--component-alert-gap)',
+} as const;
+
+/**
+ * Icon size style using design tokens
+ */
+export const ICON_SIZE_STYLE = {
+  fontSize: 'var(--component-alert-icon-size)',
+} as const;

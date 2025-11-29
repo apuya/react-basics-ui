@@ -24,14 +24,24 @@ export const PAGINATION_ELLIPSIS_SIZE_STYLES = {
   lg: 'h-11 w-11 text-base',
 } as const;
 
-/** Maps pagination size to button size */
+/**
+ * Consolidated size mappings for pagination component
+ * Maps pagination sizes to corresponding Button and Icon component sizes
+ */
+export const PAGINATION_SIZE_MAPPINGS = {
+  sm: { button: 'small', icon: 'xs' },
+  md: { button: 'default', icon: 'sm' },
+  lg: { button: 'large', icon: 'md' },
+} as const;
+
+/** @deprecated Use PAGINATION_SIZE_MAPPINGS.button instead */
 export const PAGINATION_TO_BUTTON_SIZE = {
   sm: 'small',
   md: 'default',
   lg: 'large',
 } as const;
 
-/** Maps pagination size to icon size */
+/** @deprecated Use PAGINATION_SIZE_MAPPINGS.icon instead */
 export const PAGINATION_TO_ICON_SIZE = {
   sm: 'xs',
   md: 'sm',

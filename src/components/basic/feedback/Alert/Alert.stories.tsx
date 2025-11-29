@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Alert component for displaying important messages to users with support for different severity levels, optional icons, titles, descriptions, and dismissible functionality.',
+          'Alert component for displaying important messages. Supports info, success, warning, and error variants with optional icons, titles, descriptions, and dismissible functionality.',
       },
     },
   },
@@ -18,55 +18,51 @@ const meta = {
     variant: {
       control: 'select',
       options: ['info', 'success', 'warning', 'error'],
-      description: 'The visual variant of the alert',
-      table: {
-        defaultValue: { summary: 'info' },
-      },
+      description: 'Visual variant',
+      table: { defaultValue: { summary: 'info' } },
     },
     title: {
       control: 'text',
-      description: 'Optional title for the alert',
+      description: 'Alert title',
     },
     description: {
       control: 'text',
-      description: 'Optional description text for the alert',
+      description: 'Alert description',
     },
     showIcon: {
       control: 'boolean',
-      description: 'Whether to show the variant icon',
-      table: {
-        defaultValue: { summary: true },
-      },
+      description: 'Show variant icon',
+      table: { defaultValue: { summary: 'true' } },
     },
     onClose: {
       action: 'closed',
-      description:
-        'Optional callback when the alert is dismissed. If provided, a close button will be rendered.',
+      description: 'Callback when dismissed',
     },
   },
 } satisfies Meta<typeof Alert>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+type StoryWithRender = StoryObj<typeof Alert>;
 
 export const Default: Story = {
   args: {
     variant: 'info',
     title: 'Heads up!',
-    description: 'You can add components to your app using the cli.',
+    description: 'You can add components to your app using the CLI.',
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default alert with title and description.',
-      },
-    },
-  },
+  decorators: [
+    (Story) => (
+      <div className="max-w-lg">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
-export const AllVariants: Story = {
+export const AllVariants: StoryWithRender = {
   render: () => (
-    <div className="flex flex-col gap-4 w-full max-w-2xl">
+    <div className="flex flex-col gap-4 max-w-lg">
       <Alert variant="info" title="Information" description="This is an informational alert." />
       <Alert variant="success" title="Success!" description="Your changes have been saved successfully." />
       <Alert variant="warning" title="Warning" description="This action cannot be undone." />
@@ -76,53 +72,38 @@ export const AllVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'All available alert variants: info, success, warning, and error.',
+        story: 'All available alert variants.',
       },
     },
   },
 };
 
-export const WithTitleOnly: Story = {
+export const TitleOnly: Story = {
   args: {
     variant: 'success',
     title: 'Successfully saved!',
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Alert with only a title, no description.',
-      },
-    },
-  },
+  decorators: [
+    (Story) => (
+      <div className="max-w-lg">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
-export const WithDescriptionOnly: Story = {
+export const DescriptionOnly: Story = {
   args: {
     variant: 'info',
     description: 'This alert only has a description without a title.',
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Alert with only a description, no title.',
-      },
-    },
-  },
-};
-
-export const WithChildren: Story = {
-  render: () => (
-    <Alert variant="warning">
-      <strong>Warning:</strong> This is a custom alert using children instead of title/description props.
-    </Alert>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Alert with custom children content instead of using title/description props.',
-      },
-    },
-  },
+  decorators: [
+    (Story) => (
+      <div className="max-w-lg">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const WithoutIcon: Story = {
@@ -132,64 +113,74 @@ export const WithoutIcon: Story = {
     description: 'This alert is displayed without an icon.',
     showIcon: false,
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Alert without the variant icon by setting showIcon to false.',
-      },
-    },
-  },
+  decorators: [
+    (Story) => (
+      <div className="max-w-lg">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
-export const Dismissible: Story = {
-  args: {
-    variant: 'success',
-    title: 'Dismissible Alert',
-    description: 'Click the close button to dismiss this alert.',
-    onClose: () => console.log('Alert dismissed'),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Alert with a close button. Provide an onClose callback to handle dismissal.',
-      },
-    },
-  },
-};
-
-export const DismissibleAllVariants: Story = {
+export const Dismissible: StoryWithRender = {
   render: () => (
-    <div className="flex flex-col gap-4 w-full max-w-2xl">
+    <div className="flex flex-col gap-4 max-w-lg">
       <Alert
         variant="info"
         title="Info Alert"
         description="Dismissible information alert."
-        onClose={() => console.log('Info dismissed')}
+        onClose={() => console.log('Dismissed')}
       />
       <Alert
         variant="success"
         title="Success Alert"
         description="Dismissible success alert."
-        onClose={() => console.log('Success dismissed')}
+        onClose={() => console.log('Dismissed')}
       />
       <Alert
         variant="warning"
         title="Warning Alert"
         description="Dismissible warning alert."
-        onClose={() => console.log('Warning dismissed')}
+        onClose={() => console.log('Dismissed')}
       />
       <Alert
         variant="error"
         title="Error Alert"
         description="Dismissible error alert."
-        onClose={() => console.log('Error dismissed')}
+        onClose={() => console.log('Dismissed')}
       />
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'All variants with close buttons.',
+        story: 'All variants with dismiss buttons.',
+      },
+    },
+  },
+};
+
+export const WithChildren: StoryWithRender = {
+  render: () => (
+    <div className="max-w-lg">
+      <Alert variant="info" onClose={() => console.log('Dismissed')}>
+        <div>
+          <p className="font-semibold">Update Available</p>
+          <p className="mt-1">
+            A new version is available.{' '}
+            <a href="#" className="underline hover:no-underline">
+              View release notes
+            </a>
+            .
+          </p>
+        </div>
+      </Alert>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Alert with custom children content including links.',
       },
     },
   },
@@ -200,53 +191,20 @@ export const LongContent: Story = {
     variant: 'warning',
     title: 'Long Content Alert',
     description:
-      'This is an alert with a very long description to demonstrate how the component handles text wrapping and layout. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'This is an alert with a very long description to demonstrate how the component handles text wrapping and layout. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    onClose: () => console.log('Dismissed'),
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Alert with long text content to demonstrate text wrapping.',
-      },
-    },
-  },
-};
-
-export const LongContentDismissible: Story = {
-  args: {
-    variant: 'error',
-    title: 'Long Content with Close Button',
-    description:
-      'This is a dismissible alert with very long content to test the layout when both long text and a close button are present. The close button should remain aligned to the top-right corner while the text wraps naturally.',
-    onClose: () => console.log('Long content alert dismissed'),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Alert with long content and a close button to test layout handling.',
-      },
-    },
-  },
-};
-
-export const ComplexChildren: Story = {
-  render: () => (
-    <Alert variant="info" onClose={() => console.log('Complex alert dismissed')}>
-      <div>
-        <p className="font-semibold">Update Available</p>
-        <p className="mt-1">
-          A new version of the application is available.{' '}
-          <a href="#" className="underline hover:no-underline">
-            View release notes
-          </a>
-          .
-        </p>
+  decorators: [
+    (Story) => (
+      <div className="max-w-lg">
+        <Story />
       </div>
-    </Alert>
-  ),
+    ),
+  ],
   parameters: {
     docs: {
       description: {
-        story: 'Alert with complex children including links and formatted text.',
+        story: 'Alert with long text content.',
       },
     },
   },

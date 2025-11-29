@@ -1,40 +1,44 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Popover } from './Popover';
-import { Button } from '../../forms/Button/Button';
-import { Badge } from '../../feedback/Badge/Badge';
+import { Button } from '../../../basic/forms/Button/Button';
+import { Badge } from '../../../basic/feedback/Badge/Badge';
+
+// Shared button-like styling for Popover.Trigger
+const triggerClassName = 'inline-flex items-center justify-center rounded-md text-sm font-medium bg-[var(--component-button-primary-bg)] text-[var(--component-button-primary-text)] hover:bg-[var(--component-button-primary-hover-bg)] px-4 py-2 transition-colors';
 
 const meta: Meta<typeof Popover> = {
   title: 'Overlay/Popover',
   component: Popover,
   parameters: {
     layout: 'centered',
+    viewport: {
+      defaultViewport: 'responsive',
+    },
     docs: {
       description: {
         component: 'A floating overlay component that displays rich content in a portal. Supports 4 sides (top, right, bottom, left) and 3 alignments (start, center, end) for flexible positioning. Use for tooltips with interactive content, context menus, or any floating UI that requires more than plain text.',
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Story />
+      </div>
+    ),
+  ],
   tags: ['autodocs'],
-  argTypes: {
-    open: {
-      control: 'boolean',
-      description: 'Controls whether the popover is open (controlled mode)',
-    },
-    defaultOpen: {
-      control: 'boolean',
-      description: 'Whether the popover is open by default (uncontrolled mode)',
-    },
-    onOpenChange: {
-      action: 'onOpenChange',
-      description: 'Callback when the open state changes',
-    },
-  },
 };
 
 export default meta;
+type Story = StoryObj<typeof Popover>;
 
-export const Default = {
+// ============================================================================
+// BASIC USAGE
+// ============================================================================
+
+export const Default: Story = {
   parameters: {
     docs: {
       description: {
@@ -44,8 +48,8 @@ export const Default = {
   },
   render: () => (
     <Popover>
-      <Popover.Trigger>
-        <Button>Open Popover</Button>
+      <Popover.Trigger className={triggerClassName}>
+        Open Popover
       </Popover.Trigger>
       <Popover.Content>
         <Popover.Title>Default Popover</Popover.Title>
@@ -57,114 +61,135 @@ export const Default = {
   ),
 };
 
-export const TopPosition = {
-  render: () => (
-    <Popover>
-      <Popover.Trigger>
-        <Button>Top Popover</Button>
-      </Popover.Trigger>
-      <Popover.Content side="top">
-        <Popover.Title>Top Position</Popover.Title>
-        <Popover.Description>
-          This popover appears above the trigger element.
-        </Popover.Description>
-      </Popover.Content>
-    </Popover>
-  ),
-};
-
-export const RightPosition = {
-  render: () => (
-    <Popover>
-      <Popover.Trigger>
-        <Button>Right Popover</Button>
-      </Popover.Trigger>
-      <Popover.Content side="right">
-        <Popover.Title>Right Position</Popover.Title>
-        <Popover.Description>
-          This popover appears to the right of the trigger element.
-        </Popover.Description>
-      </Popover.Content>
-    </Popover>
-  ),
-};
-
-export const LeftPosition = {
-  render: () => (
-    <Popover>
-      <Popover.Trigger>
-        <Button>Left Popover</Button>
-      </Popover.Trigger>
-      <Popover.Content side="left">
-        <Popover.Title>Left Position</Popover.Title>
-        <Popover.Description>
-          This popover appears to the left of the trigger element.
-        </Popover.Description>
-      </Popover.Content>
-    </Popover>
-  ),
-};
-
-export const StartAlignment = {
-  render: () => (
-    <Popover>
-      <Popover.Trigger>
-        <Button>Start Aligned</Button>
-      </Popover.Trigger>
-      <Popover.Content side="bottom" align="start">
-        <Popover.Title>Start Alignment</Popover.Title>
-        <Popover.Description>
-          This popover is aligned to the start (left edge) of the trigger.
-        </Popover.Description>
-      </Popover.Content>
-    </Popover>
-  ),
-};
-
-export const EndAlignment = {
-  render: () => (
-    <Popover>
-      <Popover.Trigger>
-        <Button>End Aligned</Button>
-      </Popover.Trigger>
-      <Popover.Content side="bottom" align="end">
-        <Popover.Title>End Alignment</Popover.Title>
-        <Popover.Description>
-          This popover is aligned to the end (right edge) of the trigger.
-        </Popover.Description>
-      </Popover.Content>
-    </Popover>
-  ),
-};
-
-export const WithArrow = {
-  render: () => (
-    <Popover>
-      <Popover.Trigger>
-        <Button>With Arrow</Button>
-      </Popover.Trigger>
-      <Popover.Content showArrow>
-        <Popover.Title>Arrow Indicator</Popover.Title>
-        <Popover.Description>
-          This popover includes an arrow pointing to the trigger element.
-        </Popover.Description>
-      </Popover.Content>
-    </Popover>
-  ),
-};
-
-export const RichContent = {
+export const WithArrow: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'User profile card with avatar, badges, and action button. Demonstrates complex content layouts.',
+        story: 'Popover with an arrow indicator pointing to the trigger element.',
       },
     },
   },
   render: () => (
     <Popover>
-      <Popover.Trigger>
-        <Button>User Info</Button>
+      <Popover.Trigger className={triggerClassName}>
+        With Arrow
+      </Popover.Trigger>
+      <Popover.Content showArrow>
+        <Popover.Title>Arrow Indicator</Popover.Title>
+        <Popover.Description>
+          The arrow helps visually connect the popover to its trigger.
+        </Popover.Description>
+      </Popover.Content>
+    </Popover>
+  ),
+};
+
+// ============================================================================
+// POSITIONING
+// ============================================================================
+
+export const AllPositions: Story = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story: 'Visual overview of all 12 position combinations (4 sides × 3 alignments). The \`side\` prop controls which edge the popover appears on, while \`align\` controls the alignment along that edge.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: '600px', padding: '8rem 4rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: () => (
+    <div style={{ 
+      display: 'grid', 
+      gridTemplateColumns: '1fr 1fr 1fr',
+      gap: '3rem',
+    }}>
+      {/* Top row */}
+      <Popover>
+        <Popover.Trigger className={triggerClassName}>Top-Start</Popover.Trigger>
+        <Popover.Content side="top" align="start" showArrow>
+          <Popover.Description>side="top" align="start"</Popover.Description>
+        </Popover.Content>
+      </Popover>
+
+      <Popover>
+        <Popover.Trigger className={triggerClassName}>Top-Center</Popover.Trigger>
+        <Popover.Content side="top" align="center" showArrow>
+          <Popover.Description>side="top" align="center"</Popover.Description>
+        </Popover.Content>
+      </Popover>
+
+      <Popover>
+        <Popover.Trigger className={triggerClassName}>Top-End</Popover.Trigger>
+        <Popover.Content side="top" align="end" showArrow>
+          <Popover.Description>side="top" align="end"</Popover.Description>
+        </Popover.Content>
+      </Popover>
+
+      {/* Middle row */}
+      <Popover>
+        <Popover.Trigger className={triggerClassName}>Left</Popover.Trigger>
+        <Popover.Content side="left" align="center" showArrow>
+          <Popover.Description>side="left"</Popover.Description>
+        </Popover.Content>
+      </Popover>
+
+      <div />
+
+      <Popover>
+        <Popover.Trigger className={triggerClassName}>Right</Popover.Trigger>
+        <Popover.Content side="right" align="center" showArrow>
+          <Popover.Description>side="right"</Popover.Description>
+        </Popover.Content>
+      </Popover>
+
+      {/* Bottom row */}
+      <Popover>
+        <Popover.Trigger className={triggerClassName}>Bottom-Start</Popover.Trigger>
+        <Popover.Content side="bottom" align="start" showArrow>
+          <Popover.Description>side="bottom" align="start"</Popover.Description>
+        </Popover.Content>
+      </Popover>
+
+      <Popover>
+        <Popover.Trigger className={triggerClassName}>Bottom-Center</Popover.Trigger>
+        <Popover.Content side="bottom" align="center" showArrow>
+          <Popover.Description>side="bottom" align="center"</Popover.Description>
+        </Popover.Content>
+      </Popover>
+
+      <Popover>
+        <Popover.Trigger className={triggerClassName}>Bottom-End</Popover.Trigger>
+        <Popover.Content side="bottom" align="end" showArrow>
+          <Popover.Description>side="bottom" align="end"</Popover.Description>
+        </Popover.Content>
+      </Popover>
+    </div>
+  ),
+};
+
+// ============================================================================
+// RICH CONTENT EXAMPLES
+// ============================================================================
+
+export const UserProfile: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'User profile card with avatar, role, skill badges, and action button. Common pattern for user hover cards.',
+      },
+    },
+  },
+  render: () => (
+    <Popover>
+      <Popover.Trigger className={triggerClassName}>
+        View Profile
       </Popover.Trigger>
       <Popover.Content showArrow>
         <div style={{ display: 'flex', gap: '0.75rem', padding: '0.5rem' }}>
@@ -191,145 +216,26 @@ export const RichContent = {
             </div>
           </div>
         </div>
-        <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--semantic-color-border-default)' }}>
-          <Button size="small" style={{ width: '100%' }}>View Profile</Button>
+        <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid var(--semantic-color-border-default)' }}>
+          <Button size="small" style={{ width: '100%' }}>View Full Profile</Button>
         </div>
       </Popover.Content>
     </Popover>
   ),
 };
 
-export const WithCustomContent = {
-  render: () => (
-    <Popover>
-      <Popover.Trigger>
-        <Button>Settings</Button>
-      </Popover.Trigger>
-      <Popover.Content showArrow side="bottom" align="end">
-        <Popover.Title>Quick Settings</Popover.Title>
-        <div style={{ padding: '0.75rem 0' }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            padding: '0.5rem 0',
-          }}>
-            <span>Notifications</span>
-            <input type="checkbox" defaultChecked />
-          </div>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            padding: '0.5rem 0',
-          }}>
-            <span>Dark Mode</span>
-            <input type="checkbox" />
-          </div>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            padding: '0.5rem 0',
-          }}>
-            <span>Sound Effects</span>
-            <input type="checkbox" defaultChecked />
-          </div>
-        </div>
-        <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--semantic-color-border-default)' }}>
-          <Button variant="secondary" size="small" style={{ width: '100%' }}>
-            Advanced Settings
-          </Button>
-        </div>
-      </Popover.Content>
-    </Popover>
-  ),
-};
-
-export const ControlledState = {
+export const WithForm: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Programmatically control the popover open state. Useful when you need to close the popover from within its content.',
+        story: 'Popover containing a form with textarea and action buttons. Useful for quick input modals like comments or feedback.',
       },
     },
   },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
-        <Popover open={isOpen} onOpenChange={setIsOpen}>
-          <Popover.Trigger>
-            <Button>Controlled Popover</Button>
-          </Popover.Trigger>
-          <Popover.Content>
-            <Popover.Title>Controlled State</Popover.Title>
-            <Popover.Description>
-              This popover's open state is controlled externally.
-            </Popover.Description>
-            <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--semantic-color-border-default)' }}>
-              <Button size="small" onClick={() => setIsOpen(false)}>
-                Close
-              </Button>
-            </div>
-          </Popover.Content>
-        </Popover>
-        <div style={{ fontSize: '0.875rem', color: 'var(--semantic-color-text-secondary)' }}>
-          Popover is {isOpen ? 'open' : 'closed'}
-        </div>
-      </div>
-    );
-  },
-};
-
-export const MultiplePopovers = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem' }}>
-      <Popover>
-        <Popover.Trigger>
-          <Button>Info</Button>
-        </Popover.Trigger>
-        <Popover.Content side="top" showArrow>
-          <Popover.Title>Information</Popover.Title>
-          <Popover.Description>
-            Additional context and details.
-          </Popover.Description>
-        </Popover.Content>
-      </Popover>
-
-      <Popover>
-        <Popover.Trigger>
-          <Button>Help</Button>
-        </Popover.Trigger>
-        <Popover.Content side="top" showArrow>
-          <Popover.Title>Help & Support</Popover.Title>
-          <Popover.Description>
-            Contact us for assistance.
-          </Popover.Description>
-        </Popover.Content>
-      </Popover>
-
-      <Popover>
-        <Popover.Trigger>
-          <Button>Share</Button>
-        </Popover.Trigger>
-        <Popover.Content side="top" showArrow>
-          <Popover.Title>Share Options</Popover.Title>
-          <Popover.Description>
-            Share via email or social media.
-          </Popover.Description>
-        </Popover.Content>
-      </Popover>
-    </div>
-  ),
-};
-
-export const WithForm = {
   render: () => (
     <Popover>
-      <Popover.Trigger>
-        <Button>Add Comment</Button>
+      <Popover.Trigger className={triggerClassName}>
+        Add Comment
       </Popover.Trigger>
       <Popover.Content showArrow>
         <Popover.Title>Leave a Comment</Popover.Title>
@@ -344,10 +250,17 @@ export const WithForm = {
               border: '1px solid var(--semantic-color-border-default)',
               fontFamily: 'inherit',
               fontSize: '0.875rem',
+              resize: 'vertical',
             }}
           />
         </div>
-        <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--semantic-color-border-default)', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+        <div style={{ 
+          paddingTop: '0.75rem', 
+          borderTop: '1px solid var(--semantic-color-border-default)', 
+          display: 'flex', 
+          gap: '0.5rem', 
+          justifyContent: 'flex-end' 
+        }}>
           <Button variant="secondary" size="small">Cancel</Button>
           <Button size="small">Submit</Button>
         </div>
@@ -356,97 +269,43 @@ export const WithForm = {
   ),
 };
 
-export const AllPositions = {
+// ============================================================================
+// CONTROLLED STATE
+// ============================================================================
+
+export const Controlled: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Visual overview of all 12 position combinations (4 sides × 3 alignments). Use this to compare positioning options.',
+        story: 'Programmatically control the popover open state using the \`open\` and \`onOpenChange\` props. Useful when you need to close the popover from within its content or based on external events.',
       },
     },
   },
-  render: () => (
-    <div style={{ 
-      display: 'grid', 
-      gridTemplateColumns: '1fr 1fr 1fr',
-      gap: '3rem',
-      padding: '4rem',
-    }}>
-      {/* Top row */}
-      <Popover>
-        <Popover.Trigger>
-          <Button>Top-Start</Button>
-        </Popover.Trigger>
-        <Popover.Content side="top" align="start" showArrow>
-          <Popover.Description>Top-Start</Popover.Description>
-        </Popover.Content>
-      </Popover>
+  render: () => {
+    const [isOpen, setIsOpen] = useState(false);
 
-      <Popover>
-        <Popover.Trigger>
-          <Button>Top-Center</Button>
-        </Popover.Trigger>
-        <Popover.Content side="top" align="center" showArrow>
-          <Popover.Description>Top-Center</Popover.Description>
-        </Popover.Content>
-      </Popover>
-
-      <Popover>
-        <Popover.Trigger>
-          <Button>Top-End</Button>
-        </Popover.Trigger>
-        <Popover.Content side="top" align="end" showArrow>
-          <Popover.Description>Top-End</Popover.Description>
-        </Popover.Content>
-      </Popover>
-
-      {/* Middle row */}
-      <Popover>
-        <Popover.Trigger>
-          <Button>Left-Center</Button>
-        </Popover.Trigger>
-        <Popover.Content side="left" align="center" showArrow>
-          <Popover.Description>Left-Center</Popover.Description>
-        </Popover.Content>
-      </Popover>
-
-      <div />
-
-      <Popover>
-        <Popover.Trigger>
-          <Button>Right-Center</Button>
-        </Popover.Trigger>
-        <Popover.Content side="right" align="center" showArrow>
-          <Popover.Description>Right-Center</Popover.Description>
-        </Popover.Content>
-      </Popover>
-
-      {/* Bottom row */}
-      <Popover>
-        <Popover.Trigger>
-          <Button>Bottom-Start</Button>
-        </Popover.Trigger>
-        <Popover.Content side="bottom" align="start" showArrow>
-          <Popover.Description>Bottom-Start</Popover.Description>
-        </Popover.Content>
-      </Popover>
-
-      <Popover>
-        <Popover.Trigger>
-          <Button>Bottom-Center</Button>
-        </Popover.Trigger>
-        <Popover.Content side="bottom" align="center" showArrow>
-          <Popover.Description>Bottom-Center</Popover.Description>
-        </Popover.Content>
-      </Popover>
-
-      <Popover>
-        <Popover.Trigger>
-          <Button>Bottom-End</Button>
-        </Popover.Trigger>
-        <Popover.Content side="bottom" align="end" showArrow>
-          <Popover.Description>Bottom-End</Popover.Description>
-        </Popover.Content>
-      </Popover>
-    </div>
-  ),
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+          <Popover.Trigger className={triggerClassName}>
+            Controlled Popover
+          </Popover.Trigger>
+          <Popover.Content>
+            <Popover.Title>Controlled State</Popover.Title>
+            <Popover.Description>
+              Click the button below to close programmatically.
+            </Popover.Description>
+            <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid var(--semantic-color-border-default)' }}>
+              <Button size="small" onClick={() => setIsOpen(false)}>
+                Close Popover
+              </Button>
+            </div>
+          </Popover.Content>
+        </Popover>
+        <div style={{ fontSize: '0.875rem', color: 'var(--semantic-color-text-secondary)' }}>
+          State: <strong>{isOpen ? 'Open' : 'Closed'}</strong>
+        </div>
+      </div>
+    );
+  },
 };

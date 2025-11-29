@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { JSX } from 'react';
 import { Checkbox } from './Checkbox';
 import { Text } from '../../typography/Text';
+
+type StoryWithRender = StoryObj<typeof Checkbox> & { render: () => JSX.Element };
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Forms/Checkbox',
@@ -47,153 +50,28 @@ const meta: Meta<typeof Checkbox> = {
 export default meta;
 type Story = StoryObj<typeof Checkbox>;
 
+/**
+ * Basic checkbox with label. Interactive controls available in Storybook.
+ */
 export const Default: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Basic checkbox with label. Use for binary choices or multiple selections.',
-      },
-    },
-  },
   args: {
     label: 'Accept terms and conditions',
   },
 };
 
+/**
+ * Checkbox without visible label. Always provide aria-label for accessibility.
+ */
 export const WithoutLabel: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Checkbox without visible label. Always provide aria-label for accessibility.',
-      },
-    },
-  },
   args: {
     'aria-label': 'Accept terms',
   },
 };
 
-export const SizeSmall: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Small size checkbox for compact interfaces or dense lists.',
-      },
-    },
-  },
-  args: {
-    size: 'small',
-    label: 'Small checkbox',
-  },
-};
-
-export const SizeDefault: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default size checkbox for standard forms and lists.',
-      },
-    },
-  },
-  args: {
-    size: 'default',
-    label: 'Default checkbox',
-  },
-};
-
-export const SizeLarge: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large size checkbox for touch-optimized interfaces or emphasized selections.',
-      },
-    },
-  },
-  args: {
-    size: 'large',
-    label: 'Large checkbox',
-  },
-};
-
-export const Checked: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Checked state checkbox. Use defaultChecked for uncontrolled components.',
-      },
-    },
-  },
-  args: {
-    label: 'Checked option',
-    defaultChecked: true,
-  },
-};
-
-export const Indeterminate: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Indeterminate state for partial selections, commonly used in "Select All" patterns with child checkboxes.',
-      },
-    },
-  },
-  args: {
-    label: 'Select all',
-    indeterminate: true,
-  },
-};
-
-export const WithError: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Error state for validation feedback when checkbox selection is required.',
-      },
-    },
-  },
-  args: {
-    label: 'I agree to the terms',
-    error: true,
-  },
-};
-
-export const Disabled: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Disabled checkbox prevents user interaction. Use for locked or unavailable options.',
-      },
-    },
-  },
-  args: {
-    label: 'Disabled option',
-    disabled: true,
-  },
-};
-
-export const DisabledChecked: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Disabled checkbox in checked state showing a locked selection.',
-      },
-    },
-  },
-  args: {
-    label: 'Disabled checked',
-    disabled: true,
-    defaultChecked: true,
-  },
-};
-
-export const AllSizes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of all checkbox sizes for choosing the appropriate size.',
-      },
-    },
-  },
+/**
+ * Comparison of all checkbox sizes for choosing the appropriate size.
+ */
+export const AllSizes: StoryWithRender = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
       <Checkbox size="small" label="Small checkbox" />
@@ -203,14 +81,10 @@ export const AllSizes: Story = {
   ),
 };
 
-export const AllStates: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Overview of all checkbox states: unchecked, checked, indeterminate, error, disabled, and disabled checked.',
-      },
-    },
-  },
+/**
+ * Overview of all checkbox states: unchecked, checked, indeterminate, error, disabled, and disabled checked.
+ */
+export const AllStates: StoryWithRender = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
       <Checkbox label="Unchecked" />
@@ -223,14 +97,10 @@ export const AllStates: Story = {
   ),
 };
 
-export const CheckboxGroup: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Group of related checkboxes using fieldset for semantic HTML and accessibility.',
-      },
-    },
-  },
+/**
+ * Group of related checkboxes using fieldset for semantic HTML and accessibility.
+ */
+export const CheckboxGroup: StoryWithRender = {
   render: () => (
     <fieldset style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
       <legend style={{ marginBottom: 'var(--semantic-space-compact)' }}>
@@ -245,14 +115,10 @@ export const CheckboxGroup: Story = {
   ),
 };
 
-export const SelectAllPattern: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Select all pattern with indeterminate parent checkbox controlling child checkboxes.',
-      },
-    },
-  },
+/**
+ * Select all pattern with indeterminate parent checkbox controlling child checkboxes.
+ */
+export const SelectAllPattern: StoryWithRender = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
       <Checkbox label="Select all" indeterminate />
@@ -266,14 +132,10 @@ export const SelectAllPattern: Story = {
   ),
 };
 
-export const TermsExample: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Terms acceptance checkboxes with links embedded in labels using JSX.',
-      },
-    },
-  },
+/**
+ * Checkboxes with JSX labels containing interactive elements like links.
+ */
+export const WithJSXLabel: StoryWithRender = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)', maxWidth: '24rem' }}>
       <Checkbox
@@ -301,64 +163,17 @@ export const TermsExample: Story = {
   ),
 };
 
-export const SettingsPanel: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Settings panel with multiple notification preferences using checkboxes.',
-      },
-    },
-  },
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)', width: '20rem' }}>
-      <Text as="strong" weight="semibold">Notification Settings</Text>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
-        <Checkbox label="Email notifications" defaultChecked />
-        <Checkbox label="Push notifications" defaultChecked />
-        <Checkbox label="SMS notifications" />
-        <Checkbox label="Weekly digest" />
-      </div>
-    </div>
-  ),
-};
-
-export const PermissionList: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Permission management interface with disabled admin option.',
-      },
-    },
-  },
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)', width: '20rem' }}>
-      <Text as="strong" weight="semibold">User Permissions</Text>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
-        <Checkbox label="Read" defaultChecked />
-        <Checkbox label="Write" defaultChecked />
-        <Checkbox label="Delete" />
-        <Checkbox label="Admin" disabled />
-      </div>
-    </div>
-  ),
-};
-
-export const FormExample: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Form example with checkboxes including error state and validation message.',
-      },
-    },
-  },
+/**
+ * Form example with checkboxes including error state and validation message.
+ */
+export const FormIntegration: StoryWithRender = {
   render: () => (
     <form style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)', width: '20rem' }}>
+      <Text as="strong" weight="semibold">Account Preferences</Text>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
         <Checkbox label="Remember me" />
-        <Checkbox
-          label="I agree to receive updates via email"
-          defaultChecked
-        />
+        <Checkbox label="Email notifications" defaultChecked />
+        <Checkbox label="Push notifications" defaultChecked />
         <Checkbox
           label={
             <span>
@@ -376,51 +191,12 @@ export const FormExample: Story = {
   ),
 };
 
-export const ErrorSizes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Error state across all checkbox sizes showing consistent validation styling.',
-      },
-    },
-  },
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
-      <Checkbox size="small" label="Small with error" error />
-      <Checkbox size="default" label="Default with error" error />
-      <Checkbox size="large" label="Large with error" error />
-    </div>
-  ),
-};
-
-export const IndeterminateSizes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Indeterminate state across all checkbox sizes for partial selection indicators.',
-      },
-    },
-  },
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
-      <Checkbox size="small" label="Small indeterminate" indeterminate />
-      <Checkbox size="default" label="Default indeterminate" indeterminate />
-      <Checkbox size="large" label="Large indeterminate" indeterminate />
-    </div>
-  ),
-};
-
+/**
+ * Required checkbox with asterisk indicator for mandatory selections.
+ */
 export const RequiredCheckbox: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Required checkbox with asterisk indicator for mandatory selections like terms acceptance.',
-      },
-    },
-  },
   args: {
     label: 'I agree to the terms and conditions *',
     required: true,
   },
 };
-

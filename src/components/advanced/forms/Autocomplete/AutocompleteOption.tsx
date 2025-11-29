@@ -5,18 +5,28 @@ import {
   useCallback,
   type ReactNode,
   type ComponentPropsWithoutRef,
+  type CSSProperties,
 } from 'react';
 import { cn } from '@/lib/cn';
-import { useAutocompleteContext, type AutocompleteOption as AutocompleteOptionType } from './Autocomplete';
+import { useAutocompleteContext, type AutocompleteOptionData } from './Autocomplete';
 import {
   AUTOCOMPLETE_OPTION_BASE_CLASSES,
   AUTOCOMPLETE_OPTION_STATE_STYLES,
   AUTOCOMPLETE_CHECK_ICON_CLASSES,
 } from './Autocomplete.styles';
 
+/**
+ * Props for AutocompleteOption component
+ */
 export interface AutocompleteOptionProps extends ComponentPropsWithoutRef<'div'> {
-  option: AutocompleteOptionType;
-  index: number;
+  /** Option value - simplified API */
+  value?: string;
+  /** Option object - legacy API (deprecated, use value prop instead) */
+  option?: AutocompleteOptionData;
+  /** Index - legacy API (deprecated, auto-calculated internally) */
+  index?: number;
+  /** Disabled state - overrides option.disabled if provided */
+  disabled?: boolean;
   children?: ReactNode;
 }
 
@@ -35,16 +45,31 @@ const CheckIcon = () => (
 
 export const AutocompleteOption = memo(
   forwardRef<HTMLDivElement, AutocompleteOptionProps>(
-    ({ option, index, children, className, ...props }, ref) => {
-      const { selectedValue, selectOption, highlightedIndex, multiple } = useAutocompleteContext();
+    ({ value: valueProp, option: optionProp, index: indexProp, disabled: disabledProp, children, className, style, ...props }, ref) => {
+      const { selectedValue, selectOption, highlightedIndex, multiple, listId, filteredOptions } = useAutocompleteContext();
+
+      // Support both new API (value prop) and legacy API (option + index props)
+      const optionValue = valueProp ?? optionProp?.value ?? '';
+      const option = valueProp
+        ? filteredOptions.find(opt => opt.value === valueProp)
+        : optionProp;
+      const index = indexProp ?? filteredOptions.findIndex(opt => opt.value === optionValue);
+
+      if (!option) {
+        console.warn(`AutocompleteOption: No option found for value "${optionValue}"`);
+        return null;
+      }
+
+      // Support both disabled prop and option.disabled
+      const isDisabled = disabledProp ?? option.disabled ?? false;
       const isSelected = selectedValue.includes(option.value);
       const isHighlighted = highlightedIndex === index;
 
       const handleClick = useCallback(() => {
-        if (!option.disabled) {
+        if (!isDisabled) {
           selectOption(option.value);
         }
-      }, [selectOption, option]);
+      }, [selectOption, option, isDisabled]);
 
       const optionClasses = useMemo(
         () =>
@@ -60,15 +85,27 @@ export const AutocompleteOption = memo(
         [isSelected, isHighlighted, className]
       );
 
+      const optionStyle = useMemo<CSSProperties>(
+        () => ({
+          paddingBlock: 'var(--component-autocomplete-option-padding-block)',
+          paddingInline: 'var(--component-autocomplete-option-padding-inline)',
+          gap: 'var(--component-autocomplete-option-gap)',
+          ...style,
+        }),
+        [style]
+      );
+
       return (
         <div
           ref={ref}
+          id={`${listId}-option-${option.value}`}
           role="option"
           aria-selected={isSelected}
-          aria-disabled={option.disabled}
-          data-disabled={option.disabled}
+          aria-disabled={isDisabled}
+          data-disabled={isDisabled}
           onClick={handleClick}
           className={optionClasses}
+          style={optionStyle}
           {...props}
         >
           {children || option.label}

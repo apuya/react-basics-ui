@@ -70,7 +70,10 @@ export const Skeleton = memo(
       const animationClass = animation ? ANIMATION_STYLES[animation] : '';
 
       const computedStyle = useMemo(() => {
-        const styles: React.CSSProperties = { ...style };
+        const styles: React.CSSProperties = {
+          backgroundColor: 'var(--component-skeleton-bg)',
+          ...style,
+        };
         
         if (width !== undefined) {
           styles.width = typeof width === 'number' ? `${width}px` : width;
@@ -125,3 +128,5 @@ export const Skeleton = memo(
 );
 
 Skeleton.displayName = 'Skeleton';
+
+export type { SkeletonProps };

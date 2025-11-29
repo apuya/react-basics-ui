@@ -1,11 +1,31 @@
-import React, { useCallback } from 'react';
+import { forwardRef, memo, useCallback, useMemo } from 'react';
+import { type IconType } from 'react-icons';
 import { Modal } from '@/components/basic/overlay/Modal';
 import { Button } from '@/components/basic/forms/Button';
+import { Text } from '@/components/basic/typography/Text';
+import { Heading } from '@/components/basic/typography/Heading';
+import { Icon } from '@/components/basic/utility/Icon';
 import { BiErrorCircle, BiCheckCircle, BiInfoCircle } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
-import { DIALOG_CONTENT_CLASSES, ICON_CLASSES, ICON_WRAPPER_CLASSES } from './ConfirmDialog.styles';
+import {
+  BASE_CONTENT_CLASSES,
+  CONTENT_WRAPPER_STYLES,
+  DESCRIPTION_WRAPPER_STYLES,
+  HEADER_CONTENT_CLASSES,
+  HEADER_CONTENT_STYLES,
+  ICON_WRAPPER_CLASSES,
+  NO_BORDER_STYLES,
+  SECTION_PADDING_STYLES,
+  VARIANT_ICON_COLORS,
+  type ConfirmDialogVariant,
+} from './ConfirmDialog.styles';
 
-export type ConfirmDialogVariant = 'default' | 'destructive' | 'warning' | 'info';
+export type { ConfirmDialogVariant };
+
+interface VariantConfig {
+  icon: IconType;
+  buttonVariant: 'primary' | 'destructive';
+}
 
 export interface ConfirmDialogProps {
   /** Whether dialog is open */
@@ -34,29 +54,21 @@ export interface ConfirmDialogProps {
   className?: string;
 }
 
-const VARIANT_CONFIG: Record<ConfirmDialogVariant, {
-  icon: React.ElementType;
-  iconColor: string;
-  buttonVariant: 'primary' | 'destructive';
-}> = {
+const VARIANT_CONFIG: Record<ConfirmDialogVariant, VariantConfig> = {
   default: {
     icon: BiCheckCircle,
-    iconColor: 'text-blue-600 dark:text-blue-400',
     buttonVariant: 'primary',
   },
   destructive: {
     icon: BiErrorCircle,
-    iconColor: 'text-red-600 dark:text-red-400',
     buttonVariant: 'destructive',
   },
   warning: {
     icon: BiErrorCircle,
-    iconColor: 'text-yellow-600 dark:text-yellow-400',
     buttonVariant: 'primary',
   },
   info: {
     icon: BiInfoCircle,
-    iconColor: 'text-blue-600 dark:text-blue-400',
     buttonVariant: 'primary',
   },
 };
@@ -82,23 +94,31 @@ const VARIANT_CONFIG: Record<ConfirmDialogVariant, {
  * />
  * ```
  */
-export const ConfirmDialog = React.memo<ConfirmDialogProps>(
-  ({
-    isOpen,
-    onClose,
-    title,
-    description,
-    confirmText = 'Confirm',
-    cancelText = 'Cancel',
-    onConfirm,
-    variant = 'default',
-    showIcon = true,
-    isLoading = false,
-    children,
-    className,
-  }) => {
+export const ConfirmDialog = memo(
+  forwardRef<HTMLDivElement, ConfirmDialogProps>(function ConfirmDialog(
+    {
+      isOpen,
+      onClose,
+      title,
+      description,
+      confirmText = 'Confirm',
+      cancelText = 'Cancel',
+      onConfirm,
+      variant = 'default',
+      showIcon = true,
+      isLoading = false,
+      children,
+      className,
+    },
+    ref
+  ) {
     const config = VARIANT_CONFIG[variant];
-    const Icon = config.icon;
+    const VariantIcon = config.icon;
+
+    const contentClasses = useMemo(
+      () => cn(showIcon && 'pl-11', className),
+      [showIcon, className]
+    );
 
     const handleConfirm = useCallback(() => {
       onConfirm?.();
@@ -116,23 +136,35 @@ export const ConfirmDialog = React.memo<ConfirmDialogProps>(
         closeOnEscape={!isLoading}
         closeOnOverlayClick={!isLoading}
       >
-        <Modal.Content>
-          <Modal.Header>
-            <div className="flex items-start gap-3 w-full">
+        <Modal.Content ref={ref} style={CONTENT_WRAPPER_STYLES}>
+          <Modal.Header style={{ ...SECTION_PADDING_STYLES, ...NO_BORDER_STYLES }}>
+            <div className={HEADER_CONTENT_CLASSES} style={HEADER_CONTENT_STYLES}>
               {showIcon && (
-                <div className={ICON_WRAPPER_CLASSES}>
-                  <Icon className={cn(ICON_CLASSES, config.iconColor)} />
-                </div>
+                <Icon
+                  icon={VariantIcon}
+                  size="lg"
+                  color={VARIANT_ICON_COLORS[variant]}
+                  aria-hidden
+                  className={ICON_WRAPPER_CLASSES}
+                />
               )}
-              <div className="flex-1 min-w-0">
-                <Modal.Title>{title}</Modal.Title>
+              <div className={BASE_CONTENT_CLASSES}>
+                <Heading as="h2" level="h4">
+                  {title}
+                </Heading>
               </div>
             </div>
           </Modal.Header>
-          <div className={cn(DIALOG_CONTENT_CLASSES, showIcon && 'pl-11', className)}>
-            {children || (description && <p className="text-sm text-[var(--semantic-color-text-secondary)]">{description}</p>)}
+          <div className={contentClasses} style={DESCRIPTION_WRAPPER_STYLES}>
+            {children || (
+              description && (
+                <Text as="p" size="body" color="secondary">
+                  {description}
+                </Text>
+              )
+            )}
           </div>
-          <Modal.Footer>
+          <Modal.Footer style={{ ...SECTION_PADDING_STYLES, ...NO_BORDER_STYLES }}>
             <Button
               variant="secondary"
               onClick={handleCancel}
@@ -152,7 +184,7 @@ export const ConfirmDialog = React.memo<ConfirmDialogProps>(
         </Modal.Content>
       </Modal>
     );
-  }
+  })
 );
 
 ConfirmDialog.displayName = 'ConfirmDialog';
