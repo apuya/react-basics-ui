@@ -1,5 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Table } from './Table';
+import { Badge } from '../../../basic/feedback/Badge';
+import { Button } from '../../../basic/forms/Button';
+import { Avatar } from '../../../basic/data-display/Avatar';
+import { Text } from '../../../basic/typography/Text';
+import { Flex } from '../../../basic/layout/Flex';
+import { Stack } from '../../../basic/layout/Stack';
 
 const meta = {
   title: 'Data Display/Table/TableCell',
@@ -66,23 +72,19 @@ export const WithComponents: Story = {
       <Table.Body>
         <Table.Row>
           <Table.Cell>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold text-sm">
-                JD
-              </div>
-              <div>
-                <div className="font-medium">John Doe</div>
-                <div className="text-xs text-gray-500">john@example.com</div>
-              </div>
-            </div>
+            <Flex align="center" gap="sm">
+              <Avatar initials="JD" size="sm" />
+              <Stack gap="none">
+                <Text weight="medium">John Doe</Text>
+                <Text size="xs" color="secondary">john@example.com</Text>
+              </Stack>
+            </Flex>
           </Table.Cell>
           <Table.Cell>
-            <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-              Active
-            </span>
+            <Badge variant="success">Active</Badge>
           </Table.Cell>
           <Table.Cell>
-            <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">Edit</button>
+            <Button variant="ghost" size="small">Edit</Button>
           </Table.Cell>
         </Table.Row>
       </Table.Body>

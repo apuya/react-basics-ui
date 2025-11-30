@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import { generateFormId } from '@/lib/generateFormId';
 import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import {
   BASE_CLASSES,
@@ -15,13 +16,21 @@ export type TextareaSize = keyof typeof SIZE_STYLES;
 export type TextareaResize = keyof typeof RESIZE_STYLES;
 
 export interface TextareaProps extends Omit<ComponentPropsWithoutRef<'textarea'>, 'size'> {
+  /** Size variant of the textarea */
   size?: TextareaSize;
+  /** Indicates validation error state */
   error?: boolean;
+  /** Label text displayed above the textarea */
   label?: string;
+  /** Helper text displayed below the textarea */
   helperText?: string;
+  /** Resize behavior of the textarea */
   resize?: TextareaResize;
+  /** Additional className for the wrapper element */
   wrapperClassName?: string;
+  /** Maximum character length */
   maxLength?: number;
+  /** Whether to show character count */
   showCharCount?: boolean;
 }
 
@@ -45,7 +54,7 @@ export const Textarea = memo(
     },
     ref
   ) {
-    const textareaId = id || (label ? `textarea-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
+    const textareaId = id || generateFormId('textarea', label);
 
     const textareaClasses = useMemo(
       () => cn(
@@ -90,6 +99,8 @@ export const Textarea = memo(
             maxLength={maxLength}
             value={value}
             defaultValue={defaultValue}
+            data-size={size}
+            data-error={error || undefined}
             {...rest}
           />
         </div>

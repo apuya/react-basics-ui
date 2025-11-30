@@ -1,21 +1,13 @@
-import { createContext, useContext } from 'react';
+import { createComponentContext } from '@/lib/createComponentContext';
 import type { DatePickerContextValue } from './DatePicker.types';
 
 /**
  * Context for sharing state between DatePicker components
+ * Uses the createComponentContext factory for consistent error handling
  */
-export const DatePickerContext = createContext<DatePickerContextValue | null>(null);
+const { Context, useContext: useDatePickerContext } = createComponentContext<DatePickerContextValue>('DatePicker');
 
-/**
- * Hook to access DatePicker context
- * @throws Error if used outside of DatePicker
- */
-export function useDatePickerContext(): DatePickerContextValue {
-  const context = useContext(DatePickerContext);
-  if (!context) {
-    throw new Error('DatePicker components must be used within a <DatePicker> provider');
-  }
-  return context;
-}
+export const DatePickerContext = Context;
+export { useDatePickerContext };
 
 DatePickerContext.displayName = 'DatePickerContext';

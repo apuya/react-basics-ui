@@ -15,6 +15,12 @@ import {
   BiHeart,
   BiStar,
 } from 'react-icons/bi';
+import { Text } from '../../basic/typography/Text';
+import { Heading } from '../../basic/typography/Heading';
+import { Button } from '../../basic/forms/Button';
+import { Box } from '../../basic/layout/Box';
+import { Flex } from '../../basic/layout/Flex';
+import { Stack } from '../../basic/layout/Stack';
 
 const meta = {
   title: 'Experimental/Tree',
@@ -99,10 +105,10 @@ export const Selectable: Story = {
     const [selected, setSelected] = useState<string>('1-1');
 
     return (
-      <div>
-        <p className="mb-4 text-sm text-gray-600">
+      <Box>
+        <Text size="sm" color="secondary" className="mb-4">
           Selected: <strong>{selected || 'None'}</strong>
-        </p>
+        </Text>
         <Tree selectable selectedId={selected} onSelect={setSelected}>
           <Tree.Node nodeId="1" label="Root">
             <Tree.Node nodeId="1-1" label="Child 1" />
@@ -113,7 +119,7 @@ export const Selectable: Story = {
           </Tree.Node>
           <Tree.Node nodeId="2" label="Other Root" />
         </Tree>
-      </div>
+      </Box>
     );
   },
 };
@@ -138,31 +144,31 @@ export const WithRightContent: Story = {
       <Tree.Node
         nodeId="1"
         label="Documents"
-        rightContent={<span className="text-xs text-gray-500">12 items</span>}
+        rightContent={<Text size="xs" color="secondary">12 items</Text>}
       >
         <Tree.Node
           nodeId="1-1"
           label="report.pdf"
           icon={<BiFile />}
-          rightContent={<span className="text-xs text-gray-500">2.4 MB</span>}
+          rightContent={<Text size="xs" color="secondary">2.4 MB</Text>}
         />
         <Tree.Node
           nodeId="1-2"
           label="presentation.pptx"
           icon={<BiFile />}
-          rightContent={<span className="text-xs text-gray-500">8.1 MB</span>}
+          rightContent={<Text size="xs" color="secondary">8.1 MB</Text>}
         />
       </Tree.Node>
       <Tree.Node
         nodeId="2"
         label="Images"
-        rightContent={<span className="text-xs text-gray-500">24 items</span>}
+        rightContent={<Text size="xs" color="secondary">24 items</Text>}
       >
         <Tree.Node
           nodeId="2-1"
           label="photo.jpg"
           icon={<BiImage />}
-          rightContent={<span className="text-xs text-gray-500">1.2 MB</span>}
+          rightContent={<Text size="xs" color="secondary">1.2 MB</Text>}
         />
       </Tree.Node>
     </Tree>
@@ -284,13 +290,13 @@ export const InteractiveExample: Story = {
         </Tree>
 
         {nodeInfo && (
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded">
-            <h4 className="font-semibold text-blue-900 mb-1">Selected Node</h4>
-            <p className="text-sm text-blue-700">
+          <Box className="p-4 bg-blue-50 border border-blue-200 rounded">
+            <Heading level={4} className="text-blue-900 mb-1">Selected Node</Heading>
+            <Text size="sm" className="text-blue-700">
               <strong>ID:</strong> {nodeInfo.id}
-            </p>
-            <p className="text-sm text-blue-700">{nodeInfo.label}</p>
-          </div>
+            </Text>
+            <Text size="sm" className="text-blue-700">{nodeInfo.label}</Text>
+          </Box>
         )}
       </div>
     );
@@ -354,21 +360,23 @@ export const ControlledExpansion: Story = {
     };
 
     return (
-      <div className="space-y-4">
-        <div className="flex gap-2">
-          <button
+      <Stack gap="md">
+        <Flex gap="sm">
+          <Button
             onClick={handleExpandAll}
-            className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+            variant="primary"
+            size="small"
           >
             Expand All
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleCollapseAll}
-            className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
+            variant="outline"
+            size="small"
           >
             Collapse All
-          </button>
-        </div>
+          </Button>
+        </Flex>
 
         <Tree defaultExpanded={expandedIds} key={expandedIds.join(',')}>
           <Tree.Node nodeId="1" label="Documents">
@@ -383,7 +391,7 @@ export const ControlledExpansion: Story = {
             <Tree.Node nodeId="2-2" label="Videos" />
           </Tree.Node>
         </Tree>
-      </div>
+      </Stack>
     );
   },
 };

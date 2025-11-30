@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import { generateFormId } from '@/lib/generateFormId';
 import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
 import {
   INPUT_CLASSES,
@@ -15,8 +16,11 @@ import {
 export type SwitchSize = 'small' | 'default' | 'large';
 
 export interface SwitchProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type' | 'size'> {
+  /** Size variant of the switch */
   size?: SwitchSize;
+  /** Label text displayed next to the switch */
   label?: string;
+  /** Additional className for the wrapper element */
   wrapperClassName?: string;
 }
 
@@ -25,7 +29,7 @@ export const Switch = memo(
     { size = 'default', label, disabled, className, wrapperClassName, id, ...rest },
     ref
   ) {
-    const switchId = id || (label ? `switch-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
+    const switchId = id || generateFormId('switch', label);
 
     return (
       <label
@@ -41,6 +45,7 @@ export const Switch = memo(
           id={switchId}
           disabled={disabled}
           className={cn(INPUT_CLASSES, className)}
+          data-size={size}
           {...rest}
         />
         <span

@@ -13,6 +13,14 @@ import {
   BiBuilding,
   BiFile,
 } from 'react-icons/bi';
+import { Button } from '../../basic/forms/Button';
+import { Heading } from '../../basic/typography/Heading';
+import { Text } from '../../basic/typography/Text';
+import { Input } from '../../basic/forms/Input';
+import { Stack } from '../../basic/layout/Stack';
+import { Box } from '../../basic/layout/Box';
+import { Flex } from '../../basic/layout/Flex';
+import { Label } from '../../basic/forms/Label';
 
 const meta = {
   title: 'Experimental/Stepper',
@@ -228,7 +236,7 @@ export const InteractiveHorizontal: Story = {
     };
 
     return (
-      <div className="w-full max-w-3xl">
+      <Box className="w-full max-w-3xl">
         <Stepper activeStep={activeStep}>
           <Stepper.Step
             label="Account"
@@ -252,45 +260,46 @@ export const InteractiveHorizontal: Story = {
           />
         </Stepper>
 
-        <div className="mt-8 p-6 bg-gray-50 rounded-lg">
-          <h3 className="text-lg font-semibold mb-2">
+        <Box className="mt-8 p-6 bg-gray-50 rounded-lg">
+          <Heading level={3} className="mb-2">
             Step {activeStep + 1}: {['Account', 'Profile', 'Address', 'Complete'][activeStep]}
-          </h3>
-          <p className="text-gray-600 mb-4">
+          </Heading>
+          <Text color="secondary" className="mb-4">
             {[
               'Enter your account details to get started.',
               'Tell us more about yourself.',
               'Where should we send your orders?',
               'Registration complete! Welcome aboard.',
             ][activeStep]}
-          </p>
-        </div>
+          </Text>
+        </Box>
 
-        <div className="mt-4 flex gap-3">
-          <button
+        <Flex gap="sm" className="mt-4">
+          <Button
             onClick={handleBack}
             disabled={activeStep === 0}
-            className="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="outline"
           >
             Back
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleNext}
             disabled={activeStep === 3}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="primary"
           >
             {activeStep === 3 ? 'Finish' : 'Next'}
-          </button>
+          </Button>
           {activeStep === 3 && (
-            <button
+            <Button
               onClick={handleReset}
-              className="ml-auto px-4 py-2 border rounded hover:bg-gray-100"
+              variant="outline"
+              className="ml-auto"
             >
               Reset
-            </button>
+            </Button>
           )}
-        </div>
-      </div>
+        </Flex>
+      </Box>
     );
   },
 };
@@ -308,8 +317,8 @@ export const InteractiveVertical: Story = {
     };
 
     return (
-      <div className="flex gap-8">
-        <div className="w-64">
+      <Flex gap="lg">
+        <Box className="w-64">
           <Stepper activeStep={activeStep} orientation="vertical">
             <Stepper.Step
               label="Order Placed"
@@ -327,42 +336,42 @@ export const InteractiveVertical: Story = {
               icon={<BiCheckCircle />}
             />
           </Stepper>
-        </div>
+        </Box>
 
-        <div className="flex-1">
-          <div className="p-6 bg-white border rounded-lg">
-            <h3 className="text-xl font-bold mb-3">
+        <Box className="flex-1">
+          <Box className="p-6 bg-white border rounded-lg">
+            <Heading level={3} className="mb-3">
               {['Order Received', 'Processing Order', 'Order Shipped'][activeStep]}
-            </h3>
-            <p className="text-gray-600 mb-6">
+            </Heading>
+            <Text color="secondary" className="mb-6">
               {[
                 'Thank you for your order! We have received your purchase and will begin processing it shortly.',
                 'Your order is being prepared by our team. This usually takes 1-2 business days.',
                 'Your order has been shipped and is on its way to you. You should receive it within 3-5 business days.',
               ][activeStep]}
-            </p>
+            </Text>
 
-            <div className="flex gap-3">
+            <Flex gap="sm">
               {activeStep > 0 && (
-                <button
+                <Button
                   onClick={handleBack}
-                  className="px-4 py-2 border rounded hover:bg-gray-100"
+                  variant="outline"
                 >
                   Previous
-                </button>
+                </Button>
               )}
               {activeStep < 2 && (
-                <button
+                <Button
                   onClick={handleNext}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  variant="primary"
                 >
                   Simulate Next Step
-                </button>
+                </Button>
               )}
-            </div>
-          </div>
-        </div>
-      </div>
+            </Flex>
+          </Box>
+        </Box>
+      </Flex>
     );
   },
 };
@@ -385,88 +394,88 @@ export const OnboardingFlow: Story = {
     };
 
     return (
-      <div className="w-full max-w-2xl">
+      <Box className="w-full max-w-2xl">
         <Stepper activeStep={activeStep}>
           <Stepper.Step label="Personal" description="Your information" />
           <Stepper.Step label="Company" description="Business details" />
           <Stepper.Step label="Complete" description="All done!" />
         </Stepper>
 
-        <div className="mt-8 p-6 bg-white border rounded-lg">
+        <Box className="mt-8 p-6 bg-white border rounded-lg">
           {activeStep === 0 && (
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Full Name</label>
-                  <input
+            <Stack gap="md">
+              <Heading level={3}>Personal Information</Heading>
+              <Stack gap="md">
+                <Box>
+                  <Label htmlFor="onboarding-name">Full Name</Label>
+                  <Input
+                    id="onboarding-name"
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="John Doe"
                   />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Email</label>
-                  <input
+                </Box>
+                <Box>
+                  <Label htmlFor="onboarding-email">Email</Label>
+                  <Input
+                    id="onboarding-email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="john@example.com"
                   />
-                </div>
-              </div>
-            </div>
+                </Box>
+              </Stack>
+            </Stack>
           )}
 
           {activeStep === 1 && (
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Company Details</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Company Name</label>
-                  <input
+            <Stack gap="md">
+              <Heading level={3}>Company Details</Heading>
+              <Stack gap="md">
+                <Box>
+                  <Label htmlFor="onboarding-company">Company Name</Label>
+                  <Input
+                    id="onboarding-company"
                     type="text"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Acme Inc."
                   />
-                </div>
-              </div>
-            </div>
+                </Box>
+              </Stack>
+            </Stack>
           )}
 
           {activeStep === 2 && (
-            <div className="text-center py-8">
+            <Box className="text-center py-8">
               <BiCheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold mb-2">All Set!</h3>
-              <p className="text-gray-600">
+              <Heading level={3} className="mb-2">All Set!</Heading>
+              <Text color="secondary">
                 Thank you for completing the onboarding process.
-              </p>
-            </div>
+              </Text>
+            </Box>
           )}
-        </div>
+        </Box>
 
-        <div className="mt-4 flex gap-3">
-          <button
+        <Flex gap="sm" className="mt-4">
+          <Button
             onClick={handleBack}
             disabled={activeStep === 0}
-            className="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="outline"
           >
             Back
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleNext}
             disabled={activeStep === 2}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="primary"
           >
             {activeStep === 2 ? 'Finish' : 'Continue'}
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Flex>
+      </Box>
     );
   },
 };

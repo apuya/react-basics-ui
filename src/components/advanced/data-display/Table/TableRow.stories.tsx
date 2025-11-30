@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Table } from './Table';
+import { Text } from '../../../basic/typography/Text';
 
 const meta = {
   title: 'Data Display/Table/TableRow',
@@ -71,13 +72,13 @@ export const WithCustomStyles: Story = {
         <Table.Row style={{ backgroundColor: '#f0f9ff' }}>
           <Table.Cell>Active User</Table.Cell>
           <Table.Cell>
-            <span className="text-green-600 font-medium">Active</span>
+            <Text color="success" weight="medium">Active</Text>
           </Table.Cell>
         </Table.Row>
         <Table.Row style={{ backgroundColor: '#fef2f2' }}>
           <Table.Cell>Inactive User</Table.Cell>
           <Table.Cell>
-            <span className="text-red-600 font-medium">Inactive</span>
+            <Text color="error" weight="medium">Inactive</Text>
           </Table.Cell>
         </Table.Row>
       </Table.Body>

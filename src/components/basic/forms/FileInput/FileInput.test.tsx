@@ -153,18 +153,10 @@ describe('FileInput', () => {
     expect(dropzone).toHaveAttribute('tabIndex', '-1');
   });
 
-  it('supports different sizes', () => {
-    const { rerender } = render(<FileInput size="small" />);
-    let dropzone = screen.getByRole('button');
-    expect(dropzone).toHaveClass('p-4');
-
-    rerender(<FileInput size="default" />);
-    dropzone = screen.getByRole('button');
-    expect(dropzone).toHaveClass('p-6');
-
-    rerender(<FileInput size="large" />);
-    dropzone = screen.getByRole('button');
-    expect(dropzone).toHaveClass('p-8');
+  it('applies base styling with container queries', () => {
+    render(<FileInput />);
+    const dropzone = screen.getByRole('button');
+    expect(dropzone).toHaveClass('gap-3');
   });
 
   it('displays file size information', async () => {

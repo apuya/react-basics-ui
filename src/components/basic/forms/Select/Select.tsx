@@ -9,12 +9,14 @@ import {
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from 'react';
+import { BiCheck, BiChevronDown } from 'react-icons/bi';
 import { createComponentContext } from '@/lib/createComponentContext';
+import { generateFormId } from '@/lib/generateFormId';
 import { useControlledState } from '@/hooks/useControlledState';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { cn } from '@/lib/cn';
-import { BiCheck, BiChevronDown } from 'react-icons/bi';
+import { Icon } from '@/components/basic/utility/Icon';
 import {
   HELPER_CLASSES,
   HELPER_ERROR_CLASSES,
@@ -47,9 +49,12 @@ interface SelectContextValue {
   size: SelectSize;
   getOptionLabel: (value: string) => string | undefined;
   registerOption: (value: string, label: string) => void;
+  triggerId: string;
+  menuId: string;
+  labelId: string | undefined;
 }
 
-const { Context: SelectContext, useContext: useSelectContext } =
+const { Context: SelectContext, useContext: useSelectContext, useOptionalContext: useOptionalSelectContext } =
   createComponentContext<SelectContextValue>('Select');
 
 // Main Select Component
@@ -105,7 +110,10 @@ const SelectRoot = ({
     });
   }, []);
 
-  const selectId = id || (label ? `select-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
+  const baseId = id || generateFormId('select', label);
+  const triggerId = `${baseId}-trigger`;
+  const menuId = `${baseId}-menu`;
+  const labelId = label ? `${baseId}-label` : undefined;
 
   const contextValue = useMemo(
     () => ({
@@ -118,16 +126,26 @@ const SelectRoot = ({
       size,
       getOptionLabel,
       registerOption,
+      triggerId,
+      menuId,
+      labelId,
     }),
-    [isOpen, value, setValue, disabled, error, size, getOptionLabel, registerOption]
+    [isOpen, value, setValue, disabled, error, size, getOptionLabel, registerOption, triggerId, menuId, labelId]
   );
 
   return (
     <SelectContext.Provider value={contextValue}>
-      <div className={cn('w-full', className)}>
+      <div 
+        className={cn('w-full', className)}
+        data-size={size}
+        data-error={error || undefined}
+        data-disabled={disabled || undefined}
+        data-open={isOpen}
+      >
         {label && (
           <label
-            htmlFor={selectId}
+            id={labelId}
+            htmlFor={triggerId}
             className={error ? LABEL_ERROR_CLASSES : LABEL_CLASSES}
           >
             {label}
@@ -154,7 +172,7 @@ export interface SelectTriggerProps extends Omit<ComponentPropsWithoutRef<'butto
 const SelectTrigger = memo(
   forwardRef<HTMLButtonElement, SelectTriggerProps>(
     ({ placeholder = 'Select an option...', className, ...props }, ref) => {
-      const { isOpen, setIsOpen, value, disabled, error, size, getOptionLabel } = useSelectContext();
+      const { isOpen, setIsOpen, value, disabled, error, size, getOptionLabel, triggerId, menuId, labelId } = useSelectContext();
 
       const triggerClasses = useMemo(
         () => cn(
@@ -185,25 +203,32 @@ const SelectTrigger = memo(
       return (
         <button
           ref={ref}
+          id={triggerId}
           type="button"
           role="combobox"
           aria-expanded={isOpen}
           aria-haspopup="listbox"
+          aria-controls={isOpen ? menuId : undefined}
+          aria-labelledby={labelId}
           disabled={disabled}
           className={triggerClasses}
           style={triggerStyle}
           onClick={handleClick}
+          data-size={size}
+          data-error={error || undefined}
+          data-open={isOpen}
           {...props}
         >
           <span className={!displayValue ? PLACEHOLDER_CLASSES : undefined}>
             {displayValue || placeholder}
           </span>
-          <BiChevronDown
+          <Icon
+            icon={BiChevronDown}
             className={cn(
               disabled ? ICON_DISABLED_CLASSES : ICON_CLASSES,
               isOpen && ICON_OPEN_CLASSES
             )}
-            aria-hidden="true"
+            aria-hidden
           />
         </button>
       );
@@ -219,7 +244,7 @@ export interface SelectMenuProps extends ComponentPropsWithoutRef<'div'> {}
 const SelectMenu = memo(
   forwardRef<HTMLDivElement, SelectMenuProps>(
     ({ className, children, ...props }, forwardedRef) => {
-      const { isOpen, setIsOpen } = useSelectContext();
+      const { isOpen, setIsOpen, menuId, labelId } = useSelectContext();
       const menuRef = useRef<HTMLDivElement>(null!);
 
       const menuStyle = useMemo(
@@ -227,7 +252,7 @@ const SelectMenu = memo(
           paddingInline: 'var(--component-dropdown-padding-inline)',
           paddingBlock: 'var(--component-dropdown-padding-block)',
           top: '100%',
-          marginTop: '0.5rem',
+          marginTop: 'var(--component-select-menu-gap)',
         }),
         []
       );
@@ -294,7 +319,9 @@ const SelectMenu = memo(
               forwardedRef.current = node;
             }
           }}
+          id={menuId}
           role="listbox"
+          aria-labelledby={labelId}
           className={menuClasses}
           style={menuStyle}
           {...props}
@@ -314,20 +341,28 @@ SelectMenu.displayName = 'Select.Menu';
 export interface SelectOptionProps extends Omit<ComponentPropsWithoutRef<'button'>, 'value'> {
   value: string;
   disabled?: boolean;
+  /** For standalone usage outside Select context */
+  selected?: boolean;
+  /** For standalone usage outside Select context */
+  onOptionSelect?: (value: string) => void;
 }
 
 const SelectOption = memo(
   forwardRef<HTMLButtonElement, SelectOptionProps>(
-    ({ value: optionValue, disabled = false, className, children, ...props }, ref) => {
-      const { value, setValue, registerOption } = useSelectContext();
+    ({ value: optionValue, disabled = false, selected: selectedProp, onOptionSelect, className, children, ...props }, ref) => {
+      const context = useOptionalSelectContext();
       const [isHovered, setIsHovered] = useState(false);
-      const isSelected = value === optionValue;
+      
+      // Use context values if available, otherwise use props
+      const isSelected = context ? context.value === optionValue : (selectedProp ?? false);
 
-      // Register option label
+      // Register option label when in context
       useEffect(() => {
-        const label = typeof children === 'string' ? children : optionValue;
-        registerOption(optionValue, label);
-      }, [optionValue, children, registerOption]);
+        if (context) {
+          const label = typeof children === 'string' ? children : optionValue;
+          context.registerOption(optionValue, label);
+        }
+      }, [optionValue, children, context]);
 
       const optionStyle = useMemo(
         () => ({
@@ -346,9 +381,13 @@ const SelectOption = memo(
 
       const handleClick = useCallback(() => {
         if (!disabled) {
-          setValue(optionValue);
+          if (context) {
+            context.setValue(optionValue);
+          } else {
+            onOptionSelect?.(optionValue);
+          }
         }
-      }, [disabled, optionValue, setValue]);
+      }, [disabled, optionValue, context, onOptionSelect]);
 
       return (
         <button
@@ -362,11 +401,17 @@ const SelectOption = memo(
           onClick={handleClick}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          data-selected={isSelected || undefined}
+          data-disabled={disabled || undefined}
           {...props}
         >
           <span className="flex-1 text-left">{children}</span>
           {isSelected && (
-            <BiCheck className="w-4 h-4 shrink-0" aria-hidden="true" />
+            <Icon
+              icon={BiCheck}
+              className="shrink-0 w-[length:var(--component-select-icon-check-size)] h-[length:var(--component-select-icon-check-size)]"
+              aria-hidden
+            />
           )}
         </button>
       );
@@ -375,6 +420,8 @@ const SelectOption = memo(
 );
 
 SelectOption.displayName = 'Select.Option';
+
+SelectRoot.displayName = 'Select';
 
 // Compound Component
 export const Select = Object.assign(SelectRoot, {

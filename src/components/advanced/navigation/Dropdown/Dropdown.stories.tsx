@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { Dropdown } from './Dropdown';
 import { DropdownErrorBoundary } from './DropdownErrorBoundary';
 import { Button } from '@/components/basic/forms/Button';
-import { Text } from '@/components/basic/typography/Text';
-import { BiEdit, BiCopy, BiTrash, BiDownload, BiShare, BiCut, BiPaste, BiCheck } from 'react-icons/bi';
+import { BiEdit, BiCopy, BiTrash, BiDownload, BiShare, BiCheck } from 'react-icons/bi';
 
 const meta: Meta<typeof Dropdown> = {
   title: 'Navigation/Dropdown',

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import { generateFormId } from '@/lib/generateFormId';
 import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import {
   BASE_CLASSES,
@@ -49,7 +50,7 @@ export const TimePicker = memo(
     },
     ref
   ) {
-    const inputId = id || (label ? `timepicker-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
+    const inputId = id || generateFormId('timepicker', label);
 
     const inputClasses = useMemo(
       () => cn(

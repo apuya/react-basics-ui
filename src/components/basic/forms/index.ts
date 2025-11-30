@@ -8,7 +8,6 @@ export * from './Switch';
 export * from './Label';
 export * from './FormField';
 export * from './FormGroup';
-export * from './FormFieldWrapper';
 export * from './Slider';
 export * from './FileInput';
 export * from './DatePicker';

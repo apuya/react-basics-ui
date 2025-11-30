@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { forwardRef, memo, useId, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import {
   ERROR_CLASSES,
   HELPER_CLASSES,
@@ -9,13 +9,22 @@ import {
 } from './FormField.styles';
 
 export interface FormFieldProps extends ComponentPropsWithoutRef<'div'> {
+  /** Label text displayed above the input */
   label?: ReactNode;
+  /** Associates the label with an input via id */
   htmlFor?: string;
+  /** Helper text displayed below the input */
   helperText?: ReactNode;
+  /** Enables error state styling */
   error?: boolean;
+  /** Error message (replaces helperText when error=true) */
   errorMessage?: string;
+  /** Shows required indicator (*) */
   required?: boolean;
+  /** Sets data-disabled attribute */
   disabled?: boolean;
+  /** ID for the helper/error text element (for aria-describedby). Auto-generated if not provided. */
+  helperId?: string;
 }
 
 export const FormField = memo(
@@ -28,18 +37,24 @@ export const FormField = memo(
       errorMessage,
       required = false,
       disabled = false,
+      helperId: helperIdProp,
       className,
       children,
       ...rest
     },
     ref
   ) {
+    const generatedHelperId = useId();
+    const hasHelperContent = helperText || (error && errorMessage);
+    const helperId = hasHelperContent ? (helperIdProp ?? `${generatedHelperId}-helper`) : undefined;
+
     return (
       <div
         ref={ref}
         className={cn(WRAPPER_CLASSES, className)}
         data-error={error || undefined}
         data-disabled={disabled || undefined}
+        data-required={required || undefined}
         style={{
           gap: 'var(--component-formfield-gap)',
         }}
@@ -58,8 +73,12 @@ export const FormField = memo(
 
         {children}
 
-        {(helperText || (error && errorMessage)) && (
-          <p className={error ? ERROR_CLASSES : HELPER_CLASSES}>
+        {hasHelperContent && (
+          <p
+            id={helperId}
+            className={error ? ERROR_CLASSES : HELPER_CLASSES}
+            role={error ? 'alert' : undefined}
+          >
             {error && errorMessage ? errorMessage : helperText}
           </p>
         )}

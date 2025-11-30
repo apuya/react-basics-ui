@@ -17,9 +17,9 @@ export const TRIGGER_BASE_CLASSES =
 
 /** Inline styles for trigger base (spacing that Tailwind won't compile) */
 export const TRIGGER_BASE_STYLE: React.CSSProperties = {
-  gap: 'var(--component-button-gap, 8px)',
-  borderRadius: 'var(--component-button-radius, 6px)',
-  transitionDuration: 'var(--component-button-transition-duration, 150ms)',
+  gap: 'var(--component-button-gap)',
+  borderRadius: 'var(--component-button-radius)',
+  transitionDuration: 'var(--component-button-transition-duration)',
 };
 
 export const TRIGGER_SIZE_CLASSES = {
@@ -31,16 +31,16 @@ export const TRIGGER_SIZE_CLASSES = {
 /** Inline styles for trigger sizes */
 export const TRIGGER_SIZE_STYLES = {
   small: {
-    height: 'var(--component-button-height-small, 32px)',
-    paddingInline: '12px',
+    height: 'var(--component-button-height-small)',
+    paddingInline: 'var(--component-button-padding-inline-small)',
   } as React.CSSProperties,
   default: {
-    height: 'var(--component-button-height-default, 40px)',
-    paddingInline: '12px',
+    height: 'var(--component-button-height-default)',
+    paddingInline: 'var(--component-button-padding-inline-default)',
   } as React.CSSProperties,
   large: {
-    height: 'var(--component-button-height-large, 48px)',
-    paddingInline: '16px',
+    height: 'var(--component-button-height-large)',
+    paddingInline: 'var(--component-button-padding-inline-large)',
   } as React.CSSProperties,
 } as const;
 
@@ -55,7 +55,7 @@ export const TRIGGER_STATE_STYLES = {
 
 /** Inline style for disabled opacity */
 export const TRIGGER_DISABLED_STYLE: React.CSSProperties = {
-  opacity: 'var(--component-button-disabled-opacity, 0.5)',
+  opacity: 'var(--component-button-disabled-opacity)',
 };
 
 export const TRIGGER_ICON_CLASSES =
@@ -76,8 +76,8 @@ export const CONTENT_BASE_CLASSES =
 
 /** Inline styles for content container */
 export const CONTENT_BASE_STYLE: React.CSSProperties = {
-  borderRadius: 'var(--component-datepicker-radius, 8px)',
-  transitionDuration: 'var(--component-datepicker-transition-duration, 150ms)',
+  borderRadius: 'var(--component-datepicker-radius)',
+  transitionDuration: 'var(--component-datepicker-transition-duration)',
   width: 'max-content',
 };
 
@@ -106,7 +106,7 @@ export const CONTENT_ROW_STYLE: React.CSSProperties = {
 export const PRESETS_WRAPPER_CLASSES = 'relative self-stretch shrink-0 border-r border-[color:var(--component-datepicker-border-default)]';
 
 export const PRESETS_WRAPPER_STYLE: React.CSSProperties = {
-  width: 'var(--component-datepicker-preset-width-min, 160px)',
+  width: 'var(--component-datepicker-preset-width-min)',
 };
 
 // Inner container for calendars (used with presets)
@@ -148,7 +148,7 @@ export const CALENDAR_BASE_CLASSES =
 /** Inline styles for calendar container */
 export const CALENDAR_BASE_STYLE: React.CSSProperties = {
   width: 'fit-content',
-  padding: 'var(--component-datepicker-calendar-padding, 16px)',
+  padding: 'var(--component-datepicker-padding)',
 };
 
 export const DUAL_CALENDAR_CLASSES =
@@ -156,7 +156,7 @@ export const DUAL_CALENDAR_CLASSES =
 
 /** Inline styles for DualCalendar container */
 export const DUAL_CALENDAR_STYLE: React.CSSProperties = {
-  gap: 'var(--component-datepicker-calendar-gap, 0)',
+  gap: 'var(--component-datepicker-gap)',
 };
 
 export const CALENDAR_GRID_CLASSES =
@@ -164,7 +164,7 @@ export const CALENDAR_GRID_CLASSES =
 
 /** Inline styles for calendar grid */
 export const CALENDAR_GRID_STYLE: React.CSSProperties = {
-  gap: 'var(--component-datepicker-cell-gap, 0)',
+  gap: 'var(--component-datepicker-cell-gap)',
 };
 
 export const CALENDAR_WEEKDAY_HEADER_CLASSES =
@@ -172,8 +172,8 @@ export const CALENDAR_WEEKDAY_HEADER_CLASSES =
 
 /** Inline styles for weekday header */
 export const CALENDAR_WEEKDAY_HEADER_STYLE: React.CSSProperties = {
-  gap: 'var(--component-datepicker-cell-gap, 0)',
-  marginBottom: '4px',
+  gap: 'var(--component-datepicker-cell-gap)',
+  marginBottom: 'var(--component-datepicker-cell-gap)',
 };
 
 // ----------------------------------------------------------------------------
@@ -186,10 +186,10 @@ export const HEADER_BASE_CLASSES =
 /** Inline styles for header */
 export const HEADER_BASE_STYLE: React.CSSProperties = {
   width: '100%',
-  height: 'var(--component-datepicker-header-height, 24px)',
-  paddingBlock: 'var(--component-datepicker-header-padding-block, 8px)',
-  paddingInline: 'var(--component-datepicker-header-padding-inline, 8px)',
-  gap: 'var(--component-datepicker-header-gap, 8px)',
+  height: 'var(--component-datepicker-header-height)',
+  paddingBlock: 'var(--component-datepicker-header-padding-block)',
+  paddingInline: 'var(--component-datepicker-header-padding-inline)',
+  gap: 'var(--component-datepicker-header-gap)',
 };
 
 export const HEADER_TITLE_WRAPPER_CLASSES =
@@ -197,13 +197,13 @@ export const HEADER_TITLE_WRAPPER_CLASSES =
 
 /** Inline styles for header title wrapper */
 export const HEADER_TITLE_WRAPPER_STYLE: React.CSSProperties = {
-  fontWeight: 'var(--component-datepicker-header-font-weight, 600)',
+  fontWeight: 'var(--component-datepicker-header-font-weight)',
   minWidth: 0, // Allow flex shrinking
 };
 
 /** Inline styles for header title */
 export const HEADER_TITLE_STYLE: React.CSSProperties = {
-  fontSize: 'var(--component-datepicker-header-font-size, 18px)',
+  fontSize: 'var(--component-datepicker-header-font-size)',
 };
 
 export const HEADER_SELECT_CLASSES =
@@ -211,7 +211,7 @@ export const HEADER_SELECT_CLASSES =
 
 /** Inline styles for header select */
 export const HEADER_SELECT_STYLE: React.CSSProperties = {
-  fontWeight: 'var(--component-datepicker-header-font-weight, 600)',
+  fontWeight: 'var(--component-datepicker-header-font-weight)',
 };
 
 // ----------------------------------------------------------------------------
@@ -223,14 +223,14 @@ export const CELL_BASE_CLASSES =
 
 /** Inline styles for cell base */
 export const CELL_BASE_STYLE: React.CSSProperties = {
-  minWidth: 'var(--component-datepicker-cell-min-width, 32px)',
-  minHeight: 'var(--component-datepicker-cell-min-height, 32px)',
-  maxWidth: 'var(--component-datepicker-cell-max-width, 32px)',
-  maxHeight: 'var(--component-datepicker-cell-max-height, 32px)',
-  padding: 'var(--component-datepicker-cell-padding, 4px)',
-  fontSize: 'var(--component-datepicker-cell-font-size, 14px)',
-  fontWeight: 'var(--component-datepicker-cell-font-weight, 400)',
-  transitionDuration: 'var(--component-datepicker-transition-duration, 150ms)',
+  minWidth: 'var(--component-datepicker-cell-min-width)',
+  minHeight: 'var(--component-datepicker-cell-min-height)',
+  maxWidth: 'var(--component-datepicker-cell-min-width)',
+  maxHeight: 'var(--component-datepicker-cell-min-height)',
+  padding: 'var(--component-datepicker-cell-padding-block)',
+  fontSize: 'var(--component-datepicker-cell-font-size)',
+  fontWeight: 'var(--component-datepicker-cell-font-weight)',
+  transitionDuration: 'var(--component-datepicker-transition-duration)',
 };
 
 export const CELL_STATE_STYLES = {
@@ -257,20 +257,20 @@ export const CELL_STATE_STYLES = {
 /** Inline styles for cell states with border radius */
 export const CELL_STATE_RADIUS_STYLES = {
   default: {
-    borderRadius: 'var(--component-datepicker-cell-radius-selected, 4px)',
+    borderRadius: 'var(--component-datepicker-cell-radius-selected)',
   } as React.CSSProperties,
   selected: {
-    borderRadius: 'var(--component-datepicker-cell-radius-selected, 4px)',
+    borderRadius: 'var(--component-datepicker-cell-radius-selected)',
   } as React.CSSProperties,
   'range-start': {
-    borderTopLeftRadius: 'var(--component-datepicker-cell-radius-selected, 4px)',
-    borderBottomLeftRadius: 'var(--component-datepicker-cell-radius-selected, 4px)',
+    borderTopLeftRadius: 'var(--component-datepicker-cell-radius-selected)',
+    borderBottomLeftRadius: 'var(--component-datepicker-cell-radius-selected)',
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
   } as React.CSSProperties,
   'range-end': {
-    borderTopRightRadius: 'var(--component-datepicker-cell-radius-selected, 4px)',
-    borderBottomRightRadius: 'var(--component-datepicker-cell-radius-selected, 4px)',
+    borderTopRightRadius: 'var(--component-datepicker-cell-radius-selected)',
+    borderBottomRightRadius: 'var(--component-datepicker-cell-radius-selected)',
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
   } as React.CSSProperties,
@@ -278,13 +278,13 @@ export const CELL_STATE_RADIUS_STYLES = {
     borderRadius: 0,
   } as React.CSSProperties,
   today: {
-    borderRadius: 'var(--component-datepicker-cell-radius-selected, 4px)',
+    borderRadius: 'var(--component-datepicker-cell-radius-selected)',
   } as React.CSSProperties,
   disabled: {
-    borderRadius: 'var(--component-datepicker-cell-radius-selected, 4px)',
+    borderRadius: 'var(--component-datepicker-cell-radius-selected)',
   } as React.CSSProperties,
   'outside-month': {
-    borderRadius: 'var(--component-datepicker-cell-radius-selected, 4px)',
+    borderRadius: 'var(--component-datepicker-cell-radius-selected)',
   } as React.CSSProperties,
   header: {} as React.CSSProperties,
 } as const;
@@ -292,8 +292,8 @@ export const CELL_STATE_RADIUS_STYLES = {
 /** Inline styles for header cell */
 export const CELL_HEADER_STYLE: React.CSSProperties = {
   ...CELL_BASE_STYLE,
-  fontSize: 'var(--component-datepicker-cell-header-font-size, 12px)',
-  fontWeight: 'var(--component-datepicker-cell-header-font-weight, 700)',
+  fontSize: 'var(--component-datepicker-cell-header-font-size)',
+  fontWeight: 'var(--component-datepicker-cell-header-font-weight)',
 };
 
 /** Pre-computed cell styles with radius for each state */
@@ -317,8 +317,8 @@ export const PRESETS_BASE_CLASSES =
   'flex flex-col gap-0 overflow-y-auto overflow-x-hidden absolute inset-0';
 
 export const PRESETS_BASE_STYLE: React.CSSProperties = {
-  padding: 'var(--component-datepicker-preset-padding, 8px)',
-  minHeight: 'var(--component-datepicker-preset-min-height, 200px)',
+  padding: 'var(--component-datepicker-preset-padding-block)',
+  minHeight: 'var(--component-datepicker-preset-min-height)',
 };
 
 // Static presets (for standalone display without wrapper)
@@ -326,9 +326,9 @@ export const PRESETS_STATIC_CLASSES =
   'flex flex-col gap-0 overflow-y-auto overflow-x-hidden';
 
 export const PRESETS_STATIC_STYLE: React.CSSProperties = {
-  padding: 'var(--component-datepicker-preset-padding, 8px)',
-  minWidth: 'var(--component-datepicker-preset-width-min, 160px)',
-  minHeight: 'var(--component-datepicker-preset-min-height, 200px)',
+  padding: 'var(--component-datepicker-preset-padding-block)',
+  minWidth: 'var(--component-datepicker-preset-width-min)',
+  minHeight: 'var(--component-datepicker-preset-min-height)',
 };
 
 export const PRESETS_DIVIDER_CLASSES =
@@ -337,19 +337,19 @@ export const PRESETS_DIVIDER_CLASSES =
 export const PRESETS_DIVIDER_STYLE: React.CSSProperties = {
   height: '1px',
   minHeight: '1px',
-  marginTop: '8px',
-  marginBottom: '8px',
-  backgroundColor: 'var(--component-datepicker-border-default)',
+  marginTop: 'var(--component-datepicker-preset-gap)',
+  marginBottom: 'var(--component-datepicker-preset-gap)',
+  backgroundColor: 'var(--component-datepicker-divider)',
 };
 
 export const PRESETS_ITEM_CLASSES =
   'flex items-center justify-start self-stretch text-sm rounded text-[color:var(--component-datepicker-preset-text)] hover:bg-[color:var(--component-datepicker-preset-bg-hover)] hover:text-[color:var(--component-datepicker-preset-text-hover)] active:bg-[color:var(--component-datepicker-preset-bg-active)] active:text-[color:var(--component-datepicker-preset-text-active)] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--semantic-border-focus)]';
 
 export const PRESETS_ITEM_STYLE: React.CSSProperties = {
-  minHeight: 'var(--component-datepicker-preset-item-height, 32px)',
-  paddingInline: 'var(--component-datepicker-preset-item-padding-inline, 8px)',
-  paddingBlock: 'var(--component-datepicker-preset-item-padding-block, 8px)',
-  transitionDuration: 'var(--component-datepicker-transition-duration, 150ms)',
+  minHeight: 'var(--component-datepicker-preset-item-height-min)',
+  paddingInline: 'var(--component-datepicker-preset-padding-inline)',
+  paddingBlock: 'var(--component-datepicker-preset-padding-block)',
+  transitionDuration: 'var(--component-datepicker-transition-duration)',
 };
 
 export const PRESETS_ITEM_ACTIVE_CLASSES =
@@ -363,9 +363,9 @@ export const CONFIRMATION_BASE_CLASSES =
   'flex items-center border-t border-[color:var(--component-datepicker-border-default)] shrink-0';
 
 export const CONFIRMATION_BASE_STYLE: React.CSSProperties = {
-  paddingBlock: 'var(--component-datepicker-confirmation-padding-block, 8px)',
-  paddingInline: 'var(--component-datepicker-confirmation-padding-inline, 16px)',
-  gap: 'var(--component-datepicker-confirmation-gap, 8px)',
+  paddingBlock: 'var(--component-datepicker-footer-padding)',
+  paddingInline: 'var(--component-datepicker-footer-padding)',
+  gap: 'var(--component-datepicker-footer-gap)',
 };
 
 // Stacked layout for single-range variant
@@ -373,16 +373,16 @@ export const CONFIRMATION_STACKED_CLASSES =
   'flex flex-col items-center border-t border-[color:var(--component-datepicker-border-default)] shrink-0';
 
 export const CONFIRMATION_STACKED_STYLE: React.CSSProperties = {
-  paddingBlock: 'var(--component-datepicker-confirmation-padding-block, 8px)',
-  paddingInline: 'var(--component-datepicker-confirmation-padding-inline, 16px)',
-  gap: 'var(--component-datepicker-confirmation-gap, 8px)',
+  paddingBlock: 'var(--component-datepicker-footer-padding)',
+  paddingInline: 'var(--component-datepicker-footer-padding)',
+  gap: 'var(--component-datepicker-footer-gap)',
 };
 
 export const CONFIRMATION_DATE_INPUTS_CLASSES =
   'flex items-center flex-1';
 
 export const CONFIRMATION_DATE_INPUTS_STYLE: React.CSSProperties = {
-  gap: 'var(--component-datepicker-confirmation-gap, 8px)',
+  gap: 'var(--component-datepicker-footer-gap)',
 };
 
 // Stacked inputs for single-range (vertical stack, full width)
@@ -390,7 +390,7 @@ export const CONFIRMATION_DATE_INPUTS_STACKED_CLASSES =
   'flex flex-col w-full';
 
 export const CONFIRMATION_DATE_INPUTS_STACKED_STYLE: React.CSSProperties = {
-  gap: 'var(--component-datepicker-confirmation-gap, 8px)',
+  gap: 'var(--component-datepicker-footer-gap)',
 };
 
 // Input wrapper for stacked layout (full width)
@@ -404,7 +404,7 @@ export const CONFIRMATION_BUTTONS_CLASSES =
   'flex justify-end items-center';
 
 export const CONFIRMATION_BUTTONS_STYLE: React.CSSProperties = {
-  gap: 'var(--component-datepicker-confirmation-gap, 8px)',
+  gap: 'var(--component-datepicker-footer-gap)',
 };
 
 // Stacked buttons for single-range (full width, side by side)
@@ -412,6 +412,6 @@ export const CONFIRMATION_BUTTONS_STACKED_CLASSES =
   'flex w-full';
 
 export const CONFIRMATION_BUTTONS_STACKED_STYLE: React.CSSProperties = {
-  gap: 'var(--component-datepicker-confirmation-gap, 8px)',
+  gap: 'var(--component-datepicker-footer-gap)',
 };
 

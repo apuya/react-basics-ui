@@ -24,4 +24,4 @@ export const STATE_STYLES = {
   required: '',
 } as const;
 
-export const REQUIRED_CLASSES = 'text-[color:var(--semantic-text-error)] ml-[length:var(--semantic-spacing-xxs)]';
+export const REQUIRED_CLASSES = 'text-[color:var(--component-label-required-color)] ml-[length:var(--component-label-required-spacing)]';

@@ -11,7 +11,7 @@ import { createComponentContext } from '@/lib/createComponentContext';
 import { useControlledState } from '@/hooks/useControlledState';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
-import { FormFieldWrapper } from '@/components/basic/forms/FormFieldWrapper';
+import { FormField } from '@/components/basic/forms/FormField';
 import { cn } from '@/lib/cn';
 import { AutocompleteInput } from './AutocompleteInput';
 import { AutocompleteList } from './AutocompleteList';
@@ -201,18 +201,19 @@ const AutocompleteRoot = ({
   );
 
   return (
-    <FormFieldWrapper
+    <FormField
       label={label}
       helperText={helperText}
       error={error}
-      inputId={inputId}
+      htmlFor={inputId}
+      disabled={disabled}
     >
       <AutocompleteContext.Provider value={contextValue}>
         <div ref={containerRef} className={autocompleteClasses} {...props}>
           {children}
         </div>
       </AutocompleteContext.Provider>
-    </FormFieldWrapper>
+    </FormField>
   );
 };
 

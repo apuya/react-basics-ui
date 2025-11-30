@@ -1589,6 +1589,77 @@ svg {
   /* SearchBar - States */
   --component-searchbar-transition-duration: var(--semantic-duration-normal);
 
+  /* SearchBar - Focus */
+  --component-searchbar-focus-ring-width: var(--semantic-focus-ring-width);
+  --component-searchbar-focus-ring-offset: var(--semantic-focus-ring-offset);
+  --component-searchbar-focus-ring-color: var(--semantic-border-focus);
+
+  /* SearchBar - Clear Button Sizes */
+  --component-searchbar-clear-button-size-small: var(--semantic-icon-medium);
+  --component-searchbar-clear-button-size-default: var(--semantic-icon-large);
+  --component-searchbar-clear-button-size-large: var(--semantic-icon-xlarge);
+
+  /* SearchBar - Disabled State */
+  --component-searchbar-disabled-opacity: var(--semantic-opacity-disabled);
+
+  /* SearchBar - Shortcut Badge Sizing */
+  --component-searchbar-shortcut-padding-x: var(--semantic-space-compact);
+  --component-searchbar-shortcut-min-width: 1.5rem;
+  --component-searchbar-shortcut-height: 1.25rem;
+  --component-searchbar-shortcut-font-size: var(--semantic-text-size-caption);
+
+  /* SearchBar - Variant: Filled */
+  --component-searchbar-filled-bg: var(--semantic-surface-sunken);
+  --component-searchbar-filled-bg-hover: var(--semantic-surface-base);
+  --component-searchbar-filled-border: transparent;
+  --component-searchbar-filled-border-focus: var(--semantic-border-focus);
+
+  /* SearchBar - Variant: Ghost */
+  --component-searchbar-ghost-bg: transparent;
+  --component-searchbar-ghost-bg-hover: var(--semantic-surface-hover);
+  --component-searchbar-ghost-border: transparent;
+  --component-searchbar-ghost-border-hover: var(--semantic-border-subtle);
+  --component-searchbar-ghost-border-focus: var(--semantic-border-focus);
+
+  /* SearchBar - Error State */
+  --component-searchbar-border-error: var(--semantic-status-error-default);
+  --component-searchbar-text-error: var(--semantic-status-error-default);
+
+  /* FileInput Component */
+  /* FileInput - Colors */
+  --component-fileinput-bg-default: var(--semantic-surface-elevated);
+  --component-fileinput-bg-hover: var(--semantic-surface-hover);
+  --component-fileinput-bg-drag-active: var(--semantic-surface-hover);
+  --component-fileinput-border-default: var(--semantic-border-subtle);
+  --component-fileinput-border-hover: var(--semantic-border-default);
+  --component-fileinput-border-focus: var(--semantic-border-focus);
+  --component-fileinput-border-error: var(--semantic-border-error);
+  --component-fileinput-text-default: var(--semantic-text-primary);
+  --component-fileinput-text-placeholder: var(--semantic-text-disabled);
+  --component-fileinput-icon-default: var(--semantic-text-disabled);
+
+  /* FileInput - Focus */
+  --component-fileinput-focus-ring-width: var(--semantic-focus-ring-width);
+  --component-fileinput-focus-ring-offset: var(--semantic-focus-ring-offset);
+  --component-fileinput-focus-ring-color: var(--semantic-border-focus);
+
+  /* FileInput - States */
+  --component-fileinput-disabled-opacity: var(--semantic-opacity-disabled);
+  --component-fileinput-transition-duration: var(--semantic-duration-normal);
+
+  /* FileItem - Colors */
+  --component-fileitem-bg-default: var(--semantic-surface-base);
+  --component-fileitem-bg-hover: var(--semantic-surface-hover);
+  --component-fileitem-bg-error-hover: var(--semantic-status-error-alpha);
+  --component-fileitem-border-default: var(--semantic-border-subtle);
+  --component-fileitem-text-primary: var(--semantic-text-primary);
+  --component-fileitem-text-secondary: var(--semantic-text-secondary);
+
+  /* FileItem - Remove Button */
+  --component-fileitem-remove-text: var(--semantic-text-disabled);
+  --component-fileitem-remove-text-hover: var(--semantic-text-error);
+  --component-fileitem-remove-bg-hover: var(--semantic-surface-hover);
+
   /* Checkbox Component */
   --component-checkbox-bg-default: var(--semantic-surface-elevated);
   --component-checkbox-bg-checked: var(--semantic-brand-secondary-default);
@@ -1631,12 +1702,19 @@ svg {
   --component-select-border-error: var(--semantic-status-error-default);
   --component-select-text-default: var(--semantic-text-primary);
   --component-select-text-disabled: var(--semantic-text-disabled);
+  --component-select-text-placeholder: var(--semantic-text-tertiary);
   --component-select-icon-default: var(--semantic-text-primary);
   --component-select-icon-disabled: var(--semantic-text-disabled);
+  --component-select-icon-check-size: var(--semantic-icon-size-sm);
   --component-select-label-default: var(--semantic-text-primary);
   --component-select-label-error: var(--semantic-text-error);
   --component-select-helper-default: var(--semantic-text-secondary);
   --component-select-helper-error: var(--semantic-text-error);
+  --component-select-focus-ring-width: var(--semantic-focus-ring-width);
+  --component-select-focus-ring-offset: var(--semantic-focus-ring-offset);
+  --component-select-focus-ring-color: var(--semantic-border-focus);
+  --component-select-disabled-opacity: var(--semantic-opacity-disabled);
+  --component-select-menu-gap: var(--semantic-space-sm);
 
   /* DatePicker Component */
   /* DatePicker - Colors */
@@ -1651,11 +1729,11 @@ svg {
   --component-datepicker-cell-text-selected: var(--semantic-text-inverse);
   --component-datepicker-cell-text-hover: var(--semantic-text-inverse);
   --component-datepicker-cell-bg-default: transparent;
-  --component-datepicker-cell-bg-hover: #333333;
-  --component-datepicker-cell-bg-selected: #222222;
-  --component-datepicker-cell-bg-range: #ECECEC;
-  --component-datepicker-cell-bg-today: #ECECEC;
-  --component-datepicker-cell-bg-today-hover: #333333;
+  --component-datepicker-cell-bg-hover: var(--semantic-surface-inverse);
+  --component-datepicker-cell-bg-selected: var(--semantic-surface-inverse);
+  --component-datepicker-cell-bg-range: var(--semantic-surface-selected);
+  --component-datepicker-cell-bg-today: var(--semantic-surface-alt);
+  --component-datepicker-cell-bg-today-hover: var(--semantic-surface-inverse);
   --component-datepicker-cell-text-today-hover: var(--semantic-text-inverse);
   --component-datepicker-preset-text: var(--semantic-text-primary);
   --component-datepicker-preset-text-hover: var(--semantic-text-primary);
@@ -1667,8 +1745,8 @@ svg {
   --component-datepicker-width: 320px;
   --component-datepicker-width-double: 640px;
   --component-datepicker-padding: var(--semantic-space-default);
-  --component-datepicker-calendar-padding-block: 16px;
-  --component-datepicker-calendar-padding-inline: 16px;
+  --component-datepicker-calendar-padding-block: var(--semantic-space-default);
+  --component-datepicker-calendar-padding-inline: var(--semantic-space-default);
   --component-datepicker-gap: var(--semantic-space-compact);
   --component-datepicker-radius: var(--semantic-radius-md);
   --component-datepicker-border-width: var(--semantic-border-width-default);
@@ -1679,34 +1757,34 @@ svg {
   --component-datepicker-header-font-weight: var(--semantic-text-weight-semibold);
   --component-datepicker-header-icon-size: 20px;
   --component-datepicker-nav-button-size: 32px;
-  --component-datepicker-header-padding-block: 8px;
-  --component-datepicker-header-padding-inline: 8px;
-  --component-datepicker-header-gap: 8px;
+  --component-datepicker-header-padding-block: var(--semantic-space-compact);
+  --component-datepicker-header-padding-inline: var(--semantic-space-compact);
+  --component-datepicker-header-gap: var(--semantic-space-compact);
   /* DatePicker - Weekdays / Day Headers */
   --component-datepicker-weekday-height: 32px;
   --component-datepicker-weekday-font-size: var(--semantic-text-size-small);
   --component-datepicker-weekday-font-weight: var(--semantic-text-weight-medium);
   --component-datepicker-day-header-height: 40px;
   /* DatePicker - Cell Header (weekday labels) */
-  --component-datepicker-cell-header-text: #19181A;
-  --component-datepicker-cell-header-font-size: 12px;
-  --component-datepicker-cell-header-font-weight: 700;
+  --component-datepicker-cell-header-text: var(--semantic-text-primary);
+  --component-datepicker-cell-header-font-size: var(--semantic-text-size-small);
+  --component-datepicker-cell-header-font-weight: var(--semantic-text-weight-bold);
   /* DatePicker - Cells */
   --component-datepicker-cell-min-width: 40px;
   --component-datepicker-cell-min-height: 40px;
-  --component-datepicker-cell-padding-block: 8px;
-  --component-datepicker-cell-padding-inline: 8px;
+  --component-datepicker-cell-padding-block: var(--semantic-space-compact);
+  --component-datepicker-cell-padding-inline: var(--semantic-space-compact);
   --component-datepicker-cell-radius-default: 0;
-  --component-datepicker-cell-radius-selected: 4px;
+  --component-datepicker-cell-radius-selected: var(--semantic-radius-sm);
   --component-datepicker-cell-font-size: var(--semantic-text-size-body);
   --component-datepicker-cell-font-weight: var(--semantic-text-weight-regular);
   --component-datepicker-cell-gap: 0;
   /* DatePicker - Presets */
   --component-datepicker-preset-width-min: 280px;
   --component-datepicker-preset-item-height-min: 28px;
-  --component-datepicker-preset-padding-block: 8px;
-  --component-datepicker-preset-padding-inline: 8px;
-  --component-datepicker-preset-gap: 4px;
+  --component-datepicker-preset-padding-block: var(--semantic-space-compact);
+  --component-datepicker-preset-padding-inline: var(--semantic-space-compact);
+  --component-datepicker-preset-gap: var(--semantic-space-tight);
   --component-datepicker-preset-font-size: var(--semantic-text-size-body);
   --component-datepicker-preset-radius: var(--semantic-radius-sm);
   /* DatePicker - Footer */
@@ -2116,7 +2194,7 @@ svg {
   --component-dropdown-item-text-info: var(--semantic-text-link);
   --component-dropdown-item-icon-info: var(--semantic-text-link);
 
-  --component-dropdown-item-radius: var(--semantic-radius-sm);
+  --component-dropdown-item-radius: var(--semantic-radius-md);
   --component-dropdown-divider: var(--semantic-border-disabled);
   --component-dropdown-padding-block: var(--semantic-space-tight);
   --component-dropdown-padding-inline: var(--semantic-space-tight);
@@ -2129,7 +2207,7 @@ svg {
   --component-dropdown-min-width: var(--semantic-width-large);
   --component-dropdown-max-width: var(--semantic-width-xxlarge);
   --component-dropdown-max-height: var(--semantic-max-height-dropdown-large);
-  --component-dropdown-radius: var(--semantic-radius-lg);
+  --component-dropdown-radius: var(--semantic-radius-md);
   --component-dropdown-shadow: var(--semantic-shadow-lg);
   --component-dropdown-border-width: var(--semantic-border-width-default);
   --component-dropdown-item-font-size: var(--semantic-text-size-body);
@@ -2529,6 +2607,7 @@ svg {
   --component-label-line-height: var(--semantic-line-height-normal);
   --component-label-margin-bottom: var(--semantic-space-tight);
   --component-label-required-color: var(--semantic-status-error-default);
+  --component-label-required-spacing: var(--semantic-spacing-xxs);
 
   /* ============================================
      UTILITY COMPONENTS

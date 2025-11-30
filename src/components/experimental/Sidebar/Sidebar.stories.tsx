@@ -2,6 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { BiHome, BiUser, BiCog, BiFile, BiFolder, BiChart, BiHelpCircle, BiLogOut } from 'react-icons/bi';
+import { Button } from '../../basic/forms/Button';
+import { Heading } from '../../basic/typography/Heading';
+import { Text } from '../../basic/typography/Text';
+import { Box } from '../../basic/layout/Box';
+import { Flex } from '../../basic/layout/Flex';
 
 const meta: Meta<typeof Sidebar> = {
   title: 'Experimental/Sidebar',
@@ -58,12 +63,12 @@ const DemoWrapper = ({ children }: { children: React.ReactNode }) => (
   <div className="flex h-screen">
     {children}
     <main className="flex-1 p-8 bg-[color:var(--semantic-surface-base)]">
-      <h1 className="text-3xl font-bold mb-4 text-[color:var(--semantic-text-primary)]">
+      <Heading level={1} className="mb-4">
         Main Content Area
-      </h1>
-      <p className="text-[color:var(--semantic-text-secondary)]">
+      </Heading>
+      <Text color="secondary">
         This is the main content area. The sidebar can be collapsed to give more space.
-      </p>
+      </Text>
     </main>
   </div>
 );
@@ -230,14 +235,14 @@ export const ControlledState: Story = {
 
     return (
       <div className="flex h-screen flex-col">
-        <div className="p-4 border-b border-[color:var(--semantic-border-default)] bg-[color:var(--semantic-surface-elevated)]">
-          <button
+        <Box className="p-4 border-b border-[color:var(--semantic-border-default)] bg-[color:var(--semantic-surface-elevated)]">
+          <Button
             onClick={() => setCollapsed(!collapsed)}
-            className="px-4 py-2 bg-[color:var(--semantic-brand-primary-default)] text-white rounded hover:opacity-90"
+            variant="primary"
           >
             {collapsed ? 'Expand' : 'Collapse'} Sidebar
-          </button>
-        </div>
+          </Button>
+        </Box>
         <div className="flex flex-1 overflow-hidden">
           <Sidebar collapsed={collapsed} onCollapsedChange={setCollapsed}>
             <Sidebar.Header>
@@ -252,10 +257,10 @@ export const ControlledState: Story = {
             </Sidebar.Content>
           </Sidebar>
           <main className="flex-1 p-8 overflow-auto">
-            <h1 className="text-3xl font-bold mb-4">Main Content</h1>
-            <p className="text-[color:var(--semantic-text-secondary)]">
+            <Heading level={1} className="mb-4">Main Content</Heading>
+            <Text color="secondary">
               Collapsed state: {collapsed ? 'Yes' : 'No'}
-            </p>
+            </Text>
           </main>
         </div>
       </div>
@@ -274,10 +279,10 @@ export const RightPosition: Story = {
   render: () => (
     <div className="flex h-screen">
       <main className="flex-1 p-8 bg-[color:var(--semantic-surface-base)]">
-        <h1 className="text-3xl font-bold mb-4">Main Content</h1>
-        <p className="text-[color:var(--semantic-text-secondary)]">
+        <Heading level={1} className="mb-4">Main Content</Heading>
+        <Text color="secondary">
           Sidebar is on the right side
-        </p>
+        </Text>
       </main>
       <Sidebar position="right" variant="bordered">
         <Sidebar.Header>
@@ -445,14 +450,14 @@ export const CollapsedBehavior: Story = {
 
     return (
       <div className="flex h-screen flex-col">
-        <div className="p-4 border-b border-[color:var(--semantic-border-default)]">
-          <button
+        <Box className="p-4 border-b border-[color:var(--semantic-border-default)]">
+          <Button
             onClick={() => setCollapsed(!collapsed)}
-            className="px-4 py-2 bg-[color:var(--semantic-brand-primary-default)] text-white rounded"
+            variant="primary"
           >
             Toggle: Currently {collapsed ? 'Collapsed' : 'Expanded'}
-          </button>
-        </div>
+          </Button>
+        </Box>
         <div className="flex flex-1 overflow-hidden">
           <Sidebar collapsed={collapsed} onCollapsedChange={setCollapsed} variant="bordered">
             <Sidebar.Header>
@@ -470,11 +475,11 @@ export const CollapsedBehavior: Story = {
             </Sidebar.Content>
           </Sidebar>
           <main className="flex-1 p-8 overflow-auto">
-            <h1 className="text-3xl font-bold mb-4">Content Area</h1>
-            <p className="text-[color:var(--semantic-text-secondary)]">
+            <Heading level={1} className="mb-4">Content Area</Heading>
+            <Text color="secondary">
               When collapsed, section titles are hidden and items show only icons. Hover over items
               to see tooltips.
-            </p>
+            </Text>
           </main>
         </div>
       </div>

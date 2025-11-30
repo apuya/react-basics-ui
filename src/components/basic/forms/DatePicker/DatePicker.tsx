@@ -210,7 +210,14 @@ export const DatePicker = memo(function DatePicker({
 
   return (
     <DatePickerContext.Provider value={contextValue}>
-      <div className={WRAPPER_CLASSES}>
+      <div
+        className={WRAPPER_CLASSES}
+        data-variant={variant}
+        data-size={size}
+        data-disabled={disabled || undefined}
+        data-error={error || undefined}
+        data-open={isOpen || undefined}
+      >
         {children}
       </div>
     </DatePickerContext.Provider>

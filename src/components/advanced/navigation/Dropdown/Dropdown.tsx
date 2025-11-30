@@ -1,14 +1,12 @@
 import {
-  createContext,
-  useCallback,
-  useContext,
   useId,
   useMemo,
   useRef,
-  useState,
   type ReactNode,
   type RefObject,
 } from 'react';
+import { createComponentContext } from '@/lib/createComponentContext';
+import { useControlledState } from '@/hooks/useControlledState';
 import { TRIGGER_WRAPPER_CLASSES } from './Dropdown.styles';
 import { DropdownTrigger } from './DropdownTrigger';
 import { DropdownMenu } from './DropdownMenu';
@@ -46,21 +44,12 @@ interface DropdownContextValue {
   menuId: string;
 }
 
-export const DropdownContext = createContext<DropdownContextValue | undefined>(undefined);
+// Use shared context factory instead of raw createContext
+const { Context: DropdownContext, useContext: useDropdownContext } =
+  createComponentContext<DropdownContextValue>('Dropdown');
 
-/**
- * Hook to access dropdown context.
- * 
- * @throws Error if used outside of Dropdown component
- * @internal
- */
-export const useDropdownContext = () => {
-  const context = useContext(DropdownContext);
-  if (!context) {
-    throw new Error('Dropdown components must be used within a Dropdown');
-  }
-  return context;
-};
+// Re-export for sub-components
+export { DropdownContext, useDropdownContext };
 
 /**
  * Main Dropdown component using compound component pattern.
@@ -99,33 +88,14 @@ export const useDropdownContext = () => {
  * ```
  */
 const DropdownRoot = ({ children, defaultOpen = false, open, onOpenChange }: DropdownProps) => {
-  // Internal state for uncontrolled mode
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  // Use shared hook for controlled/uncontrolled state management
+  const [isOpen, setIsOpen] = useControlledState(open, defaultOpen, onOpenChange);
   
   // Ref for the trigger button (shared with DropdownTrigger)
   const triggerRef = useRef<HTMLButtonElement>(null);
   
   // Generate unique ID for ARIA relationships
   const menuId = useId();
-  
-  // Determine if component is controlled (external state) or uncontrolled (internal state)
-  const isControlled = open !== undefined;
-  const isOpen = isControlled ? open : internalOpen;
-
-  /**
-   * Unified setter that works in both controlled and uncontrolled modes.
-   * In controlled mode: only calls onOpenChange callback
-   * In uncontrolled mode: updates internal state and calls optional callback
-   */
-  const setIsOpen = useCallback(
-    (newOpen: boolean) => {
-      if (open === undefined) {
-        setInternalOpen(newOpen);
-      }
-      onOpenChange?.(newOpen);
-    },
-    [open, onOpenChange]
-  );
 
   // Memoize context to prevent unnecessary re-renders of child components
   const contextValue = useMemo(

@@ -16,25 +16,42 @@ import {
   BASE_CLASSES,
   CLEAR_BUTTON_BASE_CLASSES,
   CLEAR_BUTTON_SIZE_STYLES,
+  ERROR_CLASSES,
   ICON_SIZE_STYLES,
   LEADING_ICON_CONTAINER_CLASSES,
   SHORTCUT_BADGE_CLASSES,
   SIZE_STYLES,
   TRAILING_CONTAINER_CLASSES,
+  VARIANT_STYLES,
 } from './SearchBar.styles';
 
 export type SearchBarSize = 'small' | 'default' | 'large';
+export type SearchBarVariant = 'outline' | 'filled' | 'ghost';
 
 export interface SearchBarProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size' | 'type'> {
+  /** Size variant of the search bar */
   size?: SearchBarSize;
+  /** Visual style variant */
+  variant?: SearchBarVariant;
+  /** Whether the search bar has an error */
+  error?: boolean;
+  /** Whether the search is in loading state */
   isLoading?: boolean;
+  /** Whether to show the clear button when input has value */
   showClearButton?: boolean;
+  /** Whether to show a search button */
   showSearchButton?: boolean;
+  /** Whether to show keyboard shortcut badge */
   showShortcut?: boolean;
+  /** Text to display in shortcut badge */
   shortcutText?: string;
+  /** Custom leading icon (defaults to search icon) */
   leadingIcon?: ReactNode;
+  /** Callback when clear button is clicked */
   onClear?: () => void;
+  /** Callback when search is triggered (Enter or button click) */
   onSearch?: (value: string) => void;
+  /** Additional className for the wrapper element */
   wrapperClassName?: string;
 }
 
@@ -56,6 +73,8 @@ export const SearchBar = memo(
   forwardRef<HTMLInputElement, SearchBarProps>(function SearchBar(
     {
       size = 'default',
+      variant = 'outline',
+      error = false,
       isLoading = false,
       showClearButton = true,
       showSearchButton = false,
@@ -78,11 +97,16 @@ export const SearchBar = memo(
     const hasValue = value !== undefined && value !== '';
 
     const inputClasses = useMemo(
-      () => cn(BASE_CLASSES, SIZE_STYLES[size], className),
-      [size, className]
+      () =>
+        cn(
+          BASE_CLASSES,
+          VARIANT_STYLES[variant],
+          SIZE_STYLES[size],
+          error && ERROR_CLASSES,
+          className
+        ),
+      [size, variant, error, className]
     );
-
-    const iconClasses = useMemo(() => ICON_SIZE_STYLES[size], [size]);
 
     const inputStyle = useMemo(() => {
       const iconSizeVar = `var(--component-searchbar-icon-size-${size})`;
@@ -90,22 +114,16 @@ export const SearchBar = memo(
       
       let rightPadding = 'var(--component-searchbar-padding-inline)';
       
-      // Calculate right padding based on visible elements
-      if (showSearchButton) {
-        // Approximate button widths: small ~60px, default ~70px, large ~80px
-        const buttonWidth = size === 'small' ? '60px' : size === 'large' ? '80px' : '70px';
-        rightPadding = `calc(var(--component-searchbar-padding-inline) + ${buttonWidth})`;
-      } else {
-        const elementCount = [
-          isLoading,
-          showClearButton && hasValue,
-          showShortcut && !hasValue && !isLoading
-        ].filter(Boolean).length;
-        
-        if (elementCount > 0) {
-          const spacing = 'var(--component-searchbar-padding-inline)';
-          rightPadding = `calc(${spacing} + (${iconSizeVar} + ${spacing}) * ${elementCount})`;
-        }
+      // Calculate right padding based on visible trailing elements (not including search button which is outside)
+      const elementCount = [
+        isLoading,
+        showClearButton && hasValue,
+        showShortcut && !hasValue && !isLoading
+      ].filter(Boolean).length;
+      
+      if (elementCount > 0) {
+        const spacing = 'var(--component-searchbar-padding-inline)';
+        rightPadding = `calc(${spacing} + (${iconSizeVar} + ${spacing}) * ${elementCount})`;
       }
 
       return {
@@ -113,10 +131,12 @@ export const SearchBar = memo(
         paddingLeft: baseLeftPadding,
         paddingRight: rightPadding,
       };
-    }, [size, isLoading, showClearButton, showSearchButton, showShortcut, hasValue]);
+    }, [size, isLoading, showClearButton, showShortcut, hasValue]);
 
-    const spinnerSize = useMemo(() => SPINNER_SIZE_MAP[size], [size]);
-    const buttonSize = useMemo(() => BUTTON_SIZE_MAP[size], [size]);
+    // Simple lookups - no memoization needed
+    const iconClasses = ICON_SIZE_STYLES[size];
+    const spinnerSize = SPINNER_SIZE_MAP[size];
+    const buttonSize = BUTTON_SIZE_MAP[size];
 
     const handleClear = useCallback(() => {
       onClear?.();
@@ -148,8 +168,8 @@ export const SearchBar = memo(
     }, [onSearch, value]);
 
     return (
-      <div className={cn('w-full', wrapperClassName)}>
-        <div className="relative">
+      <div className={cn('w-full', showSearchButton && 'flex gap-2', wrapperClassName)}>
+        <div className="relative flex-1">
           {/* Leading Icon (Search Icon) */}
           <div className={LEADING_ICON_CONTAINER_CLASSES}>
             <div className={iconClasses}>
@@ -170,6 +190,11 @@ export const SearchBar = memo(
             placeholder={placeholder}
             role="searchbox"
             aria-label="Search"
+            aria-invalid={error || undefined}
+            data-size={size}
+            data-variant={variant}
+            data-loading={isLoading || undefined}
+            data-error={error || undefined}
             {...rest}
           />
 
@@ -199,22 +224,22 @@ export const SearchBar = memo(
                 {shortcutText}
               </span>
             )}
-
-            {/* Search Button */}
-            {showSearchButton && (
-              <Button
-                type="button"
-                onClick={handleSearchClick}
-                disabled={disabled || !hasValue}
-                size={buttonSize}
-                variant="secondary"
-                aria-label="Search"
-              >
-                Search
-              </Button>
-            )}
           </div>
         </div>
+
+        {/* Search Button - Outside the input container */}
+        {showSearchButton && (
+          <Button
+            type="button"
+            onClick={handleSearchClick}
+            disabled={disabled || !hasValue}
+            size={buttonSize}
+            variant="primary"
+            aria-label="Search"
+          >
+            Search
+          </Button>
+        )}
       </div>
     );
   })

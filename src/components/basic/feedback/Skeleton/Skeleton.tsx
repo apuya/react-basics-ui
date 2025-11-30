@@ -128,5 +128,3 @@ export const Skeleton = memo(
 );
 
 Skeleton.displayName = 'Skeleton';
-
-export type { SkeletonProps };

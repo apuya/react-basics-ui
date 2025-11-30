@@ -1,5 +1,6 @@
 export { cn } from './cn';
 export { createComponentContext } from './createComponentContext';
+export { generateFormId } from './generateFormId';
 export { getLabelClasses, getHelperClasses } from './sharedFormStyles';
 export { BaseOverlayDialog } from './BaseOverlayDialog';
 export type { BaseOverlayDialogProps } from './BaseOverlayDialog';

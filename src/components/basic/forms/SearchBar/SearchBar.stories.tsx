@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { SearchBar } from './SearchBar';
-import { Tabs } from '../../navigation/Tabs';
+import { Text } from '../../typography/Text';
+import { Stack } from '../../layout/Stack';
+import { Box } from '../../layout/Box';
+import { Badge } from '../../feedback/Badge';
 
 const meta: Meta<typeof SearchBar> = {
   title: 'Forms/SearchBar',
@@ -11,337 +14,299 @@ const meta: Meta<typeof SearchBar> = {
     docs: {
       description: {
         component:
-          'SearchBar component provides a dedicated search input with built-in features like clear button, search button, loading states, and keyboard shortcuts. Optimized for search-specific UX patterns.',
+          'Search input with built-in clear button, search button, loading states, keyboard shortcuts, and visual variants.',
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
-    size: {
-      control: 'select',
-      options: ['small', 'default', 'large'],
-      description: 'Size of the search bar',
-    },
-    isLoading: {
-      control: 'boolean',
-      description: 'Shows loading spinner',
-    },
-    showClearButton: {
-      control: 'boolean',
-      description: 'Shows clear button when input has value',
-    },
-    showSearchButton: {
-      control: 'boolean',
-      description: 'Shows search button',
-    },
-    showShortcut: {
-      control: 'boolean',
-      description: 'Shows keyboard shortcut badge when empty',
-    },
-    shortcutText: {
-      control: 'text',
-      description: 'Text to display in shortcut badge',
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disabled state',
-    },
-    placeholder: {
-      control: 'text',
-      description: 'Placeholder text',
-    },
+    size: { control: 'select', options: ['small', 'default', 'large'] },
+    variant: { control: 'select', options: ['outline', 'filled', 'ghost'] },
+    error: { control: 'boolean' },
+    isLoading: { control: 'boolean' },
+    showClearButton: { control: 'boolean' },
+    showSearchButton: { control: 'boolean' },
+    showShortcut: { control: 'boolean' },
+    shortcutText: { control: 'text' },
+    disabled: { control: 'boolean' },
+    placeholder: { control: 'text' },
   },
+  decorators: [(Story) => <div style={{ width: '400px' }}><Story /></div>],
 };
 
 export default meta;
 type Story = StoryObj<typeof SearchBar>;
 
+// =============================================================================
+// BASIC
+// =============================================================================
+
 export const Default: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    return (
-      <div className="w-96">
-        <SearchBar
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="Search..."
-        />
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default search bar with search icon and clear button on input.',
-      },
-    },
+  args: {
+    placeholder: 'Search...',
   },
 };
 
-export const WithValue: Story = {
-  render: () => {
-    const [value, setValue] = useState('React components');
-    return (
-      <div className="w-96">
-        <SearchBar
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="Search..."
-        />
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Search bar with initial value, showing the clear button.',
-      },
-    },
-  },
+export const AllVariants: Story = {
+  render: () => (
+    <Stack spacing="md">
+      <Stack spacing="xs">
+        <Text size="caption" color="secondary">Outline</Text>
+        <SearchBar variant="outline" placeholder="Bordered style..." />
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="caption" color="secondary">Filled</Text>
+        <SearchBar variant="filled" placeholder="Background style..." />
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="caption" color="secondary">Ghost</Text>
+        <SearchBar variant="ghost" placeholder="Minimal style..." />
+      </Stack>
+    </Stack>
+  ),
 };
 
-export const WithClearButton: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    return (
-      <div className="w-96">
-        <SearchBar
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onClear={() => setValue('')}
-          showClearButton={true}
-          placeholder="Type to see clear button..."
-        />
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Clear button appears when there is text in the input.',
-      },
-    },
-  },
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing="md">
+      <SearchBar size="small" placeholder="Small" />
+      <SearchBar size="default" placeholder="Default" />
+      <SearchBar size="large" placeholder="Large" />
+    </Stack>
+  ),
 };
 
-export const WithTabs: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    const [activeFilter, setActiveFilter] = useState('all');
+// =============================================================================
+// STATES
+// =============================================================================
 
-    return (
-      <div className="w-full max-w-2xl space-y-4">
-        <div className="relative">
-          <SearchBar
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder="Search..."
-            showClearButton={false}
-            className="pr-[280px]"
-          />
-          <div className="absolute right-4 top-1/2 -translate-y-1/2">
-            <Tabs value={activeFilter} onChange={setActiveFilter} size="sm">
-              <Tabs.List>
-                <Tabs.Tab value="all">All</Tabs.Tab>
-                <Tabs.Tab value="images">Images</Tabs.Tab>
-                <Tabs.Tab value="videos">Videos</Tabs.Tab>
-              </Tabs.List>
-            </Tabs>
-          </div>
-        </div>
-        {value && (
-          <div className="text-sm text-gray-600">
-            Searching "{value}" in: <span className="font-medium capitalize">{activeFilter}</span>
-          </div>
-        )}
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Search bar with integrated tabs for filtering search results. Tabs are positioned inside the search bar for a compact, unified interface similar to modern search engines.',
-      },
-    },
-  },
+export const States: Story = {
+  render: () => (
+    <Stack spacing="md">
+      <Stack spacing="xs">
+        <Text size="caption" color="secondary">Loading</Text>
+        <SearchBar isLoading placeholder="Searching..." />
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="caption" color="secondary">Error</Text>
+        <SearchBar error placeholder="Invalid query" />
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="caption" color="secondary">Disabled</Text>
+        <SearchBar disabled placeholder="Unavailable" />
+      </Stack>
+    </Stack>
+  ),
 };
+
+// =============================================================================
+// FEATURES
+// =============================================================================
 
 export const WithSearchButton: Story = {
-  render: () => {
+  render: function Render() {
     const [value, setValue] = useState('');
-    const [searchedValue, setSearchedValue] = useState('');
+    const [result, setResult] = useState('');
 
     return (
-      <div className="w-96 space-y-4">
+      <Stack spacing="sm">
         <SearchBar
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          onSearch={(val) => setSearchedValue(val)}
-          showSearchButton={true}
-          placeholder="Type and click search..."
+          onSearch={setResult}
+          showSearchButton
+          placeholder="Type and search..."
         />
-        {searchedValue && (
-          <p className="text-sm text-gray-600">Searched for: "{searchedValue}"</p>
+        {result && (
+          <Text size="small" color="secondary">
+            Searched: <Text as="span" weight="semibold">{result}</Text>
+          </Text>
         )}
-      </div>
+      </Stack>
     );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Search bar with a search button. Click the button or press Enter to trigger search. Note: Button may overlap at smaller widths.',
-      },
-    },
-  },
-};
-
-export const Loading: Story = {
-  render: () => {
-    const [value, setValue] = useState('loading...');
-    return (
-      <div className="w-96">
-        <SearchBar
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          isLoading={true}
-          placeholder="Search..."
-        />
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Loading state with spinner, typically shown during async search operations.',
-      },
-    },
   },
 };
 
 export const WithShortcut: Story = {
-  render: () => {
+  render: function Render() {
     const [value, setValue] = useState('');
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+      const handler = (e: KeyboardEvent) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          inputRef.current?.focus();
+        }
+      };
+      document.addEventListener('keydown', handler);
+      return () => document.removeEventListener('keydown', handler);
+    }, []);
+
     return (
-      <div className="w-96">
+      <Stack spacing="xs">
         <SearchBar
+          ref={inputRef}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          showShortcut={true}
+          showShortcut
           shortcutText="⌘K"
-          placeholder="Search..."
+          placeholder="Press ⌘K to focus..."
         />
-      </div>
+        <Text size="caption" color="tertiary">Try ⌘K (or Ctrl+K)</Text>
+      </Stack>
     );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Shows keyboard shortcut badge when input is empty. Badge disappears when typing.',
-      },
-    },
   },
 };
 
-export const WithSlashShortcut: Story = {
-  render: () => {
+// =============================================================================
+// USE CASES
+// =============================================================================
+
+const SAMPLE_DATA = [
+  { type: 'Component', name: 'Button' },
+  { type: 'Component', name: 'SearchBar' },
+  { type: 'Component', name: 'Modal' },
+  { type: 'Hook', name: 'useDisclosure' },
+  { type: 'Hook', name: 'useFocusTrap' },
+];
+
+export const InstantSearch: Story = {
+  render: function Render() {
     const [value, setValue] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const results = value
+      ? SAMPLE_DATA.filter(
+          (item) =>
+            item.name.toLowerCase().includes(value.toLowerCase()) ||
+            item.type.toLowerCase().includes(value.toLowerCase())
+        )
+      : [];
+
+    useEffect(() => {
+      if (!value) return;
+      setIsLoading(true);
+      const timer = setTimeout(() => setIsLoading(false), 300);
+      return () => clearTimeout(timer);
+    }, [value]);
+
     return (
-      <div className="w-96">
+      <Stack spacing="sm">
         <SearchBar
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          showShortcut={true}
-          shortcutText="/"
-          placeholder="Press / to search..."
+          isLoading={isLoading}
+          placeholder="Search components..."
         />
-      </div>
+        {value && !isLoading && (
+          <Box className="border rounded-md overflow-hidden">
+            {results.length > 0 ? (
+              results.map((item, idx) => (
+                <Box
+                  key={idx}
+                  className="flex items-center justify-between p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
+                >
+                  <Stack direction="horizontal" spacing="sm" align="center">
+                    <Text size="small" weight="medium">{item.name}</Text>
+                    <Badge color="neutral" size="small">{item.type}</Badge>
+                  </Stack>
+                </Box>
+              ))
+            ) : (
+              <Box className="p-4 text-center">
+                <Text size="small" color="tertiary">No results for "{value}"</Text>
+              </Box>
+            )}
+          </Box>
+        )}
+      </Stack>
     );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Alternative shortcut badge with "/" key, common in many applications.',
-      },
-    },
   },
 };
 
-export const Small: Story = {
-  render: () => {
+export const WithFilters: Story = {
+  render: function Render() {
     const [value, setValue] = useState('');
+    const [filters, setFilters] = useState(['Components', 'Hooks']);
+
+    const removeFilter = useCallback((filter: string) => {
+      setFilters((prev) => prev.filter((f) => f !== filter));
+    }, []);
+
     return (
-      <div className="w-96">
+      <Stack spacing="sm">
         <SearchBar
-          size="small"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Small search..."
+          placeholder="Search with filters..."
         />
-      </div>
+        {filters.length > 0 && (
+          <Stack direction="horizontal" spacing="xs" align="center">
+            <Text size="caption" color="tertiary">Filters:</Text>
+            {filters.map((filter) => (
+              <Badge
+                key={filter}
+                color="info"
+                size="small"
+                dismissible
+                onDismiss={() => removeFilter(filter)}
+              >
+                {filter}
+              </Badge>
+            ))}
+          </Stack>
+        )}
+      </Stack>
     );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Small size variant, useful for compact layouts or toolbars.',
-      },
-    },
   },
 };
 
-export const Large: Story = {
-  render: () => {
+export const WithValidation: Story = {
+  render: function Render() {
     const [value, setValue] = useState('');
-    return (
-      <div className="w-96">
-        <SearchBar
-          size="large"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="Large search..."
-        />
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large size variant, great for prominent search features.',
-      },
-    },
-  },
-};
+    const [error, setError] = useState<string | null>(null);
 
-export const Disabled: Story = {
-  render: () => (
-    <div className="w-96">
-      <SearchBar
-        value="Disabled search"
-        disabled={true}
-        placeholder="Disabled..."
-      />
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Disabled state prevents user interaction.',
-      },
-    },
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+      const val = e.target.value;
+      setValue(val);
+
+      if (val.length > 0 && val.length < 3) {
+        setError('Min 3 characters required');
+      } else if (/[!@#$%^&*(),.?":{}|<>]/.test(val)) {
+        setError('Special characters not allowed');
+      } else {
+        setError(null);
+      }
+    }, []);
+
+    return (
+      <Stack spacing="xs">
+        <SearchBar
+          value={value}
+          onChange={handleChange}
+          error={!!error}
+          placeholder="Min 3 chars, no special..."
+        />
+        {error && <Text size="small" color="error">{error}</Text>}
+        {!error && value.length >= 3 && (
+          <Text size="small" color="success">✓ Valid query</Text>
+        )}
+      </Stack>
+    );
   },
 };
 
 export const FullFeatured: Story = {
-  render: () => {
+  render: function Render() {
     const [value, setValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [results, setResults] = useState<string[]>([]);
 
-    const handleSearch = (searchValue: string) => {
+    const handleSearch = useCallback((searchValue: string) => {
       setIsLoading(true);
       setResults([]);
-      
-      // Simulate API call
+
       setTimeout(() => {
         setResults([
           `Result 1 for "${searchValue}"`,
@@ -349,119 +314,44 @@ export const FullFeatured: Story = {
           `Result 3 for "${searchValue}"`,
         ]);
         setIsLoading(false);
-      }, 1500);
-    };
+      }, 1000);
+    }, []);
+
+    const handleClear = useCallback(() => {
+      setValue('');
+      setResults([]);
+    }, []);
 
     return (
-      <div className="w-96 space-y-4">
+      <Stack spacing="md">
         <SearchBar
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          onClear={() => {
-            setValue('');
-            setResults([]);
-          }}
+          onClear={handleClear}
           onSearch={handleSearch}
           isLoading={isLoading}
-          showClearButton={true}
-          showSearchButton={true}
-          showShortcut={true}
+          showClearButton
+          showSearchButton
+          showShortcut
           shortcutText="⌘K"
-          placeholder="Search with all features..."
+          placeholder="All features enabled..."
         />
         {results.length > 0 && (
-          <div className="bg-white border rounded-md p-4 space-y-2">
-            <p className="text-sm font-semibold text-gray-700">Results:</p>
-            {results.map((result, idx) => (
-              <div key={idx} className="text-sm text-gray-600 p-2 hover:bg-gray-50 rounded">
-                {result}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Full-featured example with all capabilities: search button, clear button, loading state, and keyboard shortcut.',
-      },
-    },
-  },
-};
-
-export const WithCustomPlaceholder: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    return (
-      <div className="w-96">
-        <SearchBar
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="Search documentation, components, guides..."
-        />
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Custom placeholder text to provide context-specific search hints.',
-      },
-    },
-  },
-};
-
-export const InstantSearch: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    const [filteredItems] = useState([
-      'React', 'Redux', 'React Router', 'React Query',
-      'Vue', 'Vuex', 'Vue Router',
-      'Angular', 'NgRx',
-      'Svelte', 'SvelteKit'
-    ]);
-
-    const results = value
-      ? filteredItems.filter(item => 
-          item.toLowerCase().includes(value.toLowerCase())
-        )
-      : [];
-
-    return (
-      <div className="w-96 space-y-4">
-        <SearchBar
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="Search frameworks..."
-        />
-        {value && (
-          <div className="bg-white border rounded-md max-h-64 overflow-y-auto">
-            {results.length > 0 ? (
-              results.map((result, idx) => (
-                <div
+          <Box className="border rounded-md p-4">
+            <Stack spacing="sm">
+              <Text size="small" weight="semibold">Results:</Text>
+              {results.map((result, idx) => (
+                <Box
                   key={idx}
-                  className="text-sm text-gray-700 p-3 hover:bg-gray-50 border-b last:border-b-0 cursor-pointer"
+                  className="p-2 rounded hover:bg-gray-50 cursor-pointer"
                 >
-                  {result}
-                </div>
-              ))
-            ) : (
-              <div className="text-sm text-gray-500 p-3 text-center">
-                No results found for "{value}"
-              </div>
-            )}
-          </div>
+                  <Text size="small" color="secondary">{result}</Text>
+                </Box>
+              ))}
+            </Stack>
+          </Box>
         )}
-      </div>
+      </Stack>
     );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Instant search that filters results as you type, without needing to click a search button.',
-      },
-    },
   },
 };

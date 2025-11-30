@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { forwardRef, memo, useId, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import {
   CHILDREN_HORIZONTAL_CLASSES,
   CHILDREN_VERTICAL_CLASSES,
@@ -12,11 +12,18 @@ import {
 export type FormGroupOrientation = 'vertical' | 'horizontal';
 
 export interface FormGroupProps extends ComponentPropsWithoutRef<'fieldset'> {
+  /** Legend/title displayed at the top of the group */
   legend?: ReactNode;
+  /** Helper description text below the legend */
   description?: ReactNode;
+  /** Layout direction for child elements */
   orientation?: FormGroupOrientation;
+  /** Indicates validation error state */
   error?: boolean;
+  /** Error message displayed when error is true */
   errorMessage?: string;
+  /** ID for the error message element (for aria-describedby). Auto-generated if not provided. */
+  errorId?: string;
 }
 
 export const FormGroup = memo(
@@ -27,21 +34,25 @@ export const FormGroup = memo(
       orientation = 'vertical',
       error = false,
       errorMessage,
+      errorId: errorIdProp,
       className,
       children,
       ...rest
     },
     ref
   ) {
+    const generatedId = useId();
+    const hasError = error && errorMessage;
+    const errorId = hasError ? (errorIdProp ?? `${generatedId}-error`) : undefined;
+
     return (
       <fieldset
         ref={ref}
         className={cn(WRAPPER_CLASSES, className)}
         data-orientation={orientation}
         data-error={error || undefined}
-        style={{
-          gap: 'var(--component-formgroup-gap)',
-        }}
+        aria-invalid={error || undefined}
+        aria-describedby={errorId}
         {...rest}
       >
         {legend && <legend className={LEGEND_CLASSES}>{legend}</legend>}
@@ -53,17 +64,15 @@ export const FormGroup = memo(
               ? CHILDREN_HORIZONTAL_CLASSES
               : CHILDREN_VERTICAL_CLASSES
           }
-          style={{
-            gap:
-              orientation === 'horizontal'
-                ? 'var(--component-formgroup-gap-horizontal)'
-                : 'var(--component-formgroup-gap)',
-          }}
         >
           {children}
         </div>
 
-        {error && errorMessage && <p className={ERROR_CLASSES}>{errorMessage}</p>}
+        {hasError && (
+          <p id={errorId} className={ERROR_CLASSES} role="alert">
+            {errorMessage}
+          </p>
+        )}
       </fieldset>
     );
   })

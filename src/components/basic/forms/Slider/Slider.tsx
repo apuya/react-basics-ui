@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import { generateFormId } from '@/lib/generateFormId';
 import { useControlledState } from '@/hooks/useControlledState';
 import { forwardRef, memo, useCallback, type ComponentPropsWithoutRef } from 'react';
 import {
@@ -67,7 +68,7 @@ export const Slider = memo(
       onValueChange
     );
 
-    const sliderId = id || (label ? `slider-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
+    const sliderId = id || generateFormId('slider', label);
 
     const handleChange = useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,6 +110,7 @@ export const Slider = memo(
           onChange={handleChange}
           disabled={disabled}
           className={inputClasses}
+          data-disabled={disabled || undefined}
           {...props}
         />
         

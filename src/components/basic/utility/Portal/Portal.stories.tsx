@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Portal } from './Portal';
+import { Text } from '../../typography/Text';
+import { Heading } from '../../typography/Heading';
+import { Button } from '../../forms/Button';
+import { Box } from '../../layout/Box';
 
 const meta: Meta<typeof Portal> = {
   title: 'Components/Utility/Portal',
@@ -41,8 +45,8 @@ export const Default: Story = {
     },
   },
   render: () => (
-    <div>
-      <p style={{ marginBottom: '1rem' }}>This content is in the normal React tree.</p>
+    <Box>
+      <Text className="mb-4">This content is in the normal React tree.</Text>
       <Portal>
         <div style={{
           position: 'fixed',
@@ -58,10 +62,10 @@ export const Default: Story = {
           This content is rendered in a portal!
         </div>
       </Portal>
-      <p style={{ fontSize: '0.875rem', color: 'var(--semantic-text-secondary)' }}>
+      <Text size="sm" color="secondary">
         Check the DOM - the fixed notification is rendered outside the component tree.
-      </p>
-    </div>
+      </Text>
+    </Box>
   ),
 };
 
@@ -74,8 +78,8 @@ export const CustomContainer: Story = {
     },
   },
   render: () => (
-    <div>
-      <p style={{ marginBottom: '1rem' }}>Using a custom container ID: "custom-portal-container"</p>
+    <Box>
+      <Text className="mb-4">Using a custom container ID: "custom-portal-container"</Text>
       <Portal containerId="custom-portal-container">
         <div style={{
           position: 'fixed',
@@ -90,10 +94,10 @@ export const CustomContainer: Story = {
           Rendered in custom-portal-container
         </div>
       </Portal>
-      <p style={{ fontSize: '0.875rem', color: 'var(--semantic-text-secondary)' }}>
+      <Text size="sm" color="secondary">
         This creates a div with id="custom-portal-container" if it doesn't exist.
-      </p>
-    </div>
+      </Text>
+    </Box>
   ),
 };
 
@@ -109,7 +113,7 @@ export const BreakingOverflowHidden: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '2rem', alignItems: 'start' }}>
       <div>
-        <p style={{ marginBottom: '0.5rem', fontWeight: 500 }}>Without Portal (clipped):</p>
+        <Text weight="medium" className="mb-2">Without Portal (clipped):</Text>
         <div style={{
           width: '200px',
           height: '150px',
@@ -119,7 +123,7 @@ export const BreakingOverflowHidden: Story = {
           overflow: 'hidden',
           position: 'relative',
         }}>
-          <p>Parent with overflow: hidden</p>
+          <Text>Parent with overflow: hidden</Text>
           <div style={{
             position: 'absolute',
             bottom: '-20px',
@@ -137,7 +141,7 @@ export const BreakingOverflowHidden: Story = {
       </div>
 
       <div>
-        <p style={{ marginBottom: '0.5rem', fontWeight: 500 }}>With Portal (free):</p>
+        <Text weight="medium" className="mb-2">With Portal (free):</Text>
         <div style={{
           width: '200px',
           height: '150px',
@@ -147,7 +151,7 @@ export const BreakingOverflowHidden: Story = {
           overflow: 'hidden',
           position: 'relative',
         }}>
-          <p>Parent with overflow: hidden</p>
+          <Text>Parent with overflow: hidden</Text>
           <Portal>
             <div style={{
               position: 'fixed',
@@ -215,8 +219,8 @@ export const MultiplePortals: Story = {
     },
   },
   render: () => (
-    <div>
-      <p style={{ marginBottom: '1rem' }}>This example shows three different portals rendering simultaneously.</p>
+    <Box>
+      <Text className="mb-4">This example shows three different portals rendering simultaneously.</Text>
       
       <Portal>
         <div style={{
@@ -264,10 +268,10 @@ export const MultiplePortals: Story = {
         </div>
       </Portal>
 
-      <p style={{ fontSize: '0.875rem', color: 'var(--semantic-text-secondary)', marginTop: '1rem' }}>
+      <Text size="sm" color="secondary" className="mt-4">
         All three notifications are rendered via portals at different positions.
-      </p>
-    </div>
+      </Text>
+    </Box>
   ),
 };
 
@@ -281,8 +285,8 @@ export const ModalOverlay: Story = {
     },
   },
   render: () => (
-    <div>
-      <p style={{ marginBottom: '1rem' }}>Portal enables modals to render at the root level:</p>
+    <Box>
+      <Text className="mb-4">Portal enables modals to render at the root level:</Text>
       <Portal>
         <div style={{
           position: 'fixed',
@@ -300,26 +304,19 @@ export const ModalOverlay: Story = {
             maxWidth: '400px',
             boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
           }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+            <Heading level={3} className="mb-2">
               Modal Example
-            </h3>
-            <p style={{ color: 'var(--semantic-text-secondary)', marginBottom: '1.5rem' }}>
+            </Heading>
+            <Text color="secondary" className="mb-6">
               This modal is rendered via Portal, allowing it to appear above all other content.
-            </p>
-            <button style={{
-              padding: '0.5rem 1rem',
-              backgroundColor: 'var(--semantic-bg-brand)',
-              color: 'white',
-              border: 'none',
-              borderRadius: 'var(--semantic-radius-md)',
-              cursor: 'pointer',
-            }}>
+            </Text>
+            <Button variant="primary">
               OK
-            </button>
+            </Button>
           </div>
         </div>
       </Portal>
-    </div>
+    </Box>
   ),
 };
 
@@ -332,18 +329,11 @@ export const TooltipPositioning: Story = {
     },
   },
   render: () => (
-    <div style={{ padding: '2rem' }}>
+    <Box style={{ padding: '2rem' }}>
       <div style={{ position: 'relative', display: 'inline-block' }}>
-        <button style={{
-          padding: '0.5rem 1rem',
-          backgroundColor: 'var(--semantic-bg-brand)',
-          color: 'white',
-          border: 'none',
-          borderRadius: 'var(--semantic-radius-md)',
-          cursor: 'pointer',
-        }}>
+        <Button variant="primary">
           Hover me
-        </button>
+        </Button>
         <Portal>
           <div style={{
             position: 'fixed',
@@ -370,9 +360,9 @@ export const TooltipPositioning: Story = {
           </div>
         </Portal>
       </div>
-      <p style={{ fontSize: '0.875rem', color: 'var(--semantic-text-secondary)', marginTop: '4rem' }}>
+      <Text size="sm" color="secondary" className="mt-16">
         Portal enables tooltips to escape overflow containers and position absolutely anywhere.
-      </p>
-    </div>
+      </Text>
+    </Box>
   ),
 };

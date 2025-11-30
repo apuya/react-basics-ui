@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import { generateFormId } from '@/lib/generateFormId';
 import {
   forwardRef,
   memo,
@@ -103,7 +104,7 @@ export const Checkbox = memo(
   ) {
     // Generate ID if not provided (for label association)
     const checkboxId = useMemo(
-      () => id || (label ? `checkbox-${String(label).toLowerCase().replace(/\s+/g, '-')}` : undefined),
+      () => id || generateFormId('checkbox', label ? String(label) : undefined),
       [id, label]
     );
 

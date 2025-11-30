@@ -26,8 +26,17 @@ export function createComponentContext<T>(componentName: string) {
     return context;
   };
 
+  /**
+   * Hook that returns context value or undefined if not within provider.
+   * Use this for components that can work both with and without context.
+   */
+  const useOptionalComponentContext = (): T | undefined => {
+    return useContext(Context);
+  };
+
   return {
     Context,
     useContext: useComponentContext,
+    useOptionalContext: useOptionalComponentContext,
   };
 }

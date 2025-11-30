@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Select } from './Select';
 
 const meta: Meta<typeof Select> = {
@@ -9,7 +10,7 @@ const meta: Meta<typeof Select> = {
     docs: {
       description: {
         component:
-          'Select component provides a dropdown menu for choosing from a list of options. Uses a compound component pattern with Select.Trigger, Select.Menu, and Select.Option for flexible composition.',
+          'A custom select component with compound pattern: Select.Trigger, Select.Menu, Select.Option. Supports controlled/uncontrolled modes, sizes, error states, and full keyboard navigation.',
       },
     },
   },
@@ -18,61 +19,58 @@ const meta: Meta<typeof Select> = {
     size: {
       control: 'select',
       options: ['small', 'default', 'large'],
-      description: 'Size of the select',
+      description: 'Size of the select trigger',
     },
     error: {
       control: 'boolean',
-      description: 'Error state',
+      description: 'Whether the select is in an error state',
     },
     disabled: {
       control: 'boolean',
-      description: 'Disabled state',
+      description: 'Whether the select is disabled',
     },
     label: {
       control: 'text',
-      description: 'Label text',
+      description: 'Label text displayed above the select',
     },
     helperText: {
       control: 'text',
-      description: 'Helper or error text',
+      description: 'Helper text displayed below the select',
     },
   },
-  decorators: [(Story) => <div style={{ width: '320px' }}><Story /></div>],
+  decorators: [(Story) => <div style={{ width: '280px' }}><Story /></div>],
 };
 
 export default meta;
 type Story = StoryObj<typeof Select>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Basic select dropdown with a placeholder option and multiple choices.',
-      },
-    },
-  },
   render: () => (
     <Select>
       <Select.Trigger placeholder="Select an option..." />
       <Select.Menu>
-        <Select.Option value="1">Option 1</Select.Option>
-        <Select.Option value="2">Option 2</Select.Option>
-        <Select.Option value="3">Option 3</Select.Option>
+        <Select.Option value="option1">Option 1</Select.Option>
+        <Select.Option value="option2">Option 2</Select.Option>
+        <Select.Option value="option3">Option 3</Select.Option>
       </Select.Menu>
     </Select>
   ),
 };
 
-export const SizeSmall: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Small size select for compact layouts or inline forms.',
-      },
-    },
+// =============================================================================
+// SIZE VARIANTS
+// =============================================================================
+
+export const Small: Story = {
+  args: {
+    size: 'small',
   },
-  render: () => (
-    <Select size="small">
+  render: (args) => (
+    <Select {...args}>
       <Select.Trigger placeholder="Small select..." />
       <Select.Menu>
         <Select.Option value="1">Option 1</Select.Option>
@@ -82,16 +80,12 @@ export const SizeSmall: Story = {
   ),
 };
 
-export const SizeDefault: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default size select balances visual presence with space efficiency.',
-      },
-    },
+export const DefaultSize: Story = {
+  args: {
+    size: 'default',
   },
-  render: () => (
-    <Select size="default">
+  render: (args) => (
+    <Select {...args}>
       <Select.Trigger placeholder="Default select..." />
       <Select.Menu>
         <Select.Option value="1">Option 1</Select.Option>
@@ -101,16 +95,12 @@ export const SizeDefault: Story = {
   ),
 };
 
-export const SizeLarge: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large size select for prominent fields or touch-optimized interfaces.',
-      },
-    },
+export const Large: Story = {
+  args: {
+    size: 'large',
   },
-  render: () => (
-    <Select size="large">
+  render: (args) => (
+    <Select {...args}>
       <Select.Trigger placeholder="Large select..." />
       <Select.Menu>
         <Select.Option value="1">Option 1</Select.Option>
@@ -120,242 +110,183 @@ export const SizeLarge: Story = {
   ),
 };
 
-export const WithLabel: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Select with a label for accessibility and clarity. Always label form controls.',
-      },
-    },
+// =============================================================================
+// STATES
+// =============================================================================
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
   },
-  render: () => (
-    <Select label="Country">
+  render: (args) => (
+    <Select {...args}>
+      <Select.Trigger placeholder="Disabled select..." />
+      <Select.Menu>
+        <Select.Option value="1">Option 1</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
+};
+
+export const Error: Story = {
+  args: {
+    error: true,
+  },
+  render: (args) => (
+    <Select {...args}>
+      <Select.Trigger placeholder="Select with error..." />
+      <Select.Menu>
+        <Select.Option value="1">Option 1</Select.Option>
+        <Select.Option value="2">Option 2</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
+};
+
+// =============================================================================
+// WITH LABEL & HELPER TEXT
+// =============================================================================
+
+export const WithLabel: Story = {
+  args: {
+    label: 'Country',
+  },
+  render: (args) => (
+    <Select {...args}>
       <Select.Trigger placeholder="Select a country..." />
       <Select.Menu>
         <Select.Option value="us">United States</Select.Option>
         <Select.Option value="ca">Canada</Select.Option>
         <Select.Option value="uk">United Kingdom</Select.Option>
-        <Select.Option value="au">Australia</Select.Option>
       </Select.Menu>
     </Select>
   ),
 };
 
 export const WithHelperText: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Helper text provides additional guidance or context about the selection.',
-      },
-    },
+  args: {
+    label: 'Plan',
+    helperText: 'Choose the plan that works best for you',
   },
-  render: () => (
-    <Select label="Plan" helperText="Choose the plan that fits your needs">
+  render: (args) => (
+    <Select {...args}>
       <Select.Trigger placeholder="Select a plan..." />
       <Select.Menu>
         <Select.Option value="free">Free</Select.Option>
-        <Select.Option value="pro">Pro - $9/month</Select.Option>
-        <Select.Option value="enterprise">Enterprise - $29/month</Select.Option>
+        <Select.Option value="pro">Pro</Select.Option>
+        <Select.Option value="enterprise">Enterprise</Select.Option>
       </Select.Menu>
     </Select>
   ),
 };
 
-export const WithError: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Error state for validation feedback when selection is required or invalid.',
-      },
-    },
+export const WithErrorMessage: Story = {
+  args: {
+    label: 'Category',
+    error: true,
+    helperText: 'This field is required',
   },
-  render: () => (
-    <Select label="Category" error helperText="Please select a category">
+  render: (args) => (
+    <Select {...args}>
       <Select.Trigger placeholder="Select a category..." />
       <Select.Menu>
         <Select.Option value="tech">Technology</Select.Option>
         <Select.Option value="design">Design</Select.Option>
-        <Select.Option value="business">Business</Select.Option>
       </Select.Menu>
     </Select>
   ),
 };
 
-export const Disabled: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Disabled state prevents user interaction. Use for locked or unavailable options.',
-      },
-    },
-  },
-  render: () => (
-    <Select label="Country" disabled>
-      <Select.Trigger placeholder="Select a country..." />
-      <Select.Menu>
-        <Select.Option value="us">United States</Select.Option>
-        <Select.Option value="ca">Canada</Select.Option>
-      </Select.Menu>
-    </Select>
-  ),
-};
-
-export const DisabledWithValue: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Disabled select with a pre-selected value showing locked selection.',
-      },
-    },
-  },
-  render: () => (
-    <Select label="Country" disabled defaultValue="us">
-      <Select.Trigger placeholder="Select a country..." />
-      <Select.Menu>
-        <Select.Option value="us">United States</Select.Option>
-        <Select.Option value="ca">Canada</Select.Option>
-      </Select.Menu>
-    </Select>
-  ),
-};
-
-export const WithDisabledOptions: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Individual options can be disabled while keeping the select functional.',
-      },
-    },
-  },
-  render: () => (
-    <Select label="Car">
-      <Select.Trigger placeholder="Select a car..." />
-      <Select.Menu>
-        <Select.Option value="volvo">Volvo</Select.Option>
-        <Select.Option value="saab" disabled>Saab (Unavailable)</Select.Option>
-        <Select.Option value="mercedes">Mercedes</Select.Option>
-        <Select.Option value="audi">Audi</Select.Option>
-        <Select.Option value="bmw" disabled>BMW (Unavailable)</Select.Option>
-      </Select.Menu>
-    </Select>
-  ),
-};
-
-export const AllSizes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of all select sizes for choosing the appropriate size.',
-      },
-    },
-  },
-  render: () => (
-    <div className="flex flex-col gap-4">
-      <Select size="small">
-        <Select.Trigger placeholder="Small select..." />
-        <Select.Menu>
-          <Select.Option value="1">Option 1</Select.Option>
-        </Select.Menu>
-      </Select>
-      <Select size="default">
-        <Select.Trigger placeholder="Default select..." />
-        <Select.Menu>
-          <Select.Option value="1">Option 1</Select.Option>
-        </Select.Menu>
-      </Select>
-      <Select size="large">
-        <Select.Trigger placeholder="Large select..." />
-        <Select.Menu>
-          <Select.Option value="1">Option 1</Select.Option>
-        </Select.Menu>
-      </Select>
-    </div>
-  ),
-};
-
-export const FormExample: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Complete form example with multiple selects demonstrating consistent styling.',
-      },
-    },
-  },
-  render: () => (
-    <div className="flex flex-col gap-4">
-      <Select label="Country" helperText="Where are you located?">
-        <Select.Trigger placeholder="Select a country..." />
-        <Select.Menu>
-          <Select.Option value="us">United States</Select.Option>
-          <Select.Option value="ca">Canada</Select.Option>
-          <Select.Option value="uk">United Kingdom</Select.Option>
-        </Select.Menu>
-      </Select>
-      <Select label="Language">
-        <Select.Trigger placeholder="Select a language..." />
-        <Select.Menu>
-          <Select.Option value="en">English</Select.Option>
-          <Select.Option value="es">Spanish</Select.Option>
-          <Select.Option value="fr">French</Select.Option>
-        </Select.Menu>
-      </Select>
-      <Select label="Timezone">
-        <Select.Trigger placeholder="Select a timezone..." />
-        <Select.Menu>
-          <Select.Option value="pst">Pacific Time (PST)</Select.Option>
-          <Select.Option value="mst">Mountain Time (MST)</Select.Option>
-          <Select.Option value="cst">Central Time (CST)</Select.Option>
-          <Select.Option value="est">Eastern Time (EST)</Select.Option>
-        </Select.Menu>
-      </Select>
-    </div>
-  ),
-};
+// =============================================================================
+// DEFAULT VALUE
+// =============================================================================
 
 export const WithDefaultValue: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Select with a pre-selected default value.',
-      },
-    },
+  args: {
+    defaultValue: 'banana',
+    label: 'Fruit',
   },
-  render: () => (
-    <Select label="Country" defaultValue="ca">
-      <Select.Trigger placeholder="Select a country..." />
+  render: (args) => (
+    <Select {...args}>
+      <Select.Trigger placeholder="Select a fruit..." />
       <Select.Menu>
-        <Select.Option value="us">United States</Select.Option>
-        <Select.Option value="ca">Canada</Select.Option>
-        <Select.Option value="uk">United Kingdom</Select.Option>
+        <Select.Option value="apple">Apple</Select.Option>
+        <Select.Option value="banana">Banana</Select.Option>
+        <Select.Option value="cherry">Cherry</Select.Option>
       </Select.Menu>
     </Select>
   ),
 };
 
-export const ErrorSizes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Error state across all select sizes showing consistent validation styling.',
-      },
-    },
+// =============================================================================
+// CONTROLLED
+// =============================================================================
+
+export const Controlled: Story = {
+  render: function ControlledSelect() {
+    const [value, setValue] = useState('');
+    return (
+      <Select
+        label="Fruit"
+        value={value}
+        onChange={setValue}
+        helperText={value ? `Selected: ${value}` : 'No selection'}
+      >
+        <Select.Trigger placeholder="Select a fruit..." />
+        <Select.Menu>
+          <Select.Option value="apple">Apple</Select.Option>
+          <Select.Option value="banana">Banana</Select.Option>
+          <Select.Option value="cherry">Cherry</Select.Option>
+        </Select.Menu>
+      </Select>
+    );
   },
+};
+
+// =============================================================================
+// WITH DISABLED OPTIONS
+// =============================================================================
+
+export const WithDisabledOptions: Story = {
+  args: {
+    label: 'Status',
+  },
+  decorators: [(Story) => <div style={{ width: '280px', minHeight: '220px' }}><Story /></div>],
+  render: (args) => (
+    <Select {...args}>
+      <Select.Trigger placeholder="Select status..." />
+      <Select.Menu>
+        <Select.Option value="active">Active</Select.Option>
+        <Select.Option value="pending" disabled>Pending (unavailable)</Select.Option>
+        <Select.Option value="inactive">Inactive</Select.Option>
+        <Select.Option value="archived" disabled>Archived (unavailable)</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
+};
+
+// =============================================================================
+// ALL SIZES COMPARISON
+// =============================================================================
+
+export const AllSizes: Story = {
+  decorators: [(Story) => <div style={{ width: '280px' }}><Story /></div>],
   render: () => (
-    <div className="flex flex-col gap-4">
-      <Select size="small" label="Small with error" error helperText="This field has an error">
-        <Select.Trigger placeholder="Select an option..." />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <Select size="small" label="Small">
+        <Select.Trigger placeholder="Small..." />
         <Select.Menu>
           <Select.Option value="1">Option 1</Select.Option>
         </Select.Menu>
       </Select>
-      <Select size="default" label="Default with error" error helperText="This field has an error">
-        <Select.Trigger placeholder="Select an option..." />
+      <Select size="default" label="Default">
+        <Select.Trigger placeholder="Default..." />
         <Select.Menu>
           <Select.Option value="1">Option 1</Select.Option>
         </Select.Menu>
       </Select>
-      <Select size="large" label="Large with error" error helperText="This field has an error">
-        <Select.Trigger placeholder="Select an option..." />
+      <Select size="large" label="Large">
+        <Select.Trigger placeholder="Large..." />
         <Select.Menu>
           <Select.Option value="1">Option 1</Select.Option>
         </Select.Menu>

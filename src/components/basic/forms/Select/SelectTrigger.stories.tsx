@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Select } from './Select';
 
+/**
+ * The trigger button that opens the select dropdown menu.
+ * Displays the selected value or placeholder text.
+ *
+ * **Note:** Select.Trigger must be used within a Select context.
+ * Size, disabled, and error states are inherited from the parent Select.
+ */
 const meta: Meta<typeof Select.Trigger> = {
   title: 'Forms/Select/Trigger',
   component: Select.Trigger,
@@ -8,40 +15,58 @@ const meta: Meta<typeof Select.Trigger> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'The trigger button that opens the select dropdown menu. Displays the selected value or placeholder.',
+        component:
+          'The trigger button that opens the select dropdown menu. Displays the selected value or placeholder.',
       },
     },
   },
   tags: ['autodocs'],
-  decorators: [(Story) => <div style={{ width: '320px' }}><Story /></div>],
+  argTypes: {
+    placeholder: {
+      control: 'text',
+      description: 'Placeholder text shown when no value is selected',
+    },
+    className: {
+      control: 'text',
+      description: 'Additional CSS classes',
+    },
+  },
+  decorators: [(Story) => <div style={{ width: '280px' }}><Story /></div>],
 };
 
 export default meta;
 type Story = StoryObj<typeof Select.Trigger>;
 
+// =============================================================================
+// DEFAULT
+// =============================================================================
+
 export const Default: Story = {
-  render: () => (
+  args: {
+    placeholder: 'Select an option...',
+  },
+  render: (args) => (
     <Select>
-      <Select.Trigger />
+      <Select.Trigger {...args} />
       <Select.Menu>
         <Select.Option value="1">Option 1</Select.Option>
         <Select.Option value="2">Option 2</Select.Option>
       </Select.Menu>
     </Select>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default trigger with standard placeholder.',
-      },
-    },
-  },
 };
 
+// =============================================================================
+// PLACEHOLDER VARIATIONS
+// =============================================================================
+
 export const CustomPlaceholder: Story = {
-  render: () => (
+  args: {
+    placeholder: 'Choose your favorite fruit...',
+  },
+  render: (args) => (
     <Select>
-      <Select.Trigger placeholder="Choose your favorite fruit..." />
+      <Select.Trigger {...args} />
       <Select.Menu>
         <Select.Option value="apple">Apple</Select.Option>
         <Select.Option value="banana">Banana</Select.Option>
@@ -49,19 +74,15 @@ export const CustomPlaceholder: Story = {
       </Select.Menu>
     </Select>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Trigger with a custom placeholder text.',
-      },
-    },
-  },
 };
 
 export const WithSelectedValue: Story = {
-  render: () => (
+  args: {
+    placeholder: 'Select a fruit...',
+  },
+  render: (args) => (
     <Select defaultValue="banana">
-      <Select.Trigger placeholder="Select a fruit..." />
+      <Select.Trigger {...args} />
       <Select.Menu>
         <Select.Option value="apple">Apple</Select.Option>
         <Select.Option value="banana">Banana</Select.Option>
@@ -72,76 +93,105 @@ export const WithSelectedValue: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Trigger displaying the selected value.',
+        story: 'When a value is selected, the trigger displays the option label instead of the placeholder.',
       },
     },
   },
 };
 
-export const Disabled: Story = {
-  render: () => (
-    <Select disabled>
-      <Select.Trigger placeholder="Disabled select..." />
+// =============================================================================
+// SIZE VARIANTS (inherited from parent Select)
+// =============================================================================
+
+export const Small: Story = {
+  args: {
+    placeholder: 'Small trigger...',
+  },
+  render: (args) => (
+    <Select size="small">
+      <Select.Trigger {...args} />
       <Select.Menu>
         <Select.Option value="1">Option 1</Select.Option>
       </Select.Menu>
     </Select>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Disabled trigger state.',
-      },
-    },
-  },
 };
 
-export const Sizes: Story = {
-  render: () => (
-    <div className="flex flex-col gap-4">
-      <Select size="small">
-        <Select.Trigger placeholder="Small trigger..." />
-        <Select.Menu>
-          <Select.Option value="1">Option 1</Select.Option>
-        </Select.Menu>
-      </Select>
-      <Select size="default">
-        <Select.Trigger placeholder="Default trigger..." />
-        <Select.Menu>
-          <Select.Option value="1">Option 1</Select.Option>
-        </Select.Menu>
-      </Select>
-      <Select size="large">
-        <Select.Trigger placeholder="Large trigger..." />
-        <Select.Menu>
-          <Select.Option value="1">Option 1</Select.Option>
-        </Select.Menu>
-      </Select>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Trigger at different sizes inherited from parent Select.',
-      },
-    },
+export const DefaultSize: Story = {
+  args: {
+    placeholder: 'Default trigger...',
   },
+  render: (args) => (
+    <Select size="default">
+      <Select.Trigger {...args} />
+      <Select.Menu>
+        <Select.Option value="1">Option 1</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
+};
+
+export const Large: Story = {
+  args: {
+    placeholder: 'Large trigger...',
+  },
+  render: (args) => (
+    <Select size="large">
+      <Select.Trigger {...args} />
+      <Select.Menu>
+        <Select.Option value="1">Option 1</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
+};
+
+// =============================================================================
+// STATES (inherited from parent Select)
+// =============================================================================
+
+export const Disabled: Story = {
+  args: {
+    placeholder: 'Disabled trigger...',
+  },
+  render: (args) => (
+    <Select disabled>
+      <Select.Trigger {...args} />
+      <Select.Menu>
+        <Select.Option value="1">Option 1</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };
 
 export const ErrorState: Story = {
-  render: () => (
+  args: {
+    placeholder: 'Error state...',
+  },
+  render: (args) => (
     <Select error>
-      <Select.Trigger placeholder="Select with error..." />
+      <Select.Trigger {...args} />
       <Select.Menu>
         <Select.Option value="1">Option 1</Select.Option>
       </Select.Menu>
     </Select>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Trigger with error styling from parent Select.',
-      },
-    },
+};
+
+// =============================================================================
+// CUSTOM STYLING
+// =============================================================================
+
+export const WithCustomClassName: Story = {
+  args: {
+    placeholder: 'Custom styled...',
+    className: 'font-bold',
   },
+  render: (args) => (
+    <Select>
+      <Select.Trigger {...args} />
+      <Select.Menu>
+        <Select.Option value="1">Option 1</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
 };

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
 import {
   forwardRef,
   memo,
@@ -11,30 +12,29 @@ import {
   type DragEvent,
   type ReactNode,
 } from 'react';
+import { BiCloudUpload } from 'react-icons/bi';
+import { Icon } from '@/components/basic/utility/Icon/Icon';
+import { Text } from '@/components/basic/typography/Text/Text';
+import { FileItem, formatFileSize } from './FileItem';
 import {
   BASE_CLASSES,
+  CONTAINER_CLASSES,
   DROPZONE_CLASSES,
   DROPZONE_DRAG_ACTIVE_CLASSES,
   DROPZONE_ERROR_CLASSES,
-  FILE_ITEM_CLASSES,
   FILE_LIST_CLASSES,
-  FILE_NAME_CLASSES,
-  FILE_REMOVE_BUTTON_CLASSES,
-  FILE_SIZE_CLASSES,
   HELPER_CLASSES,
   HELPER_ERROR_CLASSES,
   LABEL_CLASSES,
   LABEL_ERROR_CLASSES,
-  SIZE_STYLES,
+  RESPONSIVE_HELPER_TEXT_CLASSES,
+  RESPONSIVE_ICON_CLASSES,
+  RESPONSIVE_TEXT_CLASSES,
   UPLOAD_ICON_CLASSES,
   UPLOAD_TEXT_CLASSES,
 } from './FileInput.styles';
 
-export type FileInputSize = keyof typeof SIZE_STYLES;
-
 export interface FileInputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size' | 'type' | 'onError'> {
-  /** The size variant of the file input */
-  size?: FileInputSize;
   /** Whether the input has an error state */
   error?: boolean;
   /** Label text */
@@ -59,45 +59,9 @@ export interface FileInputProps extends Omit<ComponentPropsWithoutRef<'input'>, 
   wrapperClassName?: string;
 }
 
-const formatFileSize = (bytes: number): string => {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
-};
-
-const FileItem = memo(
-  ({ file, onRemove }: { file: File; onRemove: () => void }) => (
-    <div className={FILE_ITEM_CLASSES}>
-      <div className="flex-1 min-w-0">
-        <p className={FILE_NAME_CLASSES}>{file.name}</p>
-        <p className={FILE_SIZE_CLASSES}>{formatFileSize(file.size)}</p>
-      </div>
-      <button
-        type="button"
-        onClick={onRemove}
-        className={FILE_REMOVE_BUTTON_CLASSES}
-        aria-label={`Remove ${file.name}`}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="w-4 h-4"
-        >
-          <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-        </svg>
-      </button>
-    </div>
-  )
-);
-FileItem.displayName = 'FileItem';
-
 export const FileInput = memo(
   forwardRef<HTMLInputElement, FileInputProps>(function FileInput(
     {
-      size = 'default',
       error = false,
       label,
       helperText,
@@ -122,14 +86,50 @@ export const FileInput = memo(
     const [files, setFiles] = useState<File[]>([]);
     const [isDragActive, setIsDragActive] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const dragCounterRef = useRef(0);
     const generatedId = useId();
     const inputId = id || generatedId;
+
+    // Helper to check if a file matches the accept pattern
+    const isFileTypeAccepted = useCallback(
+      (file: File): boolean => {
+        if (!accept) return true;
+        
+        const acceptedTypes = accept.split(',').map((t) => t.trim().toLowerCase());
+        const fileName = file.name.toLowerCase();
+        const mimeType = file.type.toLowerCase();
+        
+        return acceptedTypes.some((acceptedType) => {
+          // Handle extension (e.g., ".pdf")
+          if (acceptedType.startsWith('.')) {
+            return fileName.endsWith(acceptedType);
+          }
+          // Handle wildcard MIME types (e.g., "image/*")
+          if (acceptedType.endsWith('/*')) {
+            const baseType = acceptedType.slice(0, -2);
+            return mimeType.startsWith(baseType + '/');
+          }
+          // Handle exact MIME type match
+          return mimeType === acceptedType;
+        });
+      },
+      [accept]
+    );
 
     const validateFiles = useCallback(
       (fileList: FileList | null): File[] | null => {
         if (!fileList || fileList.length === 0) return null;
 
         const fileArray = Array.from(fileList);
+
+        // Check file types against accept prop
+        if (accept) {
+          const invalidFile = fileArray.find((file) => !isFileTypeAccepted(file));
+          if (invalidFile) {
+            onError?.(`File type not accepted: ${invalidFile.name}`);
+            return null;
+          }
+        }
 
         // Check max files
         if (maxFiles && fileArray.length > maxFiles) {
@@ -148,7 +148,7 @@ export const FileInput = memo(
 
         return fileArray;
       },
-      [maxFiles, maxSize, onError]
+      [maxFiles, maxSize, onError, accept, isFileTypeAccepted]
     );
 
     const handleFileChange = useCallback(
@@ -173,7 +173,8 @@ export const FileInput = memo(
     const handleDragEnter = useCallback((e: DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       e.stopPropagation();
-      if (!disabled) {
+      dragCounterRef.current++;
+      if (!disabled && dragCounterRef.current === 1) {
         setIsDragActive(true);
       }
     }, [disabled]);
@@ -181,7 +182,10 @@ export const FileInput = memo(
     const handleDragLeave = useCallback((e: DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       e.stopPropagation();
-      setIsDragActive(false);
+      dragCounterRef.current--;
+      if (dragCounterRef.current === 0) {
+        setIsDragActive(false);
+      }
     }, []);
 
     const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
@@ -193,6 +197,7 @@ export const FileInput = memo(
       (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
+        dragCounterRef.current = 0;
         setIsDragActive(false);
 
         if (disabled) return;
@@ -214,50 +219,74 @@ export const FileInput = memo(
         const newFiles = files.filter((_, i) => i !== index);
         setFiles(newFiles);
         onFilesChange?.(newFiles);
+        // Reset input value so the same file can be re-selected
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
       },
       [files, onFilesChange]
+    );
+
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      },
+      [handleClick]
     );
 
     const dropzoneClasses = useMemo(
       () =>
         cn(
           DROPZONE_CLASSES,
-          SIZE_STYLES[size],
           isDragActive && DROPZONE_DRAG_ACTIVE_CLASSES,
           error && DROPZONE_ERROR_CLASSES,
-          disabled && 'opacity-[var(--semantic-opacity-disabled)] cursor-not-allowed',
+          disabled && 'opacity-[var(--component-fileinput-disabled-opacity)] cursor-not-allowed',
           className
         ),
-      [size, isDragActive, error, disabled, className]
+      [isDragActive, error, disabled, className]
     );
 
-    const defaultUploadIcon = (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className={UPLOAD_ICON_CLASSES}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+    const paddingStyle = useMemo(
+      () => ({
+        paddingInline: 'var(--component-input-padding-inline)',
+        paddingBlock: 'var(--component-input-padding-inline)',
+      }),
+      []
+    );
+
+    const defaultUploadIcon = useMemo(
+      () => (
+        <Icon 
+          icon={BiCloudUpload} 
+          size="xl"
+          color="inherit"
+          className={cn(UPLOAD_ICON_CLASSES, RESPONSIVE_ICON_CLASSES)}
+          aria-hidden
         />
-      </svg>
+      ),
+      []
     );
 
     return (
-      <div className={cn('w-full', wrapperClassName)}>
+      <div className={cn(CONTAINER_CLASSES, wrapperClassName)}>
         {label && (
-          <label htmlFor={inputId} className={error ? LABEL_ERROR_CLASSES : LABEL_CLASSES}>
+          <Text 
+            as="label" 
+            htmlFor={inputId} 
+            size="body" 
+            weight="medium"
+            className={error ? LABEL_ERROR_CLASSES : LABEL_CLASSES}
+          >
             {label}
-          </label>
+          </Text>
         )}
 
         <div
           className={dropzoneClasses}
+          style={paddingStyle}
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}
@@ -265,22 +294,10 @@ export const FileInput = memo(
           onClick={handleClick}
           role="button"
           tabIndex={disabled ? -1 : 0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              handleClick();
-            }
-          }}
+          onKeyDown={handleKeyDown}
         >
           <input
-            ref={(node) => {
-              if (typeof ref === 'function') {
-                ref(node);
-              } else if (ref) {
-                ref.current = node;
-              }
-              inputRef.current = node;
-            }}
+            ref={useMergedRefs(ref, inputRef)}
             id={inputId}
             type="file"
             className={BASE_CLASSES}
@@ -288,19 +305,32 @@ export const FileInput = memo(
             disabled={disabled}
             accept={accept}
             multiple={multiple}
+            aria-invalid={error || undefined}
             {...rest}
           />
 
           {uploadIcon || defaultUploadIcon}
 
           <div className={UPLOAD_TEXT_CLASSES}>
-            <p className="font-medium">{uploadText}</p>
+            <Text 
+              as="p" 
+              size="body" 
+              weight="medium"
+              className={RESPONSIVE_TEXT_CLASSES}
+            >
+              {uploadText}
+            </Text>
             {(accept || maxSize) && (
-              <p className="text-sm">
+              <Text 
+                as="p" 
+                size="small" 
+                color="secondary"
+                className={RESPONSIVE_HELPER_TEXT_CLASSES}
+              >
                 {accept && <span>{accept}</span>}
                 {accept && maxSize && <span> · </span>}
                 {maxSize && <span>Max {formatFileSize(maxSize)}</span>}
-              </p>
+              </Text>
             )}
           </div>
         </div>
@@ -308,13 +338,19 @@ export const FileInput = memo(
         {showFileList && files.length > 0 && (
           <div className={FILE_LIST_CLASSES}>
             {files.map((file, index) => (
-              <FileItem key={`${file.name}-${index}`} file={file} onRemove={() => handleRemoveFile(index)} />
+              <FileItem key={`${file.name}-${file.lastModified}-${file.size}`} file={file} onRemove={() => handleRemoveFile(index)} />
             ))}
           </div>
         )}
 
         {helperText && (
-          <p className={error ? HELPER_ERROR_CLASSES : HELPER_CLASSES}>{helperText}</p>
+          <Text 
+            as="p" 
+            size="small"
+            className={error ? HELPER_ERROR_CLASSES : HELPER_CLASSES}
+          >
+            {helperText}
+          </Text>
         )}
       </div>
     );

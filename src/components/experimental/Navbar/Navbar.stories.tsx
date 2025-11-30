@@ -2,6 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Navbar } from './Navbar';
 import { FiHome, FiUser, FiSettings, FiHelpCircle, FiSearch, FiShoppingCart, FiBell } from 'react-icons/fi';
 import { Button } from '../../basic/forms/Button';
+import { VisuallyHidden } from '../../basic/utility/VisuallyHidden';
+import { Badge } from '../../basic/feedback/Badge';
+import { Icon } from '../../basic/utility/Icon';
+import { Avatar } from '../../basic/data-display/Avatar';
+import { Flex } from '../../basic/layout/Flex';
+import { Text } from '../../basic/typography/Text';
 
 const meta: Meta<typeof Navbar> = {
   title: 'Experimental/Navbar',
@@ -289,18 +295,21 @@ export const EcommercExample: Story = {
         </Navbar.Menu>
         
         <Navbar.Section>
-          <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <Button variant="ghost" size="small">
             <FiSearch className="h-5 w-5" />
-          </button>
-          <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors relative">
+            <VisuallyHidden>Search</VisuallyHidden>
+          </Button>
+          <Button variant="ghost" size="small" className="relative">
             <FiShoppingCart className="h-5 w-5" />
-            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+            <VisuallyHidden>Cart</VisuallyHidden>
+            <Badge variant="error" size="small" className="absolute -top-1 -right-1">
               3
-            </span>
-          </button>
-          <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            </Badge>
+          </Button>
+          <Button variant="ghost" size="small">
             <FiUser className="h-5 w-5" />
-          </button>
+            <VisuallyHidden>Account</VisuallyHidden>
+          </Button>
         </Navbar.Section>
         
         <Navbar.Burger />
@@ -362,14 +371,15 @@ export const AppDashboard: Story = {
         </Navbar.Menu>
         
         <Navbar.Section>
-          <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors relative">
+          <Button variant="ghost" size="small" className="relative">
             <FiBell className="h-5 w-5" />
+            <VisuallyHidden>Notifications</VisuallyHidden>
             <span className="absolute top-1 right-1 bg-red-500 h-2 w-2 rounded-full" />
-          </button>
-          <div className="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">
-            <div className="h-8 w-8 bg-gray-300 rounded-full" />
-            <span className="text-sm font-medium">John Doe</span>
-          </div>
+          </Button>
+          <Flex align="center" gap="sm" className="px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">
+            <Avatar size="sm" initials="JD" />
+            <Text size="sm" weight="medium">John Doe</Text>
+          </Flex>
         </Navbar.Section>
         
         <Navbar.Burger />

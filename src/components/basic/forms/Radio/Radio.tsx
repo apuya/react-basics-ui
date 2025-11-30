@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import { generateFormId } from '@/lib/generateFormId';
 import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
 import {
   DOT_CLASSES,
@@ -14,8 +15,11 @@ import {
 export type RadioSize = 'small' | 'default' | 'large';
 
 export interface RadioProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type' | 'size'> {
+  /** Size variant of the radio button */
   size?: RadioSize;
+  /** Label text displayed next to the radio button */
   label?: string;
+  /** Additional className for the wrapper element */
   wrapperClassName?: string;
 }
 
@@ -24,7 +28,7 @@ export const Radio = memo(
     { size = 'default', label, disabled, className, wrapperClassName, id, ...rest },
     ref
   ) {
-    const radioId = id || (label ? `radio-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
+    const radioId = id || generateFormId('radio', label);
 
     return (
       <label
@@ -39,6 +43,7 @@ export const Radio = memo(
           id={radioId}
           disabled={disabled}
           className={cn(INPUT_CLASSES, className)}
+          data-size={size}
           {...rest}
         />
         <span

@@ -14,10 +14,15 @@ export type LabelWeight = 'normal' | 'medium' | 'semibold';
 export type LabelColor = 'default' | 'secondary' | 'error' | 'disabled';
 
 export interface LabelProps extends ComponentPropsWithoutRef<'label'> {
+  /** Size variant of the label */
   size?: LabelSize;
+  /** Font weight of the label */
   weight?: LabelWeight;
+  /** Color variant of the label */
   color?: LabelColor;
+  /** Whether to show required indicator */
   required?: boolean;
+  /** Whether the label is disabled */
   disabled?: boolean;
 }
 
@@ -46,6 +51,8 @@ export const Label = memo(
           disabled && STATE_STYLES.disabled,
           className
         )}
+        data-size={size}
+        data-color={disabled ? 'disabled' : color}
         {...rest}
       >
         {children}
