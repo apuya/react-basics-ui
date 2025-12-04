@@ -1,5 +1,5 @@
 export const TAB_LIST_BASE_CLASSES =
-  'flex gap-[var(--component-tabs-list-gap)]';
+  'flex gap-[length:var(--component-tabs-list-gap)]';
 
 export const TAB_LIST_ORIENTATION_STYLES = {
   horizontal: 'flex-row',
@@ -7,7 +7,7 @@ export const TAB_LIST_ORIENTATION_STYLES = {
 } as const;
 
 export const TAB_BASE_CLASSES =
-  'relative inline-flex items-center justify-center font-[number:var(--component-tabs-font-weight)] rounded-[length:var(--component-tabs-radius)] border transition-all duration-[var(--component-tabs-transition)] cursor-pointer outline-none';
+  'relative inline-flex items-center justify-center font-[number:var(--component-tabs-font-weight)] rounded-[length:var(--component-tabs-radius)] border border-solid transition-all duration-[var(--component-tabs-transition)] cursor-pointer outline-none';
 
 export const TAB_SIZE_STYLES = {
   sm: 'h-[length:var(--component-tabs-height-sm)] text-[length:var(--component-tabs-font-size-sm)] gap-[length:var(--component-tabs-gap-sm)]',
@@ -25,4 +25,14 @@ export const TAB_PANEL_BASE_CLASSES =
   'outline-none';
 
 export const TAB_PANELS_BASE_CLASSES =
-  'mt-[var(--component-tabs-panels-margin)]';
+  'mt-[length:var(--component-tabs-panels-margin)]';
+
+export const TAB_PANELS_ORIENTATION_STYLES = {
+  horizontal: 'mt-[length:var(--component-tabs-panels-margin)]',
+  vertical: 'mt-0 ml-[length:var(--component-tabs-panels-margin)]',
+} as const;
+
+export const TABS_ROOT_ORIENTATION_STYLES = {
+  horizontal: 'flex-col',
+  vertical: 'flex-row gap-[length:var(--component-tabs-gap)]',
+} as const;

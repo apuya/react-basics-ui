@@ -4,6 +4,7 @@ import {
   useCallback,
   useRef,
   forwardRef,
+  memo,
   type ComponentPropsWithoutRef,
 } from 'react';
 import { cn } from '@/lib/cn';
@@ -12,6 +13,7 @@ import { TabList } from './TabList';
 import { Tab } from './Tab';
 import { TabPanels } from './TabPanels';
 import { TabPanel } from './TabPanel';
+import { TABS_ROOT_ORIENTATION_STYLES } from './Tabs.styles';
 
 // Types
 /**
@@ -194,7 +196,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(
       () =>
         cn(
           'flex',
-          orientation === 'vertical' ? 'flex-row gap-[var(--component-tabs-gap)]' : 'flex-col',
+          TABS_ROOT_ORIENTATION_STYLES[orientation],
           className
         ),
       [orientation, className]
@@ -202,7 +204,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(
 
     return (
       <TabsContext.Provider value={contextValue}>
-        <div ref={ref} className={tabsClasses} {...props}>
+        <div ref={ref} className={tabsClasses} data-orientation={orientation} {...props}>
           {children}
         </div>
       </TabsContext.Provider>
@@ -212,7 +214,10 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(
 
 TabsRoot.displayName = 'Tabs';
 
-export const Tabs = Object.assign(TabsRoot, {
+const MemoizedTabsRoot = memo(TabsRoot);
+MemoizedTabsRoot.displayName = 'Tabs';
+
+export const Tabs = Object.assign(MemoizedTabsRoot, {
   List: TabList,
   Tab: Tab,
   Panels: TabPanels,

@@ -931,12 +931,15 @@ svg {
   --semantic-surface-elevated: var(--primitive-color-gray-50);
   --semantic-surface-alt: var(--primitive-color-gray-200);
   --semantic-surface-hover: var(--primitive-color-gray-200);
+  --semantic-surface-pressed: var(--primitive-color-gray-300);
   --semantic-surface-active: var(--primitive-color-gray-200);
   --semantic-surface-selected: var(--primitive-color-blue-50);
   --semantic-surface-focus: var(--primitive-color-blue-50);
   --semantic-surface-overlay: var(--primitive-color-black-alpha-60);
   --semantic-surface-transparent: var(--primitive-color-transparent);
   --semantic-surface-inverse: var(--primitive-color-gray-700);
+  --semantic-surface-sunken: var(--primitive-color-gray-200);
+  --semantic-surface-muted: var(--primitive-color-gray-200);
   --semantic-surface-success-subtle: var(--primitive-color-green-50);
   --semantic-surface-destructive-subtle: var(--primitive-color-red-50);
   --semantic-surface-destructive-light: var(--primitive-color-red-100);
@@ -958,6 +961,7 @@ svg {
   --semantic-text-error: var(--primitive-color-red-500);
   --semantic-text-warning: var(--primitive-color-yellow-700);
   --semantic-text-success: var(--primitive-color-green-700);
+  --semantic-text-info: var(--primitive-color-blue-700);
 
   /* Border Width */
   --semantic-border-width-none: var(--primitive-border-width-0);
@@ -987,6 +991,7 @@ svg {
   /* Focus Ring */
   --semantic-focus-ring-offset: var(--primitive-focus-ring-offset);
   --semantic-focus-ring-width: var(--primitive-focus-ring-width);
+  --semantic-focus-ring: var(--semantic-border-focus);
 
   /* Letter Spacing */
   --semantic-letter-spacing-tighter: var(--primitive-font-letter-spacing-tighter);
@@ -1063,6 +1068,11 @@ svg {
   --semantic-space-generous: var(--primitive-space-1000);
   --semantic-space-expansive: var(--primitive-space-1200);
   --semantic-space-massive: var(--primitive-space-1600);
+  /* T-shirt size aliases for consistency with other token groups */
+  --semantic-space-lg: var(--semantic-space-comfortable);
+  --semantic-space-xl: var(--semantic-space-loose);
+  --semantic-space-2xl: var(--semantic-space-spacious);
+  --semantic-space-3xl: var(--semantic-space-generous);
 
   /* Icon Sizes */
   --semantic-icon-xsmall: var(--primitive-size-150);
@@ -1078,6 +1088,13 @@ svg {
   --semantic-icon-lg: var(--semantic-icon-large);
   --semantic-icon-xl: var(--semantic-icon-xlarge);
   --semantic-icon-xxl: var(--semantic-icon-xxlarge);
+  /* Additional size aliases for consistency */
+  --semantic-icon-size-xs: var(--semantic-icon-xsmall);
+  --semantic-icon-size-sm: var(--semantic-icon-small);
+  --semantic-icon-size-md: var(--semantic-icon-medium);
+  --semantic-icon-size-lg: var(--semantic-icon-large);
+  --semantic-icon-size-xl: var(--semantic-icon-xlarge);
+  --semantic-icon-size-2xl: var(--semantic-icon-xxlarge);
 
   /* Component Heights */
   --semantic-height-xsmall: var(--primitive-size-200);
@@ -1088,6 +1105,13 @@ svg {
   --semantic-height-xlarge: var(--primitive-size-600);
   --semantic-height-xxlarge: var(--primitive-size-800);
   --semantic-height-xxxlarge: var(--primitive-size-1200);
+  /* T-shirt size aliases */
+  --semantic-height-xs: var(--semantic-height-xsmall);
+  --semantic-height-sm: var(--semantic-height-small);
+  --semantic-height-md: var(--semantic-height-medium);
+  --semantic-height-lg: var(--semantic-height-large);
+  --semantic-height-xl: var(--semantic-height-xlarge);
+  --semantic-height-xxl: var(--semantic-height-xxlarge);
 
   /* Avatar Sizes */
   --semantic-avatar-small: var(--primitive-size-300);
@@ -1106,6 +1130,8 @@ svg {
   --semantic-text-size-body: var(--primitive-font-size-100);
   --semantic-text-size-subtitle: var(--primitive-font-size-150);
   --semantic-text-size-h4: var(--primitive-font-size-200);
+  --semantic-text-size-h5: var(--primitive-font-size-175);
+  --semantic-text-size-h6: var(--primitive-font-size-150);
   --semantic-text-size-h3: var(--primitive-font-size-300);
   --semantic-text-size-h2: var(--primitive-font-size-400);
   --semantic-text-size-h1: var(--primitive-font-size-500);
@@ -1344,6 +1370,70 @@ svg {
   --component-badge-hover-opacity: var(--semantic-opacity-hover);
   --component-badge-transition-duration: var(--semantic-duration-normal);
 
+  /* Badge - Solid Variant (inverted colors) */
+  --component-badge-solid-bg-primary: var(--semantic-accent-blue-dark);
+  --component-badge-solid-bg-secondary: var(--semantic-accent-slate-dark);
+  --component-badge-solid-bg-neutral: var(--semantic-accent-slate-default);
+  --component-badge-solid-bg-success: var(--semantic-accent-green-dark);
+  --component-badge-solid-bg-warning: var(--semantic-accent-amber-default);
+  --component-badge-solid-bg-error: var(--semantic-accent-red-dark);
+  --component-badge-solid-bg-info: var(--semantic-accent-blue-default);
+  --component-badge-solid-bg-blue: var(--semantic-accent-blue-dark);
+  --component-badge-solid-bg-cyan: var(--semantic-accent-cyan-dark);
+  --component-badge-solid-bg-emerald: var(--semantic-accent-emerald-dark);
+  --component-badge-solid-bg-fuchsia: var(--semantic-accent-fuchsia-dark);
+  --component-badge-solid-bg-gold: var(--semantic-accent-gold-dark);
+  --component-badge-solid-bg-green: var(--semantic-accent-green-dark);
+  --component-badge-solid-bg-indigo: var(--semantic-accent-indigo-dark);
+  --component-badge-solid-bg-lime: var(--semantic-accent-lime-dark);
+  --component-badge-solid-bg-navy: var(--semantic-accent-navy-dark);
+  --component-badge-solid-bg-amber: var(--semantic-accent-amber-dark);
+  --component-badge-solid-bg-orange: var(--semantic-accent-orange-dark);
+  --component-badge-solid-bg-pink: var(--semantic-accent-pink-dark);
+  --component-badge-solid-bg-purple: var(--semantic-accent-purple-dark);
+  --component-badge-solid-bg-red: var(--semantic-accent-red-dark);
+  --component-badge-solid-bg-rose: var(--semantic-accent-rose-dark);
+  --component-badge-solid-bg-sand: var(--semantic-accent-sand-light);
+  --component-badge-solid-bg-sky: var(--semantic-accent-sky-dark);
+  --component-badge-solid-bg-slate: var(--semantic-accent-slate-dark);
+  --component-badge-solid-bg-teal: var(--semantic-accent-teal-dark);
+  --component-badge-solid-bg-violet: var(--semantic-accent-violet-dark);
+  --component-badge-solid-bg-yellow: var(--semantic-accent-yellow-default);
+  --component-badge-solid-bg-zinc: var(--semantic-accent-zinc-dark);
+  --component-badge-solid-text-light: var(--semantic-text-inverse);
+  --component-badge-solid-text-dark: var(--semantic-text-primary);
+
+  /* Badge - Outline Variant (border colors) */
+  --component-badge-outline-border-primary: var(--semantic-accent-blue-dark);
+  --component-badge-outline-border-secondary: var(--semantic-accent-slate-dark);
+  --component-badge-outline-border-neutral: var(--semantic-accent-slate-default);
+  --component-badge-outline-border-success: var(--semantic-accent-green-dark);
+  --component-badge-outline-border-warning: var(--semantic-accent-amber-default);
+  --component-badge-outline-border-error: var(--semantic-accent-red-dark);
+  --component-badge-outline-border-info: var(--semantic-accent-blue-default);
+  --component-badge-outline-border-blue: var(--semantic-accent-blue-dark);
+  --component-badge-outline-border-cyan: var(--semantic-accent-cyan-dark);
+  --component-badge-outline-border-emerald: var(--semantic-accent-emerald-dark);
+  --component-badge-outline-border-fuchsia: var(--semantic-accent-fuchsia-dark);
+  --component-badge-outline-border-gold: var(--semantic-accent-gold-dark);
+  --component-badge-outline-border-green: var(--semantic-accent-green-dark);
+  --component-badge-outline-border-indigo: var(--semantic-accent-indigo-dark);
+  --component-badge-outline-border-lime: var(--semantic-accent-lime-dark);
+  --component-badge-outline-border-navy: var(--semantic-accent-navy-dark);
+  --component-badge-outline-border-amber: var(--semantic-accent-amber-dark);
+  --component-badge-outline-border-orange: var(--semantic-accent-orange-dark);
+  --component-badge-outline-border-pink: var(--semantic-accent-pink-dark);
+  --component-badge-outline-border-purple: var(--semantic-accent-purple-dark);
+  --component-badge-outline-border-red: var(--semantic-accent-red-dark);
+  --component-badge-outline-border-rose: var(--semantic-accent-rose-dark);
+  --component-badge-outline-border-sand: var(--semantic-accent-sand-default);
+  --component-badge-outline-border-sky: var(--semantic-accent-sky-dark);
+  --component-badge-outline-border-slate: var(--semantic-accent-slate-dark);
+  --component-badge-outline-border-teal: var(--semantic-accent-teal-dark);
+  --component-badge-outline-border-violet: var(--semantic-accent-violet-dark);
+  --component-badge-outline-border-yellow: var(--semantic-accent-yellow-default);
+  --component-badge-outline-border-zinc: var(--semantic-accent-zinc-dark);
+
   /* Button Component */
   /* Button - Primary Variant */
   --component-button-bg-primary-default: var(--semantic-brand-secondary-default);
@@ -1430,6 +1520,17 @@ svg {
   --component-button-text-tabs-active: var(--component-tabs-text-active);
   --component-button-text-tabs-disabled: var(--component-tabs-text-disabled);
 
+  /* Button - Nav Variant (for dark navbar backgrounds) */
+  --component-button-bg-nav-default: var(--semantic-surface-transparent);
+  --component-button-bg-nav-hover: var(--primitive-color-gray-500);
+  --component-button-bg-nav-active: var(--primitive-color-gray-500);
+  --component-button-bg-nav-disabled: var(--semantic-surface-transparent);
+  --component-button-border-nav-default: var(--semantic-surface-transparent);
+  --component-button-text-nav-default: var(--primitive-color-gray-300);
+  --component-button-text-nav-hover: var(--primitive-color-gray-50);
+  --component-button-text-nav-active: var(--primitive-color-gray-50);
+  --component-button-text-nav-disabled: var(--primitive-color-gray-500);
+
   /* Button - Sizing */
   --component-button-height-small: var(--semantic-height-default);
   --component-button-height-default: var(--semantic-height-medium);
@@ -1509,6 +1610,7 @@ svg {
 
   /* Input - Sizing */
   --component-input-height-small: var(--semantic-height-default);
+  --component-input-height-default: var(--semantic-height-medium);
   --component-input-height-medium: var(--semantic-height-medium);
   --component-input-height-large: var(--semantic-height-large);
   --component-input-padding-inline: var(--semantic-space-default);
@@ -1527,6 +1629,7 @@ svg {
 
   /* Input - Typography */
   --component-input-font-size-small: var(--semantic-text-size-small);
+  --component-input-font-size-default: var(--semantic-text-size-body);
   --component-input-font-size-medium: var(--semantic-text-size-body);
   --component-input-font-size-large: var(--semantic-text-size-subtitle);
   --component-input-font-weight: var(--semantic-text-weight-regular);
@@ -1535,6 +1638,17 @@ svg {
   --component-input-label-font-weight: var(--semantic-text-weight-medium);
   --component-input-helper-font-size: var(--semantic-text-size-small);
   --component-input-helper-font-weight: var(--semantic-text-weight-regular);
+
+  /* Input - Suffix (unit labels) */
+  --component-input-suffix-color: var(--semantic-text-secondary);
+  --component-input-suffix-font-size: var(--semantic-text-size-small);
+  --component-input-suffix-font-weight: var(--semantic-text-weight-medium);
+  --component-input-suffix-padding-inline: var(--semantic-space-compact);
+
+  /* Input - Picker Indicator (for date/time inputs) */
+  --component-input-picker-indicator-opacity: 0.6;
+  --component-input-picker-indicator-opacity-hover: 1;
+  --component-input-picker-indicator-opacity-disabled: 0.4;
 
   /* Input - States */
   --component-input-transition-duration: var(--semantic-duration-normal);
@@ -1705,7 +1819,7 @@ svg {
   --component-select-text-placeholder: var(--semantic-text-tertiary);
   --component-select-icon-default: var(--semantic-text-primary);
   --component-select-icon-disabled: var(--semantic-text-disabled);
-  --component-select-icon-check-size: var(--semantic-icon-size-sm);
+  --component-select-icon-check-size: var(--semantic-icon-sm);
   --component-select-label-default: var(--semantic-text-primary);
   --component-select-label-error: var(--semantic-text-error);
   --component-select-helper-default: var(--semantic-text-secondary);
@@ -1715,6 +1829,38 @@ svg {
   --component-select-focus-ring-color: var(--semantic-border-focus);
   --component-select-disabled-opacity: var(--semantic-opacity-disabled);
   --component-select-menu-gap: var(--semantic-space-sm);
+
+  /* TimePicker Component */
+  /* TimePicker - Trigger Colors */
+  --component-timepicker-bg-default: var(--semantic-surface-elevated);
+  --component-timepicker-bg-hover: var(--semantic-surface-hover);
+  --component-timepicker-bg-active: var(--semantic-surface-pressed);
+  --component-timepicker-bg-disabled: var(--semantic-surface-base);
+  --component-timepicker-border-default: var(--semantic-border-subtle);
+  --component-timepicker-border-hover: var(--semantic-border-default);
+  --component-timepicker-border-focus: var(--semantic-border-focus);
+  --component-timepicker-border-error: var(--semantic-status-error-default);
+  --component-timepicker-text-default: var(--semantic-text-primary);
+  --component-timepicker-text-disabled: var(--semantic-text-disabled);
+  --component-timepicker-text-placeholder: var(--semantic-text-tertiary);
+  --component-timepicker-icon-default: var(--semantic-text-secondary);
+  --component-timepicker-icon-disabled: var(--semantic-text-disabled);
+  /* TimePicker - Trigger Spacing */
+  --component-timepicker-trigger-gap: var(--semantic-space-compact);
+  --component-timepicker-trigger-padding-inline: var(--component-input-padding-inline);
+  /* TimePicker - Label & Helper */
+  --component-timepicker-label-default: var(--semantic-text-primary);
+  --component-timepicker-label-error: var(--semantic-text-error);
+  --component-timepicker-helper-default: var(--semantic-text-secondary);
+  --component-timepicker-helper-error: var(--semantic-text-error);
+  /* TimePicker - Focus Ring */
+  --component-timepicker-focus-ring-width: var(--semantic-focus-ring-width);
+  --component-timepicker-focus-ring-offset: var(--semantic-focus-ring-offset);
+  --component-timepicker-focus-ring-color: var(--semantic-border-focus);
+  --component-timepicker-disabled-opacity: var(--semantic-opacity-disabled);
+  /* TimePicker - Menu */
+  --component-timepicker-menu-gap: var(--semantic-space-sm);
+  --component-timepicker-menu-max-height: 280px;
 
   /* DatePicker Component */
   /* DatePicker - Colors */
@@ -1741,6 +1887,7 @@ svg {
   --component-datepicker-preset-bg-hover: var(--semantic-surface-hover);
   --component-datepicker-preset-bg-active: var(--semantic-surface-pressed);
   --component-datepicker-divider: var(--semantic-border-subtle);
+  --component-datepicker-divider-height: var(--semantic-border-width-default);
   /* DatePicker - Sizing */
   --component-datepicker-width: 320px;
   --component-datepicker-width-double: 640px;
@@ -1808,6 +1955,11 @@ svg {
   --component-textarea-label-error: var(--semantic-text-error);
   --component-textarea-helper-default: var(--semantic-text-secondary);
   --component-textarea-helper-error: var(--semantic-text-error);
+  --component-textarea-padding-inline: var(--component-input-padding-inline);
+  --component-textarea-padding-block: var(--component-input-padding-block);
+  --component-textarea-min-height-small: 5rem;
+  --component-textarea-min-height-default: 6.25rem;
+  --component-textarea-min-height-large: 7.5rem;
 
   /* Card Component */
   --component-card-bg: var(--semantic-surface-elevated);
@@ -1830,6 +1982,8 @@ svg {
   --component-card-title-weight: var(--semantic-text-weight-semibold);
   --component-card-description-size: var(--semantic-text-size-small);
   --component-card-description-weight: var(--semantic-text-weight-regular);
+  --component-card-description-color: var(--semantic-text-secondary);
+  --component-card-gap: var(--semantic-space-default);
   --component-card-transition-duration: var(--semantic-duration-normal);
   --component-card-shadow: var(--semantic-shadow-sm);
   --component-card-shadow-hover: var(--semantic-shadow-md);
@@ -1906,11 +2060,12 @@ svg {
   --component-tabs-font-size-md: var(--semantic-text-size-small);
   --component-tabs-font-size-lg: var(--semantic-text-size-body);
   --component-tabs-font-weight: var(--semantic-text-weight-medium);
-  --component-tabs-icon-size-sm: var(--semantic-icon-size-xs);
-  --component-tabs-icon-size-md: var(--semantic-icon-size-sm);
-  --component-tabs-icon-size-lg: var(--semantic-icon-size-md);
+  --component-tabs-icon-size-sm: var(--semantic-icon-xs);
+  --component-tabs-icon-size-md: var(--semantic-icon-sm);
+  --component-tabs-icon-size-lg: var(--semantic-icon-md);
 
-  /* Tabs - List */
+  /* Tabs - Layout */
+  --component-tabs-gap: var(--semantic-space-default);
   --component-tabs-list-gap: var(--semantic-space-compact);
   --component-tabs-panels-margin: var(--semantic-space-default);
   --component-tabs-transition: var(--semantic-duration-fast);
@@ -1949,33 +2104,58 @@ svg {
   --component-alert-body-size: var(--semantic-text-size-small);
   --component-alert-body-weight: var(--semantic-text-weight-regular);
   --component-alert-body-line-height: var(--semantic-line-height-normal);
+  --component-alert-content-gap: var(--semantic-space-tight);
 
   /* Spinner Component */
   --component-spinner-color-default: var(--semantic-brand-secondary-default);
   --component-spinner-color-inverse: var(--semantic-text-inverse);
+  --component-spinner-track-default: var(--semantic-border-subtle);
+  --component-spinner-track-inverse: color-mix(in srgb, var(--semantic-text-inverse) 30%, transparent);
   --component-spinner-size-xs: var(--semantic-icon-xsmall);
   --component-spinner-size-sm: var(--semantic-icon-small);
   --component-spinner-size-md: var(--semantic-icon-medium);
   --component-spinner-size-lg: var(--semantic-icon-large);
   --component-spinner-size-xl: var(--semantic-icon-xlarge);
-  --component-spinner-border-width: var(--semantic-border-width-medium);
-  --component-spinner-duration: var(--semantic-duration-slow);
+  --component-spinner-border-width-xs: var(--semantic-border-width-default);
+  --component-spinner-border-width-sm: var(--semantic-border-width-medium);
+  --component-spinner-border-width-md: var(--semantic-border-width-medium);
+  --component-spinner-border-width-lg: var(--semantic-border-width-thicker);
+  --component-spinner-border-width-xl: var(--semantic-border-width-heavy);
+  --component-spinner-duration: 750ms;
 
   /* Skeleton Component */
   --component-skeleton-bg: var(--semantic-surface-base);
   --component-skeleton-highlight: var(--semantic-surface-elevated);
-  --component-skeleton-radius: var(--semantic-radius-md);
-  --component-skeleton-duration: var(--semantic-duration-slowest);
+  --component-skeleton-radius-none: 0;
+  --component-skeleton-radius-sm: var(--semantic-radius-sm);
+  --component-skeleton-radius-md: var(--semantic-radius-md);
+  --component-skeleton-radius-full: var(--semantic-radius-full);
+  --component-skeleton-duration: 1.5s;
+  --component-skeleton-text-gap: var(--semantic-space-compact);
+
+  /* EmptyState Component */
+  --component-emptystate-padding-block: var(--semantic-space-comfortable);
+  --component-emptystate-padding-inline: var(--semantic-space-default);
+  --component-emptystate-icon-color: var(--semantic-text-tertiary);
+  --component-emptystate-icon-gap: var(--semantic-space-default);
+  --component-emptystate-title-gap: var(--semantic-space-compact);
+  --component-emptystate-description-gap: var(--semantic-space-default);
+  --component-emptystate-action-gap: var(--semantic-space-compact);
 
   /* Progress Component */
-  --component-progress-bg: var(--semantic-surface-base);
-  --component-progress-fill-default: var(--semantic-brand-secondary-default);
+  --component-progress-bg-track: var(--semantic-surface-base);
+  --component-progress-bg-fill: var(--semantic-brand-secondary-default);
   --component-progress-fill-success: var(--semantic-status-success-default);
   --component-progress-fill-warning: var(--semantic-status-warning-default);
   --component-progress-fill-error: var(--semantic-status-error-default);
+  --component-progress-height-sm: var(--semantic-height-xxsmall);
   --component-progress-height: var(--semantic-height-xsmall);
+  --component-progress-height-lg: var(--semantic-height-small);
   --component-progress-radius: var(--semantic-radius-full);
   --component-progress-transition: var(--semantic-duration-normal);
+  --component-progress-value-color: var(--semantic-text-secondary);
+  --component-progress-value-size: var(--semantic-text-size-small);
+  --component-progress-value-gap: var(--semantic-space-tight);
 
   /* Toast Component */
   --component-toast-bg: var(--semantic-surface-elevated);
@@ -1999,8 +2179,11 @@ svg {
   --component-toast-shadow: var(--semantic-shadow-lg);
   --component-toast-title-size: var(--semantic-text-size-body);
   --component-toast-title-weight: var(--semantic-text-weight-semibold);
+  --component-toast-title-line-height: var(--semantic-text-line-height-normal);
   --component-toast-body-size: var(--semantic-text-size-small);
   --component-toast-body-weight: var(--semantic-text-weight-regular);
+  --component-toast-body-line-height: var(--semantic-text-line-height-normal);
+  --component-toast-icon-size: var(--semantic-icon-size-default);
   --component-toast-z-index: var(--semantic-z-toast);
 
   /* Modal Component */
@@ -2008,57 +2191,81 @@ svg {
   --component-modal-overlay-bg: var(--semantic-surface-overlay);
   --component-modal-border: var(--semantic-border-subtle);
   --component-modal-text: var(--semantic-text-primary);
-  --component-modal-padding-block: var(--semantic-space-comfortable);
-  --component-modal-padding-inline: var(--semantic-space-comfortable);
-  --component-modal-gap: var(--semantic-space-default);
-  --component-modal-radius: var(--semantic-radius-xl);
+  --component-modal-padding-block: var(--semantic-space-default);
+  --component-modal-padding-inline: var(--semantic-space-default);
+  --component-modal-gap-compact: var(--semantic-space-compact);
+  --component-modal-gap-default: var(--semantic-space-default);
+  --component-modal-radius: var(--semantic-radius-md);
   --component-modal-shadow: var(--semantic-shadow-xl);
   --component-modal-width-min: var(--semantic-width-medium);
   --component-modal-width-sm: var(--semantic-max-width-xs);
   --component-modal-width-md: var(--semantic-max-width-sm);
   --component-modal-width-lg: var(--semantic-max-width-md);
+  --component-modal-width-xl: var(--semantic-max-width-lg);
+  --component-modal-margin-inline: var(--semantic-space-default);
   --component-modal-title-size: var(--semantic-text-size-h3);
   --component-modal-title-weight: var(--semantic-text-weight-semibold);
   --component-modal-z-index: var(--semantic-z-modal);
-  --component-modal-header-padding-block: var(--semantic-space-default);
-  --component-modal-header-padding-inline: var(--semantic-space-comfortable);
-  --component-modal-footer-padding-block: var(--semantic-space-default);
-  --component-modal-footer-padding-inline: var(--semantic-space-comfortable);
-  --component-modal-content-padding-block: var(--semantic-space-comfortable);
-  --component-modal-content-padding-inline: var(--semantic-space-comfortable);
-  --component-modal-close-button-size: var(--semantic-icon-medium);
-  --component-modal-close-button-hover: var(--semantic-surface-hover);
   --component-modal-transition-duration: var(--semantic-duration-normal);
   --component-modal-border-width: var(--semantic-border-width-default);
+  --component-modal-focus-ring-offset: 4px;
+  --component-modal-close-button-offset: var(--semantic-space-compact);
 
+  /* ConfirmDialog Component */
+  --component-confirm-dialog-padding-block: var(--semantic-space-default);
+  --component-confirm-dialog-padding-inline: var(--semantic-space-default);
+  --component-confirm-dialog-gap: var(--semantic-space-compact);
+  --component-confirm-dialog-icon-color-default: var(--semantic-text-info);
+  --component-confirm-dialog-icon-color-destructive: var(--semantic-text-error);
+  --component-confirm-dialog-icon-color-warning: var(--semantic-text-warning);
+  --component-confirm-dialog-icon-color-info: var(--semantic-text-info);
 
   /* Drawer Component */
   --component-drawer-bg: var(--semantic-surface-elevated);
   --component-drawer-overlay-bg: var(--semantic-surface-overlay);
   --component-drawer-border: var(--semantic-border-subtle);
+  --component-drawer-border-width: var(--semantic-border-width-default);
   --component-drawer-text: var(--semantic-text-primary);
-  --component-drawer-padding-block: var(--semantic-space-comfortable);
-  --component-drawer-padding-inline: var(--semantic-space-comfortable);
-  --component-drawer-gap: var(--semantic-space-default);
   --component-drawer-shadow: var(--semantic-shadow-xl);
-  --component-drawer-width: var(--semantic-max-width-sm);
+  --component-drawer-width-sm: var(--semantic-max-width-xs);
+  --component-drawer-width-md: var(--semantic-max-width-sm);
+  --component-drawer-width-lg: var(--semantic-max-width-md);
+  --component-drawer-height-sm: 25%;
+  --component-drawer-height-md: 33%;
+  --component-drawer-height-lg: 50%;
   --component-drawer-z-index: var(--semantic-z-modal);
+  --component-drawer-transition-duration: var(--semantic-duration-normal);
+  --component-drawer-close-button-size: var(--semantic-icon-medium);
+  --component-drawer-radius: var(--semantic-radius-lg);
+  --component-drawer-header-padding-block: var(--semantic-space-default);
+  --component-drawer-header-padding-inline: var(--semantic-space-comfortable);
+  --component-drawer-header-gap: var(--semantic-space-compact);
+  --component-drawer-body-padding-block: var(--semantic-space-comfortable);
+  --component-drawer-body-padding-inline: var(--semantic-space-comfortable);
+  --component-drawer-body-gap: var(--semantic-space-default);
+  --component-drawer-footer-padding-block: var(--semantic-space-default);
+  --component-drawer-footer-padding-inline: var(--semantic-space-comfortable);
+  --component-drawer-footer-gap: var(--semantic-space-compact);
+  --component-drawer-title-size: var(--semantic-text-size-h3);
+  --component-drawer-title-weight: var(--semantic-text-weight-semibold);
 
   /* Tooltip Component */
-  --component-tooltip-bg: var(--semantic-surface-inverse);
-  --component-tooltip-text: var(--semantic-text-inverse);
+  --component-tooltip-bg: var(--semantic-surface-elevated);
+  --component-tooltip-text: var(--semantic-text-primary);
+  --component-tooltip-border: var(--semantic-border-subtle);
   --component-tooltip-padding-block: var(--semantic-space-tight);
   --component-tooltip-padding-inline: var(--semantic-space-compact);
   --component-tooltip-radius: var(--semantic-radius-md);
   --component-tooltip-shadow: var(--semantic-shadow-lg);
   --component-tooltip-font-size: var(--semantic-text-size-small);
-  --component-tooltip-font-weight: var(--semantic-text-weight-regular);
+  --component-tooltip-font-weight: var(--semantic-text-weight-medium);
   --component-tooltip-z-index: var(--semantic-z-tooltip);
 
   /* Popover Component */
   --component-popover-bg: var(--semantic-surface-elevated);
   --component-popover-border: var(--semantic-border-subtle);
   --component-popover-text: var(--semantic-text-primary);
+  --component-popover-text-secondary: var(--semantic-text-secondary);
   --component-popover-padding-block: var(--semantic-space-default);
   --component-popover-padding-inline: var(--semantic-space-default);
   --component-popover-radius: var(--semantic-radius-lg);
@@ -2071,35 +2278,13 @@ svg {
   --component-popover-description-size: var(--semantic-text-size-small);
   --component-popover-description-weight: var(--semantic-text-weight-regular);
   --component-popover-gap: var(--semantic-space-compact);
+  --component-popover-offset: var(--semantic-space-compact);
   --component-popover-transition-duration: var(--semantic-duration-normal);
   --component-popover-min-width: var(--semantic-min-width-popover);
   --component-popover-max-width: var(--semantic-max-width-sm);
-
-  /* Tabs Component */
-  --component-tabs-border: var(--semantic-border-subtle);
-  --component-tabs-gap: var(--semantic-space-default);
-  --component-tabs-gap-enclosed: var(--semantic-space-compact);
-  --component-tabs-padding: var(--semantic-space-tight);
-  --component-tabs-padding-inline-sm: var(--semantic-space-compact);
-  --component-tabs-padding-block-sm: var(--semantic-space-tight);
-  --component-tabs-padding-inline-md: var(--semantic-space-default);
-  --component-tabs-padding-block-md: var(--semantic-space-compact);
-  --component-tabs-padding-inline-lg: var(--semantic-space-comfortable);
-  --component-tabs-padding-block-lg: var(--semantic-space-default);
-  --component-tabs-text-inactive: var(--semantic-text-secondary);
-  --component-tabs-text-hover: var(--semantic-text-primary);
-  --component-tabs-text-active: var(--semantic-brand-secondary-default);
-  --component-tabs-indicator-bg: var(--semantic-brand-secondary-default);
-  --component-tabs-indicator-thickness: var(--semantic-border-width-medium);
-  --component-tabs-active-bg: var(--semantic-surface-base);
-  --component-tabs-hover-bg: var(--semantic-surface-hover);
-  --component-tabs-soft-bg: var(--semantic-surface-base);
-  --component-tabs-radius: var(--semantic-radius-md);
-  --component-tabs-transition-duration: var(--semantic-duration-normal);
-  --component-tabs-panels-margin: var(--semantic-space-default);
-  --component-tabs-focus-outline-width: var(--semantic-border-width-medium);
-  --component-tabs-focus-outline-offset: var(--semantic-border-width-medium);
-  --component-tabs-focus-outline-color: var(--semantic-border-focus);
+  --component-popover-close-offset: var(--semantic-space-compact);
+  --component-popover-close-size: var(--semantic-space-default);
+  --component-popover-close-hover-bg: var(--semantic-surface-hover);
 
   /* Accordion Component */
   --component-accordion-bg: var(--semantic-surface-transparent);
@@ -2154,8 +2339,8 @@ svg {
   /* Dropdown Item - Default Variant */
   --component-dropdown-item-bg-default: var(--semantic-surface-transparent);
   --component-dropdown-item-bg-hover: var(--semantic-surface-hover);
-  --component-dropdown-item-bg-active: var(--semantic-surface-active);
-  --component-dropdown-item-bg-selected: var(--semantic-surface-active);
+  --component-dropdown-item-bg-active: var(--semantic-surface-pressed);
+  --component-dropdown-item-bg-selected: var(--semantic-surface-pressed);
   --component-dropdown-item-bg-disabled: var(--semantic-surface-transparent);
   --component-dropdown-item-text-default: var(--semantic-text-primary);
   --component-dropdown-item-text-hover: var(--semantic-text-primary);
@@ -2212,7 +2397,11 @@ svg {
   --component-dropdown-border-width: var(--semantic-border-width-default);
   --component-dropdown-item-font-size: var(--semantic-text-size-body);
   --component-dropdown-item-font-weight: var(--semantic-text-weight-regular);
+  --component-dropdown-item-font-weight-selected: var(--semantic-text-weight-medium);
+  --component-dropdown-item-text-selected: var(--semantic-text-primary);
   --component-dropdown-item-line-height: var(--semantic-line-height-normal);
+  --component-dropdown-font-size: var(--semantic-text-size-body);
+  --component-dropdown-font-weight: var(--semantic-text-weight-regular);
   --component-dropdown-transition-duration: var(--semantic-duration-fast);
   --component-dropdown-animation-scale: var(--semantic-scale-shrink);
   --component-dropdown-z-index: var(--semantic-z-dropdown);
@@ -2232,37 +2421,27 @@ svg {
   --component-dropdown-description-letter-spacing: var(--semantic-letter-spacing-normal);
 
   /* Navbar Component */
-  --component-navbar-bg: var(--semantic-surface-elevated);
-  --component-navbar-text: var(--semantic-text-primary);
-  --component-navbar-border: var(--semantic-border-subtle);
+  --component-navbar-bg: var(--primitive-color-gray-600);
+  --component-navbar-text: var(--primitive-color-gray-50);
+  --component-navbar-border: var(--primitive-color-gray-500);
   --component-navbar-border-width: var(--semantic-border-width-default);
   --component-navbar-shadow: var(--semantic-shadow-sm);
   --component-navbar-height: var(--semantic-navbar-height);
   --component-navbar-max-width: var(--semantic-max-width-xxl);
   --component-navbar-padding-x: var(--semantic-space-default);
   --component-navbar-gap: var(--semantic-space-default);
+  --component-navbar-section-gap: var(--semantic-space-compact);
   --component-navbar-z-index: var(--semantic-z-sticky);
   --component-navbar-transition: var(--semantic-duration-fast);
   --component-navbar-brand-gap: var(--semantic-space-compact);
   --component-navbar-brand-size: var(--semantic-text-size-h4);
   --component-navbar-brand-weight: var(--semantic-text-weight-bold);
-  --component-navbar-brand-color: var(--semantic-text-primary);
-  --component-navbar-menu-gap: var(--semantic-space-tight);
-  --component-navbar-link-padding-x: var(--semantic-space-default);
-  --component-navbar-link-padding-y: var(--semantic-space-compact);
-  --component-navbar-link-size: var(--semantic-text-size-body);
-  --component-navbar-link-weight: var(--semantic-text-weight-medium);
-  --component-navbar-link-weight-active: var(--semantic-text-weight-semibold);
-  --component-navbar-link-color: var(--semantic-text-secondary);
-  --component-navbar-link-color-hover: var(--semantic-text-primary);
-  --component-navbar-link-color-active: var(--semantic-brand-secondary-default);
-  --component-navbar-link-bg-hover: var(--semantic-surface-hover);
-  --component-navbar-link-bg-active: var(--semantic-surface-active);
-  --component-navbar-link-radius: var(--semantic-radius-md);
-  --component-navbar-burger-size: var(--semantic-navbar-burger-width);
-  --component-navbar-burger-padding: var(--semantic-space-tight);
-  --component-navbar-burger-gap: var(--semantic-navbar-burger-gap);
-  --component-navbar-burger-line-height: var(--semantic-navbar-burger-line-height);
+  --component-navbar-brand-color: var(--primitive-color-gray-50);
+  --component-navbar-focus-ring-width: var(--semantic-focus-ring-width);
+  --component-navbar-focus-ring-color: var(--primitive-color-gray-300);
+  --component-navbar-focus-ring-offset: var(--semantic-focus-ring-offset);
+  --component-navbar-notification-indicator-bg: var(--primitive-color-red-500);
+  --component-navbar-notification-indicator-size: var(--primitive-size-100);
 
   /* Breadcrumb Component */
   --component-breadcrumb-text-default: var(--semantic-text-secondary);
@@ -2270,9 +2449,15 @@ svg {
   --component-breadcrumb-text-hover: var(--semantic-text-primary);
   --component-breadcrumb-separator-color: var(--semantic-text-tertiary);
   --component-breadcrumb-gap: var(--semantic-space-compact);
+  --component-breadcrumb-separator-gap: var(--semantic-space-compact);
   --component-breadcrumb-font-size: var(--semantic-text-size-small);
   --component-breadcrumb-font-weight: var(--semantic-text-weight-regular);
   --component-breadcrumb-font-weight-current: var(--semantic-text-weight-medium);
+  --component-breadcrumb-icon-size: var(--semantic-icon-xsmall);
+  --component-breadcrumb-focus-ring-width: var(--semantic-focus-ring-width);
+  --component-breadcrumb-focus-ring-offset: var(--semantic-focus-ring-offset);
+  --component-breadcrumb-focus-ring-color: var(--semantic-border-focus);
+  --component-breadcrumb-focus-radius: var(--semantic-radius-xs);
 
   /* Pagination Component */
   --component-pagination-bg-default: var(--semantic-surface-transparent);
@@ -2286,15 +2471,28 @@ svg {
   --component-pagination-border-default: var(--semantic-border-subtle);
   --component-pagination-border-hover: var(--semantic-border-default);
   --component-pagination-border-active: var(--semantic-brand-secondary-default);
-  --component-pagination-size: var(--semantic-height-large);
   --component-pagination-gap: var(--semantic-space-compact);
   --component-pagination-radius: var(--semantic-radius-md);
-  --component-pagination-font-size: var(--semantic-text-size-small);
   --component-pagination-font-weight: var(--semantic-text-weight-medium);
   --component-pagination-focus-outline-width: var(--semantic-border-width-medium);
   --component-pagination-focus-outline-offset: var(--semantic-border-width-medium);
   --component-pagination-focus-outline-color: var(--semantic-border-focus);
   --component-pagination-transition-duration: var(--semantic-duration-normal);
+  /* Size variants - small */
+  --component-pagination-height-sm: var(--primitive-size-350);
+  --component-pagination-min-width-sm: var(--primitive-size-350);
+  --component-pagination-padding-inline-sm: var(--semantic-space-compact);
+  --component-pagination-font-size-sm: var(--semantic-text-size-caption);
+  /* Size variants - medium (default) */
+  --component-pagination-height-md: var(--primitive-size-450);
+  --component-pagination-min-width-md: var(--primitive-size-450);
+  --component-pagination-padding-inline-md: var(--semantic-space-default);
+  --component-pagination-font-size-md: var(--semantic-text-size-small);
+  /* Size variants - large */
+  --component-pagination-height-lg: var(--primitive-size-550);
+  --component-pagination-min-width-lg: var(--primitive-size-550);
+  --component-pagination-padding-inline-lg: var(--semantic-space-relaxed);
+  --component-pagination-font-size-lg: var(--semantic-text-size-body);
 
   /* Avatar Component */
   --component-avatar-bg: var(--semantic-surface-base);
@@ -2310,10 +2508,13 @@ svg {
   --component-avatar-radius-circular: var(--semantic-radius-full);
   --component-avatar-radius-rounded: var(--semantic-radius-medium);
   --component-avatar-radius-square: var(--semantic-radius-small);
-  --component-avatar-font-size-sm: var(--semantic-text-size-caption);
-  --component-avatar-font-size-md: var(--semantic-text-size-body);
-  --component-avatar-font-size-lg: var(--semantic-text-size-h4);
-  --component-avatar-font-weight: var(--semantic-text-weight-medium);
+  --component-avatar-text-size-xs: 8px; /* Smallest size - no semantic token available */
+  --component-avatar-text-size-sm: var(--semantic-text-size-caption);
+  --component-avatar-text-size-md: var(--semantic-text-size-small);
+  --component-avatar-text-size-lg: var(--semantic-text-size-body);
+  --component-avatar-text-size-xl: var(--semantic-text-size-subtitle);
+  --component-avatar-text-size-2xl: var(--semantic-text-size-h4);
+  --component-avatar-text-weight: var(--semantic-text-weight-medium);
   --component-avatar-bg-fallback: var(--semantic-surface-hover);
   --component-avatar-text-fallback: var(--semantic-text-secondary);
 
@@ -2324,6 +2525,9 @@ svg {
   --component-list-text-primary: var(--semantic-text-primary);
   --component-list-text-secondary: var(--semantic-text-secondary);
   --component-list-border: var(--semantic-border-subtle);
+  --component-list-divider-color: var(--semantic-border-subtle);
+  --component-list-gap: var(--semantic-space-none);
+  --component-list-radius: var(--semantic-radius-default);
   --component-list-item-padding-block: var(--semantic-space-compact);
   --component-list-item-padding-inline: var(--semantic-space-default);
   --component-list-item-gap: var(--semantic-space-compact);
@@ -2466,6 +2670,7 @@ svg {
   --component-formgroup-legend-weight: var(--semantic-text-weight-semibold);
   --component-formgroup-description-color: var(--semantic-text-secondary);
   --component-formgroup-description-size: var(--semantic-text-size-small);
+  --component-formgroup-description-weight: var(--semantic-text-weight-regular);
   --component-formgroup-error-color: var(--semantic-text-error);
 
   /* ============================================
@@ -2515,6 +2720,15 @@ svg {
   --component-container-padding-inline-xl: var(--semantic-space-spacious);
   --component-container-bg: var(--semantic-surface-transparent);
 
+  /* Flex Component */
+  --component-flex-gap-none: var(--semantic-space-none);
+  --component-flex-gap-tight: var(--semantic-space-tight);
+  --component-flex-gap-compact: var(--semantic-space-compact);
+  --component-flex-gap-default: var(--semantic-space-default);
+  --component-flex-gap-comfortable: var(--semantic-space-comfortable);
+  --component-flex-gap-loose: var(--semantic-space-loose);
+  --component-flex-gap-spacious: var(--semantic-space-spacious);
+
   /* Grid Component */
   --component-grid-gap-none: var(--semantic-space-none);
   --component-grid-gap-tight: var(--semantic-space-tight);
@@ -2546,27 +2760,29 @@ svg {
      ============================================ */
 
   /* Heading Component */
-  --component-heading-color-default: var(--semantic-text-primary);
+  --component-heading-color-primary: var(--semantic-text-primary);
   --component-heading-color-secondary: var(--semantic-text-secondary);
+  --component-heading-color-tertiary: var(--semantic-text-tertiary);
   --component-heading-color-inverse: var(--semantic-text-inverse);
   --component-heading-font-family: var(--semantic-typography-font-family-heading);
   --component-heading-font-size-h1: var(--semantic-text-size-h1);
   --component-heading-font-size-h2: var(--semantic-text-size-h2);
   --component-heading-font-size-h3: var(--semantic-text-size-h3);
   --component-heading-font-size-h4: var(--semantic-text-size-h4);
-  --component-heading-font-weight-light: var(--semantic-text-weight-light);
-  --component-heading-font-weight-regular: var(--semantic-text-weight-regular);
-  --component-heading-font-weight-medium: var(--semantic-text-weight-medium);
-  --component-heading-font-weight-semibold: var(--semantic-text-weight-semibold);
-  --component-heading-font-weight-bold: var(--semantic-text-weight-bold);
-  --component-heading-line-height-tight: var(--semantic-line-height-tight);
-  --component-heading-line-height-compact: var(--semantic-line-height-compact);
-  --component-heading-line-height-normal: var(--semantic-line-height-normal);
-  --component-heading-letter-spacing-tight: var(--semantic-letter-spacing-tight);
-  --component-heading-letter-spacing-normal: var(--semantic-letter-spacing-normal);
-  --component-heading-margin-bottom-default: var(--semantic-space-default);
-  --component-heading-margin-bottom-compact: var(--semantic-space-compact);
-  --component-heading-margin-bottom-none: var(--semantic-space-none);
+  --component-heading-font-size-h5: var(--semantic-text-size-h5);
+  --component-heading-font-size-h6: var(--semantic-text-size-h6);
+  --component-heading-font-weight-h1: var(--semantic-text-weight-bold);
+  --component-heading-font-weight-h2: var(--semantic-text-weight-semibold);
+  --component-heading-font-weight-h3: var(--semantic-text-weight-semibold);
+  --component-heading-font-weight-h4: var(--semantic-text-weight-semibold);
+  --component-heading-font-weight-h5: var(--semantic-text-weight-medium);
+  --component-heading-font-weight-h6: var(--semantic-text-weight-medium);
+  --component-heading-line-height-h1: var(--semantic-line-height-tight);
+  --component-heading-line-height-h2: var(--semantic-line-height-tight);
+  --component-heading-line-height-h3: var(--semantic-line-height-compact);
+  --component-heading-line-height-h4: var(--semantic-line-height-compact);
+  --component-heading-line-height-h5: var(--semantic-line-height-normal);
+  --component-heading-line-height-h6: var(--semantic-line-height-normal);
 
   /* Text Component */
   --component-text-color-primary: var(--semantic-text-primary);
@@ -2607,29 +2823,23 @@ svg {
   --component-label-line-height: var(--semantic-line-height-normal);
   --component-label-margin-bottom: var(--semantic-space-tight);
   --component-label-required-color: var(--semantic-status-error-default);
-  --component-label-required-spacing: var(--semantic-spacing-xxs);
+  --component-label-required-spacing: var(--semantic-space-xs);
 
   /* ============================================
      UTILITY COMPONENTS
      ============================================ */
 
   /* VisuallyHidden Component */
-  --component-visually-hidden-position: absolute;
-  --component-visually-hidden-width: var(--primitive-size-12);
-  --component-visually-hidden-height: var(--primitive-size-12);
+  --component-visually-hidden-width: 1px;
+  --component-visually-hidden-height: 1px;
   --component-visually-hidden-padding: 0;
   --component-visually-hidden-margin: -1px;
-  --component-visually-hidden-overflow: hidden;
   --component-visually-hidden-clip: rect(0, 0, 0, 0);
-  --component-visually-hidden-white-space: nowrap;
   --component-visually-hidden-border-width: 0;
 
   /* Page Component */
   --component-page-bg: var(--semantic-surface-base);
 
-  /* ============================================
-     LAYOUT COMPONENTS
-     ============================================ */
   /* ============================================
      FORM COMPONENTS (Additional)
      ============================================ */
@@ -2639,92 +2849,262 @@ svg {
   --component-textarea-resize: vertical;
 
   /* ============================================
-     FEEDBACK COMPONENTS
+     EXPERIMENTAL COMPONENTS
      ============================================ */
 
-  /* Alert Component */
-  --component-alert-padding-block: var(--semantic-space-compact);
-  --component-alert-padding-inline: var(--semantic-space-default);
-  --component-alert-gap: var(--semantic-space-compact);
-  --component-alert-radius: var(--semantic-radius-md);
-  --component-alert-icon-size: var(--semantic-icon-medium);
-  --component-alert-font-size: var(--semantic-text-size-body);
-  --component-alert-border-width: var(--semantic-border-width-default);
+  /* Tree Component */
+  --component-tree-node-padding-block: var(--semantic-space-compact);
+  --component-tree-node-padding-inline: var(--semantic-space-compact);
+  --component-tree-node-gap: var(--semantic-space-compact);
+  --component-tree-node-radius: var(--semantic-radius-md);
+  --component-tree-node-bg-hover: var(--semantic-surface-hover);
+  --component-tree-node-bg-selected: var(--semantic-status-info-lightest);
+  --component-tree-node-text-selected: var(--semantic-text-link);
+  --component-tree-node-bg-selected-hover: var(--semantic-status-info-light);
+  --component-tree-toggle-size: var(--semantic-icon-xsmall);
+  --component-tree-toggle-color: var(--semantic-text-tertiary);
+  --component-tree-icon-size: var(--semantic-icon-xsmall);
+  --component-tree-icon-color: var(--semantic-text-secondary);
+  --component-tree-label-size: var(--semantic-text-size-body);
+  --component-tree-line-color: var(--semantic-border-subtle);
+  --component-tree-indent: var(--semantic-space-comfortable);
+  --component-tree-transition: var(--semantic-duration-fast);
 
-  /* Alert - Info Variant */
-  --component-alert-bg-info: var(--semantic-status-info-lightest);
-  --component-alert-border-info: var(--semantic-status-info-default);
-  --component-alert-text-info: var(--semantic-status-info-dark);
+  /* Timeline Component */
+  --component-timeline-gap: var(--semantic-space-default);
+  --component-timeline-item-gap: var(--semantic-space-default);
+  --component-timeline-item-padding-bottom: var(--semantic-space-comfortable);
 
-  /* Alert - Success Variant */
-  --component-alert-bg-success: var(--semantic-status-success-lightest);
-  --component-alert-border-success: var(--semantic-status-success-default);
-  --component-alert-text-success: var(--semantic-status-success-dark);
+  /* Timeline - Dot */
+  --component-timeline-dot-size-sm: var(--primitive-size-100);
+  --component-timeline-dot-size-md: var(--primitive-size-150);
+  --component-timeline-dot-size-lg: var(--primitive-size-200);
+  /* Dot sizes when containing an icon - larger to accommodate icon + padding */
+  --component-timeline-dot-icon-container-size-sm: var(--primitive-size-300);
+  --component-timeline-dot-icon-container-size-md: var(--primitive-size-400);
+  --component-timeline-dot-icon-container-size-lg: var(--primitive-size-500);
+  /* Icon sizes inside the dot */
+  --component-timeline-dot-icon-size-sm: var(--semantic-icon-small);
+  --component-timeline-dot-icon-size-md: var(--semantic-icon-small);
+  --component-timeline-dot-icon-size-lg: var(--semantic-icon-medium);
+  --component-timeline-dot-bg: var(--semantic-surface-elevated);
+  --component-timeline-dot-border: var(--semantic-border-default);
+  --component-timeline-dot-border-width: var(--semantic-border-width-medium);
 
-  /* Alert - Warning Variant */
-  --component-alert-bg-warning: var(--semantic-status-warning-lightest);
-  --component-alert-border-warning: var(--semantic-status-warning-default);
-  --component-alert-text-warning: var(--semantic-status-warning-dark);
+  /* Timeline - Dot Variants */
+  --component-timeline-dot-bg-primary: var(--semantic-brand-secondary-default);
+  --component-timeline-dot-border-primary: var(--semantic-brand-secondary-default);
+  --component-timeline-dot-bg-success: var(--semantic-status-success-default);
+  --component-timeline-dot-border-success: var(--semantic-status-success-default);
+  --component-timeline-dot-bg-warning: var(--semantic-status-warning-default);
+  --component-timeline-dot-border-warning: var(--semantic-status-warning-default);
+  --component-timeline-dot-bg-error: var(--semantic-status-error-default);
+  --component-timeline-dot-border-error: var(--semantic-status-error-default);
+  --component-timeline-dot-bg-info: var(--semantic-status-info-default);
+  --component-timeline-dot-border-info: var(--semantic-status-info-default);
+  --component-timeline-dot-icon-color: var(--semantic-text-inverse);
 
-  /* Alert - Error Variant */
-  --component-alert-bg-error: var(--semantic-status-error-lightest);
-  --component-alert-border-error: var(--semantic-status-error-default);
-  --component-alert-text-error: var(--semantic-status-error-dark);
+  /* Timeline - Connector */
+  --component-timeline-connector-width: var(--semantic-border-width-medium);
+  --component-timeline-connector-bg: var(--semantic-border-subtle);
+  --component-timeline-connector-bg-primary: var(--semantic-brand-secondary-default);
+  --component-timeline-connector-bg-success: var(--semantic-status-success-default);
+  --component-timeline-connector-bg-warning: var(--semantic-status-warning-default);
+  --component-timeline-connector-bg-error: var(--semantic-status-error-default);
+  --component-timeline-connector-bg-info: var(--semantic-status-info-default);
 
-  /* Progress Component */
-  --component-progress-height: var(--semantic-height-xsmall);
-  --component-progress-height-sm: var(--semantic-radius-md);
-  --component-progress-height-lg: var(--semantic-icon-xsmall);
-  --component-progress-radius: var(--semantic-radius-full);
-  --component-progress-bg-track: var(--semantic-surface-hover);
-  --component-progress-bg-fill: var(--semantic-brand-primary-default);
-  --component-progress-transition: var(--semantic-duration-normal);
+  /* Timeline - Typography */
+  --component-timeline-title-size: var(--semantic-text-size-body);
+  --component-timeline-title-weight: var(--semantic-text-weight-semibold);
+  --component-timeline-title-color: var(--semantic-text-primary);
+  --component-timeline-timestamp-size: var(--semantic-text-size-small);
+  --component-timeline-timestamp-color: var(--semantic-text-tertiary);
+  --component-timeline-description-size: var(--semantic-text-size-small);
+  --component-timeline-description-color: var(--semantic-text-secondary);
+  --component-timeline-title-margin-bottom: var(--semantic-space-xs);
+  --component-timeline-timestamp-margin-bottom: var(--semantic-space-compact);
 
-  /* Skeleton Component */
-  --component-skeleton-bg: var(--semantic-surface-hover);
-  --component-skeleton-radius: var(--semantic-radius-md);
-  --component-skeleton-animation-duration: 1.5s;
+  /* Timeline - Interactive States */
+  --component-timeline-item-hover-bg: var(--semantic-surface-hover);
+  --component-timeline-item-active-bg: var(--semantic-surface-active);
+  --component-timeline-item-focus-ring: var(--semantic-focus-ring);
+  --component-timeline-item-focus-ring-offset: var(--semantic-focus-ring-offset);
+  --component-timeline-item-border-radius: var(--semantic-radius-medium);
+  --component-timeline-item-interactive-padding: var(--semantic-space-compact);
 
-  /* ============================================
-     DATA DISPLAY COMPONENTS
-     ============================================ */
+  /* Timeline - Action Area */
+  --component-timeline-action-gap: var(--semantic-space-default);
 
-  /* List Component */
-  --component-list-gap: var(--semantic-space-xs);
-  --component-list-item-padding-block: var(--semantic-space-compact);
-  --component-list-item-padding-inline: var(--semantic-space-default);
-  --component-list-item-bg-hover: var(--semantic-surface-hover);
-  --component-list-item-radius: var(--semantic-radius-md);
-  --component-list-divider-color: var(--semantic-border-subtle);
+  /* Timeline - Leading Area */
+  --component-timeline-leading-gap: var(--semantic-space-compact);
 
-  /* ============================================
-     OVERLAY COMPONENTS (Additional)
-     ============================================ */
+  /* Timeline - Status Area */
+  --component-timeline-status-margin-top: var(--semantic-space-default);
+  --component-timeline-status-padding: var(--semantic-space-compact) var(--semantic-space-default);
+  --component-timeline-status-border-radius: var(--semantic-radius-small);
+  --component-timeline-status-gap: var(--semantic-space-compact);
+  --component-timeline-status-font-size: var(--semantic-text-size-small);
+  --component-timeline-status-font-weight: var(--semantic-text-weight-medium);
+  /* Status variants - matching Toast style (alpha bg, dark text, colored icons) */
+  --component-timeline-status-bg-default: var(--semantic-surface-base);
+  --component-timeline-status-bg-default-hover: var(--semantic-surface-alt);
+  --component-timeline-status-text-default: var(--semantic-text-primary);
+  --component-timeline-status-icon-default: var(--semantic-text-secondary);
+  --component-timeline-status-bg-info: var(--semantic-status-info-alpha);
+  --component-timeline-status-bg-info-hover: var(--semantic-surface-info-light);
+  --component-timeline-status-text-info: var(--semantic-status-info-dark);
+  --component-timeline-status-icon-info: var(--semantic-status-info-default);
+  --component-timeline-status-bg-success: var(--semantic-status-success-alpha);
+  --component-timeline-status-bg-success-hover: var(--semantic-surface-success-subtle);
+  --component-timeline-status-text-success: var(--semantic-status-success-dark);
+  --component-timeline-status-icon-success: var(--semantic-status-success-default);
+  --component-timeline-status-bg-warning: var(--semantic-status-warning-alpha);
+  --component-timeline-status-bg-warning-hover: var(--semantic-surface-warning-light);
+  --component-timeline-status-text-warning: var(--semantic-status-warning-dark);
+  --component-timeline-status-icon-warning: var(--semantic-status-warning-default);
+  --component-timeline-status-bg-error: var(--semantic-status-error-alpha);
+  --component-timeline-status-bg-error-hover: var(--semantic-surface-destructive-light);
+  --component-timeline-status-text-error: var(--semantic-status-error-dark);
+  --component-timeline-status-icon-error: var(--semantic-status-error-default);
 
-  /* Drawer Component */
-  --component-drawer-width-sm: var(--semantic-drawer-width-small);
-  --component-drawer-width-md: var(--semantic-drawer-width-medium);
-  --component-drawer-width-lg: var(--semantic-drawer-width-large);
-  --component-drawer-padding-block: var(--semantic-space-comfortable);
-  --component-drawer-padding-inline: var(--semantic-space-comfortable);
-  --component-drawer-gap: var(--semantic-space-default);
-  --component-drawer-bg: var(--semantic-surface-elevated);
-  --component-drawer-overlay-bg: var(--semantic-surface-overlay);
-  --component-drawer-shadow: var(--semantic-shadow-xl);
-  --component-drawer-z-index: var(--semantic-z-modal);
-  --component-drawer-transition: var(--semantic-duration-normal);
+  /* Timeline - Loading */
+  --component-timeline-skeleton-bg: var(--semantic-surface-muted);
+  --component-timeline-skeleton-shimmer: var(--semantic-surface-hover);
 
-  /* ============================================
-     NAVIGATION COMPONENTS (Additional)
-     ============================================ */
+  /* Timeline - Disabled */
+  --component-timeline-disabled-opacity: var(--semantic-opacity-disabled);
 
-  /* Breadcrumb Component */
-  --component-breadcrumb-gap: var(--semantic-space-compact);
-  --component-breadcrumb-separator-color: var(--semantic-text-tertiary);
-  --component-breadcrumb-text-default: var(--semantic-text-secondary);
-  --component-breadcrumb-text-current: var(--semantic-text-primary);
-  --component-breadcrumb-text-hover: var(--semantic-brand-primary-default);
-  --component-breadcrumb-font-size: var(--semantic-text-size-body);
+  /* Timeline - Transitions */
+  --component-timeline-transition: var(--semantic-duration-fast);
+
+  /* Stepper Component */
+  /* Stepper - Indicator Sizing */
+  --component-stepper-indicator-size-sm: var(--primitive-size-400);
+  --component-stepper-indicator-size-md: var(--primitive-size-500);
+  --component-stepper-indicator-size-lg: var(--primitive-size-600);
+  --component-stepper-indicator-font-size-sm: var(--semantic-text-size-small);
+  --component-stepper-indicator-font-size-md: var(--semantic-text-size-body);
+  --component-stepper-indicator-font-size-lg: var(--semantic-text-size-subtitle);
+  --component-stepper-indicator-font-weight: var(--semantic-text-weight-semibold);
+  --component-stepper-indicator-border-width: var(--semantic-border-width-medium);
+
+  /* Stepper - Indicator Colors - Completed */
+  --component-stepper-indicator-bg-completed: var(--semantic-brand-secondary-default);
+  --component-stepper-indicator-text-completed: var(--semantic-text-inverse);
+  --component-stepper-indicator-border-completed: var(--semantic-brand-secondary-default);
+
+  /* Stepper - Indicator Colors - Active */
+  --component-stepper-indicator-bg-active: var(--semantic-brand-secondary-default);
+  --component-stepper-indicator-text-active: var(--semantic-text-inverse);
+  --component-stepper-indicator-border-active: var(--semantic-brand-secondary-default);
+
+  /* Stepper - Indicator Colors - Upcoming */
+  --component-stepper-indicator-bg-upcoming: var(--semantic-surface-base);
+  --component-stepper-indicator-text-upcoming: var(--semantic-text-tertiary);
+  --component-stepper-indicator-border-upcoming: var(--semantic-border-subtle);
+
+  /* Stepper - Indicator Colors - Error */
+  --component-stepper-indicator-bg-error: var(--semantic-status-error-default);
+  --component-stepper-indicator-text-error: var(--semantic-text-inverse);
+  --component-stepper-indicator-border-error: var(--semantic-status-error-default);
+
+  /* Stepper - Focus Ring */
+  --component-stepper-focus-ring-width: var(--semantic-focus-ring-width);
+  --component-stepper-focus-ring-color: var(--semantic-brand-secondary-light);
+
+  /* Stepper - Connector */
+  --component-stepper-connector-height: var(--primitive-size-25);
+  --component-stepper-connector-height-vertical: var(--primitive-size-400);
+  --component-stepper-connector-width: var(--primitive-size-25);
+  --component-stepper-connector-gap: 0;
+  --component-stepper-connector-offset-vertical: var(--primitive-size-250);
+  --component-stepper-connector-bg-completed: var(--semantic-brand-secondary-default);
+  --component-stepper-connector-bg-upcoming: var(--semantic-border-subtle);
+
+  /* Stepper - Content */
+  --component-stepper-content-gap: var(--semantic-space-compact);
+  --component-stepper-content-gap-vertical: var(--semantic-space-default);
+
+  /* Stepper - Label */
+  --component-stepper-label-font-weight: var(--semantic-text-weight-medium);
+  --component-stepper-label-text-completed: var(--semantic-text-primary);
+  --component-stepper-label-text-active: var(--semantic-text-primary);
+  --component-stepper-label-text-upcoming: var(--semantic-text-secondary);
+  --component-stepper-label-text-error: var(--semantic-status-error-dark);
+
+  /* Stepper - Description */
+  --component-stepper-description-font-size: var(--semantic-text-size-small);
+  --component-stepper-description-text: var(--semantic-text-secondary);
+  --component-stepper-description-gap: var(--semantic-space-xs);
+
+  /* Stepper - Transitions */
+  --component-stepper-transition: var(--semantic-duration-normal);
+
+  /* Sidebar Component */
+  /* Sidebar - Base */
+  --component-sidebar-bg: var(--semantic-surface-elevated);
+  --component-sidebar-text: var(--semantic-text-primary);
+  --component-sidebar-padding: var(--semantic-space-default);
+  --component-sidebar-width: 280px;
+  --component-sidebar-width-collapsed: 80px;
+  --component-sidebar-transition-duration: var(--semantic-duration-normal);
+
+  /* Sidebar - Variants */
+  --component-sidebar-border: var(--semantic-border-default);
+  --component-sidebar-shadow: var(--semantic-shadow-lg);
+
+  /* Sidebar - Footer */
+  --component-sidebar-footer-padding-block: var(--semantic-space-default);
+  --component-sidebar-footer-padding-inline: var(--semantic-space-comfortable);
+  --component-sidebar-footer-padding-inline-collapsed: var(--semantic-space-default);
+  --component-sidebar-footer-gap: var(--semantic-space-compact);
+
+  /* Sidebar - Content */
+  --component-sidebar-content-padding-block: var(--semantic-space-default);
+
+  /* Sidebar - Section */
+  --component-sidebar-section-gap: var(--semantic-space-default);
+
+  /* Sidebar - Section Header */
+  --component-sidebar-section-header-padding-block: var(--semantic-space-xs);
+  --component-sidebar-section-header-padding-inline: var(--semantic-space-default);
+  --component-sidebar-section-header-gap: var(--semantic-space-compact);
+  --component-sidebar-section-header-font-size: var(--semantic-text-size-small);
+  --component-sidebar-section-header-font-weight: var(--semantic-text-weight-semibold);
+  --component-sidebar-section-header-text: var(--semantic-text-tertiary);
+
+  /* Sidebar - Item */
+  --component-sidebar-item-padding-block: var(--semantic-space-compact);
+  --component-sidebar-item-padding-inline: var(--semantic-space-default);
+  --component-sidebar-item-padding-inline-collapsed: var(--semantic-space-default);
+  --component-sidebar-item-gap: var(--semantic-space-compact);
+  --component-sidebar-item-text: var(--semantic-text-secondary);
+  --component-sidebar-item-text-hover: var(--semantic-text-primary);
+  --component-sidebar-item-bg-hover: var(--semantic-surface-hover);
+  --component-sidebar-item-transition-duration: var(--semantic-duration-fast);
+  --component-sidebar-item-min-height: 40px;
+  --component-sidebar-item-radius: var(--semantic-radius-md);
+
+  /* Sidebar - Item Active */
+  --component-sidebar-item-active-bg: var(--semantic-surface-selected);
+  --component-sidebar-item-active-bg-hover: var(--semantic-surface-pressed);
+  --component-sidebar-item-active-text: var(--semantic-text-primary);
+  --component-sidebar-item-active-font-weight: var(--semantic-text-weight-medium);
+
+  /* Sidebar - Toggle Button */
+  --component-sidebar-toggle-size: var(--primitive-size-300);
+  --component-sidebar-toggle-offset-top: var(--semantic-space-comfortable);
+  --component-sidebar-toggle-offset-right: calc(var(--primitive-size-300) / -2);
+  --component-sidebar-toggle-bg: var(--semantic-surface-elevated);
+  --component-sidebar-toggle-bg-hover: var(--semantic-surface-hover);
+  --component-sidebar-toggle-border: var(--semantic-border-default);
+  --component-sidebar-toggle-text: var(--semantic-text-secondary);
+  --component-sidebar-toggle-text-hover: var(--semantic-text-primary);
+  --component-sidebar-toggle-shadow: var(--semantic-shadow-sm);
+
+  /* Sidebar - Focus */
+  --component-sidebar-focus-ring-width: var(--semantic-focus-ring-width);
+  --component-sidebar-focus-ring-color: var(--semantic-border-focus);
 }
 
 /* ============================================
@@ -2733,7 +3113,7 @@ svg {
    Primitives stay the same, only semantics change.
    ============================================ */
 
-[data-mode="dark"] {
+[data-theme="dark"] {
   /* ===== COLORS ===== */
 
   /* Brand Colors */
@@ -2775,6 +3155,8 @@ svg {
   --semantic-surface-overlay: var(--primitive-color-black-alpha-heavy);
   --semantic-surface-inverse: var(--primitive-color-sand-100);
   --semantic-surface-transparent: var(--primitive-color-transparent);
+  --semantic-surface-sunken: var(--primitive-color-navy-950);
+  --semantic-surface-muted: var(--primitive-color-navy-800);
   --semantic-surface-hover: var(--primitive-color-navy-700);
   --semantic-surface-active: var(--primitive-color-navy-600);
 
@@ -2785,6 +3167,7 @@ svg {
   --semantic-text-inverse: var(--primitive-color-navy-900);
   --semantic-text-disabled: var(--primitive-color-sand-600);
   --semantic-text-error: var(--primitive-color-red-400);
+  --semantic-text-info: var(--primitive-color-blue-400);
 
   /* Border Colors */
   --semantic-border-default: var(--primitive-color-navy-600);
@@ -2814,4 +3197,18 @@ svg {
   100% {
     transform: translateX(100%);
   }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Hide scrollbar while maintaining scroll functionality */
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }

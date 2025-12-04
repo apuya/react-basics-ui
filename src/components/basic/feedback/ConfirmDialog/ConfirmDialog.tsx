@@ -1,26 +1,22 @@
 import { forwardRef, memo, useCallback, useMemo } from 'react';
-import { type IconType } from 'react-icons';
+import type { IconType } from 'react-icons';
+import { BiErrorCircle, BiCheckCircle, BiInfoCircle } from 'react-icons/bi';
 import { Modal } from '@/components/basic/overlay/Modal';
 import { Button } from '@/components/basic/forms/Button';
 import { Text } from '@/components/basic/typography/Text';
 import { Heading } from '@/components/basic/typography/Heading';
 import { Icon } from '@/components/basic/utility/Icon';
-import { BiErrorCircle, BiCheckCircle, BiInfoCircle } from 'react-icons/bi';
+import { Flex } from '@/components/basic/layout/Flex';
+import { Box } from '@/components/basic/layout/Box';
 import { cn } from '@/lib/cn';
 import {
-  BASE_CONTENT_CLASSES,
-  CONTENT_WRAPPER_STYLES,
-  DESCRIPTION_WRAPPER_STYLES,
-  HEADER_CONTENT_CLASSES,
-  HEADER_CONTENT_STYLES,
-  ICON_WRAPPER_CLASSES,
-  NO_BORDER_STYLES,
-  SECTION_PADDING_STYLES,
-  VARIANT_ICON_COLORS,
-  type ConfirmDialogVariant,
+  DESCRIPTION_WITH_ICON_CLASSES,
+  ICON_CLASSES,
+  TITLE_WRAPPER_CLASSES,
+  VARIANT_ICON_CLASSES,
 } from './ConfirmDialog.styles';
 
-export type { ConfirmDialogVariant };
+export type ConfirmDialogVariant = 'default' | 'destructive' | 'warning' | 'info';
 
 interface VariantConfig {
   icon: IconType;
@@ -115,9 +111,14 @@ export const ConfirmDialog = memo(
     const config = VARIANT_CONFIG[variant];
     const VariantIcon = config.icon;
 
-    const contentClasses = useMemo(
-      () => cn(showIcon && 'pl-11', className),
+    const descriptionClasses = useMemo(
+      () => cn(showIcon && DESCRIPTION_WITH_ICON_CLASSES, className),
       [showIcon, className]
+    );
+
+    const iconClasses = useMemo(
+      () => cn(ICON_CLASSES, VARIANT_ICON_CLASSES[variant]),
+      [variant]
     );
 
     const handleConfirm = useCallback(() => {
@@ -135,53 +136,61 @@ export const ConfirmDialog = memo(
         size="sm"
         closeOnEscape={!isLoading}
         closeOnOverlayClick={!isLoading}
+        showCloseButton={false}
       >
-        <Modal.Content ref={ref} style={CONTENT_WRAPPER_STYLES}>
-          <Modal.Header style={{ ...SECTION_PADDING_STYLES, ...NO_BORDER_STYLES }}>
-            <div className={HEADER_CONTENT_CLASSES} style={HEADER_CONTENT_STYLES}>
-              {showIcon && (
-                <Icon
-                  icon={VariantIcon}
-                  size="lg"
-                  color={VARIANT_ICON_COLORS[variant]}
-                  aria-hidden
-                  className={ICON_WRAPPER_CLASSES}
-                />
-              )}
-              <div className={BASE_CONTENT_CLASSES}>
-                <Heading as="h2" level="h4">
-                  {title}
-                </Heading>
-              </div>
-            </div>
-          </Modal.Header>
-          <div className={contentClasses} style={DESCRIPTION_WRAPPER_STYLES}>
-            {children || (
-              description && (
-                <Text as="p" size="body" color="secondary">
-                  {description}
-                </Text>
-              )
-            )}
-          </div>
-          <Modal.Footer style={{ ...SECTION_PADDING_STYLES, ...NO_BORDER_STYLES }}>
-            <Button
-              variant="secondary"
-              onClick={handleCancel}
-              disabled={isLoading}
-            >
-              {cancelText}
-            </Button>
-            <Button
-              variant={config.buttonVariant}
-              onClick={handleConfirm}
-              isLoading={isLoading}
-              disabled={isLoading}
-            >
-              {confirmText}
-            </Button>
-          </Modal.Footer>
-        </Modal.Content>
+        {/* Header with icon and title */}
+        <Flex
+          ref={ref}
+          align="start"
+          className="w-full"
+          style={{ gap: 'var(--component-confirm-dialog-gap)' }}
+          data-variant={variant}
+          data-loading={isLoading || undefined}
+        >
+          {showIcon && (
+            <Icon
+              icon={VariantIcon}
+              size="lg"
+              aria-hidden
+              className={iconClasses}
+            />
+          )}
+          <Box className={TITLE_WRAPPER_CLASSES}>
+            <Heading as="h2" level="h4">
+              {title}
+            </Heading>
+          </Box>
+        </Flex>
+
+        {/* Description */}
+        <Box className={descriptionClasses}>
+          {children || (
+            description && (
+              <Text as="p" size="body" color="secondary">
+                {description}
+              </Text>
+            )
+          )}
+        </Box>
+
+        {/* Footer with buttons */}
+        <Flex align="center" justify="end" style={{ gap: 'var(--component-confirm-dialog-gap)' }}>
+          <Button
+            variant="secondary"
+            onClick={handleCancel}
+            disabled={isLoading}
+          >
+            {cancelText}
+          </Button>
+          <Button
+            variant={config.buttonVariant}
+            onClick={handleConfirm}
+            isLoading={isLoading}
+            disabled={isLoading}
+          >
+            {confirmText}
+          </Button>
+        </Flex>
       </Modal>
     );
   })

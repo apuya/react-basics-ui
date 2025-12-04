@@ -447,7 +447,7 @@ describe('Popover', () => {
         </Popover>
       );
 
-      expect(screen.getByRole('dialog')).toHaveClass('top-full', 'mt-2');
+      expect(screen.getByRole('dialog')).toHaveClass('top-full', 'mt-[length:var(--component-popover-offset)]');
     });
 
     it('should apply top side positioning', () => {
@@ -458,7 +458,7 @@ describe('Popover', () => {
         </Popover>
       );
 
-      expect(screen.getByRole('dialog')).toHaveClass('bottom-full', 'mb-2');
+      expect(screen.getByRole('dialog')).toHaveClass('bottom-full', 'mb-[length:var(--component-popover-offset)]');
     });
 
     it('should apply left side positioning', () => {
@@ -469,7 +469,7 @@ describe('Popover', () => {
         </Popover>
       );
 
-      expect(screen.getByRole('dialog')).toHaveClass('right-full', 'mr-2');
+      expect(screen.getByRole('dialog')).toHaveClass('right-full', 'mr-[length:var(--component-popover-offset)]');
     });
 
     it('should apply right side positioning', () => {
@@ -480,7 +480,7 @@ describe('Popover', () => {
         </Popover>
       );
 
-      expect(screen.getByRole('dialog')).toHaveClass('left-full', 'ml-2');
+      expect(screen.getByRole('dialog')).toHaveClass('left-full', 'ml-[length:var(--component-popover-offset)]');
     });
 
     it('should apply center alignment by default', () => {

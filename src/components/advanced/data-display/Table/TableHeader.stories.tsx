@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { TableHeader } from './TableHeader';
-import { Table } from './Table';
+import { TableContext } from './TableContext';
 import { useState } from 'react';
 
 const meta = {
@@ -10,20 +10,22 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'The TableHeader component represents individual header cells.',
+        component: 'The TableHeader component represents individual header cells. Supports checkbox, sortable, and default variants.',
       },
     },
   },
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <Table>
-        <thead>
-          <tr>
-            <Story />
-          </tr>
-        </thead>
-      </Table>
+      <TableContext.Provider value={{ size: 'md', variant: 'default' }}>
+        <table className="w-full border-collapse">
+          <thead>
+            <tr>
+              <Story />
+            </tr>
+          </thead>
+        </table>
+      </TableContext.Provider>
     ),
   ],
 } satisfies Meta<typeof TableHeader>;
@@ -35,24 +37,23 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default table header cell (empty).',
+        story: 'Default table header cell with text content.',
       },
     },
   },
-  render: () => <TableHeader />,
+  render: () => <TableHeader>Column Name</TableHeader>,
 };
 
 export const CheckboxVariant: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Checkbox variant for row selection.',
+        story: 'Checkbox variant for row selection in header.',
       },
     },
   },
   render: () => {
     const [checked, setChecked] = useState(false);
-
     return (
       <TableHeader
         variant="checkbox"
@@ -63,61 +64,68 @@ export const CheckboxVariant: Story = {
   },
 };
 
-export const RowHeaderVariant: Story = {
+export const CheckboxIndeterminate: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'RowHeader variant with sortable tab styling.',
+        story: 'Checkbox variant in indeterminate state (some rows selected).',
       },
     },
   },
-  render: () => (
-    <TableHeader
-      variant="rowHeader"
-      sortable
-      onSort={() => console.log('Sort clicked')}
-    >
-      Product
-    </TableHeader>
-  ),
+  args: {
+    variant: 'checkbox',
+    checked: false,
+    indeterminate: true,
+  },
+  render: (args) => <TableHeader {...args} />,
 };
 
-export const RowHeaderAscending: Story = {
+export const Sortable: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'RowHeader variant sorted in ascending order.',
+        story: 'Sortable header with sort icons.',
       },
     },
   },
-  render: () => (
-    <TableHeader
-      variant="rowHeader"
-      sortable
-      sortDirection="asc"
-      onSort={() => console.log('Sort clicked')}
-    >
-      Product
-    </TableHeader>
-  ),
+  args: {
+    sortable: true,
+    onSort: () => console.log('Sort clicked'),
+    children: 'Product',
+  },
+  render: (args) => <TableHeader {...args} />,
 };
 
-export const RowHeaderDescending: Story = {
+export const SortedAscending: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'RowHeader variant sorted in descending order.',
+        story: 'Sortable header sorted in ascending order.',
       },
     },
   },
-  render: () => (
-    <TableHeader
-      variant="rowHeader"
-      sortable
-      sortDirection="desc"
-      onSort={() => console.log('Sort clicked')}
-    >
-      Product
-    </TableHeader>
-  ),
+  args: {
+    sortable: true,
+    sortDirection: 'asc',
+    onSort: () => console.log('Sort clicked'),
+    children: 'Product',
+  },
+  render: (args) => <TableHeader {...args} />,
+};
+
+export const SortedDescending: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Sortable header sorted in descending order.',
+      },
+    },
+  },
+  args: {
+    sortable: true,
+    sortDirection: 'desc',
+    onSort: () => console.log('Sort clicked'),
+    children: 'Product',
+  },
+  render: (args) => <TableHeader {...args} />,
 };

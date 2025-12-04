@@ -1,39 +1,50 @@
-export const NAVBAR_CLASSES =
+// =============================================================================
+// BASE STYLES
+// =============================================================================
+
+export const BASE_CLASSES =
   'w-full bg-[color:var(--component-navbar-bg)] text-[color:var(--component-navbar-text)] shadow-[shadow:var(--component-navbar-shadow)]';
 
+// =============================================================================
+// VARIANT STYLES
+// =============================================================================
+
+export const FIXED_CLASSES =
+  'fixed top-0 left-0 right-0 z-[var(--component-navbar-z-index)]';
+
+export const BORDERED_CLASSES =
+  'border-b border-[color:var(--component-navbar-border)]';
+
+// =============================================================================
+// CONTENT STYLES
+// =============================================================================
+
 export const CONTENT_CLASSES =
-  'mx-auto flex h-[var(--component-navbar-height)] max-w-[var(--component-navbar-max-width)] items-center justify-between gap-[length:var(--component-navbar-gap)] px-[length:var(--component-navbar-padding-x)]';
+  'mx-auto flex items-center justify-between';
+
+// =============================================================================
+// BRAND STYLES
+// =============================================================================
 
 export const BRAND_CLASSES =
-  'flex items-center gap-[length:var(--component-navbar-brand-gap)] text-[length:var(--component-navbar-brand-size)] font-[number:var(--component-navbar-brand-weight)] text-[color:var(--component-navbar-brand-color)]';
+  'flex items-center font-[number:var(--component-navbar-brand-weight)] text-[color:var(--component-navbar-brand-color)]';
 
-export const SECTION_CLASSES = 'flex items-center gap-[length:var(--component-navbar-gap)]';
+// =============================================================================
+// SECTION STYLES
+// =============================================================================
 
-export const MENU_CLASSES =
-  'hidden md:flex items-center gap-[length:var(--component-navbar-menu-gap)]';
+export const SECTION_CLASSES = 'flex items-center';
 
-export const MENU_MOBILE_CLASSES =
-  'absolute left-0 right-0 top-full max-h-0 overflow-hidden bg-[color:var(--component-navbar-bg)] shadow-[shadow:var(--component-navbar-shadow)] transition-all duration-[var(--component-navbar-transition)] md:hidden border-b-[length:var(--component-navbar-border-width)] border-[color:var(--component-navbar-border)] opacity-0';
+// =============================================================================
+// INTERACTIVE ELEMENT STYLES (for items within navbar)
+// =============================================================================
 
-export const MENU_MOBILE_OPEN_CLASSES =
-  'max-h-[80vh] overflow-y-auto opacity-100';
+export const FOCUS_RING_CLASSES =
+  'focus-visible:outline-none focus-visible:ring-[length:var(--component-navbar-focus-ring-width)] focus-visible:ring-[color:var(--component-navbar-focus-ring-color)] focus-visible:ring-offset-[length:var(--component-navbar-focus-ring-offset)] focus-visible:ring-offset-[color:var(--component-navbar-bg)] rounded-full';
 
-export const ITEM_CLASSES = 'flex items-center';
+// =============================================================================
+// NOTIFICATION INDICATOR STYLES
+// =============================================================================
 
-export const LINK_CLASSES =
-  'block px-[length:var(--component-navbar-link-padding-x)] py-[length:var(--component-navbar-link-padding-y)] text-[length:var(--component-navbar-link-size)] font-[number:var(--component-navbar-link-weight)] text-[color:var(--component-navbar-link-color)] hover:text-[color:var(--component-navbar-link-color-hover)] hover:bg-[color:var(--component-navbar-link-bg-hover)] rounded-[var(--component-navbar-link-radius)] transition-colors duration-[var(--component-navbar-transition)] focus-visible:outline-none focus-visible:ring-[length:var(--semantic-focus-ring-width)] focus-visible:ring-offset-[length:var(--semantic-focus-ring-offset)] focus-visible:ring-[color:var(--semantic-border-focus)]';
-
-export const LINK_ACTIVE_CLASSES =
-  'text-[color:var(--component-navbar-link-color-active)] bg-[color:var(--component-navbar-link-bg-active)] font-[number:var(--component-navbar-link-weight-active)]';
-
-export const BURGER_CLASSES =
-  'flex md:hidden flex-col justify-center items-center w-[var(--component-navbar-burger-size)] h-[var(--component-navbar-burger-size)] gap-[var(--component-navbar-burger-gap)] bg-transparent border-none cursor-pointer p-[var(--component-navbar-burger-padding)] rounded-[var(--component-navbar-link-radius)] hover:bg-[color:var(--component-navbar-link-bg-hover)] transition-colors duration-[var(--component-navbar-transition)] focus-visible:outline-none focus-visible:ring-[length:var(--semantic-focus-ring-width)] focus-visible:ring-offset-[length:var(--semantic-focus-ring-offset)] focus-visible:ring-[color:var(--semantic-border-focus)]';
-
-export const BURGER_LINE_CLASSES =
-  'block w-full h-[var(--component-navbar-burger-line-height)] bg-[color:var(--component-navbar-text)] rounded-full transition-all duration-[var(--component-navbar-transition)] origin-center';
-
-export const BURGER_LINE_CLOSE_CLASSES = [
-  'rotate-45 translate-y-[calc(var(--component-navbar-burger-gap)+var(--component-navbar-burger-line-height))]',
-  'opacity-0',
-  '-rotate-45 -translate-y-[calc(var(--component-navbar-burger-gap)+var(--component-navbar-burger-line-height))]',
-];
+export const NOTIFICATION_INDICATOR_CLASSES =
+  'absolute -top-0.5 -right-0.5 rounded-full bg-[color:var(--component-navbar-notification-indicator-bg)] h-[length:var(--component-navbar-notification-indicator-size)] w-[length:var(--component-navbar-notification-indicator-size)]';

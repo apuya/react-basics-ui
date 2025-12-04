@@ -26,34 +26,37 @@ export const ROWS_STYLES = {
   6: 'grid-rows-6',
 } as const;
 
-// Gap sizes using Tailwind spacing scale
+// Gap sizes using component tokens
 export const GAP_STYLES = {
-  xs: 'gap-1', // 4px
-  sm: 'gap-2', // 8px
-  md: 'gap-4', // 16px
-  lg: 'gap-6', // 24px
-  xl: 'gap-8', // 32px
-  '2xl': 'gap-12', // 48px
+  none: 'gap-[length:var(--component-grid-gap-none)]',
+  xs: 'gap-[length:var(--component-grid-gap-tight)]',
+  sm: 'gap-[length:var(--component-grid-gap-compact)]',
+  md: 'gap-[length:var(--component-grid-gap-default)]',
+  lg: 'gap-[length:var(--component-grid-gap-comfortable)]',
+  xl: 'gap-[length:var(--component-grid-gap-loose)]',
+  '2xl': 'gap-[length:var(--component-grid-gap-spacious)]',
 } as const;
 
-// Gap X (horizontal) sizes
+// Gap X (horizontal) sizes using component tokens
 export const GAP_X_STYLES = {
-  xs: 'gap-x-1',
-  sm: 'gap-x-2',
-  md: 'gap-x-4',
-  lg: 'gap-x-6',
-  xl: 'gap-x-8',
-  '2xl': 'gap-x-12',
+  none: 'gap-x-[length:var(--component-grid-gap-none)]',
+  xs: 'gap-x-[length:var(--component-grid-gap-tight)]',
+  sm: 'gap-x-[length:var(--component-grid-gap-compact)]',
+  md: 'gap-x-[length:var(--component-grid-gap-default)]',
+  lg: 'gap-x-[length:var(--component-grid-gap-comfortable)]',
+  xl: 'gap-x-[length:var(--component-grid-gap-loose)]',
+  '2xl': 'gap-x-[length:var(--component-grid-gap-spacious)]',
 } as const;
 
-// Gap Y (vertical) sizes
+// Gap Y (vertical) sizes using component tokens
 export const GAP_Y_STYLES = {
-  xs: 'gap-y-1',
-  sm: 'gap-y-2',
-  md: 'gap-y-4',
-  lg: 'gap-y-6',
-  xl: 'gap-y-8',
-  '2xl': 'gap-y-12',
+  none: 'gap-y-[length:var(--component-grid-gap-none)]',
+  xs: 'gap-y-[length:var(--component-grid-gap-tight)]',
+  sm: 'gap-y-[length:var(--component-grid-gap-compact)]',
+  md: 'gap-y-[length:var(--component-grid-gap-default)]',
+  lg: 'gap-y-[length:var(--component-grid-gap-comfortable)]',
+  xl: 'gap-y-[length:var(--component-grid-gap-loose)]',
+  '2xl': 'gap-y-[length:var(--component-grid-gap-spacious)]',
 } as const;
 
 // Align items

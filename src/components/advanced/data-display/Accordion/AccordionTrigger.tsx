@@ -90,6 +90,8 @@ export const AccordionTrigger = memo(
           disabled={disabled}
           className={triggerClasses}
           style={triggerStyle}
+          data-open={isOpen || undefined}
+          data-disabled={disabled || undefined}
           {...props}
         >
           <Text as="span" size={textSize} weight={textWeight} className="flex-1">

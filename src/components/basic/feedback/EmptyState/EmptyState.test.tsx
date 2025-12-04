@@ -222,8 +222,8 @@ describe('EmptyState', () => {
       const { container } = render(<EmptyState title="Test" />);
       const emptyState = container.firstChild as HTMLElement;
       expect(emptyState).toHaveStyle({
-        paddingBlock: 'var(--semantic-space-comfortable)',
-        paddingInline: 'var(--semantic-space-default)',
+        paddingBlock: 'var(--component-emptystate-padding-block)',
+        paddingInline: 'var(--component-emptystate-padding-inline)',
       });
     });
 
@@ -233,7 +233,7 @@ describe('EmptyState', () => {
       // Title uses Heading component, spacing on wrapper div
       const titleWrapper = title.parentElement;
       expect(titleWrapper).toHaveStyle({
-        marginBottom: 'var(--semantic-space-compact)',
+        marginBottom: 'var(--component-emptystate-title-gap)',
       });
       // Verify it's an h3 element (rendered by Heading component)
       expect(title.tagName).toBe('H3');
@@ -245,7 +245,7 @@ describe('EmptyState', () => {
       // Description uses Text component, spacing on wrapper div
       const descriptionWrapper = description.parentElement;
       expect(descriptionWrapper).toHaveStyle({
-        marginBottom: 'var(--semantic-space-default)',
+        marginBottom: 'var(--component-emptystate-description-gap)',
       });
       // Verify it's a p element (rendered by Text component)
       expect(description.tagName).toBe('P');

@@ -12,7 +12,6 @@ import {
   SIZE_STYLES,
   TRACK_BASE_CLASSES,
   VALUE_TEXT_CLASSES,
-  VALUE_TEXT_STYLES,
   VARIANT_STYLES,
 } from './Progress.styles';
 
@@ -94,32 +93,26 @@ export const Progress = memo(
     );
 
     return (
-      <div className="w-full">
+      <div
+        ref={ref}
+        className={trackClasses}
+        role="progressbar"
+        aria-valuenow={clampedValue}
+        aria-valuemin={0}
+        aria-valuemax={max}
+        aria-label={label}
+        data-size={size}
+        data-variant={variant}
+        {...rest}
+      >
         <div
-          ref={ref}
-          className={trackClasses}
-          role="progressbar"
-          aria-valuenow={clampedValue}
-          aria-valuemin={0}
-          aria-valuemax={max}
-          aria-label={label}
-          {...rest}
-        >
-          <div
-            className={fillClasses}
-            style={{
-              width: `${percentage}%`,
-            }}
-          />
-        </div>
+          className={fillClasses}
+          style={{ width: `${percentage}%` }}
+        />
         {showValue && (
-          <div
-            className={VALUE_TEXT_CLASSES}
-            style={VALUE_TEXT_STYLES}
-            aria-hidden="true"
-          >
+          <span className={VALUE_TEXT_CLASSES} aria-hidden="true">
             {Math.round(percentage)}%
-          </div>
+          </span>
         )}
       </div>
     );

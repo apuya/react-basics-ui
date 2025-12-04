@@ -1,42 +1,56 @@
-import { forwardRef, memo, useMemo } from 'react';
+import { type ComponentPropsWithoutRef, forwardRef, memo, useCallback, useMemo } from 'react';
 import { BiCheckCircle, BiErrorCircle, BiInfoCircle, BiXCircle, BiX } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
-import { Text } from '@/components/basic/typography/Text';
 import {
   BASE_CLASSES,
-  VARIANT_STYLES,
-  ICON_CLASSES,
-  CONTENT_CLASSES,
+  BODY_STYLES,
   CLOSE_BUTTON_CLASSES,
-  CLOSE_ICON_CLASSES,
+  CLOSE_BUTTON_SIZE_STYLE,
+  CONTAINER_STYLES,
+  CONTENT_CLASSES,
+  ICON_COLOR_STYLES,
+  ICON_SIZE_STYLE,
+  TITLE_STYLES,
+  VARIANT_STYLES,
 } from './Toast.styles';
 
 /** Available toast variants for different notification types. */
 export type ToastVariant = 'success' | 'error' | 'warning' | 'info' | 'default';
 
-const VARIANT_ICONS: Record<ToastVariant, React.ComponentType<{ className?: string }>> = {
+/**
+ * Icon components mapped to each variant
+ */
+const VARIANT_ICONS = {
   success: BiCheckCircle,
   error: BiXCircle,
   warning: BiErrorCircle,
   info: BiInfoCircle,
   default: BiInfoCircle,
-};
-
-const PADDING_STYLE = {
-  paddingInline: 'var(--component-toast-padding-inline)',
-  paddingBlock: 'var(--component-toast-padding-block)',
 } as const;
 
-export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
-  /** Visual variant of the toast. @default 'default' */
+export interface ToastProps extends Omit<ComponentPropsWithoutRef<'div'>, 'title'> {
+  /**
+   * Visual variant of the toast
+   * @default 'default'
+   */
   variant?: ToastVariant;
-  /** Title text of the toast notification. */
+  /**
+   * Title text of the toast notification
+   */
   title?: React.ReactNode;
-  /** Description text of the toast notification. */
+  /**
+   * Description text of the toast notification
+   */
   description?: React.ReactNode;
-  /** Callback when close button is clicked. */
+  /**
+   * Callback when close button is clicked.
+   * If provided, a close button will be rendered.
+   */
   onClose?: () => void;
-  /** Whether to show the variant icon. @default true */
+  /**
+   * Whether to show the variant icon
+   * @default true
+   */
   showIcon?: boolean;
 }
 
@@ -49,56 +63,94 @@ export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
  * ```
  */
 export const Toast = memo(
-  forwardRef<HTMLDivElement, ToastProps>(
-    (
-      {
-        variant = 'default',
-        title,
-        description,
-        onClose,
-        showIcon = true,
-        className,
-        children,
-        ...props
-      },
-      ref
-    ) => {
-      const Icon = VARIANT_ICONS[variant];
+  forwardRef<HTMLDivElement, ToastProps>(function Toast(
+    {
+      variant = 'default',
+      title,
+      description,
+      onClose,
+      showIcon = true,
+      className,
+      children,
+      ...rest
+    },
+    ref
+  ) {
+    const toastClasses = useMemo(
+      () => cn(BASE_CLASSES, VARIANT_STYLES[variant], className),
+      [variant, className]
+    );
 
-      const toastClasses = useMemo(
-        () => cn(BASE_CLASSES, VARIANT_STYLES[variant], className),
-        [variant, className]
-      );
+    const handleClose = useCallback(() => {
+      onClose?.();
+    }, [onClose]);
 
-      return (
-        <div
-          ref={ref}
-          role="alert"
-          aria-live="polite"
-          className={toastClasses}
-          style={PADDING_STYLE}
-          {...props}
-        >
-          {showIcon && <Icon className={ICON_CLASSES} />}
+    const IconComponent = VARIANT_ICONS[variant];
+    const hasContent = title || description || children;
+
+    return (
+      <div
+        ref={ref}
+        role="alert"
+        aria-live="polite"
+        className={toastClasses}
+        style={CONTAINER_STYLES}
+        data-variant={variant}
+        {...rest}
+      >
+        {/* Icon */}
+        {showIcon && (
+          <span
+            className={cn('shrink-0', ICON_COLOR_STYLES[variant])}
+            style={ICON_SIZE_STYLE}
+            aria-hidden="true"
+          >
+            <IconComponent />
+          </span>
+        )}
+
+        {/* Content */}
+        {hasContent && (
           <div className={CONTENT_CLASSES}>
-            {title && <Text as="div" size="body" weight="semibold" className="mb-1">{title}</Text>}
-            {description && <Text as="div" size="small" weight="regular" className="opacity-90">{description}</Text>}
-            {children}
+            {title && <div style={TITLE_STYLES}>{title}</div>}
+            {description && (
+              <div
+                style={{
+                  ...BODY_STYLES,
+                  marginTop: title ? 'var(--semantic-space-tight)' : '0',
+                }}
+              >
+                {description}
+              </div>
+            )}
+            {children && !description && (
+              <div
+                style={{
+                  ...BODY_STYLES,
+                  marginTop: title ? 'var(--semantic-space-tight)' : '0',
+                }}
+              >
+                {children}
+              </div>
+            )}
           </div>
-          {onClose && (
-            <button
-              type="button"
-              onClick={onClose}
-              className={CLOSE_BUTTON_CLASSES}
-              aria-label="Close notification"
-            >
-              <BiX className={CLOSE_ICON_CLASSES} />
-            </button>
-          )}
-        </div>
-      );
-    }
-  )
+        )}
+
+        {/* Close button */}
+        {onClose && (
+          <button
+            type="button"
+            onClick={handleClose}
+            className={cn('shrink-0', CLOSE_BUTTON_CLASSES, ICON_COLOR_STYLES[variant])}
+            style={CLOSE_BUTTON_SIZE_STYLE}
+            aria-label="Close notification"
+          >
+            <BiX />
+          </button>
+        )}
+      </div>
+    );
+  })
 );
 
 Toast.displayName = 'Toast';

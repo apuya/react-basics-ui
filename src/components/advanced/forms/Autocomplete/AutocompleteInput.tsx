@@ -7,6 +7,7 @@ import {
   type CSSProperties,
 } from 'react';
 import { cn } from '@/lib/cn';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { useAutocompleteContext } from './Autocomplete';
 import { 
   AUTOCOMPLETE_INPUT_BASE_CLASSES, 
@@ -20,10 +21,12 @@ export interface AutocompleteInputProps extends Omit<ComponentPropsWithoutRef<'i
 
 export const AutocompleteInput = memo(
   forwardRef<HTMLInputElement, AutocompleteInputProps>(
-    ({ placeholder = 'Search...', className, style, disabled: disabledProp, ...props }, forwardedRef) => {
-      const { isOpen, query, setQuery, setIsOpen, selectedValue, multiple, options, filteredOptions, highlightedIndex, setHighlightedIndex, selectOption, inputRef, listId, disabled: contextDisabled, error, size } = useAutocompleteContext();
+    ({ placeholder: placeholderProp, className, style, disabled: disabledProp, ...props }, forwardedRef) => {
+      const { isOpen, query, setQuery, setIsOpen, selectedValue, multiple, options, filteredOptions, highlightedIndex, setHighlightedIndex, selectOption, inputRef, listId, disabled: contextDisabled, error, size, placeholder: contextPlaceholder } = useAutocompleteContext();
+      const placeholder = placeholderProp ?? contextPlaceholder;
       
       const disabled = disabledProp ?? contextDisabled;
+      const mergedRef = useMergedRefs(forwardedRef, inputRef);
 
       const handleInputChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,14 +46,30 @@ export const AutocompleteInput = memo(
         (e: React.KeyboardEvent<HTMLInputElement>) => {
           if (!filteredOptions.length) return;
 
+          // Helper to find next non-disabled index
+          const findNextIndex = (startIndex: number, direction: 1 | -1): number => {
+            let nextIndex = startIndex + direction;
+            while (
+              nextIndex >= 0 &&
+              nextIndex < filteredOptions.length &&
+              filteredOptions[nextIndex]?.disabled
+            ) {
+              nextIndex += direction;
+            }
+            // Clamp to valid range
+            if (nextIndex < 0) return startIndex;
+            if (nextIndex >= filteredOptions.length) return startIndex;
+            return nextIndex;
+          };
+
           switch (e.key) {
             case 'ArrowDown':
               e.preventDefault();
-              setHighlightedIndex((prev) => Math.min(prev + 1, filteredOptions.length - 1));
+              setHighlightedIndex((prev) => findNextIndex(prev, 1));
               break;
             case 'ArrowUp':
               e.preventDefault();
-              setHighlightedIndex((prev) => Math.max(prev - 1, 0));
+              setHighlightedIndex((prev) => findNextIndex(prev, -1));
               break;
             case 'Enter':
               e.preventDefault();
@@ -72,10 +91,9 @@ export const AutocompleteInput = memo(
           AUTOCOMPLETE_INPUT_BASE_CLASSES,
           AUTOCOMPLETE_INPUT_SIZE_STYLES[size],
           error ? AUTOCOMPLETE_INPUT_STATE_STYLES.error : AUTOCOMPLETE_INPUT_STATE_STYLES.default,
-          disabled && AUTOCOMPLETE_INPUT_STATE_STYLES.disabled,
           className
         ),
-        [size, error, disabled, className]
+        [size, error, className]
       );
 
       const displayValue = useMemo(() => {
@@ -89,22 +107,16 @@ export const AutocompleteInput = memo(
 
       const inputStyle = useMemo<CSSProperties>(
         () => ({
+          height: `var(--component-input-height-${size})`,
           paddingInline: 'var(--component-autocomplete-input-padding-inline)',
           ...style,
         }),
-        [style]
+        [size, style]
       );
 
       return (
         <input
-          ref={(node) => {
-            if (node) inputRef.current = node;
-            if (typeof forwardedRef === 'function') {
-              forwardedRef(node);
-            } else if (forwardedRef) {
-              forwardedRef.current = node;
-            }
-          }}
+          ref={mergedRef}
           type="text"
           role="combobox"
           aria-autocomplete="list"
@@ -123,6 +135,9 @@ export const AutocompleteInput = memo(
           disabled={disabled}
           className={inputClasses}
           style={inputStyle}
+          data-size={size}
+          data-error={error || undefined}
+          data-open={isOpen}
           {...props}
         />
       );

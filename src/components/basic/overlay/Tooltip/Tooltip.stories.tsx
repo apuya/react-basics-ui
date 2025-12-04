@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { BiInfoCircle, BiHelpCircle } from 'react-icons/bi';
+import { BiInfoCircle, BiEdit, BiTrash, BiShare } from 'react-icons/bi';
 import { Tooltip } from './Tooltip';
 import { Button } from '../../forms/Button';
 import { Input } from '../../forms/Input';
 import { Label } from '../../forms/Label';
 import { Text } from '../../typography/Text';
+import { Icon } from '../../utility/Icon';
+import { Stack } from '../../layout/Stack';
+import { Grid } from '../../layout/Grid';
 
 const meta = {
   title: 'Overlay/Tooltip',
@@ -19,127 +22,77 @@ const meta = {
     },
   },
   tags: ['autodocs'],
+  argTypes: {
+    position: {
+      control: 'select',
+      options: ['top', 'bottom', 'left', 'right'],
+      description: 'Position of the tooltip relative to the trigger',
+    },
+    offset: {
+      control: 'number',
+      description: 'Offset from the trigger element in pixels',
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div className="p-16">
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof Tooltip>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<typeof Tooltip>;
 
 export const Default: Story = {
   args: {
     content: 'This is a tooltip',
     children: <Button>Hover me</Button>,
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default tooltip positioned at the top of the trigger element.',
-      },
-    },
-  },
 };
 
-export const TopPosition: Story = {
-  args: {
-    content: 'Tooltip on top',
-    position: 'top',
-    children: <Button>Top</Button>,
-  },
+export const AllPositions: Story = {
+  render: () => (
+    <Grid cols={2} gap="xl">
+      <Tooltip content="Top tooltip" position="top">
+        <Button>Top</Button>
+      </Tooltip>
+      <Tooltip content="Right tooltip" position="right">
+        <Button>Right</Button>
+      </Tooltip>
+      <Tooltip content="Bottom tooltip" position="bottom">
+        <Button>Bottom</Button>
+      </Tooltip>
+      <Tooltip content="Left tooltip" position="left">
+        <Button>Left</Button>
+      </Tooltip>
+    </Grid>
+  ),
   parameters: {
     docs: {
       description: {
-        story: 'Tooltip positioned above the trigger element.',
-      },
-    },
-  },
-};
-
-export const BottomPosition: Story = {
-  args: {
-    content: 'Tooltip on bottom',
-    position: 'bottom',
-    children: <Button>Bottom</Button>,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tooltip positioned below the trigger element.',
-      },
-    },
-  },
-};
-
-export const LeftPosition: Story = {
-  args: {
-    content: 'Tooltip on left',
-    position: 'left',
-    children: <Button>Left</Button>,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tooltip positioned to the left of the trigger element.',
-      },
-    },
-  },
-};
-
-export const RightPosition: Story = {
-  args: {
-    content: 'Tooltip on right',
-    position: 'right',
-    children: <Button>Right</Button>,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tooltip positioned to the right of the trigger element.',
-      },
-    },
-  },
-};
-
-export const LongContent: Story = {
-  args: {
-    content: 'This is a longer tooltip with more detailed information',
-    children: <Button>Hover me</Button>,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tooltip with longer text content.',
+        story: 'Comparison of all four tooltip positions.',
       },
     },
   },
 };
 
 export const OnIcon: Story = {
-  args: {
-    content: 'Additional information',
-    children: (
-      <BiInfoCircle className="w-5 h-5 text-blue-600 cursor-help" />
-    ),
-  },
+  render: () => (
+    <Stack direction="horizontal" spacing="lg">
+      <Tooltip content="Additional information">
+        <Icon icon={BiInfoCircle} size="lg" color="primary" className="cursor-help" />
+      </Tooltip>
+      <Tooltip content="Click for help documentation" position="right">
+        <Icon icon={BiInfoCircle} size="lg" color="secondary" className="cursor-help" />
+      </Tooltip>
+    </Stack>
+  ),
   parameters: {
     docs: {
       description: {
-        story: 'Tooltip attached to an information icon.',
-      },
-    },
-  },
-};
-
-export const OnHelpIcon: Story = {
-  args: {
-    content: 'Click for help documentation',
-    position: 'right',
-    children: (
-      <BiHelpCircle className="w-5 h-5 text-gray-500 cursor-help" />
-    ),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tooltip on a help icon, commonly used in forms or UI elements.',
+        story: 'Tooltips attached to information icons.',
       },
     },
   },
@@ -149,9 +102,9 @@ export const OnText: Story = {
   args: {
     content: 'This is a helpful explanation',
     children: (
-      <span className="underline decoration-dotted cursor-help">
+      <Text as="span" size="body" className="underline decoration-dotted cursor-help">
         Hover for info
-      </span>
+      </Text>
     ),
   },
   parameters: {
@@ -166,9 +119,7 @@ export const OnText: Story = {
 export const OnDisabledButton: Story = {
   args: {
     content: 'This feature is currently unavailable',
-    children: (
-      <Button disabled>Disabled</Button>
-    ),
+    children: <Button disabled>Disabled</Button>,
   },
   parameters: {
     docs: {
@@ -179,46 +130,17 @@ export const OnDisabledButton: Story = {
   },
 };
 
-export const AllPositions: Story = {
-  render: () => (
-    <div className="grid grid-cols-2 gap-16 p-16">
-      <Tooltip content="Top tooltip" position="top">
-        <Button>Top</Button>
-      </Tooltip>
-      <Tooltip content="Right tooltip" position="right">
-        <Button>Right</Button>
-      </Tooltip>
-      <Tooltip content="Bottom tooltip" position="bottom">
-        <Button>Bottom</Button>
-      </Tooltip>
-      <Tooltip content="Left tooltip" position="left">
-        <Button>Left</Button>
-      </Tooltip>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of all four tooltip positions.',
-      },
-    },
-  },
-};
-
 export const FormFieldHelp: Story = {
   render: () => (
-    <div className="space-y-2">
+    <Stack spacing="sm">
       <Label className="flex items-center gap-2">
         Email Address
         <Tooltip content="We'll never share your email" position="right">
-          <BiInfoCircle className="w-4 h-4 text-gray-400 cursor-help" />
+          <Icon icon={BiInfoCircle} size="sm" color="secondary" className="cursor-help" />
         </Tooltip>
       </Label>
-      <Input
-        type="email"
-        placeholder="you@example.com"
-      />
-    </div>
+      <Input type="email" placeholder="you@example.com" />
+    </Stack>
   ),
   parameters: {
     docs: {
@@ -234,9 +156,9 @@ export const InlineHelp: Story = {
     <Text size="small" className="max-w-md">
       This feature uses advanced{' '}
       <Tooltip content="Machine learning algorithms analyze patterns in data" position="top">
-        <span className="text-blue-600 underline decoration-dotted cursor-help">
+        <Text as="span" color="link" className="underline decoration-dotted cursor-help">
           AI technology
-        </span>
+        </Text>
       </Tooltip>{' '}
       to improve accuracy and performance over time.
     </Text>
@@ -252,66 +174,28 @@ export const InlineHelp: Story = {
 
 export const ActionButtons: Story = {
   render: () => (
-    <div className="flex gap-2">
+    <Stack direction="horizontal" spacing="sm">
       <Tooltip content="Edit item" position="bottom">
-        <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-          </svg>
-        </button>
+        <Button variant="ghost" size="small">
+          <Icon icon={BiEdit} size="sm" />
+        </Button>
       </Tooltip>
       <Tooltip content="Delete item" position="bottom">
-        <button className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-          </svg>
-        </button>
+        <Button variant="ghost" size="small">
+          <Icon icon={BiTrash} size="sm" />
+        </Button>
       </Tooltip>
       <Tooltip content="Share item" position="bottom">
-        <button className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-          </svg>
-        </button>
+        <Button variant="ghost" size="small">
+          <Icon icon={BiShare} size="sm" />
+        </Button>
       </Tooltip>
-    </div>
+    </Stack>
   ),
   parameters: {
     docs: {
       description: {
         story: 'Tooltips on icon-only action buttons to describe their function.',
-      },
-    },
-  },
-};
-
-export const StatusIndicators: Story = {
-  render: () => (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2">
-        <Tooltip content="Server is running normally" position="right">
-          <div className="w-3 h-3 bg-green-500 rounded-full cursor-help" />
-        </Tooltip>
-        <span className="text-sm">Production Server</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Tooltip content="Server is under maintenance" position="right">
-          <div className="w-3 h-3 bg-yellow-500 rounded-full cursor-help" />
-        </Tooltip>
-        <span className="text-sm">Staging Server</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Tooltip content="Server is offline" position="right">
-          <div className="w-3 h-3 bg-red-500 rounded-full cursor-help" />
-        </Tooltip>
-        <span className="text-sm">Development Server</span>
-      </div>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tooltips providing detailed status information for status indicators.',
       },
     },
   },
@@ -330,6 +214,26 @@ export const ComplexContent: Story = {
     docs: {
       description: {
         story: 'Tooltip with complex JSX content including formatting.',
+      },
+    },
+  },
+};
+
+export const CustomOffset: Story = {
+  render: () => (
+    <Stack direction="horizontal" spacing="lg">
+      <Tooltip content="Default offset (8px)" position="top">
+        <Button variant="secondary">Default</Button>
+      </Tooltip>
+      <Tooltip content="Large offset (16px)" position="top" offset={16}>
+        <Button variant="secondary">Large Offset</Button>
+      </Tooltip>
+    </Stack>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Custom offset distance from the trigger element.',
       },
     },
   },

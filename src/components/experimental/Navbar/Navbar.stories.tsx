@@ -1,13 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Navbar } from './Navbar';
-import { FiHome, FiUser, FiSettings, FiHelpCircle, FiSearch, FiShoppingCart, FiBell } from 'react-icons/fi';
+import { FOCUS_RING_CLASSES, NOTIFICATION_INDICATOR_CLASSES } from './Navbar.styles';
+import { FiSearch, FiBell, FiMoreVertical } from 'react-icons/fi';
 import { Button } from '../../basic/forms/Button';
-import { VisuallyHidden } from '../../basic/utility/VisuallyHidden';
-import { Badge } from '../../basic/feedback/Badge';
-import { Icon } from '../../basic/utility/Icon';
 import { Avatar } from '../../basic/data-display/Avatar';
-import { Flex } from '../../basic/layout/Flex';
-import { Text } from '../../basic/typography/Text';
+import { Input } from '../../basic/forms/Input';
+import { Select } from '../../basic/forms/Select';
+import { Heading } from '../../basic/typography/Heading';
+
+// Consistent icon size for navbar - 20px
+const ICON_CLASS = 'w-5 h-5 shrink-0';
+
+// Transition classes for collapsible panels
+const PANEL_TRANSITION = 'transition-all duration-300 ease-in-out flex items-center justify-center';
+
+// Collapsed button size (32px)
+const COLLAPSED_SIZE = 'w-8';
 
 const meta: Meta<typeof Navbar> = {
   title: 'Experimental/Navbar',
@@ -17,7 +26,7 @@ const meta: Meta<typeof Navbar> = {
     docs: {
       description: {
         component:
-          'Navbar component for site-wide navigation. Features responsive mobile menu, flexible layout, and customizable sections. Perfect for headers, app bars, and top navigation.',
+          'Navbar component for site-wide navigation. Use Button with variant="nav" for navigation links.',
       },
     },
   },
@@ -37,631 +46,160 @@ const meta: Meta<typeof Navbar> = {
 export default meta;
 type Story = StoryObj<typeof Navbar>;
 
+// Reusable navbar elements
+const Brand = () => (
+  <Navbar.Brand>
+    <Heading level="h4" className="text-inherit h-8 flex items-center">
+      Goldfather
+    </Heading>
+  </Navbar.Brand>
+);
+
+const NotificationButton = () => (
+  <Button variant="nav" size="default" aria-label="Notifications">
+    <span className="relative">
+      <FiBell className={ICON_CLASS} />
+      <span 
+        className={NOTIFICATION_INDICATOR_CLASSES}
+        aria-hidden="true"
+      />
+    </span>
+  </Button>
+);
+
+const ProfileAvatar = () => (
+  <a href="/profile" aria-label="Profile" className={FOCUS_RING_CLASSES}>
+    <Avatar size="md">
+      <Avatar.Fallback>JD</Avatar.Fallback>
+    </Avatar>
+  </a>
+);
+
+const ActionSection = () => (
+  <Navbar.Section>
+    <NotificationButton />
+    <ProfileAvatar />
+  </Navbar.Section>
+);
+
 export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Basic navbar with logo and navigation links.',
+        story: 'Default navbar with brand, notification button, and profile avatar.',
+      },
+      story: {
+        inline: false,
+        iframeHeight: 100,
       },
     },
   },
   render: () => (
     <Navbar>
       <Navbar.Content>
-        <Navbar.Brand>
-          <span className="text-2xl font-bold">Logo</span>
-        </Navbar.Brand>
-        <Navbar.Menu>
-          <Navbar.Item>
-            <Navbar.Link href="#" isActive>
-              Home
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">About</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Services</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Contact</Navbar.Link>
-          </Navbar.Item>
-        </Navbar.Menu>
+        <Brand />
+        <ActionSection />
       </Navbar.Content>
     </Navbar>
   ),
 };
 
-export const WithMobileMenu: Story = {
+export const WithSearchBar: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Navbar with responsive mobile menu (burger button visible on mobile).',
+        story: 'Navbar with a centered search bar between the brand and action buttons.',
+      },
+      story: {
+        inline: false,
+        iframeHeight: 100,
       },
     },
   },
   render: () => (
     <Navbar>
       <Navbar.Content>
-        <Navbar.Brand>
-          <span className="text-2xl font-bold text-blue-600">MyApp</span>
-        </Navbar.Brand>
+        <Brand />
         
-        {/* Desktop Menu */}
-        <Navbar.Menu>
-          <Navbar.Item>
-            <Navbar.Link href="#" isActive>
-              Home
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Products</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Pricing</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">About</Navbar.Link>
-          </Navbar.Item>
-        </Navbar.Menu>
-        
-        {/* Mobile Menu Toggle */}
-        <Navbar.Burger />
-      </Navbar.Content>
-      
-      {/* Mobile Menu */}
-      <Navbar.Menu mobile>
-        <Navbar.Item>
-          <Navbar.Link href="#" isActive>
-            Home
-          </Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Products</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Pricing</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">About</Navbar.Link>
-        </Navbar.Item>
-      </Navbar.Menu>
-    </Navbar>
-  ),
-};
-
-export const WithIcons: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Navbar with icons in navigation links for better visual hierarchy.',
-      },
-    },
-  },
-  render: () => (
-    <Navbar bordered>
-      <Navbar.Content>
-        <Navbar.Brand>
-          <FiHome className="h-6 w-6" />
-          <span className="text-xl font-bold">Dashboard</span>
-        </Navbar.Brand>
-        
-        <Navbar.Menu>
-          <Navbar.Item>
-            <Navbar.Link href="#" isActive className="inline-flex items-center gap-2">
-              <FiHome className="h-4 w-4" />
-              Home
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#" className="inline-flex items-center gap-2">
-              <FiUser className="h-4 w-4" />
-              Profile
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#" className="inline-flex items-center gap-2">
-              <FiSettings className="h-4 w-4" />
-              Settings
-            </Navbar.Link>
-          </Navbar.Item>
-        </Navbar.Menu>
-        
-        <Navbar.Burger />
-      </Navbar.Content>
-      
-      <Navbar.Menu mobile>
-        <Navbar.Item>
-          <Navbar.Link href="#" isActive className="inline-flex items-center gap-2">
-            <FiHome className="h-4 w-4" />
-            Home
-          </Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#" className="inline-flex items-center gap-2">
-            <FiUser className="h-4 w-4" />
-            Profile
-          </Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#" className="inline-flex items-center gap-2">
-            <FiSettings className="h-4 w-4" />
-            Settings
-          </Navbar.Link>
-        </Navbar.Item>
-      </Navbar.Menu>
-    </Navbar>
-  ),
-};
-
-export const WithActions: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Navbar with action buttons on the right side.',
-      },
-    },
-  },
-  render: () => (
-    <Navbar>
-      <Navbar.Content>
-        <Navbar.Brand>
-          <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Brand
-          </span>
-        </Navbar.Brand>
-        
-        <Navbar.Menu>
-          <Navbar.Item>
-            <Navbar.Link href="#" isActive>
-              Home
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Features</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Pricing</Navbar.Link>
-          </Navbar.Item>
-        </Navbar.Menu>
-        
-        <Navbar.Section>
-          <Button variant="ghost" size="small">
-            Sign In
-          </Button>
-          <Button variant="primary" size="small">
-            Sign Up
-          </Button>
+        <Navbar.Section className="flex-1 max-w-md mx-auto">
+          <Input
+            placeholder="Search..."
+            leadingIcon={<FiSearch className={ICON_CLASS} />}
+            size="default"
+            className="w-full"
+          />
         </Navbar.Section>
         
-        <Navbar.Burger />
+        <ActionSection />
       </Navbar.Content>
-      
-      <Navbar.Menu mobile>
-        <Navbar.Item>
-          <Navbar.Link href="#" isActive>
-            Home
-          </Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Features</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Pricing</Navbar.Link>
-        </Navbar.Item>
-        <div className="p-4 flex flex-col gap-2">
-          <Button variant="ghost" size="default" className="w-full">
-            Sign In
-          </Button>
-          <Button variant="primary" size="default" className="w-full">
-            Sign Up
-          </Button>
-        </div>
-      </Navbar.Menu>
     </Navbar>
   ),
 };
 
-export const EcommercExample: Story = {
+export const WithSelect: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'E-commerce navbar with search, cart, and user actions.',
+        story: 'Navbar with collapsible select and search. Search is active by default. Click the icons to toggle between them.',
+      },
+      story: {
+        inline: false,
+        iframeHeight: 300,
       },
     },
   },
-  render: () => (
-    <Navbar bordered>
-      <Navbar.Content>
-        <Navbar.Brand>
-          <span className="text-2xl font-bold">Shop</span>
-        </Navbar.Brand>
-        
-        <Navbar.Menu>
-          <Navbar.Item>
-            <Navbar.Link href="#" isActive>
-              New Arrivals
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Men</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Women</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Sale</Navbar.Link>
-          </Navbar.Item>
-        </Navbar.Menu>
-        
-        <Navbar.Section>
-          <Button variant="ghost" size="small">
-            <FiSearch className="h-5 w-5" />
-            <VisuallyHidden>Search</VisuallyHidden>
-          </Button>
-          <Button variant="ghost" size="small" className="relative">
-            <FiShoppingCart className="h-5 w-5" />
-            <VisuallyHidden>Cart</VisuallyHidden>
-            <Badge variant="error" size="small" className="absolute -top-1 -right-1">
-              3
-            </Badge>
-          </Button>
-          <Button variant="ghost" size="small">
-            <FiUser className="h-5 w-5" />
-            <VisuallyHidden>Account</VisuallyHidden>
-          </Button>
-        </Navbar.Section>
-        
-        <Navbar.Burger />
-      </Navbar.Content>
-      
-      <Navbar.Menu mobile>
-        <Navbar.Item>
-          <Navbar.Link href="#" isActive>
-            New Arrivals
-          </Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Men</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Women</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Sale</Navbar.Link>
-        </Navbar.Item>
-      </Navbar.Menu>
-    </Navbar>
-  ),
-};
+  render: function WithSelectRender() {
+    const [activePanel, setActivePanel] = useState<'none' | 'select' | 'search'>('search');
 
-export const AppDashboard: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Application dashboard navbar with user profile and notifications.',
-      },
-    },
-  },
-  render: () => (
-    <Navbar>
-      <Navbar.Content>
-        <Navbar.Brand>
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg" />
-            <span className="text-xl font-bold">Dashboard</span>
-          </div>
-        </Navbar.Brand>
-        
-        <Navbar.Menu>
-          <Navbar.Item>
-            <Navbar.Link href="#" isActive>
-              Overview
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Analytics</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Reports</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Settings</Navbar.Link>
-          </Navbar.Item>
-        </Navbar.Menu>
-        
-        <Navbar.Section>
-          <Button variant="ghost" size="small" className="relative">
-            <FiBell className="h-5 w-5" />
-            <VisuallyHidden>Notifications</VisuallyHidden>
-            <span className="absolute top-1 right-1 bg-red-500 h-2 w-2 rounded-full" />
-          </Button>
-          <Flex align="center" gap="sm" className="px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">
-            <Avatar size="sm" initials="JD" />
-            <Text size="sm" weight="medium">John Doe</Text>
-          </Flex>
-        </Navbar.Section>
-        
-        <Navbar.Burger />
-      </Navbar.Content>
-      
-      <Navbar.Menu mobile>
-        <Navbar.Item>
-          <Navbar.Link href="#" isActive>
-            Overview
-          </Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Analytics</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Reports</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Settings</Navbar.Link>
-        </Navbar.Item>
-      </Navbar.Menu>
-    </Navbar>
-  ),
-};
+    const toggleSelect = () => setActivePanel(prev => prev === 'select' ? 'none' : 'select');
+    const toggleSearch = () => setActivePanel(prev => prev === 'search' ? 'none' : 'search');
 
-export const Fixed: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Fixed navbar that stays at the top when scrolling.',
-      },
-    },
-  },
-  render: () => (
-    <div>
-      <Navbar fixed bordered>
+    return (
+      <Navbar>
         <Navbar.Content>
-          <Navbar.Brand>
-            <span className="text-2xl font-bold">Fixed Nav</span>
-          </Navbar.Brand>
+          <Brand />
           
-          <Navbar.Menu>
-            <Navbar.Item>
-              <Navbar.Link href="#" isActive>
-                Home
-              </Navbar.Link>
-            </Navbar.Item>
-            <Navbar.Item>
-              <Navbar.Link href="#">About</Navbar.Link>
-            </Navbar.Item>
-            <Navbar.Item>
-              <Navbar.Link href="#">Contact</Navbar.Link>
-            </Navbar.Item>
-          </Navbar.Menu>
+          {/* Collapsible Controls - centered in navbar */}
+          <div className="flex items-center gap-2 justify-center">
+            {/* Select: expands when active, shrinks to button when inactive */}
+            <div className={`${PANEL_TRANSITION} ${activePanel === 'select' ? 'w-72' : COLLAPSED_SIZE}`}>
+              {activePanel === 'select' ? (
+                <Select size="default" defaultValue="workspace-1" className="w-full">
+                  <Select.Trigger placeholder="Select workspace" />
+                  <Select.Menu>
+                    <Select.Option value="workspace-1">Workspace 1</Select.Option>
+                    <Select.Option value="workspace-2">Workspace 2</Select.Option>
+                    <Select.Option value="workspace-3">Workspace 3</Select.Option>
+                  </Select.Menu>
+                </Select>
+              ) : (
+                <Button variant="nav" size="default" onClick={toggleSelect} aria-label="Open workspace selector" className={`${COLLAPSED_SIZE} justify-center`}>
+                  <FiMoreVertical className={ICON_CLASS} />
+                </Button>
+              )}
+            </div>
+            
+            {/* Search: expands when active, shrinks to button when inactive */}
+            <div className={`${PANEL_TRANSITION} ${activePanel === 'search' ? 'w-72' : COLLAPSED_SIZE}`}>
+              {activePanel === 'search' ? (
+                <Input
+                  placeholder="Search..."
+                  leadingIcon={<FiSearch className={ICON_CLASS} />}
+                  size="default"
+                  className="w-full"
+                  autoFocus
+                />
+              ) : (
+                <Button variant="nav" size="default" onClick={toggleSearch} aria-label="Open search" className={`${COLLAPSED_SIZE} justify-center`}>
+                  <FiSearch className={ICON_CLASS} />
+                </Button>
+              )}
+            </div>
+          </div>
           
-          <Navbar.Burger />
+          <ActionSection />
         </Navbar.Content>
-        
-        <Navbar.Menu mobile>
-          <Navbar.Item>
-            <Navbar.Link href="#" isActive>
-              Home
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">About</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Contact</Navbar.Link>
-          </Navbar.Item>
-        </Navbar.Menu>
       </Navbar>
-      <div className="p-8 pt-24">
-        <p className="text-gray-600">
-          Scroll down to see the fixed navbar behavior. The navbar will stay at the top of
-          the viewport.
-        </p>
-        <div className="h-screen flex items-center justify-center">
-          <p className="text-gray-400">Scroll content...</p>
-        </div>
-      </div>
-    </div>
-  ),
-};
-
-export const MinimalDesign: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Minimal navbar design with clean aesthetics.',
-      },
-    },
+    );
   },
-  render: () => (
-    <Navbar bordered={false}>
-      <Navbar.Content>
-        <Navbar.Brand>
-          <span className="text-sm font-semibold tracking-wider uppercase">Minimal</span>
-        </Navbar.Brand>
-        
-        <Navbar.Menu>
-          <Navbar.Item>
-            <Navbar.Link href="#" isActive>
-              Work
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">About</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Contact</Navbar.Link>
-          </Navbar.Item>
-        </Navbar.Menu>
-        
-        <Navbar.Burger />
-      </Navbar.Content>
-      
-      <Navbar.Menu mobile>
-        <Navbar.Item>
-          <Navbar.Link href="#" isActive>
-            Work
-          </Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">About</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Contact</Navbar.Link>
-        </Navbar.Item>
-      </Navbar.Menu>
-    </Navbar>
-  ),
-};
-
-export const WithLogo: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Navbar with logo image and branding.',
-      },
-    },
-  },
-  render: () => (
-    <Navbar>
-      <Navbar.Content>
-        <Navbar.Brand>
-          <div className="h-10 w-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
-            L
-          </div>
-          <span className="text-xl font-bold">LogoName</span>
-        </Navbar.Brand>
-        
-        <Navbar.Menu>
-          <Navbar.Item>
-            <Navbar.Link href="#" isActive>
-              Products
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Solutions</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Resources</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Pricing</Navbar.Link>
-          </Navbar.Item>
-        </Navbar.Menu>
-        
-        <Navbar.Section>
-          <Button variant="ghost" size="small">
-            Login
-          </Button>
-          <Button variant="primary" size="small">
-            Get Started
-          </Button>
-        </Navbar.Section>
-        
-        <Navbar.Burger />
-      </Navbar.Content>
-      
-      <Navbar.Menu mobile>
-        <Navbar.Item>
-          <Navbar.Link href="#" isActive>
-            Products
-          </Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Solutions</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Resources</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Pricing</Navbar.Link>
-        </Navbar.Item>
-        <div className="p-4 flex flex-col gap-2">
-          <Button variant="ghost" size="default" className="w-full">
-            Login
-          </Button>
-          <Button variant="primary" size="default" className="w-full">
-            Get Started
-          </Button>
-        </div>
-      </Navbar.Menu>
-    </Navbar>
-  ),
-};
-
-export const HelpCenter: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Help center navbar with search and support links.',
-      },
-    },
-  },
-  render: () => (
-    <Navbar bordered>
-      <Navbar.Content>
-        <Navbar.Brand>
-          <FiHelpCircle className="h-6 w-6" />
-          <span className="text-xl font-bold">Help Center</span>
-        </Navbar.Brand>
-        
-        <Navbar.Menu>
-          <Navbar.Item>
-            <Navbar.Link href="#" isActive>
-              Getting Started
-            </Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">Guides</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">API</Navbar.Link>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Navbar.Link href="#">FAQ</Navbar.Link>
-          </Navbar.Item>
-        </Navbar.Menu>
-        
-        <Navbar.Section>
-          <div className="relative hidden md:block">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-          </div>
-        </Navbar.Section>
-        
-        <Navbar.Burger />
-      </Navbar.Content>
-      
-      <Navbar.Menu mobile>
-        <div className="p-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
-            />
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-          </div>
-        </div>
-        <Navbar.Item>
-          <Navbar.Link href="#" isActive>
-            Getting Started
-          </Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">Guides</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">API</Navbar.Link>
-        </Navbar.Item>
-        <Navbar.Item>
-          <Navbar.Link href="#">FAQ</Navbar.Link>
-        </Navbar.Item>
-      </Navbar.Menu>
-    </Navbar>
-  ),
 };

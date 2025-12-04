@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { JSX } from 'react';
 import { Checkbox } from './Checkbox';
 import { Text } from '../../typography/Text';
+import { Stack } from '../../layout/Stack';
 
 type StoryWithRender = StoryObj<typeof Checkbox> & { render: () => JSX.Element };
 
@@ -73,11 +74,11 @@ export const WithoutLabel: Story = {
  */
 export const AllSizes: StoryWithRender = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
+    <Stack gap="md">
       <Checkbox size="small" label="Small checkbox" />
       <Checkbox size="default" label="Default checkbox" />
       <Checkbox size="large" label="Large checkbox" />
-    </div>
+    </Stack>
   ),
 };
 
@@ -86,14 +87,14 @@ export const AllSizes: StoryWithRender = {
  */
 export const AllStates: StoryWithRender = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
+    <Stack gap="md">
       <Checkbox label="Unchecked" />
       <Checkbox label="Checked" defaultChecked />
       <Checkbox label="Indeterminate" indeterminate />
       <Checkbox label="Error" error />
       <Checkbox label="Disabled" disabled />
       <Checkbox label="Disabled Checked" disabled defaultChecked />
-    </div>
+    </Stack>
   ),
 };
 
@@ -102,7 +103,7 @@ export const AllStates: StoryWithRender = {
  */
 export const CheckboxGroup: StoryWithRender = {
   render: () => (
-    <fieldset style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
+    <Stack as="fieldset" gap="md">
       <legend style={{ marginBottom: 'var(--semantic-space-compact)' }}>
         <Text weight="medium">Select your interests</Text>
       </legend>
@@ -111,7 +112,7 @@ export const CheckboxGroup: StoryWithRender = {
       <Checkbox label="Business" defaultChecked />
       <Checkbox label="Marketing" />
       <Checkbox label="Finance" />
-    </fieldset>
+    </Stack>
   ),
 };
 
@@ -120,15 +121,15 @@ export const CheckboxGroup: StoryWithRender = {
  */
 export const SelectAllPattern: StoryWithRender = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
+    <Stack gap="md">
       <Checkbox label="Select all" indeterminate />
-      <div style={{ marginLeft: 'var(--semantic-space-comfortable)', display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-compact)' }}>
+      <Stack gap="sm" className="ml-6">
         <Checkbox label="Item 1" defaultChecked />
         <Checkbox label="Item 2" defaultChecked />
         <Checkbox label="Item 3" />
         <Checkbox label="Item 4" />
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   ),
 };
 
@@ -137,7 +138,7 @@ export const SelectAllPattern: StoryWithRender = {
  */
 export const WithJSXLabel: StoryWithRender = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)', maxWidth: '24rem' }}>
+    <Stack gap="md" className="max-w-[24rem]">
       <Checkbox
         label={
           <span>
@@ -159,7 +160,7 @@ export const WithJSXLabel: StoryWithRender = {
         }
       />
       <Checkbox label="Send me marketing emails" />
-    </div>
+    </Stack>
   ),
 };
 
@@ -168,9 +169,9 @@ export const WithJSXLabel: StoryWithRender = {
  */
 export const FormIntegration: StoryWithRender = {
   render: () => (
-    <form style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)', width: '20rem' }}>
+    <Stack as="form" gap="md" className="w-80">
       <Text as="strong" weight="semibold">Account Preferences</Text>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--semantic-space-default)' }}>
+      <Stack gap="md">
         <Checkbox label="Remember me" />
         <Checkbox label="Email notifications" defaultChecked />
         <Checkbox label="Push notifications" defaultChecked />
@@ -185,9 +186,9 @@ export const FormIntegration: StoryWithRender = {
           }
           error
         />
-      </div>
+      </Stack>
       <Text as="p" size="caption" color="error">Please accept the terms to continue</Text>
-    </form>
+    </Stack>
   ),
 };
 

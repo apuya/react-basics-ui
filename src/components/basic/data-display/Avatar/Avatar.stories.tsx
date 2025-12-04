@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BiGroup, BiSmile, BiBuilding } from 'react-icons/bi';
 import { Avatar } from './Avatar';
+import { Flex } from '../../layout/Flex';
+import { Stack } from '../../layout/Stack';
+import { Text } from '../../typography/Text';
+import { Card } from '../Card/Card';
+import { Grid } from '../../layout/Grid';
 
 const meta: Meta<typeof Avatar> = {
   title: 'Basic/Data Display/Avatar',
@@ -40,6 +45,27 @@ export default meta;
 type Story = StoryObj<typeof Avatar>;
 
 // =============================================================================
+// SHARED DATA
+// =============================================================================
+
+const AVATAR_SIZES = ['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const;
+const AVATAR_SHAPES = ['circular', 'square'] as const;
+const SAMPLE_IMAGE = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop';
+const SAMPLE_IMAGE_ALT = 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop';
+
+const CUSTOM_ICONS = [
+  { icon: BiGroup, label: 'Group' },
+  { icon: BiSmile, label: 'Smile' },
+  { icon: BiBuilding, label: 'Building' },
+] as const;
+
+const USER_LIST_DATA = [
+  { name: 'John Doe', email: 'john@example.com', image: SAMPLE_IMAGE },
+  { name: 'Alice Miller', email: 'alice@example.com', initials: 'AM' },
+  { name: 'Team Account', email: 'team@example.com', icon: BiGroup },
+];
+
+// =============================================================================
 // BASIC USAGE
 // =============================================================================
 
@@ -55,46 +81,38 @@ export const Default: Story = {
 };
 
 /**
- * Avatar with an image source.
+ * All fallback content types: image, initials, and custom icons.
  */
-export const WithImage: Story = {
+export const FallbackTypes: Story = {
   render: () => (
-    <Avatar>
-      <Avatar.Image
-        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
-        alt="User Avatar"
-      />
-    </Avatar>
-  ),
-};
-
-/**
- * Avatar with initials as fallback content.
- */
-export const WithInitials: Story = {
-  render: () => (
-    <Avatar>
-      <Avatar.Fallback>JD</Avatar.Fallback>
-    </Avatar>
-  ),
-};
-
-/**
- * Avatar with custom icons.
- */
-export const WithCustomIcon: Story = {
-  render: () => (
-    <div className="flex gap-4 items-center">
-      <Avatar>
-        <Avatar.Fallback icon={BiGroup} />
-      </Avatar>
-      <Avatar>
-        <Avatar.Fallback icon={BiSmile} />
-      </Avatar>
-      <Avatar>
-        <Avatar.Fallback icon={BiBuilding} />
-      </Avatar>
-    </div>
+    <Flex gap="lg" align="center">
+      <Stack align="center" gap="xs">
+        <Avatar size="lg">
+          <Avatar.Image src={SAMPLE_IMAGE} alt="User Avatar" />
+        </Avatar>
+        <Text size="xs" color="secondary">Image</Text>
+      </Stack>
+      <Stack align="center" gap="xs">
+        <Avatar size="lg">
+          <Avatar.Fallback>JD</Avatar.Fallback>
+        </Avatar>
+        <Text size="xs" color="secondary">Initials</Text>
+      </Stack>
+      <Stack align="center" gap="xs">
+        <Avatar size="lg">
+          <Avatar.Fallback />
+        </Avatar>
+        <Text size="xs" color="secondary">Default Icon</Text>
+      </Stack>
+      {CUSTOM_ICONS.map(({ icon, label }) => (
+        <Stack key={label} align="center" gap="xs">
+          <Avatar size="lg">
+            <Avatar.Fallback icon={icon} />
+          </Avatar>
+          <Text size="xs" color="secondary">{label}</Text>
+        </Stack>
+      ))}
+    </Flex>
   ),
 };
 
@@ -103,20 +121,29 @@ export const WithCustomIcon: Story = {
 // =============================================================================
 
 /**
- * All available size variants. Size is automatically inherited by Fallback.
+ * All available size variants with initials and icons.
  */
 export const AllSizes: Story = {
   render: () => (
-    <div className="flex gap-4 items-end">
-      {(['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const).map((size) => (
-        <div key={size} className="flex flex-col items-center gap-2">
-          <Avatar size={size}>
-            <Avatar.Fallback>{size.toUpperCase()}</Avatar.Fallback>
+    <Stack gap="md">
+      <Flex gap="md" align="end">
+        {AVATAR_SIZES.map((size) => (
+          <Stack key={size} align="center" gap="xs">
+            <Avatar size={size}>
+              <Avatar.Fallback>{size.toUpperCase()}</Avatar.Fallback>
+            </Avatar>
+            <Text size="xs" color="secondary">{size}</Text>
+          </Stack>
+        ))}
+      </Flex>
+      <Flex gap="md" align="end">
+        {AVATAR_SIZES.map((size) => (
+          <Avatar key={size} size={size}>
+            <Avatar.Fallback />
           </Avatar>
-          <span className="text-xs text-gray-600">{size}</span>
-        </div>
-      ))}
-    </div>
+        ))}
+      </Flex>
+    </Stack>
   ),
 };
 
@@ -125,41 +152,16 @@ export const AllSizes: Story = {
  */
 export const AllShapes: Story = {
   render: () => (
-    <div className="flex gap-6 items-center">
-      <div className="flex flex-col items-center gap-2">
-        <Avatar shape="circular" size="lg">
-          <Avatar.Image
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
-            alt="Circular avatar"
-          />
-        </Avatar>
-        <span className="text-xs text-gray-600">circular</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Avatar shape="square" size="lg">
-          <Avatar.Image
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
-            alt="Square avatar"
-          />
-        </Avatar>
-        <span className="text-xs text-gray-600">square</span>
-      </div>
-    </div>
-  ),
-};
-
-/**
- * Different sizes with icon fallback.
- */
-export const SizesWithIcons: Story = {
-  render: () => (
-    <div className="flex gap-4 items-end">
-      {(['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const).map((size) => (
-        <Avatar key={size} size={size}>
-          <Avatar.Fallback />
-        </Avatar>
+    <Flex gap="lg" align="center">
+      {AVATAR_SHAPES.map((shape) => (
+        <Stack key={shape} align="center" gap="xs">
+          <Avatar shape={shape} size="lg">
+            <Avatar.Image src={SAMPLE_IMAGE} alt={`${shape} avatar`} />
+          </Avatar>
+          <Text size="xs" color="secondary">{shape}</Text>
+        </Stack>
       ))}
-    </div>
+    </Flex>
   ),
 };
 
@@ -172,25 +174,22 @@ export const SizesWithIcons: Story = {
  */
 export const ImageWithFallback: Story = {
   render: () => (
-    <div className="flex gap-4 items-center">
-      <div className="flex flex-col items-center gap-2">
+    <Flex gap="md" align="center">
+      <Stack align="center" gap="xs">
         <Avatar>
-          <Avatar.Image
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
-            alt="Valid image"
-          />
+          <Avatar.Image src={SAMPLE_IMAGE} alt="Valid image" />
           <Avatar.Fallback>JD</Avatar.Fallback>
         </Avatar>
-        <span className="text-xs text-gray-600">Valid image</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
+        <Text size="xs" color="secondary">Valid image</Text>
+      </Stack>
+      <Stack align="center" gap="xs">
         <Avatar>
           <Avatar.Image src="invalid-url.jpg" alt="Broken image" />
           <Avatar.Fallback>AB</Avatar.Fallback>
         </Avatar>
-        <span className="text-xs text-gray-600">Broken image</span>
-      </div>
-    </div>
+        <Text size="xs" color="secondary">Broken image</Text>
+      </Stack>
+    </Flex>
   ),
 };
 
@@ -199,42 +198,33 @@ export const ImageWithFallback: Story = {
 // =============================================================================
 
 /**
- * User list pattern with avatars.
+ * User list pattern with avatars using data-driven approach.
  */
 export const UserList: Story = {
   render: () => (
-    <div className="flex flex-col gap-3 w-64">
-      <div className="flex items-center gap-3">
-        <Avatar>
-          <Avatar.Image
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
-            alt="John Doe"
-          />
-        </Avatar>
-        <div>
-          <div className="font-medium text-sm">John Doe</div>
-          <div className="text-xs text-gray-500">john@example.com</div>
-        </div>
-      </div>
-      <div className="flex items-center gap-3">
-        <Avatar>
-          <Avatar.Fallback>AM</Avatar.Fallback>
-        </Avatar>
-        <div>
-          <div className="font-medium text-sm">Alice Miller</div>
-          <div className="text-xs text-gray-500">alice@example.com</div>
-        </div>
-      </div>
-      <div className="flex items-center gap-3">
-        <Avatar>
-          <Avatar.Fallback icon={BiGroup} />
-        </Avatar>
-        <div>
-          <div className="font-medium text-sm">Team Account</div>
-          <div className="text-xs text-gray-500">team@example.com</div>
-        </div>
-      </div>
-    </div>
+    <Card className="w-72">
+      <Card.Content>
+        <Stack gap="sm">
+          {USER_LIST_DATA.map((user) => (
+            <Flex key={user.email} align="center" gap="sm">
+              <Avatar>
+                {user.image ? (
+                  <Avatar.Image src={user.image} alt={user.name} />
+                ) : user.icon ? (
+                  <Avatar.Fallback icon={user.icon} />
+                ) : (
+                  <Avatar.Fallback>{user.initials}</Avatar.Fallback>
+                )}
+              </Avatar>
+              <Stack gap="none">
+                <Text size="sm" weight="medium">{user.name}</Text>
+                <Text size="xs" color="secondary">{user.email}</Text>
+              </Stack>
+            </Flex>
+          ))}
+        </Stack>
+      </Card.Content>
+    </Card>
   ),
 };
 
@@ -243,26 +233,20 @@ export const UserList: Story = {
  */
 export const AvatarStack: Story = {
   render: () => (
-    <div className="flex -space-x-3">
+    <Flex className="-space-x-3">
       <Avatar className="ring-2 ring-white">
-        <Avatar.Image
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
-          alt="User 1"
-        />
+        <Avatar.Image src={SAMPLE_IMAGE} alt="User 1" />
       </Avatar>
       <Avatar className="ring-2 ring-white">
         <Avatar.Fallback>AB</Avatar.Fallback>
       </Avatar>
       <Avatar className="ring-2 ring-white">
-        <Avatar.Image
-          src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop"
-          alt="User 3"
-        />
+        <Avatar.Image src={SAMPLE_IMAGE_ALT} alt="User 3" />
       </Avatar>
       <Avatar className="ring-2 ring-white">
         <Avatar.Fallback>+5</Avatar.Fallback>
       </Avatar>
-    </div>
+    </Flex>
   ),
 };
 
@@ -271,17 +255,59 @@ export const AvatarStack: Story = {
  */
 export const ProfileCard: Story = {
   render: () => (
-    <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md w-64">
-      <Avatar size="2xl">
-        <Avatar.Image
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
-          alt="Profile"
-        />
-        <Avatar.Fallback>JD</Avatar.Fallback>
-      </Avatar>
-      <h3 className="mt-4 font-semibold text-lg">John Doe</h3>
-      <p className="text-gray-500 text-sm">Software Engineer</p>
-      <p className="text-gray-400 text-xs mt-1">San Francisco, CA</p>
-    </div>
+    <Card variant="elevated" className="w-64">
+      <Card.Content>
+        <Stack align="center" gap="sm">
+          <Avatar size="2xl">
+            <Avatar.Image src={SAMPLE_IMAGE} alt="Profile" />
+            <Avatar.Fallback>JD</Avatar.Fallback>
+          </Avatar>
+          <Stack align="center" gap="xs">
+            <Text size="lg" weight="semibold">John Doe</Text>
+            <Text size="sm" color="secondary">Software Engineer</Text>
+            <Text size="xs" color="tertiary">San Francisco, CA</Text>
+          </Stack>
+        </Stack>
+      </Card.Content>
+    </Card>
+  ),
+};
+
+/**
+ * Team grid showing all sizes and types.
+ */
+export const TeamGrid: Story = {
+  decorators: [
+    (Story) => (
+      <div className="p-4 w-96">
+        <Story />
+      </div>
+    ),
+  ],
+  render: () => (
+    <Card>
+      <Card.Header>
+        <Card.Title>Team Members</Card.Title>
+        <Card.Description>6 members</Card.Description>
+      </Card.Header>
+      <Card.Content>
+        <Grid cols={3} gap="md">
+          {AVATAR_SIZES.map((size, index) => (
+            <Stack key={size} align="center" gap="xs">
+              <Avatar size="lg">
+                {index % 3 === 0 ? (
+                  <Avatar.Image src={SAMPLE_IMAGE} alt={`Member ${index + 1}`} />
+                ) : index % 3 === 1 ? (
+                  <Avatar.Fallback>{`M${index + 1}`}</Avatar.Fallback>
+                ) : (
+                  <Avatar.Fallback />
+                )}
+              </Avatar>
+              <Text size="xs" color="secondary">Member {index + 1}</Text>
+            </Stack>
+          ))}
+        </Grid>
+      </Card.Content>
+    </Card>
   ),
 };

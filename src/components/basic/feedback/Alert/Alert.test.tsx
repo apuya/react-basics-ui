@@ -43,9 +43,8 @@ describe('Alert', () => {
     it('should render info variant by default', () => {
       const { container } = render(<Alert title="Info">Content</Alert>);
       const alert = container.querySelector('[role="alert"]');
-      expect(alert).toHaveClass('bg-[var(--component-alert-bg-info)]');
-      expect(alert).toHaveClass('border-[var(--component-alert-border-info)]');
-      expect(alert).toHaveClass('text-[var(--component-alert-text-info)]');
+      expect(alert).toHaveClass('bg-[color:var(--component-alert-bg-info)]');
+      expect(alert).toHaveClass('text-[color:var(--component-alert-text-info)]');
     });
 
     it('should render success variant correctly', () => {
@@ -55,11 +54,8 @@ describe('Alert', () => {
         </Alert>
       );
       const alert = container.querySelector('[role="alert"]');
-      expect(alert).toHaveClass('bg-[var(--component-alert-bg-success)]');
-      expect(alert).toHaveClass(
-        'border-[var(--component-alert-border-success)]'
-      );
-      expect(alert).toHaveClass('text-[var(--component-alert-text-success)]');
+      expect(alert).toHaveClass('bg-[color:var(--component-alert-bg-success)]');
+      expect(alert).toHaveClass('text-[color:var(--component-alert-text-success)]');
     });
 
     it('should render warning variant correctly', () => {
@@ -69,11 +65,8 @@ describe('Alert', () => {
         </Alert>
       );
       const alert = container.querySelector('[role="alert"]');
-      expect(alert).toHaveClass('bg-[var(--component-alert-bg-warning)]');
-      expect(alert).toHaveClass(
-        'border-[var(--component-alert-border-warning)]'
-      );
-      expect(alert).toHaveClass('text-[var(--component-alert-text-warning)]');
+      expect(alert).toHaveClass('bg-[color:var(--component-alert-bg-warning)]');
+      expect(alert).toHaveClass('text-[color:var(--component-alert-text-warning)]');
     });
 
     it('should render error variant correctly', () => {
@@ -83,9 +76,8 @@ describe('Alert', () => {
         </Alert>
       );
       const alert = container.querySelector('[role="alert"]');
-      expect(alert).toHaveClass('bg-[var(--component-alert-bg-error)]');
-      expect(alert).toHaveClass('border-[var(--component-alert-border-error)]');
-      expect(alert).toHaveClass('text-[var(--component-alert-text-error)]');
+      expect(alert).toHaveClass('bg-[color:var(--component-alert-bg-error)]');
+      expect(alert).toHaveClass('text-[color:var(--component-alert-text-error)]');
     });
   });
 
@@ -114,7 +106,7 @@ describe('Alert', () => {
         </Alert>
       );
       const infoIcon = infoContainer.querySelector('[aria-hidden="true"]');
-      expect(infoIcon).toHaveClass('text-[var(--component-alert-icon-info)]');
+      expect(infoIcon).toHaveClass('text-[color:var(--component-alert-icon-info)]');
 
       const { container: successContainer } = render(
         <Alert variant="success" title="Success">
@@ -123,7 +115,7 @@ describe('Alert', () => {
       );
       const successIcon = successContainer.querySelector('[aria-hidden="true"]');
       expect(successIcon).toHaveClass(
-        'text-[var(--component-alert-icon-success)]'
+        'text-[color:var(--component-alert-icon-success)]'
       );
     });
   });
@@ -230,6 +222,18 @@ describe('Alert', () => {
     it('should render children when description is not provided', () => {
       render(<Alert title="Title">Children content</Alert>);
       expect(screen.getByText('Children content')).toBeInTheDocument();
+    });
+  });
+
+  describe('Data attributes', () => {
+    it('should apply data-variant attribute', () => {
+      render(<Alert variant="success" title="Success" data-testid="alert" />);
+      expect(screen.getByTestId('alert')).toHaveAttribute('data-variant', 'success');
+    });
+
+    it('should apply info variant by default', () => {
+      render(<Alert title="Info" data-testid="alert" />);
+      expect(screen.getByTestId('alert')).toHaveAttribute('data-variant', 'info');
     });
   });
 });

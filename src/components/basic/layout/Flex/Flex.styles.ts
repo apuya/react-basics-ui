@@ -30,12 +30,13 @@ export const WRAP_STYLES = {
   'wrap-reverse': 'flex-wrap-reverse',
 } as const;
 
-// Common gap sizes using Tailwind spacing scale
+// Gap sizes using component tokens
 export const GAP_STYLES = {
-  xs: 'gap-1', // 4px
-  sm: 'gap-2', // 8px
-  md: 'gap-4', // 16px
-  lg: 'gap-6', // 24px
-  xl: 'gap-8', // 32px
-  '2xl': 'gap-12', // 48px
+  none: 'gap-[length:var(--component-flex-gap-none)]',
+  xs: 'gap-[length:var(--component-flex-gap-tight)]',
+  sm: 'gap-[length:var(--component-flex-gap-compact)]',
+  md: 'gap-[length:var(--component-flex-gap-default)]',
+  lg: 'gap-[length:var(--component-flex-gap-comfortable)]',
+  xl: 'gap-[length:var(--component-flex-gap-loose)]',
+  '2xl': 'gap-[length:var(--component-flex-gap-spacious)]',
 } as const;

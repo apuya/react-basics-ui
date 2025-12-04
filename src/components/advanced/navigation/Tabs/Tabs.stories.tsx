@@ -1,102 +1,82 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { BiHome, BiChat, BiCog, BiBell } from 'react-icons/bi';
 import { Tabs } from './Tabs';
-import { BiHome, BiChat, BiCog, BiChevronRight, BiNotification } from 'react-icons/bi';
+import { VStack } from '@/components/basic/layout/Stack/Stack';
+import { Flex } from '@/components/basic/layout/Flex/Flex';
+import { Box } from '@/components/basic/layout/Box/Box';
+import { Text } from '@/components/basic/typography/Text/Text';
+import { Heading } from '@/components/basic/typography/Heading/Heading';
+import { Button } from '@/components/basic/forms/Button/Button';
+import { Badge } from '@/components/basic/feedback/Badge/Badge';
+import { Icon } from '@/components/basic/utility/Icon/Icon';
 
-const meta = {
+const meta: Meta<typeof Tabs> = {
   title: 'Navigation/Tabs',
   component: Tabs,
   parameters: {
     layout: 'padded',
     docs: {
       description: {
-        component: 'Tabs organize content into multiple sections and allow users to navigate between them. Supports sizes (sm, md, lg) and horizontal/vertical orientations.',
+        component:
+          'Tabs organize content into multiple sections and allow users to navigate between them. Supports sizes (sm, md, lg) and horizontal/vertical orientations. Use Arrow keys to navigate, Home/End for first/last tab.',
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
-    defaultValue: {
-      control: 'text',
-      description: 'The default selected tab value (uncontrolled mode)',
-    },
-    value: {
-      control: 'text',
-      description: 'The selected tab value (controlled mode)',
-    },
-    size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: 'Size of the tab labels',
-    },
-    orientation: {
-      control: 'select',
-      options: ['horizontal', 'vertical'],
-      description: 'Layout orientation of the tabs',
-    },
-    onChange: {
-      action: 'onChange',
-      description: 'Callback when the selected tab changes',
-    },
+    defaultValue: { control: 'text' },
+    value: { control: 'text' },
+    size: { control: 'select', options: ['sm', 'md', 'lg'] },
+    orientation: { control: 'select', options: ['horizontal', 'vertical'] },
+    onChange: { action: 'onChange' },
   },
-} satisfies Meta<typeof Tabs>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Basic tabs with default styling using uncontrolled mode. */
 export const Default: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Basic tabs with default styling. Uses uncontrolled mode with defaultValue.',
-      },
-    },
-  },
   render: () => (
-    <Tabs defaultValue="tab1">
+    <Tabs defaultValue="account">
       <Tabs.List>
-        <Tabs.Tab value="tab1">Account</Tabs.Tab>
-        <Tabs.Tab value="tab2">Password</Tabs.Tab>
-        <Tabs.Tab value="tab3">Team</Tabs.Tab>
+        <Tabs.Tab value="account">Account</Tabs.Tab>
+        <Tabs.Tab value="password">Password</Tabs.Tab>
+        <Tabs.Tab value="team">Team</Tabs.Tab>
       </Tabs.List>
       <Tabs.Panels>
-        <Tabs.Panel value="tab1">
-          <div className="py-4">
-            <h3 className="text-lg font-medium mb-2">Account Settings</h3>
-            <p className="text-sm text-gray-600">
-              Manage your account settings and preferences here.
-            </p>
-          </div>
+        <Tabs.Panel value="account">
+          <VStack spacing="xs" align="start">
+            <Heading level="h4">Account Settings</Heading>
+            <Text size="small" color="secondary">
+              Manage your account settings and preferences.
+            </Text>
+          </VStack>
         </Tabs.Panel>
-        <Tabs.Panel value="tab2">
-          <div className="py-4">
-            <h3 className="text-lg font-medium mb-2">Password Settings</h3>
-            <p className="text-sm text-gray-600">
-              Change your password and update security settings.
-            </p>
-          </div>
+        <Tabs.Panel value="password">
+          <VStack spacing="xs" align="start">
+            <Heading level="h4">Password Settings</Heading>
+            <Text size="small" color="secondary">
+              Change your password and security settings.
+            </Text>
+          </VStack>
         </Tabs.Panel>
-        <Tabs.Panel value="tab3">
-          <div className="py-4">
-            <h3 className="text-lg font-medium mb-2">Team Settings</h3>
-            <p className="text-sm text-gray-600">
-              Manage your team members and permissions.
-            </p>
-          </div>
+        <Tabs.Panel value="team">
+          <VStack spacing="xs" align="start">
+            <Heading level="h4">Team Settings</Heading>
+            <Text size="small" color="secondary">
+              Manage team members and permissions.
+            </Text>
+          </VStack>
         </Tabs.Panel>
       </Tabs.Panels>
     </Tabs>
   ),
 };
 
+/** Vertical orientation for sidebar-style navigation. */
 export const Vertical: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Vertical orientation for sidebar-style navigation. Tabs stack vertically with content to the side.',
-      },
-    },
-  },
   render: () => (
     <Tabs defaultValue="dashboard" orientation="vertical">
       <Tabs.List>
@@ -107,72 +87,129 @@ export const Vertical: Story = {
       </Tabs.List>
       <Tabs.Panels>
         <Tabs.Panel value="dashboard">
-          <div className="p-4">
-            <h3 className="font-semibold mb-2">Dashboard</h3>
-            <p>Your main dashboard overview.</p>
-          </div>
+          <VStack spacing="xs" align="start">
+            <Heading level="h4">Dashboard</Heading>
+            <Text color="secondary">Your main dashboard overview.</Text>
+          </VStack>
         </Tabs.Panel>
         <Tabs.Panel value="projects">
-          <div className="p-4">
-            <h3 className="font-semibold mb-2">Projects</h3>
-            <p>View and manage your projects.</p>
-          </div>
+          <VStack spacing="xs" align="start">
+            <Heading level="h4">Projects</Heading>
+            <Text color="secondary">View and manage your projects.</Text>
+          </VStack>
         </Tabs.Panel>
         <Tabs.Panel value="tasks">
-          <div className="p-4">
-            <h3 className="font-semibold mb-2">Tasks</h3>
-            <p>Track and complete your tasks.</p>
-          </div>
+          <VStack spacing="xs" align="start">
+            <Heading level="h4">Tasks</Heading>
+            <Text color="secondary">Track and complete your tasks.</Text>
+          </VStack>
         </Tabs.Panel>
         <Tabs.Panel value="calendar">
-          <div className="p-4">
-            <h3 className="font-semibold mb-2">Calendar</h3>
-            <p>View your schedule and events.</p>
-          </div>
+          <VStack spacing="xs" align="start">
+            <Heading level="h4">Calendar</Heading>
+            <Text color="secondary">View your schedule and events.</Text>
+          </VStack>
         </Tabs.Panel>
       </Tabs.Panels>
     </Tabs>
   ),
 };
 
-export const WithIcons: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tabs with leading icons for enhanced visual recognition.',
-      },
-    },
-  },
+/** Comparison of all tab sizes: small, medium, and large. */
+export const Sizes: Story = {
   render: () => (
-    <Tabs defaultValue="home">
-      <Tabs.List>
-        <Tabs.Tab value="home" leadingIcon={<BiHome />}>
-          Home
-        </Tabs.Tab>
-        <Tabs.Tab value="messages" leadingIcon={<BiChat />}>
-          Messages
-        </Tabs.Tab>
-        <Tabs.Tab value="settings" leadingIcon={<BiCog />}>
-          Settings
-        </Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panels>
-        <Tabs.Panel value="home"><div className="py-4">Home content</div></Tabs.Panel>
-        <Tabs.Panel value="messages"><div className="py-4">Messages content</div></Tabs.Panel>
-        <Tabs.Panel value="settings"><div className="py-4">Settings content</div></Tabs.Panel>
-      </Tabs.Panels>
-    </Tabs>
+    <VStack spacing="xl" align="stretch">
+      <VStack spacing="xs" align="start">
+        <Text size="small" weight="medium">Small</Text>
+        <Tabs defaultValue="tab1" size="sm">
+          <Tabs.List>
+            <Tabs.Tab value="tab1">Account</Tabs.Tab>
+            <Tabs.Tab value="tab2">Password</Tabs.Tab>
+            <Tabs.Tab value="tab3">Team</Tabs.Tab>
+          </Tabs.List>
+        </Tabs>
+      </VStack>
+      <VStack spacing="xs" align="start">
+        <Text size="small" weight="medium">Medium (default)</Text>
+        <Tabs defaultValue="tab1" size="md">
+          <Tabs.List>
+            <Tabs.Tab value="tab1">Account</Tabs.Tab>
+            <Tabs.Tab value="tab2">Password</Tabs.Tab>
+            <Tabs.Tab value="tab3">Team</Tabs.Tab>
+          </Tabs.List>
+        </Tabs>
+      </VStack>
+      <VStack spacing="xs" align="start">
+        <Text size="small" weight="medium">Large</Text>
+        <Tabs defaultValue="tab1" size="lg">
+          <Tabs.List>
+            <Tabs.Tab value="tab1">Account</Tabs.Tab>
+            <Tabs.Tab value="tab2">Password</Tabs.Tab>
+            <Tabs.Tab value="tab3">Team</Tabs.Tab>
+          </Tabs.List>
+        </Tabs>
+      </VStack>
+    </VStack>
   ),
 };
 
+/** Tabs with leading icons and trailing badges. */
+export const WithIcons: Story = {
+  render: () => (
+    <VStack spacing="lg" align="stretch">
+      <Tabs defaultValue="home">
+        <Tabs.List>
+          <Tabs.Tab value="home" leadingIcon={<Icon icon={BiHome} size="sm" />}>
+            Home
+          </Tabs.Tab>
+          <Tabs.Tab value="messages" leadingIcon={<Icon icon={BiChat} size="sm" />}>
+            Messages
+          </Tabs.Tab>
+          <Tabs.Tab value="settings" leadingIcon={<Icon icon={BiCog} size="sm" />}>
+            Settings
+          </Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panels>
+          <Tabs.Panel value="home">
+            <Text color="secondary">Home content</Text>
+          </Tabs.Panel>
+          <Tabs.Panel value="messages">
+            <Text color="secondary">Messages content</Text>
+          </Tabs.Panel>
+          <Tabs.Panel value="settings">
+            <Text color="secondary">Settings content</Text>
+          </Tabs.Panel>
+        </Tabs.Panels>
+      </Tabs>
+
+      <Tabs defaultValue="inbox">
+        <Tabs.List>
+          <Tabs.Tab value="inbox" trailingIcon={<Badge variant="primary" size="small">5</Badge>}>
+            Inbox
+          </Tabs.Tab>
+          <Tabs.Tab
+            value="alerts"
+            leadingIcon={<Icon icon={BiBell} size="sm" />}
+            trailingIcon={<Badge variant="error" size="small">!</Badge>}
+          >
+            Alerts
+          </Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panels>
+          <Tabs.Panel value="inbox">
+            <Text color="secondary">5 new messages in your inbox</Text>
+          </Tabs.Panel>
+          <Tabs.Panel value="alerts">
+            <Text color="secondary">Important alerts requiring attention</Text>
+          </Tabs.Panel>
+        </Tabs.Panels>
+      </Tabs>
+    </VStack>
+  ),
+};
+
+/** Disabled tabs cannot be selected. */
 export const Disabled: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Demonstrates disabled tab states. Disabled tabs cannot be selected.',
-      },
-    },
-  },
   render: () => (
     <Tabs defaultValue="active">
       <Tabs.List>
@@ -183,74 +220,37 @@ export const Disabled: Story = {
         <Tabs.Tab value="another">Another Tab</Tabs.Tab>
       </Tabs.List>
       <Tabs.Panels>
-        <Tabs.Panel value="active"><div className="py-4">This tab is active</div></Tabs.Panel>
-        <Tabs.Panel value="disabled"><div className="py-4">This tab is disabled</div></Tabs.Panel>
-        <Tabs.Panel value="another"><div className="py-4">Another active tab</div></Tabs.Panel>
+        <Tabs.Panel value="active">
+          <Text color="secondary">This tab is active</Text>
+        </Tabs.Panel>
+        <Tabs.Panel value="disabled">
+          <Text color="secondary">This content is inaccessible</Text>
+        </Tabs.Panel>
+        <Tabs.Panel value="another">
+          <Text color="secondary">Another active tab</Text>
+        </Tabs.Panel>
       </Tabs.Panels>
     </Tabs>
   ),
 };
 
-export const Sizes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of all tab sizes: small, medium (default), and large.',
-      },
-    },
-  },
-  render: () => (
-    <div className="flex flex-col gap-8">
-      <div>
-        <p className="text-sm font-medium mb-2">Small</p>
-        <Tabs defaultValue="tab1" size="sm">
-          <Tabs.List>
-            <Tabs.Tab value="tab1">Account</Tabs.Tab>
-            <Tabs.Tab value="tab2">Password</Tabs.Tab>
-            <Tabs.Tab value="tab3">Team</Tabs.Tab>
-          </Tabs.List>
-        </Tabs>
-      </div>
-      <div>
-        <p className="text-sm font-medium mb-2">Medium (default)</p>
-        <Tabs defaultValue="tab1" size="md">
-          <Tabs.List>
-            <Tabs.Tab value="tab1">Account</Tabs.Tab>
-            <Tabs.Tab value="tab2">Password</Tabs.Tab>
-            <Tabs.Tab value="tab3">Team</Tabs.Tab>
-          </Tabs.List>
-        </Tabs>
-      </div>
-      <div>
-        <p className="text-sm font-medium mb-2">Large</p>
-        <Tabs defaultValue="tab1" size="lg">
-          <Tabs.List>
-            <Tabs.Tab value="tab1">Account</Tabs.Tab>
-            <Tabs.Tab value="tab2">Password</Tabs.Tab>
-            <Tabs.Tab value="tab3">Team</Tabs.Tab>
-          </Tabs.List>
-        </Tabs>
-      </div>
-    </div>
-  ),
-};
-
+/** Controlled mode with external state management. */
 export const Controlled: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Controlled mode where parent component manages the active tab state. Demonstrates the onChange callback.',
-      },
-    },
-  },
   render: function ControlledStory() {
     const [activeTab, setActiveTab] = useState('profile');
 
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-sm bg-gray-100 p-2 rounded">
-          Current tab: <strong>{activeTab}</strong>
-        </div>
+      <VStack spacing="md" align="stretch">
+        <Box
+          p="var(--semantic-space-compact)"
+          bg="var(--semantic-surface-alt)"
+          borderRadius="var(--semantic-radius-md)"
+        >
+          <Text size="small">
+            Current tab: <Text as="span" weight="semibold">{activeTab}</Text>
+          </Text>
+        </Box>
+
         <Tabs value={activeTab} onChange={setActiveTab}>
           <Tabs.List>
             <Tabs.Tab value="profile">Profile</Tabs.Tab>
@@ -259,114 +259,41 @@ export const Controlled: Story = {
           </Tabs.List>
           <Tabs.Panels>
             <Tabs.Panel value="profile">
-              <div className="py-4">
-                <h3 className="text-lg font-medium mb-2">Profile</h3>
-                <p className="text-sm text-gray-600">
+              <VStack spacing="xs" align="start">
+                <Heading level="h4">Profile</Heading>
+                <Text size="small" color="secondary">
                   Your profile information and public details.
-                </p>
-              </div>
+                </Text>
+              </VStack>
             </Tabs.Panel>
             <Tabs.Panel value="settings">
-              <div className="py-4">
-                <h3 className="text-lg font-medium mb-2">Settings</h3>
-                <p className="text-sm text-gray-600">
+              <VStack spacing="xs" align="start">
+                <Heading level="h4">Settings</Heading>
+                <Text size="small" color="secondary">
                   Customize your application preferences.
-                </p>
-              </div>
+                </Text>
+              </VStack>
             </Tabs.Panel>
             <Tabs.Panel value="notifications">
-              <div className="py-4">
-                <h3 className="text-lg font-medium mb-2">Notifications</h3>
-                <p className="text-sm text-gray-600">
+              <VStack spacing="xs" align="start">
+                <Heading level="h4">Notifications</Heading>
+                <Text size="small" color="secondary">
                   Manage your notification preferences.
-                </p>
-              </div>
+                </Text>
+              </VStack>
             </Tabs.Panel>
           </Tabs.Panels>
         </Tabs>
-        <div className="flex gap-2">
-          <button
-            className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
-            onClick={() => setActiveTab('profile')}
-          >
+
+        <Flex gap="xs">
+          <Button size="small" onClick={() => setActiveTab('profile')}>
             Go to Profile
-          </button>
-          <button
-            className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
-            onClick={() => setActiveTab('settings')}
-          >
+          </Button>
+          <Button size="small" onClick={() => setActiveTab('settings')}>
             Go to Settings
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Flex>
+      </VStack>
     );
   },
-};
-
-export const WithTrailingIcons: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tabs can display trailing icons, useful for showing badges or indicators.',
-      },
-    },
-  },
-  render: () => (
-    <Tabs defaultValue="inbox">
-      <Tabs.List>
-        <Tabs.Tab value="inbox" trailingIcon={<span className="bg-blue-500 text-white text-xs px-1.5 py-0.5 rounded-full">5</span>}>
-          Inbox
-        </Tabs.Tab>
-        <Tabs.Tab value="sent" trailingIcon={<BiChevronRight />}>
-          Sent
-        </Tabs.Tab>
-        <Tabs.Tab value="alerts" leadingIcon={<BiNotification />} trailingIcon={<span className="bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">!</span>}>
-          Alerts
-        </Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panels>
-        <Tabs.Panel value="inbox"><div className="py-4">5 new messages in your inbox</div></Tabs.Panel>
-        <Tabs.Panel value="sent"><div className="py-4">View sent messages</div></Tabs.Panel>
-        <Tabs.Panel value="alerts"><div className="py-4">Important alerts requiring attention</div></Tabs.Panel>
-      </Tabs.Panels>
-    </Tabs>
-  ),
-};
-
-export const KeyboardNavigation: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Demonstrates keyboard navigation. Focus the tabs and use Arrow keys to navigate, Home/End for first/last tab, Enter/Space to activate.',
-      },
-    },
-  },
-  render: () => (
-    <div className="flex flex-col gap-4">
-      <div className="text-sm bg-blue-50 p-3 rounded border border-blue-200">
-        <strong>Keyboard shortcuts:</strong>
-        <ul className="mt-2 list-disc list-inside text-gray-600">
-          <li>Arrow Left/Right: Navigate between tabs (horizontal)</li>
-          <li>Arrow Up/Down: Navigate between tabs (vertical)</li>
-          <li>Home: Go to first tab</li>
-          <li>End: Go to last tab</li>
-          <li>Enter/Space: Activate focused tab</li>
-        </ul>
-      </div>
-      <Tabs defaultValue="tab1">
-        <Tabs.List>
-          <Tabs.Tab value="tab1">First Tab</Tabs.Tab>
-          <Tabs.Tab value="tab2">Second Tab</Tabs.Tab>
-          <Tabs.Tab value="tab3">Third Tab</Tabs.Tab>
-          <Tabs.Tab value="tab4">Fourth Tab</Tabs.Tab>
-        </Tabs.List>
-        <Tabs.Panels>
-          <Tabs.Panel value="tab1"><div className="py-4">Content for the first tab</div></Tabs.Panel>
-          <Tabs.Panel value="tab2"><div className="py-4">Content for the second tab</div></Tabs.Panel>
-          <Tabs.Panel value="tab3"><div className="py-4">Content for the third tab</div></Tabs.Panel>
-          <Tabs.Panel value="tab4"><div className="py-4">Content for the fourth tab</div></Tabs.Panel>
-        </Tabs.Panels>
-      </Tabs>
-    </div>
-  ),
 };

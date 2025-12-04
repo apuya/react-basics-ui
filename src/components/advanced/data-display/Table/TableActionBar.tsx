@@ -1,11 +1,12 @@
 import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
-import { useTableContext } from './Table';
-import { TABLE_HEADER_BASE_CLASSES } from './Table.styles';
+import { useTableContext } from './TableContext';
+import { TABLE_HEADER_BASE_CLASSES, TABLE_ACTION_BAR_BASE_CLASSES, TABLE_CELL_SIZE_STYLES } from './Table.styles';
 import { SearchBar, type SearchBarProps } from '@/components/basic/forms/SearchBar';
 import { Button } from '@/components/basic/forms/Button';
 import { Dropdown } from '@/components/advanced/navigation/Dropdown';
 import { Icon } from '@/components/basic/utility/Icon';
+import { Flex } from '@/components/basic/layout/Flex';
 import { type IconType } from 'react-icons';
 
 export type TableActionBarVariant = 'default' | 'search' | 'actions';
@@ -42,27 +43,18 @@ export const TableActionBar = memo(
     secondaryAction,
     ...props 
   }, ref) => {
-    useTableContext();
+    const { size } = useTableContext();
 
     const headerClasses = useMemo(
-      () => cn(TABLE_HEADER_BASE_CLASSES, 'bg-white', className),
-      [className]
-    );
-
-    const paddingStyle = useMemo(
-      () => ({
-        paddingInline: 'var(--component-table-padding-md)',
-        paddingBlock: 'var(--component-table-padding-sm)',
-        minHeight: '44px',
-      }),
-      []
+      () => cn(TABLE_HEADER_BASE_CLASSES, TABLE_ACTION_BAR_BASE_CLASSES, TABLE_CELL_SIZE_STYLES[size], className),
+      [size, className]
     );
 
     // Render search variant
     if (variant === 'search') {
       return (
-        <th ref={ref} className={headerClasses} style={paddingStyle} {...props}>
-          <div className="flex items-center w-full" style={{ gap: '8px' }}>
+        <th ref={ref} className={headerClasses} data-variant={variant} {...props}>
+          <Flex align="center" gap="sm" className="w-full">
             <SearchBar
               size="small"
               {...searchProps}
@@ -82,7 +74,7 @@ export const TableActionBar = memo(
                 {dropdownMenu}
               </Dropdown>
             )}
-          </div>
+          </Flex>
         </th>
       );
     }
@@ -90,10 +82,10 @@ export const TableActionBar = memo(
     // Render actions variant
     if (variant === 'actions') {
       return (
-        <th ref={ref} className={headerClasses} style={paddingStyle} {...props}>
-          <div className="flex items-center w-full" style={{ gap: '8px' }}>
+        <th ref={ref} className={headerClasses} data-variant={variant} {...props}>
+          <Flex align="center" gap="sm" className="w-full">
             {children && <span className="flex-1">{children}</span>}
-            <div className="flex items-center" style={{ gap: '8px' }}>
+            <Flex align="center" gap="sm">
               {secondaryAction && (
                 <Button
                   size="small"
@@ -116,15 +108,15 @@ export const TableActionBar = memo(
                   {primaryAction.label}
                 </Button>
               )}
-            </div>
-          </div>
+            </Flex>
+          </Flex>
         </th>
       );
     }
 
     // Default variant - empty
     return (
-      <th ref={ref} className={headerClasses} style={paddingStyle} {...props} />
+      <th ref={ref} className={headerClasses} data-variant={variant} {...props} />
     );
   })
 );

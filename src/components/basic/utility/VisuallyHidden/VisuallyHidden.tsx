@@ -1,22 +1,25 @@
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef, memo, type ReactNode } from 'react';
+import { VISUALLY_HIDDEN_STYLE } from './VisuallyHidden.styles';
 
 export interface VisuallyHiddenProps {
+  /** Content to hide visually but keep accessible */
   children: ReactNode;
+  /** HTML element to render */
   as?: 'span' | 'div';
 }
 
-export const VisuallyHidden = forwardRef<HTMLElement, VisuallyHiddenProps>(
-  function VisuallyHidden({ children, as: Component = 'span' }, ref) {
-    return (
-      <Component
-        ref={ref as React.Ref<HTMLSpanElement & HTMLDivElement>}
-        className="absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0"
-        style={{ clip: 'rect(0, 0, 0, 0)', margin: '-1px' }}
-      >
+/**
+ * Hides content visually while keeping it accessible to screen readers.
+ * Useful for icon-only buttons, skip links, and form labels.
+ */
+export const VisuallyHidden = memo(
+  forwardRef<HTMLSpanElement | HTMLDivElement, VisuallyHiddenProps>(
+    ({ children, as: Component = 'span' }, ref) => (
+      <Component ref={ref as React.RefObject<HTMLSpanElement & HTMLDivElement>} style={VISUALLY_HIDDEN_STYLE}>
         {children}
       </Component>
-    );
-  }
+    )
+  )
 );
 
 VisuallyHidden.displayName = 'VisuallyHidden';

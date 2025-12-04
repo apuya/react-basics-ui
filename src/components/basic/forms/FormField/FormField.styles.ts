@@ -1,4 +1,4 @@
-export const WRAPPER_CLASSES = 'flex flex-col';
+export const BASE_CLASSES = 'flex flex-col gap-[length:var(--component-formfield-gap)]';
 
 export const LABEL_CLASSES =
   'text-[length:var(--component-formfield-label-size)] font-[number:var(--component-formfield-label-weight)] text-[color:var(--component-formfield-label-color)]';

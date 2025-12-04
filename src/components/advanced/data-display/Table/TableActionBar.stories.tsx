@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Table } from './Table';
-import { BiRefresh, BiPlus } from 'react-icons/bi';
+import { TableActionBar } from './TableActionBar';
+import { TableContext } from './TableContext';
+import { BiRefresh, BiPlus, BiFilter } from 'react-icons/bi';
+import { useState } from 'react';
 
 const meta = {
   title: 'Data Display/Table/TableActionBar',
-  component: Table.ActionBar,
+  component: TableActionBar,
   parameters: {
     layout: 'padded',
     docs: {
@@ -14,7 +16,20 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Table.ActionBar>;
+  decorators: [
+    (Story) => (
+      <TableContext.Provider value={{ size: 'md', variant: 'default' }}>
+        <table className="w-full border-collapse">
+          <thead>
+            <tr>
+              <Story />
+            </tr>
+          </thead>
+        </table>
+      </TableContext.Provider>
+    ),
+  ],
+} satisfies Meta<typeof TableActionBar>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -23,31 +38,14 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Basic action bar with title text.',
+        story: 'Default empty action bar.',
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar colSpan={3}>User Management</Table.ActionBar>
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-          <Table.Cell>Admin</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
+  args: {
+    colSpan: 3,
+  },
+  render: (args) => <TableActionBar {...args} />,
 };
 
 export const WithSearch: Story = {
@@ -58,36 +56,46 @@ export const WithSearch: Story = {
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar
-            variant="search"
-            colSpan={3}
-            searchProps={{
-              placeholder: 'Search users...',
-              onChange: (value) => console.log('Search:', value),
-            }}
-          >
-            Users
-          </Table.ActionBar>
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-          <Table.Cell>Admin</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
+  render: () => {
+    const [searchValue, setSearchValue] = useState('');
+    return (
+      <TableActionBar
+        variant="search"
+        colSpan={3}
+        searchProps={{
+          value: searchValue,
+          onChange: (e) => setSearchValue(e.target.value),
+          placeholder: 'Search users...',
+        }}
+      />
+    );
+  },
+};
+
+export const WithSearchAndDropdown: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Action bar with search and dropdown filter button.',
+      },
+    },
+  },
+  args: {
+    variant: 'search',
+    colSpan: 3,
+    searchProps: {
+      placeholder: 'Search...',
+    },
+    dropdownTriggerLabel: 'Filter',
+    dropdownTriggerIcon: BiFilter,
+    dropdownMenu: (
+      <div className="p-2">
+        <button className="block w-full text-left px-2 py-1 hover:bg-gray-100">Option 1</button>
+        <button className="block w-full text-left px-2 py-1 hover:bg-gray-100">Option 2</button>
+      </div>
+    ),
+  },
+  render: (args) => <TableActionBar {...args} />,
 };
 
 export const WithActions: Story = {
@@ -98,87 +106,47 @@ export const WithActions: Story = {
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar
-            variant="actions"
-            colSpan={3}
-            primaryAction={{
-              label: 'Add User',
-              icon: BiPlus,
-              onClick: () => alert('Add user clicked'),
-            }}
-            secondaryAction={{
-              label: 'Refresh',
-              icon: BiRefresh,
-              onClick: () => alert('Refresh clicked'),
-            }}
-          >
-            User Management
-          </Table.ActionBar>
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-          <Table.Cell>Admin</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
+  args: {
+    variant: 'actions',
+    colSpan: 3,
+    primaryAction: {
+      label: 'Add User',
+      icon: BiPlus,
+      onClick: () => alert('Add user clicked'),
+    },
+    secondaryAction: {
+      label: 'Refresh',
+      icon: BiRefresh,
+      onClick: () => alert('Refresh clicked'),
+    },
+    children: 'User Management',
+  },
+  render: (args) => <TableActionBar {...args} />,
 };
 
-export const WithDropdownMenu: Story = {
+export const ActionsWithDisabled: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Action bar with dropdown menu using the dropdownMenu prop.',
+        story: 'Action bar with a disabled action button.',
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar
-            variant="search"
-            colSpan={3}
-            searchProps={{
-              placeholder: 'Search...',
-            }}
-            dropdownTriggerLabel="Actions"
-            dropdownMenu={
-              <>
-                <button onClick={() => console.log('Export')}>Export</button>
-                <button onClick={() => console.log('Import')}>Import</button>
-                <button onClick={() => console.log('Settings')}>Settings</button>
-              </>
-            }
-          >
-            User Management
-          </Table.ActionBar>
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-          <Table.Cell>Admin</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
+  args: {
+    variant: 'actions',
+    colSpan: 3,
+    primaryAction: {
+      label: 'Add User',
+      icon: BiPlus,
+      onClick: () => {},
+    },
+    secondaryAction: {
+      label: 'Refresh',
+      icon: BiRefresh,
+      onClick: () => {},
+      disabled: true,
+    },
+    children: 'User Management',
+  },
+  render: (args) => <TableActionBar {...args} />,
 };

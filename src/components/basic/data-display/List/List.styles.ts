@@ -9,12 +9,12 @@ export const BASE_CLASSES = 'flex flex-col';
 // =============================================================================
 
 export const VARIANT_STYLES: Record<ListVariant, string> = {
-  default: 'bg-[var(--component-list-bg)]',
+  default: 'bg-[color:var(--component-list-bg)]',
   divided:
-    'bg-[var(--component-list-bg)] [&>li:not(:last-child)]:border-b [&>li:not(:last-child)]:border-[var(--component-list-divider-color)]',
+    'bg-[color:var(--component-list-bg)] [&>li:not(:last-child)]:border-b [&>li:not(:last-child)]:border-[color:var(--component-list-divider-color)]',
   bordered:
-    'border border-[var(--component-list-border)] rounded-[var(--component-list-item-radius)] overflow-hidden',
-  interactive: 'bg-[var(--component-list-bg)]',
+    'border border-[color:var(--component-list-border)] rounded-[length:var(--component-list-radius)] overflow-hidden',
+  interactive: 'bg-[color:var(--component-list-bg)]',
 };
 
 // =============================================================================
@@ -22,10 +22,10 @@ export const VARIANT_STYLES: Record<ListVariant, string> = {
 // =============================================================================
 
 export const ITEM_CLASSES =
-  'flex items-center text-[var(--component-list-text-primary)]';
+  'flex items-center text-[color:var(--component-list-text-primary)]';
 
 export const ITEM_INTERACTIVE_CLASSES =
-  '[&>li]:hover:bg-[var(--component-list-item-bg-hover)] [&>li]:active:bg-[var(--component-list-bg-active)] [&>li]:cursor-pointer [&>li]:transition-colors';
+  '[&>li]:hover:bg-[color:var(--component-list-bg-hover)] [&>li]:active:bg-[color:var(--component-list-bg-active)] [&>li]:cursor-pointer [&>li]:transition-colors';
 
 // =============================================================================
 // TYPES

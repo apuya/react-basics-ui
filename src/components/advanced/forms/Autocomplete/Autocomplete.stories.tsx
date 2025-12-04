@@ -1,15 +1,34 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { BiPlus, BiSearch } from 'react-icons/bi';
 import { Autocomplete, type AutocompleteOptionData } from './Autocomplete';
+import { Stack } from '@/components/basic/layout/Stack';
+import { Text } from '@/components/basic/typography/Text';
+import { Button } from '@/components/basic/forms/Button';
+import { Avatar } from '@/components/basic/data-display/Avatar';
+import { Icon } from '@/components/basic/utility/Icon';
 
-const meta = {
+const meta: Meta<typeof Autocomplete> = {
   title: 'Advanced/Forms/Autocomplete',
   component: Autocomplete,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'A compound autocomplete component with filtering, keyboard navigation, single/multiple selection, and FormField integration.',
+      },
+    },
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Autocomplete>;
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: '400px', paddingBottom: '200px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -26,16 +45,20 @@ const fruits: AutocompleteOptionData[] = [
 ];
 
 // ============================================================================
-// BASIC USAGE - Complete Component Compositions
+// DEFAULT
 // ============================================================================
 
-export const CompleteComponent: Story = {
-  name: 'Complete Component (Input + List)',
+export const Default: Story = {
   render: () => {
     const [value, setValue] = useState('');
     return (
-      <div className="w-80">
-        <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={fruits} placeholder="Search fruits...">
+      <Stack gap="md" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={fruits}
+          placeholder="Search fruits..."
+        >
           <Autocomplete.Input />
           <Autocomplete.List>
             {fruits.map((option) => (
@@ -44,22 +67,28 @@ export const CompleteComponent: Story = {
             <Autocomplete.Empty />
           </Autocomplete.List>
         </Autocomplete>
-        <div className="mt-4 text-sm text-gray-600">Selected: {value || 'None'}</div>
-      </div>
+        <Text size="sm" color="tertiary">
+          Selected: {value || 'None'}
+        </Text>
+      </Stack>
     );
   },
 };
+
+// ============================================================================
+// WITH FORM FIELD
+// ============================================================================
 
 export const WithFormField: Story = {
   render: () => {
     const [value, setValue] = useState('');
     return (
-      <div className="w-80">
-        <Autocomplete 
-          value={value} 
-          onChange={(val) => setValue(val as string)} 
-          options={fruits} 
-          label="Favorite Fruit" 
+      <Stack gap="md" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={fruits}
+          label="Favorite Fruit"
           helperText="Start typing to search"
           placeholder="Select a fruit..."
         >
@@ -71,127 +100,13 @@ export const WithFormField: Story = {
             <Autocomplete.Empty />
           </Autocomplete.List>
         </Autocomplete>
-        <div className="mt-4 text-sm text-gray-600">Selected: {value || 'None'}</div>
-      </div>
-    );
-  },
-};
-
-export const CustomRendering: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    const users: AutocompleteOptionData[] = [
-      { value: 'john', label: 'John Doe' },
-      { value: 'jane', label: 'Jane Smith' },
-      { value: 'bob', label: 'Bob Johnson' },
-      { value: 'alice', label: 'Alice Williams' },
-    ];
-
-    return (
-      <div className="w-80">
-        <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={users} placeholder="Search users...">
-          <Autocomplete.Input />
-          <Autocomplete.List>
-            {users.map((user) => (
-              <Autocomplete.Option key={user.value} value={user.value}>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium">
-                    {user.label.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-medium">{user.label}</div>
-                    <div className="text-xs text-gray-500">@{user.value}</div>
-                  </div>
-                </div>
-              </Autocomplete.Option>
-            ))}
-            <Autocomplete.Empty />
-          </Autocomplete.List>
-        </Autocomplete>
-        <div className="mt-4 text-sm text-gray-600">Selected: {value || 'None'}</div>
-      </div>
-    );
-  },
-};
-
-export const CustomFilter: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    const customFilter = (option: AutocompleteOptionData, query: string) => {
-      return option.label.toLowerCase().startsWith(query.toLowerCase());
-    };
-    return (
-      <div className="w-80 space-y-2">
-        <Autocomplete 
-          value={value} 
-          onChange={(val) => setValue(val as string)} 
-          options={fruits} 
-          filter={customFilter} 
-          placeholder="Type to filter (starts with)..."
-        >
-          <Autocomplete.Input />
-          <Autocomplete.List>
-            {fruits.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
-            ))}
-            <Autocomplete.Empty />
-          </Autocomplete.List>
-        </Autocomplete>
-        <p className="text-xs text-gray-500">Custom filter: only matches from start of label</p>
-        <div className="mt-4 text-sm text-gray-600">Selected: {value || 'None'}</div>
-      </div>
-    );
-  },
-};
-
-export const EmptyState: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    return (
-      <div className="w-80">
-        <Autocomplete 
-          value={value} 
-          onChange={(val) => setValue(val as string)} 
-          options={[]} 
-          emptyMessage="🔍 No items available"
-          placeholder="Search..." 
-        >
-          <Autocomplete.Input />
-          <Autocomplete.List>
-            <Autocomplete.Empty />
-          </Autocomplete.List>
-        </Autocomplete>
-      </div>
-    );
-  },
-};
-
-export const LongList: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    const longList: AutocompleteOptionData[] = Array.from({ length: 50 }, (_, i) => ({
-      value: `item-${i}`,
-      label: `Item ${i + 1}`,
-    }));
-    return (
-      <div className="w-80">
-        <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={longList} placeholder="Search in long list...">
-          <Autocomplete.Input />
-          <Autocomplete.List>
-            {longList.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
-            ))}
-            <Autocomplete.Empty />
-          </Autocomplete.List>
-        </Autocomplete>
-        <div className="mt-4 text-sm text-gray-600">Selected: {value || 'None'}</div>
-      </div>
+      </Stack>
     );
   },
 };
 
 // ============================================================================
-// VARIANTS - Size, States, Multiple Selection
+// SIZE VARIANTS
 // ============================================================================
 
 export const SizeVariants: Story = {
@@ -200,78 +115,78 @@ export const SizeVariants: Story = {
     const [medium, setMedium] = useState('');
     const [large, setLarge] = useState('');
     return (
-      <div className="space-y-6">
-        <div className="w-80">
-          <Autocomplete 
-            value={small} 
-            onChange={(val) => setSmall(val as string)} 
-            options={fruits} 
-            size="small" 
-            label="Small Size" 
-            placeholder="Small..."
-          >
-            <Autocomplete.Input />
-            <Autocomplete.List>
-              {fruits.map((opt) => (
-                <Autocomplete.Option key={opt.value} value={opt.value} />
-              ))}
-              <Autocomplete.Empty />
-            </Autocomplete.List>
-          </Autocomplete>
-        </div>
-        <div className="w-80">
-          <Autocomplete 
-            value={medium} 
-            onChange={(val) => setMedium(val as string)} 
-            options={fruits} 
-            size="default" 
-            label="Default Size" 
-            placeholder="Default..."
-          >
-            <Autocomplete.Input />
-            <Autocomplete.List>
-              {fruits.map((opt) => (
-                <Autocomplete.Option key={opt.value} value={opt.value} />
-              ))}
-              <Autocomplete.Empty />
-            </Autocomplete.List>
-          </Autocomplete>
-        </div>
-        <div className="w-80">
-          <Autocomplete 
-            value={large} 
-            onChange={(val) => setLarge(val as string)} 
-            options={fruits} 
-            size="large" 
-            label="Large Size" 
-            placeholder="Large..."
-          >
-            <Autocomplete.Input />
-            <Autocomplete.List>
-              {fruits.map((opt) => (
-                <Autocomplete.Option key={opt.value} value={opt.value} />
-              ))}
-              <Autocomplete.Empty />
-            </Autocomplete.List>
-          </Autocomplete>
-        </div>
-      </div>
+      <Stack gap="lg" className="w-80">
+        <Autocomplete
+          value={small}
+          onChange={(val) => setSmall(val as string)}
+          options={fruits}
+          size="small"
+          label="Small"
+          placeholder="Small..."
+        >
+          <Autocomplete.Input />
+          <Autocomplete.List>
+            {fruits.map((opt) => (
+              <Autocomplete.Option key={opt.value} value={opt.value} />
+            ))}
+            <Autocomplete.Empty />
+          </Autocomplete.List>
+        </Autocomplete>
+
+        <Autocomplete
+          value={medium}
+          onChange={(val) => setMedium(val as string)}
+          options={fruits}
+          size="default"
+          label="Default"
+          placeholder="Default..."
+        >
+          <Autocomplete.Input />
+          <Autocomplete.List>
+            {fruits.map((opt) => (
+              <Autocomplete.Option key={opt.value} value={opt.value} />
+            ))}
+            <Autocomplete.Empty />
+          </Autocomplete.List>
+        </Autocomplete>
+
+        <Autocomplete
+          value={large}
+          onChange={(val) => setLarge(val as string)}
+          options={fruits}
+          size="large"
+          label="Large"
+          placeholder="Large..."
+        >
+          <Autocomplete.Input />
+          <Autocomplete.List>
+            {fruits.map((opt) => (
+              <Autocomplete.Option key={opt.value} value={opt.value} />
+            ))}
+            <Autocomplete.Empty />
+          </Autocomplete.List>
+        </Autocomplete>
+      </Stack>
     );
   },
 };
+
+// ============================================================================
+// MULTIPLE SELECTION
+// ============================================================================
 
 export const MultipleSelection: Story = {
   render: () => {
     const [value, setValue] = useState<string[]>([]);
     return (
-      <div className="w-80">
-        <Autocomplete 
-          value={value} 
-          onChange={(val) => setValue(val as string[])} 
-          options={fruits} 
-          multiple 
+      <Stack gap="md" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string[])}
+          options={fruits}
+          multiple
           label="Select Multiple Fruits"
-          placeholder="Select multiple fruits..."
+          placeholder="Select multiple..."
         >
           <Autocomplete.Input />
           <Autocomplete.List>
@@ -281,26 +196,31 @@ export const MultipleSelection: Story = {
             <Autocomplete.Empty />
           </Autocomplete.List>
         </Autocomplete>
-        <div className="mt-4 text-sm text-gray-600">
+        <Text size="sm" color="tertiary">
           Selected: {value.length > 0 ? value.join(', ') : 'None'}
-        </div>
-      </div>
+        </Text>
+      </Stack>
     );
   },
 };
 
-export const ErrorState: Story = {
+// ============================================================================
+// STATES
+// ============================================================================
+
+export const States: Story = {
+  name: 'Error & Disabled States',
   render: () => {
     const [value, setValue] = useState('');
     return (
-      <div className="w-80">
-        <Autocomplete 
-          value={value} 
-          onChange={(val) => setValue(val as string)} 
-          options={fruits} 
-          label="Required Field" 
-          helperText={value ? 'Valid selection' : 'Please select a fruit'} 
-          error={!value} 
+      <Stack gap="lg" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={fruits}
+          label="Error State"
+          helperText={value ? 'Valid selection' : 'Please select a fruit'}
+          error={!value}
           placeholder="Select a fruit..."
         >
           <Autocomplete.Input />
@@ -311,36 +231,32 @@ export const ErrorState: Story = {
             <Autocomplete.Empty />
           </Autocomplete.List>
         </Autocomplete>
-      </div>
+
+        <Autocomplete
+          value="apple"
+          onChange={() => {}}
+          options={fruits}
+          disabled
+          label="Disabled State"
+          helperText="This field cannot be edited"
+        >
+          <Autocomplete.Input />
+          <Autocomplete.List>
+            {fruits.map((option) => (
+              <Autocomplete.Option key={option.value} value={option.value} />
+            ))}
+          </Autocomplete.List>
+        </Autocomplete>
+      </Stack>
     );
   },
 };
 
-export const DisabledState: Story = {
-  render: () => (
-    <div className="w-80">
-      <Autocomplete 
-        value="apple" 
-        onChange={() => {}}
-        options={fruits} 
-        disabled 
-        label="Disabled Field" 
-        helperText="This field cannot be edited" 
-        placeholder="Search fruits..."
-      >
-        <Autocomplete.Input />
-        <Autocomplete.List>
-          {fruits.map((option) => (
-            <Autocomplete.Option key={option.value} value={option.value} />
-          ))}
-          <Autocomplete.Empty />
-        </Autocomplete.List>
-      </Autocomplete>
-    </div>
-  ),
-};
+// ============================================================================
+// DISABLED OPTIONS
+// ============================================================================
 
-export const WithDisabledOptions: Story = {
+export const DisabledOptions: Story = {
   render: () => {
     const [value, setValue] = useState('');
     const options: AutocompleteOptionData[] = [
@@ -351,8 +267,13 @@ export const WithDisabledOptions: Story = {
       { value: 'option5', label: 'Option 5' },
     ];
     return (
-      <div className="w-80">
-        <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={options} placeholder="Select an option...">
+      <Stack gap="md" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={options}
+          placeholder="Select an option..."
+        >
           <Autocomplete.Input />
           <Autocomplete.List>
             {options.map((option) => (
@@ -361,211 +282,139 @@ export const WithDisabledOptions: Story = {
             <Autocomplete.Empty />
           </Autocomplete.List>
         </Autocomplete>
-        <div className="mt-4 text-sm text-gray-600">Selected: {value || 'None'}</div>
-      </div>
+        <Text size="sm" color="tertiary">
+          Selected: {value || 'None'}
+        </Text>
+      </Stack>
     );
   },
 };
 
 // ============================================================================
-// SUBCOMPONENT ISOLATION - Testing Individual Parts
+// CUSTOM FILTER
 // ============================================================================
 
-export const InputSubcomponent: Story = {
-  name: 'Subcomponent: Input',
+export const CustomFilter: Story = {
   render: () => {
     const [value, setValue] = useState('');
+    const customFilter = (option: AutocompleteOptionData, query: string) => {
+      return option.label.toLowerCase().startsWith(query.toLowerCase());
+    };
     return (
-      <div className="w-80 space-y-4">
-        <div>
-          <p className="text-sm font-medium text-gray-700 mb-2">Input Component (Isolated)</p>
-          <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={fruits}>
-            <Autocomplete.Input placeholder="Type to search..." />
-            {/* No List - demonstrates Input in complete isolation */}
-          </Autocomplete>
-        </div>
-        <div className="p-3 bg-gray-50 rounded text-xs text-gray-600">
-          <strong>Demonstrates:</strong> Input component renders independently. Typing updates query state but no dropdown appears because List is not rendered.
-        </div>
-      </div>
-    );
-  },
-};
-
-export const ListSubcomponent: Story = {
-  name: 'Subcomponent: List (Static)',
-  render: () => {
-    const [value, setValue] = useState('');
-    return (
-      <div className="w-80 space-y-4">
-        <div>
-          <p className="text-sm font-medium text-gray-700 mb-2">List Component (Isolated - Always Visible)</p>
-          <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={fruits} defaultOpen>
-            {/* Input hidden for true List isolation - demonstrates padding/spacing only */}
-            <Autocomplete.List className="!static !shadow-md !rounded-md !border !border-gray-200">
-              {fruits.map((fruit) => (
-                <Autocomplete.Option key={fruit.value} value={fruit.value} />
-              ))}
-              <Autocomplete.Empty />
-            </Autocomplete.List>
-          </Autocomplete>
-        </div>
-        <div className="p-3 bg-gray-50 rounded text-xs text-gray-600">
-          <strong>Demonstrates:</strong> List component with static positioning. Shows padding, spacing, scrolling, and option layout without Input visible.
-        </div>
-      </div>
-    );
-  },
-};
-
-export const OptionSubcomponent: Story = {
-  name: 'Subcomponent: Option States',
-  render: () => {
-    const [value, setValue] = useState('apple');
-    const testOptions: AutocompleteOptionData[] = [
-      { value: 'apple', label: 'Apple (Selected)' },
-      { value: 'banana', label: 'Banana (Normal)' },
-      { value: 'cherry', label: 'Cherry (Disabled)', disabled: true },
-      { value: 'date', label: 'Date (Normal)' },
-    ];
-    return (
-      <div className="w-80 space-y-4">
-        <div>
-          <p className="text-sm font-medium text-gray-700 mb-2">Option States (Isolated)</p>
-          <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={testOptions} defaultOpen>
-            {/* Input hidden for true Option isolation - demonstrates padding/gap/states only */}
-            <Autocomplete.List className="!static !shadow-md !rounded-md !border !border-gray-200">
-              {testOptions.map((option) => (
-                <Autocomplete.Option key={option.value} value={option.value} />
-              ))}
-            </Autocomplete.List>
-          </Autocomplete>
-        </div>
-        <div className="p-3 bg-gray-50 rounded text-xs text-gray-600">
-          <strong>Demonstrates:</strong> Selected (blue), normal (white), disabled (gray, no hover) option states with proper padding and gap, without Input visible.
-        </div>
-      </div>
-    );
-  },
-};
-
-export const EmptySubcomponent: Story = {
-  name: 'Subcomponent: Empty Message',
-  render: () => {
-    return (
-      <div className="w-80 space-y-4">
-        <div>
-          <p className="text-sm font-medium text-gray-700 mb-2">Empty Message Component (Isolated)</p>
-          <Autocomplete value="" onChange={() => {}} options={[]} defaultOpen>
-            {/* Input hidden for true Empty isolation - demonstrates empty state only */}
-            <Autocomplete.List className="!static !shadow-md !rounded-md !border !border-gray-200">
-              <Autocomplete.Empty />
-            </Autocomplete.List>
-          </Autocomplete>
-        </div>
-        <div className="p-3 bg-gray-50 rounded text-xs text-gray-600">
-          <strong>Demonstrates:</strong> Empty message renders when no options available. Default message: "No results found", without Input visible.
-        </div>
-      </div>
+      <Stack gap="md" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={fruits}
+          filter={customFilter}
+          placeholder="Type to filter (starts with)..."
+        >
+          <Autocomplete.Input />
+          <Autocomplete.List>
+            {fruits.map((option) => (
+              <Autocomplete.Option key={option.value} value={option.value} />
+            ))}
+            <Autocomplete.Empty />
+          </Autocomplete.List>
+        </Autocomplete>
+        <Text size="xs" color="tertiary">
+          Custom filter: only matches from start of label
+        </Text>
+      </Stack>
     );
   },
 };
 
 // ============================================================================
-// RENDERING PATTERNS - Different Ways to Use List & Option
+// LONG LIST (SCROLLABLE)
 // ============================================================================
 
-export const AutomaticOptionRendering: Story = {
-  name: 'Pattern: Automatic Option Mapping',
+export const LongList: Story = {
   render: () => {
     const [value, setValue] = useState('');
+    const longList: AutocompleteOptionData[] = Array.from({ length: 50 }, (_, i) => ({
+      value: `item-${i}`,
+      label: `Item ${i + 1}`,
+    }));
     return (
-      <div className="w-80 space-y-4">
-        <div>
-          <p className="text-sm font-medium text-gray-700 mb-2">Automatic: Map over options array</p>
-          <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={fruits} placeholder="Search fruits...">
-            <Autocomplete.Input />
-            <Autocomplete.List>
-              {fruits.map((option) => (
-                <Autocomplete.Option key={option.value} value={option.value} />
-              ))}
-              <Autocomplete.Empty />
-            </Autocomplete.List>
-          </Autocomplete>
-        </div>
-        <div className="p-3 bg-gray-50 rounded text-xs text-gray-600 font-mono">
-          {`{fruits.map((option) => (\n  <Autocomplete.Option\n    key={option.value}\n    value={option.value}\n  />\n))}`}
-        </div>
-      </div>
+      <Stack gap="md" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={longList}
+          placeholder="Search in long list..."
+        >
+          <Autocomplete.Input />
+          <Autocomplete.List>
+            {longList.map((option) => (
+              <Autocomplete.Option key={option.value} value={option.value} />
+            ))}
+            <Autocomplete.Empty />
+          </Autocomplete.List>
+        </Autocomplete>
+        <Text size="sm" color="tertiary">
+          Selected: {value || 'None'}
+        </Text>
+      </Stack>
     );
   },
 };
 
-export const ManualOptionRendering: Story = {
-  name: 'Pattern: Manual Static Options',
-  render: () => {
-    const [value, setValue] = useState('');
-    return (
-      <div className="w-80 space-y-4">
-        <div>
-          <p className="text-sm font-medium text-gray-700 mb-2">Manual: Hardcoded options</p>
-          <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={fruits} placeholder="Search fruits...">
-            <Autocomplete.Input />
-            <Autocomplete.List>
-              <Autocomplete.Option value="apple" />
-              <Autocomplete.Option value="banana" />
-              <Autocomplete.Option value="cherry" />
-              <Autocomplete.Empty />
-            </Autocomplete.List>
-          </Autocomplete>
-        </div>
-        <div className="p-3 bg-gray-50 rounded text-xs text-gray-600">
-          <strong>Note:</strong> Manual approach limits filtering. Only hardcoded values render. Use for fixed, non-dynamic lists.
-        </div>
-      </div>
-    );
-  },
-};
-
-export const ConditionalOptionRendering: Story = {
-  name: 'Pattern: Conditional Option Display',
-  render: () => {
-    const [value, setValue] = useState('');
-    const [showAll, setShowAll] = useState(false);
-    const displayOptions = showAll ? fruits : fruits.slice(0, 3);
-    return (
-      <div className="w-80 space-y-4">
-        <div>
-          <p className="text-sm font-medium text-gray-700 mb-2">Conditional: Show/Hide Options</p>
-          <label className="flex items-center gap-2 mb-2">
-            <input 
-              type="checkbox" 
-              checked={showAll} 
-              onChange={(e) => setShowAll(e.target.checked)}
-              className="rounded"
-            />
-            <span className="text-sm text-gray-600">Show all options</span>
-          </label>
-          <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={fruits} placeholder="Search fruits...">
-            <Autocomplete.Input />
-            <Autocomplete.List>
-              {displayOptions.map((option) => (
-                <Autocomplete.Option key={option.value} value={option.value} />
-              ))}
-              <Autocomplete.Empty />
-            </Autocomplete.List>
-          </Autocomplete>
-        </div>
-        <div className="p-3 bg-gray-50 rounded text-xs text-gray-600">
-          <strong>Use case:</strong> Lazy loading, progressive disclosure, or permission-based option visibility.
-        </div>
-      </div>
-    );
-  },
-};
+// ============================================================================
+// CUSTOM OPTION RENDERING
+// ============================================================================
 
 export const CustomOptionContent: Story = {
-  name: 'Pattern: Custom Option Children',
+  render: () => {
+    const [value, setValue] = useState('');
+    const users: AutocompleteOptionData[] = [
+      { value: 'john', label: 'John Doe' },
+      { value: 'jane', label: 'Jane Smith' },
+      { value: 'bob', label: 'Bob Johnson' },
+      { value: 'alice', label: 'Alice Williams' },
+    ];
+
+    return (
+      <Stack gap="md" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={users}
+          placeholder="Search users..."
+        >
+          <Autocomplete.Input />
+          <Autocomplete.List>
+            {users.map((user) => (
+              <Autocomplete.Option key={user.value} value={user.value}>
+                <Stack direction="horizontal" gap="sm" align="center">
+                  <Avatar size="sm" name={user.label} />
+                  <Stack gap="none">
+                    <Text size="sm" weight="medium">
+                      {user.label}
+                    </Text>
+                    <Text size="xs" color="tertiary">
+                      @{user.value}
+                    </Text>
+                  </Stack>
+                </Stack>
+              </Autocomplete.Option>
+            ))}
+            <Autocomplete.Empty />
+          </Autocomplete.List>
+        </Autocomplete>
+        <Text size="sm" color="tertiary">
+          Selected: {value || 'None'}
+        </Text>
+      </Stack>
+    );
+  },
+};
+
+// ============================================================================
+// WITH ICONS
+// ============================================================================
+
+export const WithIcons: Story = {
   render: () => {
     const [value, setValue] = useState('');
     const countries: AutocompleteOptionData[] = [
@@ -574,7 +423,7 @@ export const CustomOptionContent: Story = {
       { value: 'mx', label: 'Mexico' },
       { value: 'uk', label: 'United Kingdom' },
     ];
-    
+
     const flagEmojis: Record<string, string> = {
       us: '🇺🇸',
       ca: '🇨🇦',
@@ -583,26 +432,112 @@ export const CustomOptionContent: Story = {
     };
 
     return (
-      <div className="w-80 space-y-4">
-        <div>
-          <p className="text-sm font-medium text-gray-700 mb-2">Custom: Option with Icons</p>
-          <Autocomplete value={value} onChange={(val) => setValue(val as string)} options={countries} placeholder="Select country...">
-            <Autocomplete.Input />
-            <Autocomplete.List>
-              {countries.map((country) => (
-                <Autocomplete.Option key={country.value} value={country.value}>
-                  <span className="text-lg mr-2">{flagEmojis[country.value]}</span>
-                  {country.label}
-                </Autocomplete.Option>
-              ))}
-              <Autocomplete.Empty />
-            </Autocomplete.List>
-          </Autocomplete>
-        </div>
-        <div className="p-3 bg-gray-50 rounded text-xs text-gray-600">
-          <strong>Pattern:</strong> Pass children to Option component to override default label rendering.
-        </div>
-      </div>
+      <Stack gap="md" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={countries}
+          placeholder="Select country..."
+        >
+          <Autocomplete.Input />
+          <Autocomplete.List>
+            {countries.map((country) => (
+              <Autocomplete.Option key={country.value} value={country.value}>
+                <Stack direction="horizontal" gap="sm" align="center">
+                  <Text size="lg">{flagEmojis[country.value]}</Text>
+                  <Text size="sm">{country.label}</Text>
+                </Stack>
+              </Autocomplete.Option>
+            ))}
+            <Autocomplete.Empty />
+          </Autocomplete.List>
+        </Autocomplete>
+      </Stack>
+    );
+  },
+};
+
+// ============================================================================
+// EMPTY STATE CUSTOMIZATION
+// ============================================================================
+
+export const CustomEmptyState: Story = {
+  render: () => {
+    const [value, setValue] = useState('');
+    return (
+      <Stack gap="md" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={fruits}
+          placeholder="Type 'xyz' to see empty state..."
+        >
+          <Autocomplete.Input />
+          <Autocomplete.List>
+            {fruits.map((option) => (
+              <Autocomplete.Option key={option.value} value={option.value} />
+            ))}
+            <Autocomplete.Empty>
+              <Stack gap="sm" align="center" className="py-2">
+                <Icon icon={BiSearch} size="lg" color="muted" />
+                <Text size="sm" color="tertiary">
+                  No matches found
+                </Text>
+                <Button size="small" variant="tertiary">
+                  <Icon icon={BiPlus} size="sm" />
+                  Add new item
+                </Button>
+              </Stack>
+            </Autocomplete.Empty>
+          </Autocomplete.List>
+        </Autocomplete>
+      </Stack>
+    );
+  },
+};
+
+// ============================================================================
+// KEYBOARD NAVIGATION DEMO
+// ============================================================================
+
+export const KeyboardNavigation: Story = {
+  render: () => {
+    const [value, setValue] = useState('');
+    return (
+      <Stack gap="md" className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={fruits}
+          defaultOpen
+          placeholder="Use arrow keys..."
+        >
+          <Autocomplete.Input />
+          <Autocomplete.List>
+            {fruits.map((option) => (
+              <Autocomplete.Option key={option.value} value={option.value} />
+            ))}
+            <Autocomplete.Empty />
+          </Autocomplete.List>
+        </Autocomplete>
+        <Stack gap="xs">
+          <Text size="xs" weight="medium">
+            Keyboard shortcuts:
+          </Text>
+          <Text size="xs" color="tertiary">
+            ↓ Arrow Down: Next option
+          </Text>
+          <Text size="xs" color="tertiary">
+            ↑ Arrow Up: Previous option
+          </Text>
+          <Text size="xs" color="tertiary">
+            Enter: Select highlighted option
+          </Text>
+          <Text size="xs" color="tertiary">
+            Escape: Close list
+          </Text>
+        </Stack>
+      </Stack>
     );
   },
 };

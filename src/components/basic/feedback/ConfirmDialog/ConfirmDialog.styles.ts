@@ -1,75 +1,31 @@
-// =============================================================================
-// CONFIRM DIALOG VARIANT TYPE
-// =============================================================================
-
-export type ConfirmDialogVariant = 'default' | 'destructive' | 'warning' | 'info';
-
-// Icon color type from Icon component
-export type IconColorType = 'primary' | 'secondary' | 'tertiary' | 'inverse' | 'disabled' | 'success' | 'warning' | 'error' | 'info' | 'inherit';
+import type { ConfirmDialogVariant } from './ConfirmDialog';
 
 // =============================================================================
 // BASE STYLES
 // =============================================================================
 
-export const BASE_CONTENT_CLASSES = 'flex-1 min-w-0';
-
-export const ICON_WRAPPER_CLASSES = 'flex-shrink-0';
+/**
+ * Flex container for title content
+ */
+export const TITLE_WRAPPER_CLASSES = 'flex-1 min-w-0';
 
 /**
- * Header content wrapper with icon and title
+ * Icon wrapper - prevents shrinking
  */
-export const HEADER_CONTENT_CLASSES = 'flex items-start w-full';
+export const ICON_CLASSES = 'flex-shrink-0';
 
 /**
- * Header content gap style - applied inline to use CSS variable
+ * Description wrapper with left padding when icon is shown
  */
-export const HEADER_CONTENT_STYLES = {
-  gap: 'var(--semantic-space-compact)',
-} as const;
+export const DESCRIPTION_WITH_ICON_CLASSES = 'pl-11';
 
 // =============================================================================
-// STYLE OBJECTS (Design Token Based - Matches Card Spacing)
+// VARIANT ICON STYLES
 // =============================================================================
 
-/**
- * Override Modal.Content's padding to 0 since Header/Footer have their own padding.
- * This prevents double padding (Content + Header/Footer).
- */
-export const CONTENT_WRAPPER_STYLES = {
-  paddingBlock: '0',
-  paddingInline: '0',
-} as const;
-
-/**
- * 16px padding for Header and Footer sections
- */
-export const SECTION_PADDING_STYLES = {
-  paddingBlock: 'var(--semantic-space-default)',
-  paddingInline: 'var(--semantic-space-default)',
-} as const;
-
-/**
- * Remove Modal's default divider borders for ConfirmDialog
- */
-export const NO_BORDER_STYLES = {
-  border: 'none',
-} as const;
-
-/**
- * Description area padding - 16px horizontal to match header/footer,
- * no vertical padding as it sits between header and footer
- */
-export const DESCRIPTION_WRAPPER_STYLES = {
-  paddingInline: 'var(--semantic-space-default)',
-} as const;
-
-// =============================================================================
-// VARIANT ICON COLOR STYLES (Maps to Icon component color prop)
-// =============================================================================
-
-export const VARIANT_ICON_COLORS: Record<ConfirmDialogVariant, IconColorType> = {
-  default: 'info',
-  destructive: 'error',
-  warning: 'warning',
-  info: 'info',
-} as const;
+export const VARIANT_ICON_CLASSES: Record<ConfirmDialogVariant, string> = {
+  default: 'text-[color:var(--component-confirm-dialog-icon-color-default)]',
+  destructive: 'text-[color:var(--component-confirm-dialog-icon-color-destructive)]',
+  warning: 'text-[color:var(--component-confirm-dialog-icon-color-warning)]',
+  info: 'text-[color:var(--component-confirm-dialog-icon-color-info)]',
+};

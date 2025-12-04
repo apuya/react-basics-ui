@@ -8,40 +8,40 @@ export const BASE_CLASSES =
  * Container padding styles using design tokens
  */
 export const CONTAINER_STYLES = {
-  paddingBlock: 'var(--semantic-space-comfortable)',
-  paddingInline: 'var(--semantic-space-default)',
+  paddingBlock: 'var(--component-emptystate-padding-block)',
+  paddingInline: 'var(--component-emptystate-padding-inline)',
 } as const;
 
 /**
  * Icon wrapper classes
  */
 export const ICON_WRAPPER_CLASSES =
-  'flex items-center justify-center text-[var(--semantic-text-tertiary)]';
+  'flex items-center justify-center text-[color:var(--component-emptystate-icon-color)]';
 
 /**
  * Icon wrapper styles - margin applied inline
  */
 export const ICON_WRAPPER_STYLES = {
-  marginBottom: 'var(--semantic-space-default)',
+  marginBottom: 'var(--component-emptystate-icon-gap)',
 } as const;
 
 /**
  * Title spacing styles (typography handled by Heading component)
  */
 export const TITLE_SPACING_STYLES = {
-  marginBottom: 'var(--semantic-space-compact)',
+  marginBottom: 'var(--component-emptystate-title-gap)',
 } as const;
 
 /**
  * Description spacing styles (typography handled by Text component)
  */
 export const DESCRIPTION_SPACING_STYLES = {
-  marginBottom: 'var(--semantic-space-default)',
+  marginBottom: 'var(--component-emptystate-description-gap)',
 } as const;
 
 /**
  * Action wrapper styles - margin applied inline
  */
 export const ACTION_WRAPPER_STYLES = {
-  marginTop: 'var(--semantic-space-compact)',
+  marginTop: 'var(--component-emptystate-action-gap)',
 } as const;

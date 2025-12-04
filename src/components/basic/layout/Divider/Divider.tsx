@@ -55,6 +55,9 @@ export const Divider = memo(
           className={cn(LABEL_WRAPPER_CLASSES, spacingClass, className)}
           role="separator"
           style={{ justifyContent }}
+          data-orientation={orientation}
+          data-variant={variant}
+          data-spacing={spacing}
         >
           {labelPosition !== 'left' && (
             <hr
@@ -106,6 +109,9 @@ export const Divider = memo(
         className={dividerClasses}
         role="separator"
         aria-orientation={orientation}
+        data-orientation={orientation}
+        data-variant={variant}
+        data-spacing={spacing}
         style={
           variant !== 'solid'
             ? {

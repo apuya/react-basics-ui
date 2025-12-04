@@ -213,6 +213,8 @@ export const Box = memo(
         ref={ref as any}
         className={cn(BASE_CLASSES, className)}
         style={boxStyle}
+        data-display={display || undefined}
+        data-position={position || undefined}
         {...rest}
       >
         {children}

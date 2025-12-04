@@ -1,11 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { AspectRatio } from './AspectRatio';
+import { Box } from '../Box';
+import { VStack } from '../Stack';
+import { Grid } from '../Grid';
+import { Flex } from '../Flex';
+import { Text } from '../../typography/Text';
 
-const meta = {
+const meta: Meta<typeof AspectRatio> = {
   title: 'Layout/AspectRatio',
   component: AspectRatio,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Maintains a consistent aspect ratio for its content. Useful for images, videos, and responsive embeds.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -17,105 +28,93 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '400px' }}>
+      <Box w={400}>
         <Story />
-      </div>
+      </Box>
     ),
   ],
-} satisfies Meta<typeof AspectRatio>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Square: Story = {
-  args: {
-    ratio: 'square',
-    children: (
-      <div className="flex items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600 text-white font-semibold">
-        1:1 Square
-      </div>
-    ),
-  },
-};
+const RatioBox = ({ children, color }: { children: React.ReactNode; color: string }) => (
+  <Flex
+    justify="center"
+    align="center"
+    className={`w-full h-full ${color} text-white font-semibold`}
+  >
+    <Text color="inverse" weight="semibold">{children}</Text>
+  </Flex>
+);
 
-export const Video: Story = {
+export const Default: Story = {
   args: {
     ratio: 'video',
     children: (
-      <div className="flex items-center justify-center bg-gradient-to-br from-purple-400 to-purple-600 text-white font-semibold">
-        16:9 Video
-      </div>
+      <RatioBox color="bg-gradient-to-br from-blue-400 to-blue-600">
+        16:9 Video (Default)
+      </RatioBox>
     ),
   },
 };
 
-export const Widescreen: Story = {
-  args: {
-    ratio: 'widescreen',
-    children: (
-      <div className="flex items-center justify-center bg-gradient-to-br from-green-400 to-green-600 text-white font-semibold">
-        21:9 Widescreen
-      </div>
-    ),
+export const AllRatios: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'All predefined aspect ratios: square (1:1), video (16:9), portrait (3:4), landscape (4:3), golden (1.618:1), widescreen (21:9), ultrawide (32:9).',
+      },
+    },
   },
-};
-
-export const Portrait: Story = {
-  args: {
-    ratio: 'portrait',
-    children: (
-      <div className="flex items-center justify-center bg-gradient-to-br from-pink-400 to-pink-600 text-white font-semibold">
-        3:4 Portrait
-      </div>
-    ),
-  },
-};
-
-export const Landscape: Story = {
-  args: {
-    ratio: 'landscape',
-    children: (
-      <div className="flex items-center justify-center bg-gradient-to-br from-orange-400 to-orange-600 text-white font-semibold">
-        4:3 Landscape
-      </div>
-    ),
-  },
-};
-
-export const GoldenRatio: Story = {
-  args: {
-    ratio: 'golden',
-    children: (
-      <div className="flex items-center justify-center bg-gradient-to-br from-yellow-400 to-yellow-600 text-white font-semibold">
-        Golden Ratio (1.618:1)
-      </div>
-    ),
-  },
-};
-
-export const Ultrawide: Story = {
-  args: {
-    ratio: 'ultrawide',
-    children: (
-      <div className="flex items-center justify-center bg-gradient-to-br from-indigo-400 to-indigo-600 text-white font-semibold">
-        32:9 Ultrawide
-      </div>
-    ),
-  },
+  render: () => (
+    <VStack spacing="xl">
+      {[
+        { ratio: 'square' as const, label: '1:1 Square', color: 'bg-gradient-to-br from-blue-400 to-blue-600' },
+        { ratio: 'video' as const, label: '16:9 Video', color: 'bg-gradient-to-br from-purple-400 to-purple-600' },
+        { ratio: 'portrait' as const, label: '3:4 Portrait', color: 'bg-gradient-to-br from-pink-400 to-pink-600' },
+        { ratio: 'landscape' as const, label: '4:3 Landscape', color: 'bg-gradient-to-br from-orange-400 to-orange-600' },
+        { ratio: 'golden' as const, label: '1.618:1 Golden', color: 'bg-gradient-to-br from-yellow-400 to-yellow-600' },
+        { ratio: 'widescreen' as const, label: '21:9 Widescreen', color: 'bg-gradient-to-br from-green-400 to-green-600' },
+        { ratio: 'ultrawide' as const, label: '32:9 Ultrawide', color: 'bg-gradient-to-br from-indigo-400 to-indigo-600' },
+      ].map(({ ratio, label, color }) => (
+        <VStack key={ratio} spacing="xs">
+          <Text weight="semibold" size="small">ratio="{ratio}"</Text>
+          <AspectRatio ratio={ratio}>
+            <RatioBox color={color}>{label}</RatioBox>
+          </AspectRatio>
+        </VStack>
+      ))}
+    </VStack>
+  ),
 };
 
 export const CustomRatio: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Use a numeric value for custom aspect ratios.',
+      },
+    },
+  },
   args: {
     ratio: 2.5,
     children: (
-      <div className="flex items-center justify-center bg-gradient-to-br from-red-400 to-red-600 text-white font-semibold">
+      <RatioBox color="bg-gradient-to-br from-red-400 to-red-600">
         Custom 2.5:1 Ratio
-      </div>
+      </RatioBox>
     ),
   },
 };
 
 export const WithImage: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Perfect for maintaining image aspect ratios.',
+      },
+    },
+  },
   args: {
     ratio: 'video',
     children: (
@@ -129,6 +128,13 @@ export const WithImage: Story = {
 };
 
 export const WithVideo: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Embed responsive videos that maintain their aspect ratio.',
+      },
+    },
+  },
   args: {
     ratio: 'video',
     children: (
@@ -143,38 +149,29 @@ export const WithVideo: Story = {
   },
 };
 
-export const WithRoundedCorners: Story = {
-  args: {
-    ratio: 'square',
-    className: 'rounded-lg',
-    children: (
-      <img
-        src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e"
-        alt="Landscape"
-        className="w-full h-full object-cover"
-      />
-    ),
+export const ImageGallery: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Real-world example: responsive image gallery with consistent aspect ratios.',
+      },
+    },
   },
-};
-
-export const Responsive: Story = {
   render: () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
-      <AspectRatio ratio="square">
-        <div className="flex items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-600 text-white font-semibold">
-          Square
-        </div>
-      </AspectRatio>
-      <AspectRatio ratio="video">
-        <div className="flex items-center justify-center bg-gradient-to-br from-teal-400 to-teal-600 text-white font-semibold">
-          Video
-        </div>
-      </AspectRatio>
-      <AspectRatio ratio="landscape">
-        <div className="flex items-center justify-center bg-gradient-to-br from-emerald-400 to-emerald-600 text-white font-semibold">
-          Landscape
-        </div>
-      </AspectRatio>
-    </div>
+    <Grid columns={3} gap="md">
+      {[
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4',
+        'https://images.unsplash.com/photo-1472214103451-9374bd1c798e',
+        'https://images.unsplash.com/photo-1469474968028-56623f02e42e',
+      ].map((src, i) => (
+        <AspectRatio key={i} ratio="square" className="rounded-lg overflow-hidden">
+          <img
+            src={src}
+            alt={`Gallery image ${i + 1}`}
+            className="w-full h-full object-cover"
+          />
+        </AspectRatio>
+      ))}
+    </Grid>
   ),
 };

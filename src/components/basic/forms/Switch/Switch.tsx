@@ -1,6 +1,6 @@
 import { cn } from '@/lib/cn';
 import { generateFormId } from '@/lib/generateFormId';
-import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import {
   INPUT_CLASSES,
   LABEL_CLASSES,
@@ -9,8 +9,8 @@ import {
   SIZE_TRACK_STYLES,
   THUMB_CLASSES,
   TRACK_CLASSES,
-  WRAPPER_CLASSES,
-  WRAPPER_DISABLED_CLASSES,
+  WRAPPER_BASE_CLASSES,
+  WRAPPER_STATE_STYLES,
 } from './Switch.styles';
 
 export type SwitchSize = 'small' | 'default' | 'large';
@@ -24,6 +24,9 @@ export interface SwitchProps extends Omit<ComponentPropsWithoutRef<'input'>, 'ty
   wrapperClassName?: string;
 }
 
+// Static style for wrapper gap
+const WRAPPER_STYLE = { gap: 'var(--component-switch-gap)' } as const;
+
 export const Switch = memo(
   forwardRef<HTMLInputElement, SwitchProps>(function Switch(
     { size = 'default', label, disabled, className, wrapperClassName, id, ...rest },
@@ -31,12 +34,30 @@ export const Switch = memo(
   ) {
     const switchId = id || generateFormId('switch', label);
 
+    const wrapperClasses = useMemo(
+      () => cn(
+        WRAPPER_BASE_CLASSES,
+        disabled ? WRAPPER_STATE_STYLES.disabled : WRAPPER_STATE_STYLES.enabled,
+        wrapperClassName
+      ),
+      [disabled, wrapperClassName]
+    );
+
+    const trackClasses = useMemo(
+      () => cn(TRACK_CLASSES, SIZE_TRACK_STYLES[size], SIZE_THUMB_CHECKED_STYLES[size]),
+      [size]
+    );
+
+    const thumbClasses = useMemo(
+      () => cn(THUMB_CLASSES, SIZE_THUMB_STYLES[size]),
+      [size]
+    );
+
     return (
       <label
-        className={cn(
-          disabled ? WRAPPER_DISABLED_CLASSES : WRAPPER_CLASSES,
-          wrapperClassName
-        )}
+        className={wrapperClasses}
+        style={WRAPPER_STYLE}
+        data-disabled={disabled || undefined}
       >
         <input
           ref={ref}
@@ -48,13 +69,8 @@ export const Switch = memo(
           data-size={size}
           {...rest}
         />
-        <span
-          className={cn(TRACK_CLASSES, SIZE_TRACK_STYLES[size], SIZE_THUMB_CHECKED_STYLES[size])}
-          aria-hidden="true"
-        >
-          <span
-            className={cn(THUMB_CLASSES, SIZE_THUMB_STYLES[size])}
-          />
+        <span className={trackClasses} aria-hidden="true">
+          <span className={thumbClasses} />
         </span>
         {label && <span className={LABEL_CLASSES}>{label}</span>}
       </label>

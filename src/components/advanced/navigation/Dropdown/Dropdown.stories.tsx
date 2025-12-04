@@ -3,6 +3,10 @@ import { useState } from 'react';
 import { Dropdown } from './Dropdown';
 import { DropdownErrorBoundary } from './DropdownErrorBoundary';
 import { Button } from '@/components/basic/forms/Button';
+import { Avatar } from '@/components/basic/data-display/Avatar';
+import { HStack } from '@/components/basic/layout/Stack';
+import { Box } from '@/components/basic/layout/Box';
+import { Text } from '@/components/basic/typography/Text';
 import { BiEdit, BiCopy, BiTrash, BiDownload, BiShare, BiCheck } from 'react-icons/bi';
 
 const meta: Meta<typeof Dropdown> = {
@@ -22,9 +26,9 @@ const meta: Meta<typeof Dropdown> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ minHeight: '450px', padding: '2rem', width: '100%', maxWidth: '400px' }}>
+      <Box className="min-h-[450px] p-8 w-full max-w-[400px]">
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
@@ -77,7 +81,7 @@ export const CompleteExample: Story = {
         <Dropdown.Item leadingIcon={<BiCopy />} shortcut="⌘D" checked={true}>
           Auto-save Enabled
         </Dropdown.Item>
-        <Dropdown.Divider />
+        <Dropdown.MenuItem variant="divider" />
         <Dropdown.MenuItem variant="header" label="Export Options" />
         <Dropdown.Item 
           leadingIcon={<BiDownload />} 
@@ -89,7 +93,7 @@ export const CompleteExample: Story = {
         <Dropdown.Item leadingIcon={<BiShare />} variant="info" disabled>
           Share (Coming Soon)
         </Dropdown.Item>
-        <Dropdown.Divider />
+        <Dropdown.MenuItem variant="divider" />
         <Dropdown.Item leadingIcon={<BiTrash />} variant="danger" shortcut="⌘⌫">
           Delete File
         </Dropdown.Item>
@@ -133,7 +137,7 @@ export const Positioning: Story = {
     },
   },
   render: () => (
-    <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+    <HStack gap="xl" wrap="wrap" justify="center">
       <Dropdown>
         <Dropdown.Trigger>
           <Button variant="tertiary" size="small">Bottom Start</Button>
@@ -163,7 +167,7 @@ export const Positioning: Story = {
           <Dropdown.Item>Item 2</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-    </div>
+    </HStack>
   ),
 };
 
@@ -203,32 +207,13 @@ export const UserAccountMenu: Story = {
   render: () => (
     <Dropdown>
       <Dropdown.Trigger>
-        <div style={{ 
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          padding: '0.5rem 0.75rem', 
-          borderRadius: 'var(--semantic-radius-md)',
-          border: '1px solid var(--semantic-border-default)',
-          background: 'var(--semantic-surface-primary)',
-          cursor: 'pointer',
-        }}>
-          <div style={{ 
-            width: '32px', 
-            height: '32px', 
-            borderRadius: '50%',
-            backgroundColor: 'var(--semantic-accent-blue-default)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            fontSize: '0.875rem',
-            fontWeight: 600,
-          }}>
-            JD
-          </div>
-          <span>John Doe</span>
-        </div>
+        <Box
+          as="button"
+          className="flex items-center gap-2 px-3 py-2 rounded-md border border-[color:var(--semantic-border-default)] bg-[color:var(--semantic-surface-primary)] cursor-pointer hover:bg-[color:var(--semantic-surface-hover)] transition-colors"
+        >
+          <Avatar name="John Doe" size="sm" />
+          <Text>John Doe</Text>
+        </Box>
       </Dropdown.Trigger>
       <Dropdown.Menu align="end">
         <Dropdown.MenuItem 
@@ -238,9 +223,9 @@ export const UserAccountMenu: Story = {
         />
         <Dropdown.Item>My Profile</Dropdown.Item>
         <Dropdown.Item>Account Settings</Dropdown.Item>
-        <Dropdown.Divider />
+        <Dropdown.MenuItem variant="divider" />
         <Dropdown.Item>Help & Support</Dropdown.Item>
-        <Dropdown.Divider />
+        <Dropdown.MenuItem variant="divider" />
         <Dropdown.Item variant="danger">Sign Out</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
@@ -263,10 +248,10 @@ export const ContextMenu: Story = {
       <Dropdown.Menu align="end">
         <Dropdown.Item leadingIcon={<BiEdit />} shortcut="⌘E">Edit</Dropdown.Item>
         <Dropdown.Item leadingIcon={<BiCopy />} shortcut="⌘D">Duplicate</Dropdown.Item>
-        <Dropdown.Divider />
+        <Dropdown.MenuItem variant="divider" />
         <Dropdown.Item leadingIcon={<BiDownload />} variant="success">Export</Dropdown.Item>
         <Dropdown.Item leadingIcon={<BiShare />} variant="info">Share</Dropdown.Item>
-        <Dropdown.Divider />
+        <Dropdown.MenuItem variant="divider" />
         <Dropdown.Item leadingIcon={<BiTrash />} variant="danger" shortcut="⌘⌫">Delete</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
@@ -351,7 +336,7 @@ export const ReducedMotion: Story = {
       <Dropdown.Menu enableAnimation={false}>
         <Dropdown.Item>Profile</Dropdown.Item>
         <Dropdown.Item>Settings</Dropdown.Item>
-        <Dropdown.Divider />
+        <Dropdown.MenuItem variant="divider" />
         <Dropdown.Item>Sign Out</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

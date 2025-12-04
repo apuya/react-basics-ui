@@ -6,16 +6,23 @@ const meta = {
   component: Textarea,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: 'A multi-line text input for longer form content with support for character counting, resize modes, and validation states.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'select',
       options: ['small', 'default', 'large'],
+      description: 'Controls the padding and min-height of the textarea',
     },
     resize: {
       control: 'select',
       options: ['none', 'vertical', 'horizontal', 'both'],
+      description: 'Controls the resize behavior',
     },
     error: {
       control: 'boolean',
@@ -26,101 +33,102 @@ const meta = {
     showCharCount: {
       control: 'boolean',
     },
+    required: {
+      control: 'boolean',
+    },
   },
+  decorators: [
+    (Story) => (
+      <div className="w-[400px]">
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof Textarea>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Basic textarea with placeholder */
 export const Default: Story = {
   args: {
     placeholder: 'Enter your message...',
   },
 };
 
-export const WithLabel: Story = {
-  args: {
-    label: 'Message',
-    placeholder: 'Enter your message...',
-  },
-};
-
-export const WithHelperText: Story = {
+/** Textarea with label, helper text, and character count */
+export const WithLabelAndHelper: Story = {
   args: {
     label: 'Description',
     placeholder: 'Provide a detailed description...',
     helperText: 'Please be as detailed as possible.',
+    maxLength: 200,
+    showCharCount: true,
   },
 };
 
-export const WithError: Story = {
-  args: {
-    label: 'Comments',
-    placeholder: 'Enter your comments...',
-    helperText: 'This field is required.',
-    error: true,
-  },
+/** All validation and interaction states */
+export const States: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <Textarea
+        label="Required"
+        placeholder="This field is required..."
+        required
+        helperText="Indicates a mandatory field"
+      />
+      <Textarea
+        label="Error"
+        placeholder="Enter your comments..."
+        error
+        helperText="This field has an error."
+        defaultValue="Invalid content"
+      />
+      <Textarea
+        label="Disabled"
+        disabled
+        defaultValue="This content cannot be edited."
+      />
+    </div>
+  ),
 };
 
-export const WithCharacterCount: Story = {
+/** All size variants side by side */
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <Textarea label="Small" size="small" placeholder="Small textarea..." />
+      <Textarea label="Default" size="default" placeholder="Default textarea..." />
+      <Textarea label="Large" size="large" placeholder="Large textarea..." />
+    </div>
+  ),
+};
+
+/** All resize mode options */
+export const ResizeModes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <Textarea label="Vertical (default)" resize="vertical" placeholder="Resize vertically..." />
+      <Textarea label="None" resize="none" placeholder="Cannot be resized..." />
+      <Textarea label="Horizontal" resize="horizontal" placeholder="Resize horizontally..." />
+      <Textarea label="Both" resize="both" placeholder="Resize in any direction..." />
+    </div>
+  ),
+};
+
+/** Character counting with max length */
+export const CharacterCount: Story = {
   args: {
     label: 'Bio',
     placeholder: 'Tell us about yourself...',
     maxLength: 200,
     showCharCount: true,
+    helperText: 'Brief description of yourself',
     defaultValue: 'I am a software developer passionate about creating great user experiences.',
   },
 };
 
-export const Disabled: Story = {
-  args: {
-    label: 'Disabled Field',
-    placeholder: 'This field is disabled',
-    disabled: true,
-    defaultValue: 'This content cannot be edited.',
-  },
-};
-
-export const Small: Story = {
-  args: {
-    label: 'Small Textarea',
-    placeholder: 'Small size...',
-    size: 'small',
-  },
-};
-
-export const Large: Story = {
-  args: {
-    label: 'Large Textarea',
-    placeholder: 'Large size...',
-    size: 'large',
-  },
-};
-
-export const ResizeNone: Story = {
-  args: {
-    label: 'Fixed Size',
-    placeholder: 'This textarea cannot be resized',
-    resize: 'none',
-  },
-};
-
-export const ResizeHorizontal: Story = {
-  args: {
-    label: 'Horizontal Resize',
-    placeholder: 'This textarea can only be resized horizontally',
-    resize: 'horizontal',
-  },
-};
-
-export const ResizeBoth: Story = {
-  args: {
-    label: 'Free Resize',
-    placeholder: 'This textarea can be resized in both directions',
-    resize: 'both',
-  },
-};
-
+/** Complete form field example with all features */
 export const FullExample: Story = {
   args: {
     label: 'Feedback',
@@ -128,6 +136,7 @@ export const FullExample: Story = {
     helperText: 'Your feedback helps us improve our services.',
     maxLength: 500,
     showCharCount: true,
+    required: true,
     rows: 6,
   },
 };

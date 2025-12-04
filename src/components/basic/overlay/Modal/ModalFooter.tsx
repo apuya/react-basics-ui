@@ -1,12 +1,22 @@
-import { createSubComponent } from '@/lib/createSubComponent';
+import { cn } from '@/lib/cn';
+import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
 import { FOOTER_CLASSES } from './Modal.styles';
-import type { ComponentPropsWithoutRef } from 'react';
 
 export interface ModalFooterProps extends ComponentPropsWithoutRef<'div'> {}
 
-export const ModalFooter = createSubComponent('Modal.Footer', {
-  baseClasses: FOOTER_CLASSES,
-  paddingInlineVar: '--component-modal-footer-padding-inline',
-  paddingBlockVar: '--component-modal-footer-padding-block',
-  gapVar: '--component-modal-gap',
-});
+export const ModalFooter = memo(
+  forwardRef<HTMLDivElement, ModalFooterProps>(({ className, children, style, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(FOOTER_CLASSES, className)}
+      style={{
+        gap: 'var(--component-modal-gap-compact)',
+        ...style,
+      }}
+      {...props}
+    >
+      {children}
+    </div>
+  ))
+);
+ModalFooter.displayName = 'Modal.Footer';

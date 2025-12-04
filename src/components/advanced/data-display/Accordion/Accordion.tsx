@@ -121,7 +121,7 @@ const AccordionRoot = ({
     () =>
       cn(
         'w-full',
-        variant === 'bordered' && 'border border-[var(--component-accordion-border)] rounded-[var(--component-accordion-radius)]',
+        variant === 'bordered' && 'border border-[color:var(--component-accordion-border)] rounded-[length:var(--component-accordion-radius)]',
         className
       ),
     [variant, className]
@@ -129,12 +129,20 @@ const AccordionRoot = ({
 
   return (
     <AccordionContext.Provider value={contextValue}>
-      <div className={accordionClasses} {...props}>
+      <div
+        className={accordionClasses}
+        data-type={type}
+        data-variant={variant}
+        data-collapsible={collapsible || undefined}
+        {...props}
+      >
         {children}
       </div>
     </AccordionContext.Provider>
   );
 };
+
+AccordionRoot.displayName = 'Accordion';
 
 export const Accordion = Object.assign(AccordionRoot, {
   Item: AccordionItem,

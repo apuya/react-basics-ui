@@ -273,4 +273,33 @@ describe('Badge', () => {
     expect(screen.getByText('Outline Error')).toBeInTheDocument();
     expect(screen.getByTestId('badge')).toHaveClass('border');
   });
+
+  // =============================================================================
+  // DATA ATTRIBUTES
+  // =============================================================================
+  
+  it('applies data-size attribute', () => {
+    render(<Badge size="small" data-testid="badge">Small</Badge>);
+    expect(screen.getByTestId('badge')).toHaveAttribute('data-size', 'small');
+  });
+
+  it('applies data-color attribute', () => {
+    render(<Badge color="success" data-testid="badge">Success</Badge>);
+    expect(screen.getByTestId('badge')).toHaveAttribute('data-color', 'success');
+  });
+
+  it('applies data-style-variant attribute', () => {
+    render(<Badge styleVariant="outline" data-testid="badge">Outline</Badge>);
+    expect(screen.getByTestId('badge')).toHaveAttribute('data-style-variant', 'outline');
+  });
+
+  it('applies data-dismissible attribute when dismissible', () => {
+    render(<Badge dismissible data-testid="badge">Dismissible</Badge>);
+    expect(screen.getByTestId('badge')).toHaveAttribute('data-dismissible', 'true');
+  });
+
+  it('applies data-disabled attribute when disabled', () => {
+    render(<Badge disabled data-testid="badge">Disabled</Badge>);
+    expect(screen.getByTestId('badge')).toHaveAttribute('data-disabled', 'true');
+  });
 });

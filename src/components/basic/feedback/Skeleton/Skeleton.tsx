@@ -1,11 +1,12 @@
 import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
 import {
+  ANIMATION_CLASSES,
   BASE_CLASSES,
-  ANIMATION_STYLES,
+  TEXT_CONTAINER_STYLE,
   VARIANT_STYLES,
-  type SkeletonVariant,
   type SkeletonAnimation,
+  type SkeletonVariant,
 } from './Skeleton.styles';
 
 export interface SkeletonProps extends ComponentPropsWithoutRef<'div'> {
@@ -35,96 +36,98 @@ export interface SkeletonProps extends ComponentPropsWithoutRef<'div'> {
 
 /**
  * Skeleton component for loading placeholders
- * 
+ *
  * @example
  * ```tsx
  * // Basic rectangle
  * <Skeleton width={200} height={100} />
- * 
+ *
  * // Circle avatar
  * <Skeleton variant="circle" width={40} height={40} />
- * 
+ *
  * // Text lines
  * <Skeleton variant="text" count={3} />
- * 
+ *
  * // Wave animation
  * <Skeleton animation="wave" width="100%" height={200} />
  * ```
  */
 export const Skeleton = memo(
-  forwardRef<HTMLDivElement, SkeletonProps>(
-    (
-      {
-        variant = 'rectangle',
-        animation = 'pulse',
-        width,
-        height,
-        count = 1,
-        className,
-        style,
-        ...props
-      },
-      ref
-    ) => {
-      const variantClass = VARIANT_STYLES[variant];
-      const animationClass = animation ? ANIMATION_STYLES[animation] : '';
+  forwardRef<HTMLDivElement, SkeletonProps>(function Skeleton(
+    {
+      variant = 'rectangle',
+      animation = 'pulse',
+      width,
+      height,
+      count = 1,
+      className,
+      style,
+      ...rest
+    },
+    ref
+  ) {
+    const animationClass = animation ? ANIMATION_CLASSES[animation] : '';
 
-      const computedStyle = useMemo(() => {
-        const styles: React.CSSProperties = {
-          backgroundColor: 'var(--component-skeleton-bg)',
-          ...style,
-        };
-        
-        if (width !== undefined) {
-          styles.width = typeof width === 'number' ? `${width}px` : width;
-        }
-        
-        if (height !== undefined) {
-          styles.height = typeof height === 'number' ? `${height}px` : height;
-        }
-        
-        return styles;
-      }, [width, height, style]);
+    const skeletonClasses = useMemo(
+      () => cn(BASE_CLASSES, animationClass, className),
+      [animationClass, className]
+    );
 
-      const classes = useMemo(
-        () => cn(BASE_CLASSES, variantClass, animationClass, className),
-        [variantClass, animationClass, className]
-      );
+    const computedStyle = useMemo(() => {
+      const styles: React.CSSProperties = {
+        backgroundColor: 'var(--component-skeleton-bg)',
+        ...VARIANT_STYLES[variant],
+        ...style,
+      };
 
-      // For text variant with count > 1, render multiple lines
-      if (variant === 'text' && count > 1) {
-        return (
-          <div className="space-y-2" {...props}>
-            {Array.from({ length: count }).map((_, index) => (
-              <div
-                key={index}
-                ref={index === 0 ? ref : undefined}
-                className={classes}
-                style={{
-                  ...computedStyle,
-                  // Last line is typically shorter
-                  width: index === count - 1 ? '80%' : computedStyle.width,
-                }}
-                aria-busy="true"
-                aria-live="polite"
-              />
-            ))}
-          </div>
-        );
+      if (width !== undefined) {
+        styles.width = typeof width === 'number' ? `${width}px` : width;
       }
 
+      if (height !== undefined) {
+        styles.height = typeof height === 'number' ? `${height}px` : height;
+      }
+
+      return styles;
+    }, [variant, width, height, style]);
+
+    // For text variant with count > 1, render multiple lines
+    if (variant === 'text' && count > 1) {
       return (
-        <div
-          ref={ref}
-          className={classes}
-          style={computedStyle}
-          aria-busy="true"
-          aria-live="polite"
-          {...props}
-        />
+        <div style={TEXT_CONTAINER_STYLE} {...rest}>
+          {Array.from({ length: count }).map((_, index) => (
+            <div
+              key={index}
+              ref={index === 0 ? ref : undefined}
+              className={skeletonClasses}
+              style={{
+                ...computedStyle,
+                // Last line is typically shorter
+                width: index === count - 1 ? '80%' : computedStyle.width,
+              }}
+              data-variant={variant}
+              data-animation={animation || 'none'}
+              aria-busy="true"
+              aria-live="polite"
+            />
+          ))}
+        </div>
       );
     }
-  )
+
+    return (
+      <div
+        ref={ref}
+        className={skeletonClasses}
+        style={computedStyle}
+        data-variant={variant}
+        data-animation={animation || 'none'}
+        aria-busy="true"
+        aria-live="polite"
+        {...rest}
+      />
+    );
+  })
 );
 
 Skeleton.displayName = 'Skeleton';

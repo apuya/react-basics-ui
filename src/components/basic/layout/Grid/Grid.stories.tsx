@@ -1,11 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Grid } from './Grid';
+import { Box } from '../Box';
+import { VStack, HStack } from '../Stack';
+import { Text } from '../../typography/Text';
+import { Heading } from '../../typography/Heading';
+import { Button } from '../../forms/Button';
 
-const meta = {
+const meta: Meta<typeof Grid> = {
   title: 'Layout/Grid',
   component: Grid,
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'CSS Grid layout component for creating two-dimensional layouts with rows and columns.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -47,20 +58,26 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '900px' }}>
+      <Box maxW={900}>
         <Story />
-      </div>
+      </Box>
     ),
   ],
-} satisfies Meta<typeof Grid>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const Box = ({ children, color = 'bg-blue-500' }: { children: React.ReactNode; color?: string }) => (
-  <div className={`${color} text-white px-4 py-3 rounded text-center font-semibold`}>
+const GridItem = ({ children }: { children: React.ReactNode }) => (
+  <Box
+    p={12}
+    bg="var(--semantic-brand-primary-default)"
+    color="white"
+    borderRadius={8}
+    className="text-center font-semibold"
+  >
     {children}
-  </div>
+  </Box>
 );
 
 export const Default: Story = {
@@ -69,137 +86,70 @@ export const Default: Story = {
     gap: 'md',
     children: (
       <>
-        <Box>1</Box>
-        <Box>2</Box>
-        <Box>3</Box>
-        <Box>4</Box>
-        <Box>5</Box>
-        <Box>6</Box>
-      </>
-    ),
-  },
-};
-
-export const TwoColumns: Story = {
-  args: {
-    cols: 2,
-    gap: 'md',
-    children: (
-      <>
-        <Box>Item 1</Box>
-        <Box>Item 2</Box>
-        <Box>Item 3</Box>
-        <Box>Item 4</Box>
-      </>
-    ),
-  },
-};
-
-export const ThreeColumns: Story = {
-  args: {
-    cols: 3,
-    gap: 'md',
-    children: (
-      <>
-        {Array.from({ length: 9 }, (_, i) => (
-          <Box key={i}>Item {i + 1}</Box>
-        ))}
-      </>
-    ),
-  },
-};
-
-export const FourColumns: Story = {
-  args: {
-    cols: 4,
-    gap: 'md',
-    children: (
-      <>
-        {Array.from({ length: 8 }, (_, i) => (
-          <Box key={i}>Item {i + 1}</Box>
-        ))}
-      </>
-    ),
-  },
-};
-
-export const SixColumns: Story = {
-  args: {
-    cols: 6,
-    gap: 'sm',
-    children: (
-      <>
-        {Array.from({ length: 12 }, (_, i) => (
-          <Box key={i}>{i + 1}</Box>
-        ))}
-      </>
-    ),
-  },
-};
-
-export const WithRows: Story = {
-  args: {
-    cols: 3,
-    rows: 2,
-    gap: 'md',
-    children: (
-      <>
         {Array.from({ length: 6 }, (_, i) => (
-          <Box key={i}>Item {i + 1}</Box>
+          <GridItem key={i}>{i + 1}</GridItem>
         ))}
       </>
     ),
   },
 };
 
-export const GapVariations: Story = {
+export const ColumnCounts: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Different column configurations from 2 to 6 columns.',
+      },
+    },
+  },
   render: () => (
-    <div className="space-y-6">
-      <div>
-        <p className="mb-2 text-sm font-semibold">Gap: xs</p>
-        <Grid cols={3} gap="xs">
-          <Box color="bg-purple-500">A</Box>
-          <Box color="bg-purple-500">B</Box>
-          <Box color="bg-purple-500">C</Box>
-        </Grid>
-      </div>
-      <div>
-        <p className="mb-2 text-sm font-semibold">Gap: sm</p>
-        <Grid cols={3} gap="sm">
-          <Box color="bg-purple-500">A</Box>
-          <Box color="bg-purple-500">B</Box>
-          <Box color="bg-purple-500">C</Box>
-        </Grid>
-      </div>
-      <div>
-        <p className="mb-2 text-sm font-semibold">Gap: md</p>
-        <Grid cols={3} gap="md">
-          <Box color="bg-purple-500">A</Box>
-          <Box color="bg-purple-500">B</Box>
-          <Box color="bg-purple-500">C</Box>
-        </Grid>
-      </div>
-      <div>
-        <p className="mb-2 text-sm font-semibold">Gap: lg</p>
-        <Grid cols={3} gap="lg">
-          <Box color="bg-purple-500">A</Box>
-          <Box color="bg-purple-500">B</Box>
-          <Box color="bg-purple-500">C</Box>
-        </Grid>
-      </div>
-      <div>
-        <p className="mb-2 text-sm font-semibold">Gap: xl</p>
-        <Grid cols={3} gap="xl">
-          <Box color="bg-purple-500">A</Box>
-          <Box color="bg-purple-500">B</Box>
-          <Box color="bg-purple-500">C</Box>
-        </Grid>
-      </div>
-    </div>
+    <VStack spacing="xl">
+      {([2, 3, 4, 6] as const).map((cols) => (
+        <VStack key={cols} spacing="xs">
+          <Text weight="semibold" size="small">cols={cols}</Text>
+          <Grid cols={cols} gap="md">
+            {Array.from({ length: cols * 2 }, (_, i) => (
+              <GridItem key={i}>{i + 1}</GridItem>
+            ))}
+          </Grid>
+        </VStack>
+      ))}
+    </VStack>
+  ),
+};
+
+export const GapSizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Different gap sizes: xs, sm, md, lg, xl.',
+      },
+    },
+  },
+  render: () => (
+    <VStack spacing="xl">
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((gap) => (
+        <VStack key={gap} spacing="xs">
+          <Text weight="semibold" size="small">gap="{gap}"</Text>
+          <Grid cols={3} gap={gap}>
+            <GridItem>A</GridItem>
+            <GridItem>B</GridItem>
+            <GridItem>C</GridItem>
+          </Grid>
+        </VStack>
+      ))}
+    </VStack>
   ),
 };
 
 export const DifferentGapXY: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Use gapX and gapY for different horizontal and vertical gaps.',
+      },
+    },
+  },
   args: {
     cols: 3,
     gapX: 'lg',
@@ -207,7 +157,14 @@ export const DifferentGapXY: Story = {
     children: (
       <>
         {Array.from({ length: 9 }, (_, i) => (
-          <Box key={i} color="bg-green-500">
+          <Box
+            key={i}
+            p={12}
+            bg="var(--semantic-status-success-default)"
+            color="white"
+            borderRadius={8}
+            className="text-center font-semibold"
+          >
             Item {i + 1}
           </Box>
         ))}
@@ -216,206 +173,149 @@ export const DifferentGapXY: Story = {
   },
 };
 
-export const AlignStart: Story = {
-  args: {
-    cols: 3,
-    gap: 'md',
-    align: 'start',
-    style: { minHeight: '300px' },
-    children: (
-      <>
-        <Box>Short</Box>
-        <Box>
-          Tall
-          <br />
-          Item
-        </Box>
-        <Box>Short</Box>
-      </>
-    ),
+export const Alignment: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Control alignment with align (vertical) and justify (horizontal).',
+      },
+    },
   },
-};
-
-export const AlignCenter: Story = {
-  args: {
-    cols: 3,
-    gap: 'md',
-    align: 'center',
-    style: { minHeight: '300px' },
-    children: (
-      <>
-        <Box>Short</Box>
-        <Box>
-          Tall
-          <br />
-          Item
-        </Box>
-        <Box>Short</Box>
-      </>
-    ),
-  },
-};
-
-export const AlignEnd: Story = {
-  args: {
-    cols: 3,
-    gap: 'md',
-    align: 'end',
-    style: { minHeight: '300px' },
-    children: (
-      <>
-        <Box>Short</Box>
-        <Box>
-          Tall
-          <br />
-          Item
-        </Box>
-        <Box>Short</Box>
-      </>
-    ),
-  },
-};
-
-export const JustifyCenter: Story = {
-  args: {
-    cols: 3,
-    gap: 'md',
-    justify: 'center',
-    children: (
-      <>
-        <Box>A</Box>
-        <Box>B</Box>
-        <Box>C</Box>
-      </>
-    ),
-  },
-};
-
-export const JustifyEnd: Story = {
-  args: {
-    cols: 3,
-    gap: 'md',
-    justify: 'end',
-    children: (
-      <>
-        <Box>A</Box>
-        <Box>B</Box>
-        <Box>C</Box>
-      </>
-    ),
-  },
-};
-
-export const FlowColumn: Story = {
-  args: {
-    cols: 3,
-    rows: 2,
-    gap: 'md',
-    flow: 'col',
-    children: (
-      <>
-        {Array.from({ length: 6 }, (_, i) => (
-          <Box key={i} color="bg-orange-500">
-            {i + 1}
-          </Box>
-        ))}
-      </>
-    ),
-  },
-};
-
-export const ProductGrid: Story = {
   render: () => (
-    <Grid cols={4} gap="lg">
-      {Array.from({ length: 8 }, (_, i) => (
-        <div key={i} className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="bg-gradient-to-br from-blue-400 to-purple-500 h-40" />
-          <div className="p-4">
-            <h3 className="font-bold text-lg mb-2">Product {i + 1}</h3>
-            <p className="text-gray-600 text-sm mb-3">Product description goes here</p>
-            <div className="flex justify-between items-center">
-              <span className="text-xl font-bold">${(i + 1) * 10}</span>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Add
-              </button>
-            </div>
-          </div>
-        </div>
+    <VStack spacing="xl">
+      {(['start', 'center', 'end'] as const).map((align) => (
+        <VStack key={align} spacing="xs">
+          <Text weight="semibold" size="small">align="{align}"</Text>
+          <Grid cols={3} gap="md" align={align} style={{ minHeight: '120px' }}>
+            <GridItem>Short</GridItem>
+            <Box
+              p={12}
+              bg="var(--semantic-brand-primary-default)"
+              color="white"
+              borderRadius={8}
+              className="text-center font-semibold"
+            >
+              Tall<br />Item
+            </Box>
+            <GridItem>Short</GridItem>
+          </Grid>
+        </VStack>
       ))}
-    </Grid>
+    </VStack>
   ),
 };
 
-export const ImageGallery: Story = {
+export const ProductGrid: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Real-world example: a product grid layout.',
+      },
+    },
+  },
   render: () => (
-    <Grid cols={3} gap="md">
-      {Array.from({ length: 6 }, (_, i) => (
-        <div
+    <Grid cols={4} gap="lg">
+      {Array.from({ length: 8 }, (_, i) => (
+        <Box
           key={i}
-          className="aspect-square bg-gradient-to-br from-pink-400 to-red-500 rounded-lg flex items-center justify-center text-white text-2xl font-bold"
+          bg="var(--semantic-surface-elevated)"
+          borderRadius={12}
+          borderWidth={1}
+          borderColor="var(--semantic-border-default)"
+          style={{ overflow: 'hidden' }}
         >
-          {i + 1}
-        </div>
+          <Box
+            h={160}
+            bg="var(--semantic-bg-secondary)"
+            className="bg-gradient-to-br from-blue-400 to-purple-500"
+          />
+          <Box p={16}>
+            <VStack spacing="sm">
+              <Heading as="h4">Product {i + 1}</Heading>
+              <Text color="secondary" size="small">Product description goes here</Text>
+              <HStack justify="between" align="center">
+                <Text weight="bold" size="large">${(i + 1) * 10}</Text>
+                <Button size="small">Add</Button>
+              </HStack>
+            </VStack>
+          </Box>
+        </Box>
       ))}
     </Grid>
   ),
 };
 
 export const Dashboard: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Dashboard layout with spanning cells using CSS classes.',
+      },
+    },
+  },
   render: () => (
     <Grid cols={4} gap="md">
-      <div className="col-span-2 row-span-2 bg-gradient-to-br from-blue-400 to-blue-600 text-white p-6 rounded-lg">
-        <h3 className="text-xl font-bold mb-2">Main Chart</h3>
-        <p>Large featured content</p>
-      </div>
-      <div className="col-span-2 bg-gradient-to-br from-green-400 to-green-600 text-white p-6 rounded-lg">
-        <h3 className="text-lg font-bold mb-2">Stats</h3>
-        <p>Statistics widget</p>
-      </div>
-      <div className="bg-gradient-to-br from-purple-400 to-purple-600 text-white p-6 rounded-lg">
-        <h3 className="text-lg font-bold mb-2">Users</h3>
-        <p className="text-3xl font-bold">1,234</p>
-      </div>
-      <div className="bg-gradient-to-br from-orange-400 to-orange-600 text-white p-6 rounded-lg">
-        <h3 className="text-lg font-bold mb-2">Revenue</h3>
-        <p className="text-3xl font-bold">$56K</p>
-      </div>
-      <div className="col-span-2 bg-gradient-to-br from-pink-400 to-pink-600 text-white p-6 rounded-lg">
-        <h3 className="text-lg font-bold mb-2">Activity</h3>
-        <p>Recent activity feed</p>
-      </div>
-      <div className="col-span-2 bg-gradient-to-br from-indigo-400 to-indigo-600 text-white p-6 rounded-lg">
-        <h3 className="text-lg font-bold mb-2">Tasks</h3>
-        <p>Task list widget</p>
-      </div>
+      <Box
+        className="col-span-2 row-span-2"
+        p={24}
+        bg="var(--semantic-status-info-default)"
+        color="white"
+        borderRadius={12}
+      >
+        <VStack spacing="sm">
+          <Heading as="h3" color="inverse">Main Chart</Heading>
+          <Text color="inverse">Large featured content</Text>
+        </VStack>
+      </Box>
+      <Box
+        className="col-span-2"
+        p={24}
+        bg="var(--semantic-status-success-default)"
+        color="white"
+        borderRadius={12}
+      >
+        <VStack spacing="sm">
+          <Heading as="h4" color="inverse">Stats</Heading>
+          <Text color="inverse">Statistics widget</Text>
+        </VStack>
+      </Box>
+      <Box p={24} bg="var(--semantic-brand-primary-default)" color="white" borderRadius={12}>
+        <VStack spacing="xs">
+          <Text color="inverse" weight="semibold">Users</Text>
+          <Text color="inverse" size="xlarge" weight="bold">1,234</Text>
+        </VStack>
+      </Box>
+      <Box p={24} bg="var(--semantic-status-warning-default)" color="white" borderRadius={12}>
+        <VStack spacing="xs">
+          <Text color="inverse" weight="semibold">Revenue</Text>
+          <Text color="inverse" size="xlarge" weight="bold">$56K</Text>
+        </VStack>
+      </Box>
+      <Box
+        className="col-span-2"
+        p={24}
+        bg="var(--semantic-status-error-default)"
+        color="white"
+        borderRadius={12}
+      >
+        <VStack spacing="sm">
+          <Heading as="h4" color="inverse">Activity</Heading>
+          <Text color="inverse">Recent activity feed</Text>
+        </VStack>
+      </Box>
+      <Box
+        className="col-span-2"
+        p={24}
+        bg="var(--semantic-bg-secondary)"
+        borderRadius={12}
+        borderWidth={1}
+        borderColor="var(--semantic-border-default)"
+      >
+        <VStack spacing="sm">
+          <Heading as="h4">Tasks</Heading>
+          <Text color="secondary">Task list widget</Text>
+        </VStack>
+      </Box>
     </Grid>
   ),
-};
-
-export const ResponsiveGrid: Story = {
-  render: () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {Array.from({ length: 8 }, (_, i) => (
-        <Box key={i} color="bg-teal-500">
-          Item {i + 1}
-        </Box>
-      ))}
-    </div>
-  ),
-};
-
-export const InlineGrid: Story = {
-  args: {
-    inline: true,
-    cols: 2,
-    gap: 'sm',
-    children: (
-      <>
-        <Box color="bg-red-500">A</Box>
-        <Box color="bg-red-500">B</Box>
-        <Box color="bg-red-500">C</Box>
-        <Box color="bg-red-500">D</Box>
-      </>
-    ),
-  },
 };

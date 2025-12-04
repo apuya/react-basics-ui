@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import { createRef, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { Input } from './Input';
 
@@ -131,6 +131,41 @@ describe('Input', () => {
       );
       const iconWrappers = container.querySelectorAll('[aria-hidden="true"]');
       expect(iconWrappers.length).toBe(2);
+    });
+  });
+
+  describe('Suffix', () => {
+    it('renders suffix text', () => {
+      render(<Input suffix="kg" />);
+      expect(screen.getByText('kg')).toBeInTheDocument();
+    });
+
+    it('hides suffix from screen readers', () => {
+      render(<Input suffix="kg" />);
+      const suffix = screen.getByText('kg');
+      expect(suffix).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('does not render suffix when trailingIcon is present', () => {
+      render(
+        <Input
+          suffix="kg"
+          trailingIcon={<span data-testid="trailing-icon">✓</span>}
+        />
+      );
+      expect(screen.queryByText('kg')).not.toBeInTheDocument();
+      expect(screen.getByTestId('trailing-icon')).toBeInTheDocument();
+    });
+
+    it('renders suffix with different units', () => {
+      const { rerender } = render(<Input suffix="cm" />);
+      expect(screen.getByText('cm')).toBeInTheDocument();
+
+      rerender(<Input suffix="%" />);
+      expect(screen.getByText('%')).toBeInTheDocument();
+
+      rerender(<Input suffix="USD" />);
+      expect(screen.getByText('USD')).toBeInTheDocument();
     });
   });
 
@@ -325,6 +360,3 @@ describe('Input', () => {
     });
   });
 });
-
-// Need to import useState for controlled test
-import { useState } from 'react';

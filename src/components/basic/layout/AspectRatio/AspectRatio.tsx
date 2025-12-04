@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { BASE_CLASSES, COMMON_RATIOS, type CommonRatioName } from './AspectRatio.styles';
 
 export interface AspectRatioProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -9,29 +9,45 @@ export interface AspectRatioProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
 
-export const AspectRatio = React.forwardRef<HTMLDivElement, AspectRatioProps>(
-  ({ ratio = 1, children, style, className, ...props }, ref) => {
-    const actualRatio = useMemo(() => {
-      if (typeof ratio === 'string') {
-        return COMMON_RATIOS[ratio] || 1;
-      }
-      return ratio;
-    }, [ratio]);
+export const AspectRatio = memo(
+  React.forwardRef<HTMLDivElement, AspectRatioProps>(
+    ({ ratio = 1, children, style, className, ...props }, ref) => {
+      const actualRatio = useMemo(() => {
+        if (typeof ratio === 'string') {
+          return COMMON_RATIOS[ratio] || 1;
+        }
+        return ratio;
+      }, [ratio]);
 
-    return (
-      <div
-        ref={ref}
-        className={cn(BASE_CLASSES, className)}
-        style={{
+      const classes = useMemo(
+        () => cn(BASE_CLASSES, className),
+        [className]
+      );
+
+      const containerStyle = useMemo(
+        () => ({
           paddingBottom: `${100 / actualRatio}%`,
           ...style,
-        }}
-        {...props}
-      >
-        <div className="absolute inset-0">{children}</div>
-      </div>
-    );
-  }
+        }),
+        [actualRatio, style]
+      );
+
+      // Determine data-ratio value
+      const ratioName = typeof ratio === 'string' ? ratio : undefined;
+
+      return (
+        <div
+          ref={ref}
+          className={classes}
+          style={containerStyle}
+          data-ratio={ratioName}
+          {...props}
+        >
+          <div className="absolute inset-0">{children}</div>
+        </div>
+      );
+    }
+  )
 );
 
 AspectRatio.displayName = 'AspectRatio';

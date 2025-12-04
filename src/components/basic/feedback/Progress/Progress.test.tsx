@@ -68,19 +68,25 @@ describe('Progress', () => {
     it('should apply default size by default', () => {
       const { container } = render(<Progress value={50} />);
       const progressBar = container.querySelector('[role="progressbar"]');
-      expect(progressBar).toHaveClass('h-[var(--component-progress-height)]');
+      expect(progressBar).toHaveClass('h-[length:var(--component-progress-height)]');
     });
 
     it('should apply small size', () => {
       const { container } = render(<Progress value={50} size="sm" />);
       const progressBar = container.querySelector('[role="progressbar"]');
-      expect(progressBar).toHaveClass('h-[var(--component-progress-height-sm)]');
+      expect(progressBar).toHaveClass('h-[length:var(--component-progress-height-sm)]');
     });
 
     it('should apply large size', () => {
       const { container } = render(<Progress value={50} size="lg" />);
       const progressBar = container.querySelector('[role="progressbar"]');
-      expect(progressBar).toHaveClass('h-[var(--component-progress-height-lg)]');
+      expect(progressBar).toHaveClass('h-[length:var(--component-progress-height-lg)]');
+    });
+
+    it('should set data-size attribute', () => {
+      const { container } = render(<Progress value={50} size="lg" />);
+      const progressBar = container.querySelector('[role="progressbar"]');
+      expect(progressBar).toHaveAttribute('data-size', 'lg');
     });
   });
 
@@ -88,25 +94,31 @@ describe('Progress', () => {
     it('should apply default variant by default', () => {
       const { container } = render(<Progress value={50} />);
       const fill = container.querySelector('[role="progressbar"] > div');
-      expect(fill).toHaveClass('bg-[var(--component-progress-bg-fill)]');
+      expect(fill).toHaveClass('bg-[color:var(--component-progress-bg-fill)]');
     });
 
     it('should apply success variant', () => {
       const { container } = render(<Progress value={50} variant="success" />);
       const fill = container.querySelector('[role="progressbar"] > div');
-      expect(fill).toHaveClass('bg-[var(--component-progress-fill-success)]');
+      expect(fill).toHaveClass('bg-[color:var(--component-progress-fill-success)]');
     });
 
     it('should apply warning variant', () => {
       const { container } = render(<Progress value={50} variant="warning" />);
       const fill = container.querySelector('[role="progressbar"] > div');
-      expect(fill).toHaveClass('bg-[var(--component-progress-fill-warning)]');
+      expect(fill).toHaveClass('bg-[color:var(--component-progress-fill-warning)]');
     });
 
     it('should apply error variant', () => {
       const { container } = render(<Progress value={50} variant="error" />);
       const fill = container.querySelector('[role="progressbar"] > div');
-      expect(fill).toHaveClass('bg-[var(--component-progress-fill-error)]');
+      expect(fill).toHaveClass('bg-[color:var(--component-progress-fill-error)]');
+    });
+
+    it('should set data-variant attribute', () => {
+      const { container } = render(<Progress value={50} variant="success" />);
+      const progressBar = container.querySelector('[role="progressbar"]');
+      expect(progressBar).toHaveAttribute('data-variant', 'success');
     });
   });
 
@@ -167,9 +179,9 @@ describe('Progress', () => {
     });
 
     it('should have aria-hidden on percentage text', () => {
-      const { container } = render(<Progress value={50} showValue />);
-      const percentageDiv = screen.getByText('50%').closest('[aria-hidden="true"]');
-      expect(percentageDiv).toBeInTheDocument();
+      render(<Progress value={50} showValue />);
+      const percentageSpan = screen.getByText('50%');
+      expect(percentageSpan).toHaveAttribute('aria-hidden', 'true');
     });
   });
 
@@ -211,8 +223,8 @@ describe('Progress', () => {
       const progressBar = container.querySelector('[role="progressbar"]');
       expect(progressBar).toHaveClass('w-full');
       expect(progressBar).toHaveClass('overflow-hidden');
-      expect(progressBar).toHaveClass('rounded-[var(--component-progress-radius)]');
-      expect(progressBar).toHaveClass('bg-[var(--component-progress-bg-track)]');
+      expect(progressBar).toHaveClass('rounded-[length:var(--component-progress-radius)]');
+      expect(progressBar).toHaveClass('bg-[color:var(--component-progress-bg-track)]');
     });
 
     it('should apply base fill classes', () => {
@@ -222,7 +234,7 @@ describe('Progress', () => {
       expect(fill).toHaveClass('transition-all');
       expect(fill).toHaveClass('duration-[var(--component-progress-transition)]');
       expect(fill).toHaveClass('ease-in-out');
-      expect(fill).toHaveClass('rounded-[var(--component-progress-radius)]');
+      expect(fill).toHaveClass('rounded-[length:var(--component-progress-radius)]');
     });
   });
 

@@ -1,7 +1,7 @@
 import { useEffect, useRef, type RefObject } from 'react';
 
 export const useFocusTrap = <T extends HTMLElement = HTMLElement>(
-  ref: RefObject<T>,
+  ref: RefObject<T | null>,
   isEnabled: boolean = true
 ) => {
   const previousFocusRef = useRef<HTMLElement | null>(null);

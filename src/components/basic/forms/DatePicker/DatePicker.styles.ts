@@ -335,8 +335,8 @@ export const PRESETS_DIVIDER_CLASSES =
   'w-full shrink-0';
 
 export const PRESETS_DIVIDER_STYLE: React.CSSProperties = {
-  height: '1px',
-  minHeight: '1px',
+  height: 'var(--component-datepicker-divider-height)',
+  minHeight: 'var(--component-datepicker-divider-height)',
   marginTop: 'var(--component-datepicker-preset-gap)',
   marginBottom: 'var(--component-datepicker-preset-gap)',
   backgroundColor: 'var(--component-datepicker-divider)',

@@ -1,11 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Flex } from './Flex';
+import { Box } from '../Box';
+import { VStack, HStack } from '../Stack';
+import { Text } from '../../typography/Text';
+import { Heading } from '../../typography/Heading';
+import { Button } from '../../forms/Button';
+import { Badge } from '../../feedback/Badge';
 
-const meta = {
+const meta: Meta<typeof Flex> = {
   title: 'Layout/Flex',
   component: Flex,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Flexible layout component using CSS Flexbox. Provides control over direction, alignment, justification, and spacing.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -35,18 +47,20 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '600px' }}>
+      <Box w={600}>
         <Story />
-      </div>
+      </Box>
     ),
   ],
-} satisfies Meta<typeof Flex>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const Box = ({ children, color = 'bg-blue-500' }: { children: React.ReactNode; color?: string }) => (
-  <div className={`${color} text-white px-4 py-2 rounded`}>{children}</div>
+const FlexItem = ({ children }: { children: React.ReactNode }) => (
+  <Box p={8} px={16} bg="var(--semantic-brand-primary-default)" color="white" borderRadius={4}>
+    <Text color="inverse">{children}</Text>
+  </Box>
 );
 
 export const Default: Story = {
@@ -54,378 +68,215 @@ export const Default: Story = {
     gap: 'md',
     children: (
       <>
-        <Box>Item 1</Box>
-        <Box>Item 2</Box>
-        <Box>Item 3</Box>
+        <FlexItem>Item 1</FlexItem>
+        <FlexItem>Item 2</FlexItem>
+        <FlexItem>Item 3</FlexItem>
       </>
     ),
   },
 };
 
-export const Row: Story = {
-  args: {
-    direction: 'row',
-    gap: 'md',
-    children: (
-      <>
-        <Box>First</Box>
-        <Box>Second</Box>
-        <Box>Third</Box>
-      </>
-    ),
+export const Directions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Flex direction: row (default), row-reverse, column, column-reverse.',
+      },
+    },
   },
-};
-
-export const Column: Story = {
-  args: {
-    direction: 'column',
-    gap: 'md',
-    children: (
-      <>
-        <Box>First</Box>
-        <Box>Second</Box>
-        <Box>Third</Box>
-      </>
-    ),
-  },
-};
-
-export const RowReverse: Story = {
-  args: {
-    direction: 'row-reverse',
-    gap: 'md',
-    children: (
-      <>
-        <Box>First</Box>
-        <Box>Second</Box>
-        <Box>Third</Box>
-      </>
-    ),
-  },
-};
-
-export const ColumnReverse: Story = {
-  args: {
-    direction: 'column-reverse',
-    gap: 'md',
-    children: (
-      <>
-        <Box>First</Box>
-        <Box>Second</Box>
-        <Box>Third</Box>
-      </>
-    ),
-  },
-};
-
-export const AlignStart: Story = {
-  args: {
-    align: 'start',
-    gap: 'md',
-    style: { height: '200px' },
-    children: (
-      <>
-        <Box>Short</Box>
-        <Box>
-          Tall
-          <br />
-          Item
-        </Box>
-        <Box>Short</Box>
-      </>
-    ),
-  },
-};
-
-export const AlignCenter: Story = {
-  args: {
-    align: 'center',
-    gap: 'md',
-    style: { height: '200px' },
-    children: (
-      <>
-        <Box>Short</Box>
-        <Box>
-          Tall
-          <br />
-          Item
-        </Box>
-        <Box>Short</Box>
-      </>
-    ),
-  },
-};
-
-export const AlignEnd: Story = {
-  args: {
-    align: 'end',
-    gap: 'md',
-    style: { height: '200px' },
-    children: (
-      <>
-        <Box>Short</Box>
-        <Box>
-          Tall
-          <br />
-          Item
-        </Box>
-        <Box>Short</Box>
-      </>
-    ),
-  },
-};
-
-export const AlignStretch: Story = {
-  args: {
-    align: 'stretch',
-    gap: 'md',
-    style: { height: '200px' },
-    children: (
-      <>
-        <Box>Stretched</Box>
-        <Box>Stretched</Box>
-        <Box>Stretched</Box>
-      </>
-    ),
-  },
-};
-
-export const JustifyStart: Story = {
-  args: {
-    justify: 'start',
-    gap: 'md',
-    children: (
-      <>
-        <Box>1</Box>
-        <Box>2</Box>
-        <Box>3</Box>
-      </>
-    ),
-  },
-};
-
-export const JustifyCenter: Story = {
-  args: {
-    justify: 'center',
-    gap: 'md',
-    children: (
-      <>
-        <Box>1</Box>
-        <Box>2</Box>
-        <Box>3</Box>
-      </>
-    ),
-  },
-};
-
-export const JustifyEnd: Story = {
-  args: {
-    justify: 'end',
-    gap: 'md',
-    children: (
-      <>
-        <Box>1</Box>
-        <Box>2</Box>
-        <Box>3</Box>
-      </>
-    ),
-  },
-};
-
-export const JustifyBetween: Story = {
-  args: {
-    justify: 'between',
-    children: (
-      <>
-        <Box>1</Box>
-        <Box>2</Box>
-        <Box>3</Box>
-      </>
-    ),
-  },
-};
-
-export const JustifyAround: Story = {
-  args: {
-    justify: 'around',
-    children: (
-      <>
-        <Box>1</Box>
-        <Box>2</Box>
-        <Box>3</Box>
-      </>
-    ),
-  },
-};
-
-export const JustifyEvenly: Story = {
-  args: {
-    justify: 'evenly',
-    children: (
-      <>
-        <Box>1</Box>
-        <Box>2</Box>
-        <Box>3</Box>
-      </>
-    ),
-  },
-};
-
-export const Wrap: Story = {
-  args: {
-    wrap: 'wrap',
-    gap: 'md',
-    children: (
-      <>
-        {Array.from({ length: 10 }, (_, i) => (
-          <Box key={i}>Item {i + 1}</Box>
-        ))}
-      </>
-    ),
-  },
-};
-
-export const WrapReverse: Story = {
-  args: {
-    wrap: 'wrap-reverse',
-    gap: 'md',
-    children: (
-      <>
-        {Array.from({ length: 10 }, (_, i) => (
-          <Box key={i}>Item {i + 1}</Box>
-        ))}
-      </>
-    ),
-  },
-};
-
-export const GapSizes: Story = {
   render: () => (
-    <div className="space-y-4">
-      <div>
-        <p className="mb-2 text-sm font-semibold">Gap: xs</p>
-        <Flex gap="xs">
-          <Box color="bg-purple-500">A</Box>
-          <Box color="bg-purple-500">B</Box>
-          <Box color="bg-purple-500">C</Box>
-        </Flex>
-      </div>
-      <div>
-        <p className="mb-2 text-sm font-semibold">Gap: sm</p>
-        <Flex gap="sm">
-          <Box color="bg-purple-500">A</Box>
-          <Box color="bg-purple-500">B</Box>
-          <Box color="bg-purple-500">C</Box>
-        </Flex>
-      </div>
-      <div>
-        <p className="mb-2 text-sm font-semibold">Gap: md</p>
-        <Flex gap="md">
-          <Box color="bg-purple-500">A</Box>
-          <Box color="bg-purple-500">B</Box>
-          <Box color="bg-purple-500">C</Box>
-        </Flex>
-      </div>
-      <div>
-        <p className="mb-2 text-sm font-semibold">Gap: lg</p>
-        <Flex gap="lg">
-          <Box color="bg-purple-500">A</Box>
-          <Box color="bg-purple-500">B</Box>
-          <Box color="bg-purple-500">C</Box>
-        </Flex>
-      </div>
-      <div>
-        <p className="mb-2 text-sm font-semibold">Gap: xl</p>
-        <Flex gap="xl">
-          <Box color="bg-purple-500">A</Box>
-          <Box color="bg-purple-500">B</Box>
-          <Box color="bg-purple-500">C</Box>
-        </Flex>
-      </div>
-    </div>
+    <VStack spacing="xl">
+      {(['row', 'row-reverse', 'column', 'column-reverse'] as const).map((direction) => (
+        <VStack key={direction} spacing="xs">
+          <Text weight="semibold" size="small">direction="{direction}"</Text>
+          <Flex direction={direction} gap="sm">
+            <Badge color="info">First</Badge>
+            <Badge color="info">Second</Badge>
+            <Badge color="info">Third</Badge>
+          </Flex>
+        </VStack>
+      ))}
+    </VStack>
   ),
 };
 
-export const CustomGap: Story = {
-  args: {
-    gap: '3rem',
-    children: (
-      <>
-        <Box>Custom</Box>
-        <Box>Gap</Box>
-        <Box>3rem</Box>
-      </>
-    ),
+export const Alignment: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Cross-axis alignment: start, center, end, stretch, baseline.',
+      },
+    },
   },
-};
-
-export const CenteredLayout: Story = {
-  args: {
-    justify: 'center',
-    align: 'center',
-    style: { height: '300px', border: '2px dashed #ccc' },
-    children: (
-      <Box color="bg-green-500">
-        Perfectly
-        <br />
-        Centered
-      </Box>
-    ),
-  },
-};
-
-export const ResponsiveCard: Story = {
   render: () => (
-    <Flex direction="column" gap="lg" className="p-6 bg-white rounded-lg shadow-lg max-w-md">
-      <Flex justify="between" align="center">
-        <h2 className="text-2xl font-bold">Card Title</h2>
-        <Box color="bg-indigo-500">Badge</Box>
-      </Flex>
-      <p className="text-gray-600">
-        This is a responsive card layout built with the Flex component. It demonstrates how to combine
-        different flex properties.
-      </p>
-      <Flex gap="sm" justify="end">
-        <button className="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-          Confirm
-        </button>
-      </Flex>
+    <VStack spacing="xl">
+      {(['start', 'center', 'end', 'stretch'] as const).map((align) => (
+        <VStack key={align} spacing="xs">
+          <Text weight="semibold" size="small">align="{align}"</Text>
+          <Flex
+            align={align}
+            gap="md"
+            style={{ height: '100px' }}
+            className="border border-dashed border-[color:var(--semantic-border-default)] rounded-lg p-2"
+          >
+            <Badge>Short</Badge>
+            <Box p={8} bg="var(--semantic-brand-primary-default)" borderRadius={4}>
+              <Text color="inverse">Tall<br/>Item</Text>
+            </Box>
+            <Badge>Short</Badge>
+          </Flex>
+        </VStack>
+      ))}
+    </VStack>
+  ),
+};
+
+export const Justification: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Main-axis justification: start, center, end, between, around, evenly.',
+      },
+    },
+  },
+  render: () => (
+    <VStack spacing="xl">
+      {(['start', 'center', 'end', 'between', 'around', 'evenly'] as const).map((justify) => (
+        <VStack key={justify} spacing="xs">
+          <Text weight="semibold" size="small">justify="{justify}"</Text>
+          <Box
+            borderWidth={1}
+            borderColor="var(--semantic-border-default)"
+            borderRadius={8}
+            p={8}
+          >
+            <Flex justify={justify}>
+              <Badge color="secondary">1</Badge>
+              <Badge color="secondary">2</Badge>
+              <Badge color="secondary">3</Badge>
+            </Flex>
+          </Box>
+        </VStack>
+      ))}
+    </VStack>
+  ),
+};
+
+export const GapSizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Different gap sizes: xs, sm, md, lg, xl.',
+      },
+    },
+  },
+  render: () => (
+    <VStack spacing="xl">
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((gap) => (
+        <VStack key={gap} spacing="xs">
+          <Text weight="semibold" size="small">gap="{gap}"</Text>
+          <Flex gap={gap}>
+            <Badge color="info">A</Badge>
+            <Badge color="info">B</Badge>
+            <Badge color="info">C</Badge>
+          </Flex>
+        </VStack>
+      ))}
+    </VStack>
+  ),
+};
+
+export const Wrap: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Use wrap="wrap" to allow items to flow to the next line.',
+      },
+    },
+  },
+  render: () => (
+    <Flex wrap="wrap" gap="md">
+      {Array.from({ length: 10 }, (_, i) => (
+        <Badge key={i} color="info">Item {i + 1}</Badge>
+      ))}
     </Flex>
   ),
 };
 
-export const InlineFlex: Story = {
-  args: {
-    inline: true,
-    gap: 'sm',
-    children: (
-      <>
-        <Box color="bg-red-500">Inline</Box>
-        <Box color="bg-red-500">Flex</Box>
-        <Box color="bg-red-500">Items</Box>
-      </>
-    ),
+export const CenteredLayout: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Center content both horizontally and vertically.',
+      },
+    },
   },
+  render: () => (
+    <Flex
+      justify="center"
+      align="center"
+      style={{ height: '200px' }}
+      className="border-2 border-dashed border-[color:var(--semantic-border-default)] rounded-lg"
+    >
+      <Box p={16} bg="var(--semantic-status-success-default)" borderRadius={8}>
+        <Text color="inverse" weight="semibold">Perfectly Centered</Text>
+      </Box>
+    </Flex>
+  ),
 };
 
 export const Navigation: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Real-world example: navigation bar layout.',
+      },
+    },
+  },
   render: () => (
     <Flex
       justify="between"
       align="center"
-      className="bg-gray-800 text-white p-4 rounded-lg"
+      className="bg-[color:var(--semantic-surface-elevated)] p-4 rounded-lg"
     >
-      <div className="text-xl font-bold">Logo</div>
-      <Flex gap="md">
-        <a href="#" className="hover:text-blue-300">Home</a>
-        <a href="#" className="hover:text-blue-300">About</a>
-        <a href="#" className="hover:text-blue-300">Services</a>
-        <a href="#" className="hover:text-blue-300">Contact</a>
+      <Heading as="h4">Logo</Heading>
+      <HStack spacing="lg">
+        <Text color="secondary">Home</Text>
+        <Text color="secondary">About</Text>
+        <Text color="secondary">Services</Text>
+        <Text color="secondary">Contact</Text>
+      </HStack>
+      <Button>Sign In</Button>
+    </Flex>
+  ),
+};
+
+export const Card: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Real-world example: card with flex layout.',
+      },
+    },
+  },
+  render: () => (
+    <Flex
+      direction="column"
+      gap="md"
+      className="p-6 bg-[color:var(--semantic-surface-elevated)] rounded-lg shadow-lg max-w-md"
+    >
+      <Flex justify="between" align="center">
+        <Heading as="h3">Card Title</Heading>
+        <Badge color="info">Badge</Badge>
       </Flex>
-      <button className="px-4 py-2 bg-blue-500 rounded hover:bg-blue-600">
-        Sign In
-      </button>
+      <Text color="secondary">
+        This is a responsive card layout built with the Flex component. It demonstrates how to
+        combine different flex properties.
+      </Text>
+      <Flex gap="sm" justify="end">
+        <Button variant="secondary">Cancel</Button>
+        <Button>Confirm</Button>
+      </Flex>
     </Flex>
   ),
 };

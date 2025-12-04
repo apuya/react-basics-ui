@@ -3,11 +3,16 @@ import {
   memo,
   useMemo,
   useCallback,
+  useState,
+  useRef,
   type ReactNode,
   type ComponentPropsWithoutRef,
   type CSSProperties,
 } from 'react';
+import { BiCheck } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
+import { Icon } from '@/components/basic/utility/Icon';
 import { useAutocompleteContext, type AutocompleteOptionData } from './Autocomplete';
 import {
   AUTOCOMPLETE_OPTION_BASE_CLASSES,
@@ -15,9 +20,6 @@ import {
   AUTOCOMPLETE_CHECK_ICON_CLASSES,
 } from './Autocomplete.styles';
 
-/**
- * Props for AutocompleteOption component
- */
 export interface AutocompleteOptionProps extends ComponentPropsWithoutRef<'div'> {
   /** Option value - simplified API */
   value?: string;
@@ -30,23 +32,13 @@ export interface AutocompleteOptionProps extends ComponentPropsWithoutRef<'div'>
   children?: ReactNode;
 }
 
-const CheckIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={2}
-    stroke="currentColor"
-    className={AUTOCOMPLETE_CHECK_ICON_CLASSES}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-  </svg>
-);
-
 export const AutocompleteOption = memo(
   forwardRef<HTMLDivElement, AutocompleteOptionProps>(
-    ({ value: valueProp, option: optionProp, index: indexProp, disabled: disabledProp, children, className, style, ...props }, ref) => {
-      const { selectedValue, selectOption, highlightedIndex, multiple, listId, filteredOptions } = useAutocompleteContext();
+    ({ value: valueProp, option: optionProp, index: indexProp, disabled: disabledProp, children, className, style, ...props }, forwardedRef) => {
+      const { selectedValue, selectOption, highlightedIndex, setHighlightedIndex, multiple, listId, filteredOptions } = useAutocompleteContext();
+      const [isHovered, setIsHovered] = useState(false);
+      const optionRef = useRef<HTMLDivElement>(null!);
+      const mergedRef = useMergedRefs(forwardedRef, optionRef);
 
       // Support both new API (value prop) and legacy API (option + index props)
       const optionValue = valueProp ?? optionProp?.value ?? '';
@@ -71,18 +63,32 @@ export const AutocompleteOption = memo(
         }
       }, [selectOption, option, isDisabled]);
 
+      const handleMouseEnter = useCallback(() => {
+        if (!isDisabled) {
+          setIsHovered(true);
+          // Update highlighted index on hover so keyboard navigation continues from here
+          setHighlightedIndex(index);
+        }
+      }, [isDisabled, index, setHighlightedIndex]);
+
+      const handleMouseLeave = useCallback(() => {
+        setIsHovered(false);
+      }, []);
+
       const optionClasses = useMemo(
         () =>
           cn(
             AUTOCOMPLETE_OPTION_BASE_CLASSES,
-            isSelected
+            isDisabled
+              ? AUTOCOMPLETE_OPTION_STATE_STYLES.disabled
+              : isSelected
               ? AUTOCOMPLETE_OPTION_STATE_STYLES.selected
-              : isHighlighted
+              : isHighlighted || isHovered
               ? AUTOCOMPLETE_OPTION_STATE_STYLES.hover
               : AUTOCOMPLETE_OPTION_STATE_STYLES.default,
             className
           ),
-        [isSelected, isHighlighted, className]
+        [isDisabled, isSelected, isHighlighted, isHovered, className]
       );
 
       const optionStyle = useMemo<CSSProperties>(
@@ -97,19 +103,29 @@ export const AutocompleteOption = memo(
 
       return (
         <div
-          ref={ref}
+          ref={mergedRef}
           id={`${listId}-option-${option.value}`}
           role="option"
           aria-selected={isSelected}
           aria-disabled={isDisabled}
-          data-disabled={isDisabled}
+          data-disabled={isDisabled || undefined}
+          data-selected={isSelected || undefined}
+          data-highlighted={isHighlighted || isHovered || undefined}
           onClick={handleClick}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           className={optionClasses}
           style={optionStyle}
           {...props}
         >
           {children || option.label}
-          {multiple && isSelected && <CheckIcon />}
+          {multiple && isSelected && (
+            <Icon
+              icon={BiCheck}
+              className={AUTOCOMPLETE_CHECK_ICON_CLASSES}
+              aria-hidden
+            />
+          )}
         </div>
       );
     }

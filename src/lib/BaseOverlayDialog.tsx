@@ -12,6 +12,7 @@ import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { cn } from '@/lib/cn';
 import { Portal } from '@/components/basic/utility/Portal';
+import { Button } from '@/components/basic/forms/Button';
 import { BiX } from 'react-icons/bi';
 
 export interface BaseOverlayDialogProps {
@@ -75,11 +76,6 @@ export interface BaseOverlayDialogProps {
   dialogVisibleClassName?: string;
 
   /**
-   * CSS classes for close button
-   */
-  closeButtonClassName: string;
-
-  /**
    * Inline styles for dialog container
    */
   dialogStyle?: CSSProperties;
@@ -109,6 +105,11 @@ export interface BaseOverlayDialogProps {
    * @default 'inside'
    */
   dialogPosition?: 'inside' | 'sibling';
+
+  /**
+   * Data attribute for size (for testing/styling)
+   */
+  dataSize?: string;
 }
 
 /**
@@ -127,16 +128,16 @@ export const BaseOverlayDialog = ({
   overlayVisibleClassName,
   dialogClassName,
   dialogVisibleClassName,
-  closeButtonClassName,
   dialogStyle,
   ariaLabel = 'dialog',
   closeButtonAriaLabel,
   contextValue,
   ContextProvider,
   dialogPosition = 'inside',
+  dataSize,
 }: BaseOverlayDialogProps) => {
   const [isVisible, setIsVisible] = useState(false);
-  const dialogRef = useRef<HTMLDivElement>(null!);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
   // Hooks
@@ -174,25 +175,17 @@ export const BaseOverlayDialog = ({
     [dialogClassName, dialogVisibleClassName, isOpen]
   );
 
-  const closeButtonIconStyle = useMemo(
-    () => ({
-      width: 'var(--component-modal-close-button-size)',
-      height: 'var(--component-modal-close-button-size)',
-    }),
-    []
-  );
-
   if (!isVisible) return null;
 
   const closeButton = showCloseButton && (
-    <button
-      type="button"
+    <Button
+      variant="tabs"
+      size="small"
+      leadingIcon={<BiX />}
       aria-label={closeButtonAriaLabel || `Close ${ariaLabel}`}
-      className={cn(closeButtonClassName, 'absolute top-4 right-4')}
+      className="absolute top-[length:var(--component-modal-close-button-offset)] right-[length:var(--component-modal-close-button-offset)]"
       onClick={onClose}
-    >
-      <BiX style={closeButtonIconStyle} />
-    </button>
+    />
   );
 
   const dialogContent = (
@@ -204,6 +197,7 @@ export const BaseOverlayDialog = ({
       className={dialogClasses}
       style={dialogStyle}
       tabIndex={-1}
+      data-size={dataSize}
     >
       {ContextProvider && contextValue ? (
         <ContextProvider value={contextValue}>
@@ -226,7 +220,7 @@ export const BaseOverlayDialog = ({
           ref={overlayRef}
           className={overlayClasses}
           onClick={handleOverlayClick}
-          aria-hidden="true"
+          data-modal-overlay
         >
           {dialogContent}
         </div>
@@ -237,6 +231,7 @@ export const BaseOverlayDialog = ({
             className={overlayClasses}
             onClick={handleOverlayClick}
             aria-hidden="true"
+            data-modal-overlay
           />
           {dialogContent}
         </>

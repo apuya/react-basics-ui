@@ -12,6 +12,7 @@ import {
   BASE_CLASSES,
   BODY_STYLES,
   CONTAINER_STYLES,
+  CONTENT_GAP,
   ICON_COLOR_STYLES,
   ICON_SIZE_STYLE,
   TITLE_STYLES,
@@ -90,6 +91,7 @@ export const Alert = memo(
         role="alert"
         className={alertClasses}
         style={CONTAINER_STYLES}
+        data-variant={variant}
         {...rest}
       >
         {/* Icon */}
@@ -119,7 +121,7 @@ export const Alert = memo(
                 className="font-[var(--component-alert-body-weight)]"
                 style={{
                   ...BODY_STYLES,
-                  marginTop: title ? 'var(--semantic-space-tight)' : '0',
+                  marginTop: title ? CONTENT_GAP : '0',
                 }}
               >
                 {description}
@@ -130,7 +132,7 @@ export const Alert = memo(
                 className="font-[var(--component-alert-body-weight)]"
                 style={{
                   ...BODY_STYLES,
-                  marginTop: title ? 'var(--semantic-space-tight)' : '0',
+                  marginTop: title ? CONTENT_GAP : '0',
                 }}
               >
                 {children}

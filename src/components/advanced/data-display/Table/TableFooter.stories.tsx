@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Table } from './Table';
+import { TableFooter } from './TableFooter';
+import { TableContext } from './TableContext';
+import { useState } from 'react';
 
 const meta = {
   title: 'Data Display/Table/TableFooter',
-  component: Table.Footer,
+  component: TableFooter,
   parameters: {
     layout: 'padded',
     docs: {
@@ -13,7 +15,16 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Table.Footer>;
+  decorators: [
+    (Story) => (
+      <TableContext.Provider value={{ size: 'md', variant: 'default' }}>
+        <table className="w-full border-collapse">
+          <Story />
+        </table>
+      </TableContext.Provider>
+    ),
+  ],
+} satisfies Meta<typeof TableFooter>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -26,25 +37,10 @@ export const Default: Story = {
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-          <Table.Cell>Admin</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-      <Table.Footer totalItems={50} />
-    </Table>
-  ),
+  args: {
+    totalItems: 50,
+  },
+  render: (args) => <TableFooter {...args} />,
 };
 
 export const LargeDataset: Story = {
@@ -55,56 +51,60 @@ export const LargeDataset: Story = {
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>ID</Table.Header>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        {Array.from({ length: 10 }, (_, i) => (
-          <Table.Row key={i}>
-            <Table.Cell>{i + 1}</Table.Cell>
-            <Table.Cell>User {i + 1}</Table.Cell>
-            <Table.Cell>user{i + 1}@example.com</Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-      <Table.Footer totalItems={500} />
-    </Table>
-  ),
+  args: {
+    totalItems: 500,
+    totalPages: 50,
+  },
+  render: (args) => <TableFooter {...args} />,
 };
 
 export const SmallDataset: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Footer with single page of data (no pagination needed).',
+        story: 'Footer with single page of data (no pagination controls shown).',
+      },
+    },
+  },
+  args: {
+    totalItems: 5,
+    totalPages: 1,
+  },
+  render: (args) => <TableFooter {...args} />,
+};
+
+export const CustomContent: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with custom children content instead of default pagination.',
       },
     },
   },
   render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Jane Smith</Table.Cell>
-          <Table.Cell>jane@example.com</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-      <Table.Footer totalItems={2} />
-    </Table>
+    <TableFooter>
+      <span className="text-sm text-gray-600">Custom footer content here</span>
+    </TableFooter>
   ),
+};
+
+export const Interactive: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Interactive footer with page change callback.',
+      },
+    },
+  },
+  render: () => {
+    const [page, setPage] = useState(1);
+    return (
+      <TableFooter
+        currentPage={page}
+        totalPages={10}
+        totalItems={100}
+        onPageChange={setPage}
+      />
+    );
+  },
 };

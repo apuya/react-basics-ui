@@ -1,15 +1,30 @@
 import type { TooltipPosition } from './Tooltip';
 
 export const TOOLTIP_CLASSES =
-  'absolute z-[var(--component-tooltip-z-index)] bg-[var(--component-tooltip-bg)] text-[var(--component-tooltip-text)] text-[length:var(--component-tooltip-font-size)] font-[var(--component-tooltip-font-weight)] leading-[var(--semantic-line-height-normal)] rounded-[var(--component-tooltip-radius)] shadow-[var(--component-tooltip-shadow)] whitespace-nowrap pointer-events-none opacity-0 transition-opacity duration-200';
-
-export const POSITION_STYLES: Record<TooltipPosition, string> = {
-  top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
-  bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
-  left: 'right-full top-1/2 -translate-y-1/2 mr-2',
-  right: 'left-full top-1/2 -translate-y-1/2 ml-2',
-};
+  'z-[number:var(--component-tooltip-z-index)] bg-[color:var(--component-tooltip-bg)] text-[color:var(--component-tooltip-text)] text-[length:var(--component-tooltip-font-size)] font-[number:var(--component-tooltip-font-weight)] leading-[var(--semantic-line-height-normal)] rounded-[length:var(--component-tooltip-radius)] border border-[color:var(--component-tooltip-border)] shadow-[shadow:var(--component-tooltip-shadow)] whitespace-nowrap pointer-events-none opacity-0 transition-opacity duration-200';
 
 export const WRAPPER_CLASSES = 'relative inline-block';
 
 export const VISIBLE_CLASS = 'opacity-100';
+
+/** Calculate tooltip position based on trigger and tooltip dimensions */
+export const calculatePosition = (
+  triggerRect: DOMRect,
+  tooltipRect: DOMRect,
+  position: TooltipPosition,
+  offset: number
+): { top: number; left: number } => {
+  const centerX = triggerRect.left + (triggerRect.width - tooltipRect.width) / 2;
+  const centerY = triggerRect.top + (triggerRect.height - tooltipRect.height) / 2;
+
+  switch (position) {
+    case 'top':
+      return { top: triggerRect.top - tooltipRect.height - offset, left: centerX };
+    case 'bottom':
+      return { top: triggerRect.bottom + offset, left: centerX };
+    case 'left':
+      return { top: centerY, left: triggerRect.left - tooltipRect.width - offset };
+    case 'right':
+      return { top: centerY, left: triggerRect.right + offset };
+  }
+};

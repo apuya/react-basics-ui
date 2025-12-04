@@ -3,6 +3,7 @@ import { Table } from './Table';
 import { useState } from 'react';
 import { BiFilter, BiDownload, BiRefresh, BiPlus } from 'react-icons/bi';
 import { Dropdown } from '../../navigation/Dropdown';
+import { Flex } from '../../../basic/layout/Flex';
 
 const meta = {
   title: 'Data Display/Table',
@@ -304,10 +305,10 @@ export const WithActions: Story = {
             <Table.Cell>{user.email}</Table.Cell>
             <Table.Cell>{user.role}</Table.Cell>
             <Table.Cell>
-              <div className="flex gap-2">
+              <Flex gap="xs">
                 <button className="text-blue-600 hover:text-blue-800 text-sm">Edit</button>
                 <button className="text-red-600 hover:text-red-800 text-sm">Delete</button>
-              </div>
+              </Flex>
             </Table.Cell>
           </Table.Row>
         ))}

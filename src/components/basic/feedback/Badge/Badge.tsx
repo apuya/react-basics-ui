@@ -131,6 +131,11 @@ export const Badge = memo(
         tabIndex={dismissible && !disabled ? 0 : undefined}
         onClick={(dismissible || onClick) ? handleClick : undefined}
         onKeyDown={dismissible && !disabled ? handleKeyDown : undefined}
+        data-size={size}
+        data-color={resolvedColor}
+        data-style-variant={styleVariant}
+        data-dismissible={dismissible || undefined}
+        data-disabled={disabled || undefined}
         style={{
           ...PADDING_TOKENS[size],
           ...(dismissible && {

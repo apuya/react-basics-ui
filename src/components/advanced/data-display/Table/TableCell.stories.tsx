@@ -1,25 +1,35 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Table } from './Table';
+import { TableCell } from './TableCell';
+import { TableContext } from './TableContext';
 import { Badge } from '../../../basic/feedback/Badge';
 import { Button } from '../../../basic/forms/Button';
-import { Avatar } from '../../../basic/data-display/Avatar';
-import { Text } from '../../../basic/typography/Text';
-import { Flex } from '../../../basic/layout/Flex';
-import { Stack } from '../../../basic/layout/Stack';
 
 const meta = {
   title: 'Data Display/Table/TableCell',
-  component: Table.Cell,
+  component: TableCell,
   parameters: {
     layout: 'padded',
     docs: {
       description: {
-        component: 'The TableCell component represents individual data cells in table rows.',
+        component: 'The TableCell component represents individual data cells in table rows. It uses TableContext for size-based padding.',
       },
     },
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Table.Cell>;
+  decorators: [
+    (Story, context) => (
+      <TableContext.Provider value={{ size: context.args.size || 'md', variant: 'default' }}>
+        <table className="w-full border-collapse">
+          <tbody>
+            <tr>
+              <Story />
+            </tr>
+          </tbody>
+        </table>
+      </TableContext.Provider>
+    ),
+  ],
+} satisfies Meta<typeof TableCell>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -28,100 +38,88 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Basic table cells with text content.',
+        story: 'Basic table cell with text content.',
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-          <Table.Cell>Admin</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
+  render: () => <TableCell>John Doe</TableCell>,
 };
 
-export const WithComponents: Story = {
+export const SmallSize: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Table cells containing various components like badges, buttons, and images.',
+        story: 'Table cell with small padding (from Table size="sm").',
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>User</Table.Header>
-          <Table.Header>Status</Table.Header>
-          <Table.Header>Actions</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            <Flex align="center" gap="sm">
-              <Avatar initials="JD" size="sm" />
-              <Stack gap="none">
-                <Text weight="medium">John Doe</Text>
-                <Text size="xs" color="secondary">john@example.com</Text>
-              </Stack>
-            </Flex>
-          </Table.Cell>
-          <Table.Cell>
-            <Badge variant="success">Active</Badge>
-          </Table.Cell>
-          <Table.Cell>
-            <Button variant="ghost" size="small">Edit</Button>
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
+  decorators: [
+    (Story) => (
+      <TableContext.Provider value={{ size: 'sm', variant: 'default' }}>
+        <table className="w-full border-collapse">
+          <tbody>
+            <tr>
+              <Story />
+            </tr>
+          </tbody>
+        </table>
+      </TableContext.Provider>
+    ),
+  ],
+  render: () => <TableCell>Small padding cell</TableCell>,
 };
 
-export const WithAlignment: Story = {
+export const LargeSize: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Table cells with different text alignments.',
+        story: 'Table cell with large padding (from Table size="lg").',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <TableContext.Provider value={{ size: 'lg', variant: 'default' }}>
+        <table className="w-full border-collapse">
+          <tbody>
+            <tr>
+              <Story />
+            </tr>
+          </tbody>
+        </table>
+      </TableContext.Provider>
+    ),
+  ],
+  render: () => <TableCell>Large padding cell</TableCell>,
+};
+
+export const WithBadge: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Table cell containing a Badge component.',
       },
     },
   },
   render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>Product</Table.Header>
-          <Table.Header style={{ textAlign: 'right' }}>Price</Table.Header>
-          <Table.Header style={{ textAlign: 'center' }}>Stock</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>Widget A</Table.Cell>
-          <Table.Cell style={{ textAlign: 'right' }}>$29.99</Table.Cell>
-          <Table.Cell style={{ textAlign: 'center' }}>42</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Widget B</Table.Cell>
-          <Table.Cell style={{ textAlign: 'right' }}>$149.99</Table.Cell>
-          <Table.Cell style={{ textAlign: 'center' }}>7</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    <TableCell>
+      <Badge color="success">Active</Badge>
+    </TableCell>
+  ),
+};
+
+export const WithButton: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Table cell containing a Button component.',
+      },
+    },
+  },
+  render: () => (
+    <TableCell>
+      <Button variant="ghost" size="small">Edit</Button>
+    </TableCell>
   ),
 };
 
@@ -129,36 +127,13 @@ export const Colspan: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Table cells spanning multiple columns.',
+        story: 'Table cell spanning multiple columns.',
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell colSpan={3} style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: '#f3f4f6' }}>
-            User Group A
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-          <Table.Cell>Admin</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Jane Smith</Table.Cell>
-          <Table.Cell>jane@example.com</Table.Cell>
-          <Table.Cell>Editor</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
+  args: {
+    colSpan: 3,
+    style: { textAlign: 'center', fontWeight: 'bold' },
+  },
+  render: (args) => <TableCell {...args}>Spanning 3 columns</TableCell>,
 };

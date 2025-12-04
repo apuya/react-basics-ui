@@ -2,6 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { EmptyState } from './EmptyState';
 import { BiBox, BiSearchAlt, BiFolder, BiCart, BiCloudUpload } from 'react-icons/bi';
 import { Button } from '../../forms/Button';
+import { Flex } from '../../layout/Flex';
+import { Stack } from '../../layout/Stack';
+import { Box } from '../../layout/Box';
+import { Text } from '../../typography/Text';
+import { Card } from '../../data-display/Card';
 
 const meta = {
   title: 'Feedback/EmptyState',
@@ -53,9 +58,9 @@ export const Default: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="w-96">
+      <Box className="w-96">
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
@@ -69,9 +74,9 @@ export const WithAction: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="w-96">
+      <Box className="w-96">
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
@@ -84,9 +89,9 @@ export const SearchNoResults: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="w-96">
+      <Box className="w-96">
         <Story />
-      </div>
+      </Box>
     ),
   ],
   parameters: {
@@ -107,9 +112,9 @@ export const EmptyCart: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="w-96">
+      <Box className="w-96">
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
@@ -120,17 +125,17 @@ export const MultipleActions: Story = {
     title: 'No documents',
     description: 'Upload your first document to get started.',
     action: (
-      <div className="flex gap-2">
+      <Flex gap="sm">
         <Button variant="primary">Upload Document</Button>
         <Button variant="secondary">Learn More</Button>
-      </div>
+      </Flex>
     ),
   },
   decorators: [
     (Story) => (
-      <div className="w-96">
+      <Box className="w-96">
         <Story />
-      </div>
+      </Box>
     ),
   ],
   parameters: {
@@ -144,20 +149,20 @@ export const MultipleActions: Story = {
 
 export const IconSizes: StoryWithRender = {
   render: () => (
-    <div className="flex gap-8">
-      <div className="w-64">
-        <span className="text-sm text-gray-500 mb-2 block">Small (32px)</span>
+    <Flex gap="lg">
+      <Stack spacing="sm" className="w-64">
+        <Text size="small" color="secondary">Small (32px)</Text>
         <EmptyState icon={<BiBox />} iconSize={32} title="Small Icon" description="Compact empty state." />
-      </div>
-      <div className="w-64">
-        <span className="text-sm text-gray-500 mb-2 block">Default (48px)</span>
+      </Stack>
+      <Stack spacing="sm" className="w-64">
+        <Text size="small" color="secondary">Default (48px)</Text>
         <EmptyState icon={<BiBox />} title="Default Icon" description="Standard empty state." />
-      </div>
-      <div className="w-64">
-        <span className="text-sm text-gray-500 mb-2 block">Large (80px)</span>
+      </Stack>
+      <Stack spacing="sm" className="w-64">
+        <Text size="small" color="secondary">Large (80px)</Text>
         <EmptyState icon={<BiBox />} iconSize={80} title="Large Icon" description="Prominent empty state." />
-      </div>
-    </div>
+      </Stack>
+    </Flex>
   ),
   parameters: {
     docs: {
@@ -175,9 +180,9 @@ export const WithoutIcon: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="w-96">
+      <Box className="w-96">
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
@@ -189,18 +194,20 @@ export const TitleOnly: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="w-96">
+      <Box className="w-96">
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
 
 export const InContainer: StoryWithRender = {
   render: () => (
-    <div className="border border-gray-200 rounded-lg p-4 min-h-80 flex items-center justify-center w-full max-w-lg">
-      <EmptyState icon={<BiBox />} title="No messages" description="You don't have any messages yet." />
-    </div>
+    <Card variant="outlined" className="min-h-80 w-full max-w-lg">
+      <Card.Content className="h-full flex items-center justify-center">
+        <EmptyState icon={<BiBox />} title="No messages" description="You don't have any messages yet." />
+      </Card.Content>
+    </Card>
   ),
   parameters: {
     docs: {

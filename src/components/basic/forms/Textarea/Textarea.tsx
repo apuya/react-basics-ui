@@ -1,12 +1,18 @@
 import { cn } from '@/lib/cn';
 import { generateFormId } from '@/lib/generateFormId';
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
+import {
+  forwardRef,
+  memo,
+  useId,
+  useMemo,
+  useState,
+  type ChangeEvent,
+  type ComponentPropsWithoutRef,
+} from 'react';
+import { FormField } from '../FormField';
 import {
   BASE_CLASSES,
-  HELPER_CLASSES,
-  HELPER_ERROR_CLASSES,
-  LABEL_CLASSES,
-  LABEL_ERROR_CLASSES,
+  CHAR_COUNT_ERROR_CLASSES,
   RESIZE_STYLES,
   SIZE_STYLES,
   STATE_STYLES,
@@ -50,11 +56,23 @@ export const Textarea = memo(
       showCharCount = false,
       value,
       defaultValue,
+      onChange,
+      required,
+      'aria-describedby': ariaDescribedBy,
       ...rest
     },
     ref
   ) {
     const textareaId = id || generateFormId('textarea', label);
+    const generatedHelperId = useId();
+    
+    // Track internal character count for uncontrolled mode
+    const [internalLength, setInternalLength] = useState(() => {
+      if (defaultValue !== undefined) {
+        return String(defaultValue).length;
+      }
+      return 0;
+    });
 
     const textareaClasses = useMemo(
       () => cn(
@@ -67,63 +85,73 @@ export const Textarea = memo(
       [size, resize, error, className]
     );
 
-    const currentLength = useMemo(() => {
-      if (value !== undefined) {
-        return String(value).length;
-      }
-      if (defaultValue !== undefined) {
-        return String(defaultValue).length;
-      }
-      return 0;
-    }, [value, defaultValue]);
+    // For controlled mode, use value length; for uncontrolled, use internal state
+    const currentLength = value !== undefined ? String(value).length : internalLength;
 
     const showCounter = showCharCount && maxLength !== undefined;
+    const hasHelperContent = helperText || showCounter;
+    const helperId = hasHelperContent ? `${generatedHelperId}-helper` : undefined;
+    
+    // Merge aria-describedby: user-provided + auto-generated helper ID
+    const mergedAriaDescribedBy = [ariaDescribedBy, helperId].filter(Boolean).join(' ') || undefined;
+
+    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+      // Update internal length for uncontrolled mode
+      if (value === undefined) {
+        setInternalLength(e.target.value.length);
+      }
+      onChange?.(e);
+    };
+
+    // Compute helper content - either just text, just counter, or both
+    const helperContent = showCounter ? (
+      <span className="flex items-start justify-between gap-2 w-full">
+        <span>{helperText}</span>
+        <span
+          className={cn(
+            'text-right shrink-0',
+            currentLength === maxLength && CHAR_COUNT_ERROR_CLASSES
+          )}
+        >
+          {currentLength}/{maxLength}
+        </span>
+      </span>
+    ) : helperText;
 
     return (
-      <div className={cn('w-full', wrapperClassName)}>
-        {label && (
-          <label
-            htmlFor={textareaId}
-            className={error ? LABEL_ERROR_CLASSES : LABEL_CLASSES}
-          >
-            {label}
-          </label>
-        )}
-
-        <div className="relative">
-          <textarea
-            ref={ref}
-            id={textareaId}
-            disabled={disabled}
-            className={textareaClasses}
-            maxLength={maxLength}
-            value={value}
-            defaultValue={defaultValue}
-            data-size={size}
-            data-error={error || undefined}
-            {...rest}
-          />
-        </div>
-
-        {(helperText || showCounter) && (
-          <div className="flex items-start justify-between gap-2">
-            {helperText && (
-              <p className={error ? HELPER_ERROR_CLASSES : HELPER_CLASSES}>
-                {helperText}
-              </p>
-            )}
-            {showCounter && (
-              <p className={cn(
-                HELPER_CLASSES,
-                'text-right shrink-0',
-                currentLength === maxLength && 'text-[color:var(--component-input-helper-error)]'
-              )}>
-                {currentLength}/{maxLength}
-              </p>
-            )}
-          </div>
-        )}
-      </div>
+      <FormField
+        label={label}
+        htmlFor={textareaId}
+        helperText={helperContent}
+        error={error}
+        required={required}
+        disabled={disabled}
+        helperId={helperId}
+        className={wrapperClassName}
+      >
+        <textarea
+          ref={ref}
+          id={textareaId}
+          disabled={disabled}
+          className={textareaClasses}
+          style={{
+            paddingInline: 'var(--component-textarea-padding-inline)',
+            paddingBlock: 'var(--component-textarea-padding-block)',
+            minHeight: `var(--component-textarea-min-height-${size})`,
+          }}
+          maxLength={maxLength}
+          value={value}
+          defaultValue={defaultValue}
+          onChange={handleChange}
+          required={required}
+          aria-invalid={error || undefined}
+          aria-describedby={mergedAriaDescribedBy}
+          data-size={size}
+          data-error={error || undefined}
+          data-disabled={disabled || undefined}
+          {...rest}
+        />
+      </FormField>
     );
   })
 );

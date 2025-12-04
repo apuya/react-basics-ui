@@ -143,10 +143,23 @@ describe('Toast', () => {
     });
   });
 
-  it('applies inline padding styles', () => {
+  it('applies inline padding and gap styles', () => {
     const { getByRole } = render(<Toast title="Test" />);
     const toast = getByRole('alert');
     expect(toast).toHaveStyle({ paddingInline: 'var(--component-toast-padding-inline)' });
     expect(toast).toHaveStyle({ paddingBlock: 'var(--component-toast-padding-block)' });
+    expect(toast).toHaveStyle({ gap: 'var(--component-toast-gap)' });
+  });
+
+  it('applies data-variant attribute', () => {
+    const { getByRole } = render(<Toast variant="success" title="Test" />);
+    const toast = getByRole('alert');
+    expect(toast).toHaveAttribute('data-variant', 'success');
+  });
+
+  it('applies default data-variant attribute', () => {
+    const { getByRole } = render(<Toast title="Test" />);
+    const toast = getByRole('alert');
+    expect(toast).toHaveAttribute('data-variant', 'default');
   });
 });

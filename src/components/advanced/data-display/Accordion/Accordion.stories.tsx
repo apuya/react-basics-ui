@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Accordion } from './Accordion';
+import { Stack } from '../../../basic/layout/Stack';
+import { Flex } from '../../../basic/layout/Flex';
+import { Text } from '../../../basic/typography/Text';
 
 const meta = {
   title: 'Data Display/Accordion',
@@ -237,7 +240,7 @@ export const ComplexContent: Story = {
       <Accordion.Item value="pricing">
         <Accordion.Trigger>Pricing Plans</Accordion.Trigger>
         <Accordion.Content>
-          <div className="space-y-4">
+          <Stack gap="md">
             <div className="border rounded-lg p-4">
               <h4 className="font-semibold mb-2">Basic Plan - $9/month</h4>
               <ul className="text-sm space-y-1 text-gray-600">
@@ -255,7 +258,7 @@ export const ComplexContent: Story = {
                 <li>✓ Advanced analytics</li>
               </ul>
             </div>
-          </div>
+          </Stack>
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item value="features">
@@ -314,8 +317,8 @@ export const ControlledMode: Story = {
     };
     
     return (
-      <div className="space-y-4">
-        <div className="flex gap-2">
+      <Stack gap="md">
+        <Flex gap="xs">
           <button
             onClick={() => setValue('item-1')}
             className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -340,10 +343,10 @@ export const ControlledMode: Story = {
           >
             Close All
           </button>
-        </div>
-        <div className="text-sm text-gray-600">
+        </Flex>
+        <Text size="sm" color="secondary">
           Current value: <code className="bg-gray-100 px-2 py-1 rounded">{value || '(none)'}</code>
-        </div>
+        </Text>
         <Accordion type="single" collapsible value={value} onChange={handleChange}>
           <Accordion.Item value="item-1">
             <Accordion.Trigger>Controlled Item 1</Accordion.Trigger>
@@ -367,7 +370,7 @@ export const ControlledMode: Story = {
             </Accordion.Content>
           </Accordion.Item>
         </Accordion>
-      </div>
+      </Stack>
     );
   },
 };

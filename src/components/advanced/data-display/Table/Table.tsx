@@ -13,7 +13,11 @@ import { TableHeader } from './TableHeader';
 import { TableCell } from './TableCell';
 import { TableFooter } from './TableFooter';
 import { TableActionBar } from './TableActionBar';
-import { TABLE_BASE_CLASSES } from './Table.styles';
+import {
+  TABLE_BASE_CLASSES,
+  TABLE_WRAPPER_CLASSES,
+  TABLE_WRAPPER_STICKY_CLASS,
+} from './Table.styles';
 
 export type { TableSize, TableVariant } from './TableContext';
 export { useTableContext } from './TableContext';
@@ -28,10 +32,7 @@ const TableRoot = memo(
   forwardRef<HTMLTableElement, TableProps>(
     ({ size = 'md', variant = 'default', stickyHeader = false, className, children, ...props }, ref) => {
       const contextValue = useMemo(
-        () => ({
-          size,
-          variant,
-        }),
+        () => ({ size, variant }),
         [size, variant]
       );
 
@@ -41,18 +42,21 @@ const TableRoot = memo(
       );
 
       const wrapperClasses = useMemo(
-        () =>
-          cn(
-            'relative w-full overflow-auto',
-            stickyHeader && 'max-h-[600px]'
-          ),
+        () => cn(TABLE_WRAPPER_CLASSES, stickyHeader && TABLE_WRAPPER_STICKY_CLASS),
         [stickyHeader]
       );
 
       return (
         <div className={wrapperClasses}>
           <TableContext.Provider value={contextValue}>
-            <table ref={ref} className={tableClasses} {...props}>
+            <table
+              ref={ref}
+              className={tableClasses}
+              data-size={size}
+              data-variant={variant}
+              data-sticky-header={stickyHeader || undefined}
+              {...props}
+            >
               {children}
             </table>
           </TableContext.Provider>

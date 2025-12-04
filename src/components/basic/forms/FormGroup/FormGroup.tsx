@@ -1,12 +1,12 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useId, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { forwardRef, memo, useId, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import {
+  BASE_CLASSES,
   CHILDREN_HORIZONTAL_CLASSES,
   CHILDREN_VERTICAL_CLASSES,
   DESCRIPTION_CLASSES,
   ERROR_CLASSES,
   LEGEND_CLASSES,
-  WRAPPER_CLASSES,
 } from './FormGroup.styles';
 
 export type FormGroupOrientation = 'vertical' | 'horizontal';
@@ -45,10 +45,23 @@ export const FormGroup = memo(
     const hasError = error && errorMessage;
     const errorId = hasError ? (errorIdProp ?? `${generatedId}-error`) : undefined;
 
+    const fieldsetClasses = useMemo(
+      () => cn(BASE_CLASSES, className),
+      [className]
+    );
+
+    const childrenClasses = useMemo(
+      () =>
+        orientation === 'horizontal'
+          ? CHILDREN_HORIZONTAL_CLASSES
+          : CHILDREN_VERTICAL_CLASSES,
+      [orientation]
+    );
+
     return (
       <fieldset
         ref={ref}
-        className={cn(WRAPPER_CLASSES, className)}
+        className={fieldsetClasses}
         data-orientation={orientation}
         data-error={error || undefined}
         aria-invalid={error || undefined}
@@ -58,13 +71,7 @@ export const FormGroup = memo(
         {legend && <legend className={LEGEND_CLASSES}>{legend}</legend>}
         {description && <p className={DESCRIPTION_CLASSES}>{description}</p>}
 
-        <div
-          className={
-            orientation === 'horizontal'
-              ? CHILDREN_HORIZONTAL_CLASSES
-              : CHILDREN_VERTICAL_CLASSES
-          }
-        >
+        <div className={childrenClasses}>
           {children}
         </div>
 

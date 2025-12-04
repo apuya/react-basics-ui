@@ -6,6 +6,8 @@ import { Text } from '@/components/basic/typography/Text';
 import { useDropdownContext } from './Dropdown';
 import {
   DESCRIPTION_TEXT_STYLE,
+  DISABLED_ICON_CLASSES,
+  DISABLED_ITEM_CLASSES,
   ICON_STYLE,
   ICON_VARIANT_STYLES,
   ICON_WRAPPER_CLASSES,
@@ -111,11 +113,7 @@ export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
 
     // Build CSS classes with variant-specific styling
     const itemClasses = disabled
-      ? cn(
-          ITEM_BASE_CLASSES,
-          'bg-[var(--component-dropdown-item-bg-disabled)] text-[var(--component-dropdown-item-text-disabled)] cursor-not-allowed opacity-[var(--semantic-opacity-disabled)]',
-          className
-        )
+      ? cn(ITEM_BASE_CLASSES, DISABLED_ITEM_CLASSES, className)
       : cn(
           ITEM_BASE_CLASSES,
           ITEM_VARIANT_STYLES[effectiveVariant].default,
@@ -126,7 +124,7 @@ export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
 
     // Icon color classes based on variant
     const iconClasses = disabled
-      ? cn(ICON_WRAPPER_CLASSES, 'text-[var(--component-dropdown-item-icon-disabled)]')
+      ? cn(ICON_WRAPPER_CLASSES, DISABLED_ICON_CLASSES)
       : cn(
           ICON_WRAPPER_CLASSES,
           ICON_VARIANT_STYLES[effectiveVariant].default,

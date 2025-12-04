@@ -1,6 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Progress } from './Progress';
 import { useState, useEffect } from 'react';
+import { Stack } from '../../layout/Stack';
+import { Flex } from '../../layout/Flex';
+import { Text } from '../../typography/Text';
+import { Box } from '../../layout/Box';
+import { Button } from '../../forms/Button';
+import { Card } from '../../data-display/Card';
 
 const meta = {
   title: 'Feedback/Progress',
@@ -59,9 +65,9 @@ export const Default: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="w-80">
+      <Box className="w-80">
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
@@ -73,33 +79,33 @@ export const WithValue: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="w-80">
+      <Box className="w-80">
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
 
 export const Variants: StoryWithRender = {
   render: () => (
-    <div className="w-80 space-y-4">
-      <div>
-        <span className="text-sm text-gray-500 mb-1 block">Default</span>
+    <Stack spacing="md" className="w-80">
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Default</Text>
         <Progress value={60} showValue />
-      </div>
-      <div>
-        <span className="text-sm text-gray-500 mb-1 block">Success</span>
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Success</Text>
         <Progress value={100} variant="success" showValue />
-      </div>
-      <div>
-        <span className="text-sm text-gray-500 mb-1 block">Warning</span>
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Warning</Text>
         <Progress value={45} variant="warning" showValue />
-      </div>
-      <div>
-        <span className="text-sm text-gray-500 mb-1 block">Error</span>
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Error</Text>
         <Progress value={20} variant="error" showValue />
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   ),
   parameters: {
     docs: {
@@ -112,20 +118,20 @@ export const Variants: StoryWithRender = {
 
 export const Sizes: StoryWithRender = {
   render: () => (
-    <div className="w-80 space-y-4">
-      <div>
-        <span className="text-sm text-gray-500 mb-1 block">Small</span>
+    <Stack spacing="md" className="w-80">
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Small</Text>
         <Progress value={60} size="sm" />
-      </div>
-      <div>
-        <span className="text-sm text-gray-500 mb-1 block">Default</span>
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Default</Text>
         <Progress value={60} size="default" />
-      </div>
-      <div>
-        <span className="text-sm text-gray-500 mb-1 block">Large</span>
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Large</Text>
         <Progress value={60} size="lg" />
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   ),
   parameters: {
     docs: {
@@ -138,13 +144,13 @@ export const Sizes: StoryWithRender = {
 
 export const ProgressSteps: StoryWithRender = {
   render: () => (
-    <div className="w-80 space-y-4">
+    <Stack spacing="md" className="w-80">
       <Progress value={0} showValue />
       <Progress value={25} showValue />
       <Progress value={50} showValue />
       <Progress value={75} showValue />
       <Progress value={100} variant="success" showValue />
-    </div>
+    </Stack>
   ),
   parameters: {
     docs: {
@@ -167,9 +173,9 @@ export const Animated: StoryWithRender = {
     }, []);
 
     return (
-      <div className="w-80">
+      <Box className="w-80">
         <Progress value={value} showValue />
-      </div>
+      </Box>
     );
   },
   parameters: {
@@ -202,26 +208,28 @@ export const FileUpload: StoryWithRender = {
     };
 
     return (
-      <div className="w-80 space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium">document.pdf</span>
-          <span className="text-xs text-gray-500">
+      <Stack spacing="sm" className="w-80">
+        <Flex align="center" justify="between">
+          <Text size="small" weight="medium">document.pdf</Text>
+          <Text size="caption" color="secondary">
             {status === 'complete' ? 'Complete' : status === 'uploading' ? 'Uploading...' : 'Ready'}
-          </span>
-        </div>
+          </Text>
+        </Flex>
         <Progress
           value={progress}
           variant={status === 'complete' ? 'success' : 'default'}
           showValue
         />
-        <button
+        <Button
+          variant="primary"
+          size="small"
           onClick={simulateUpload}
           disabled={status === 'uploading'}
-          className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+          isLoading={status === 'uploading'}
         >
-          {status === 'complete' ? 'Upload Again' : status === 'uploading' ? 'Uploading...' : 'Upload'}
-        </button>
-      </div>
+          {status === 'complete' ? 'Upload Again' : 'Upload'}
+        </Button>
+      </Stack>
     );
   },
   parameters: {
@@ -240,29 +248,31 @@ export const MultiStepForm: StoryWithRender = {
     const progress = (current / steps.length) * 100;
 
     return (
-      <div className="w-80 space-y-4">
-        <div className="flex justify-between text-sm">
-          <span className="font-medium">{steps[current - 1]}</span>
-          <span className="text-gray-500">Step {current} of {steps.length}</span>
-        </div>
+      <Stack spacing="md" className="w-80">
+        <Flex justify="between">
+          <Text size="small" weight="medium">{steps[current - 1]}</Text>
+          <Text size="small" color="secondary">Step {current} of {steps.length}</Text>
+        </Flex>
         <Progress value={progress} variant={current === steps.length ? 'success' : 'default'} />
-        <div className="flex gap-2">
-          <button
+        <Flex gap="xs">
+          <Button
+            variant="secondary"
+            size="small"
             onClick={() => setCurrent((prev) => Math.max(1, prev - 1))}
             disabled={current === 1}
-            className="px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
           >
             Back
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="primary"
+            size="small"
             onClick={() => setCurrent((prev) => Math.min(steps.length, prev + 1))}
             disabled={current === steps.length}
-            className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
           >
             {current === steps.length ? 'Complete' : 'Next'}
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Flex>
+      </Stack>
     );
   },
   parameters: {
@@ -282,16 +292,20 @@ export const StorageUsage: StoryWithRender = {
     const variant = percentage > 90 ? 'error' : percentage > 70 ? 'warning' : 'default';
 
     return (
-      <div className="w-80 p-4 border border-gray-200 rounded-lg space-y-3">
-        <div className="flex justify-between items-center">
-          <span className="font-medium">Storage</span>
-          <span className="text-sm text-gray-500">{used} GB of {total} GB</span>
-        </div>
-        <Progress value={percentage} variant={variant} />
-        <p className="text-xs text-gray-500">
-          {(total - used).toFixed(1)} GB available
-        </p>
-      </div>
+      <Card variant="outlined" className="w-80">
+        <Card.Content>
+          <Stack spacing="sm">
+            <Flex justify="between" align="center">
+              <Text weight="medium">Storage</Text>
+              <Text size="small" color="secondary">{used} GB of {total} GB</Text>
+            </Flex>
+            <Progress value={percentage} variant={variant} />
+            <Text size="caption" color="secondary">
+              {(total - used).toFixed(1)} GB available
+            </Text>
+          </Stack>
+        </Card.Content>
+      </Card>
     );
   },
   parameters: {

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Table } from './Table';
+import { TableHead } from './TableHead';
 
 const meta = {
   title: 'Data Display/Table/TableHead',
-  component: Table.Head,
+  component: TableHead,
   parameters: {
     layout: 'padded',
     docs: {
@@ -13,7 +13,14 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Table.Head>;
+  decorators: [
+    (Story) => (
+      <table className="w-full border-collapse">
+        <Story />
+      </table>
+    ),
+  ],
+} satisfies Meta<typeof TableHead>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -27,24 +34,14 @@ export const Default: Story = {
     },
   },
   render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-          <Table.Header>Status</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-          <Table.Cell>Admin</Table.Cell>
-          <Table.Cell>Active</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    <TableHead>
+      <tr>
+        <th className="p-3 text-left">Name</th>
+        <th className="p-3 text-left">Email</th>
+        <th className="p-3 text-left">Role</th>
+        <th className="p-3 text-left">Status</th>
+      </tr>
+    </TableHead>
   ),
 };
 
@@ -52,63 +49,41 @@ export const Sticky: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Sticky table head that remains visible when scrolling. Useful for long tables.',
+        story: 'Sticky table head that remains visible when scrolling. The `sticky` prop adds `sticky top-0 z-10` positioning.',
       },
     },
   },
-  render: () => (
-    <div style={{ height: '300px', overflow: 'auto' }}>
-      <Table>
-        <Table.Head sticky>
-          <Table.Row>
-            <Table.Header>Name</Table.Header>
-            <Table.Header>Email</Table.Header>
-            <Table.Header>Role</Table.Header>
-          </Table.Row>
-        </Table.Head>
-        <Table.Body>
-          {Array.from({ length: 20 }, (_, i) => (
-            <Table.Row key={i}>
-              <Table.Cell>User {i + 1}</Table.Cell>
-              <Table.Cell>user{i + 1}@example.com</Table.Cell>
-              <Table.Cell>{i % 3 === 0 ? 'Admin' : i % 3 === 1 ? 'Editor' : 'Viewer'}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
-    </div>
+  args: {
+    sticky: true,
+  },
+  render: (args) => (
+    <TableHead {...args}>
+      <tr>
+        <th className="p-3 text-left">Name</th>
+        <th className="p-3 text-left">Email</th>
+        <th className="p-3 text-left">Role</th>
+      </tr>
+    </TableHead>
   ),
 };
 
-export const MultipleRows: Story = {
+export const WithCustomClassName: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Table head with multiple header rows, including an action bar.',
+        story: 'TableHead with custom className for additional styling.',
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar colSpan={4}>User Management</Table.ActionBar>
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-          <Table.Header>Status</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-          <Table.Cell>Admin</Table.Cell>
-          <Table.Cell>Active</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+  args: {
+    className: 'bg-blue-50',
+  },
+  render: (args) => (
+    <TableHead {...args}>
+      <tr>
+        <th className="p-3 text-left">Column 1</th>
+        <th className="p-3 text-left">Column 2</th>
+      </tr>
+    </TableHead>
   ),
 };

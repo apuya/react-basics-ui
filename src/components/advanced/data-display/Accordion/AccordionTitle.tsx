@@ -1,5 +1,6 @@
-import { forwardRef, memo } from 'react';
+import { forwardRef, memo, useRef } from 'react';
 import { Heading, type HeadingLevel, type HeadingProps } from '@/components/basic/typography/Heading';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
 
 export interface AccordionTitleProps extends Omit<HeadingProps, 'as' | 'level'> {
   /** Heading level for semantic HTML. @default 'h6' */
@@ -20,8 +21,10 @@ export interface AccordionTitleProps extends Omit<HeadingProps, 'as' | 'level'> 
  */
 export const AccordionTitle = memo(
   forwardRef<HTMLHeadingElement, AccordionTitleProps>(
-    ({ level = 'h6', ...props }, ref) => {
-      return <Heading ref={ref} as={level} level={level} {...props} />;
+    ({ level = 'h6', ...props }, forwardedRef) => {
+      const titleRef = useRef<HTMLHeadingElement>(null!);
+      const mergedRef = useMergedRefs(forwardedRef, titleRef);
+      return <Heading ref={mergedRef} as={level} level={level} {...props} />;
     }
   )
 );

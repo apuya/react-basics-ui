@@ -78,7 +78,13 @@ export const Heading = memo(
     );
 
     return (
-      <Component ref={ref} className={headingClasses} {...rest}>
+      <Component
+        ref={ref}
+        className={headingClasses}
+        data-level={semanticLevel}
+        data-color={color}
+        {...rest}
+      >
         {children}
       </Component>
     );

@@ -66,26 +66,32 @@ export function createSubComponent<T extends HTMLElement = HTMLDivElement>(
  */
 export interface TitleSubComponentStyleConfig {
   baseClasses: string;
+  /** ID for aria-labelledby association (e.g., 'modal' generates 'modal-title') */
+  idPrefix?: string;
 }
 
 /**
  * Factory function to create title sub-components
  * 
- * @param displayName - Component display name
- * @param styleConfig - Style configuration with CSS classes
+ * @param displayName - Component display name (e.g., 'Modal.Title')
+ * @param styleConfig - Style configuration with CSS classes and optional idPrefix
  * @returns Memoized forwardRef component
  */
 export function createTitleSubComponent<T extends HTMLHeadingElement = HTMLHeadingElement>(
   displayName: string,
   styleConfig: TitleSubComponentStyleConfig
 ) {
+  // Extract parent name for ID (e.g., 'Modal.Title' -> 'modal')
+  const defaultIdPrefix = displayName.split('.')[0].toLowerCase();
+  const idPrefix = styleConfig.idPrefix ?? defaultIdPrefix;
+
   const Component = memo(
     forwardRef<T, ComponentPropsWithoutRef<'h2'>>(
-      ({ className, children, ...props }, ref) => {
+      ({ className, children, id, ...props }, ref) => {
         return (
           <h2
             ref={ref as any}
-            id={`${displayName.toLowerCase()}-title`}
+            id={id ?? `${idPrefix}-title`}
             className={cn(styleConfig.baseClasses, className)}
             {...props}
           >

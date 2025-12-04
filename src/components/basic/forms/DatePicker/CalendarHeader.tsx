@@ -97,8 +97,8 @@ export const CalendarHeader = memo(
 
       const iconStyle = useMemo(
         () => ({
-          width: 'var(--component-datepicker-header-icon-size, 20px)',
-          height: 'var(--component-datepicker-header-icon-size, 20px)',
+          width: 'var(--component-datepicker-header-icon-size)',
+          height: 'var(--component-datepicker-header-icon-size)',
         }),
         []
       );

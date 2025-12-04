@@ -1,6 +1,9 @@
-export const WRAPPER_CLASSES = 'inline-flex items-center gap-[length:var(--component-switch-gap)] cursor-pointer';
+export const WRAPPER_BASE_CLASSES = 'inline-flex items-center';
 
-export const WRAPPER_DISABLED_CLASSES = 'inline-flex items-center gap-[length:var(--component-switch-gap)] cursor-not-allowed opacity-[var(--component-switch-disabled-opacity)]';
+export const WRAPPER_STATE_STYLES = {
+  enabled: 'cursor-pointer',
+  disabled: 'cursor-not-allowed opacity-[var(--component-switch-disabled-opacity)]',
+} as const;
 
 export const INPUT_CLASSES = 'peer sr-only';
 

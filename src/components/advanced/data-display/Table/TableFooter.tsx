@@ -1,7 +1,10 @@
 import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
-import { TABLE_FOOTER_BASE_CLASSES } from './Table.styles';
+import { TABLE_FOOTER_BASE_CLASSES, TABLE_CELL_SIZE_STYLES } from './Table.styles';
 import { Pagination } from '../../navigation/Pagination';
+import { Flex } from '@/components/basic/layout/Flex';
+import { Text } from '@/components/basic/typography/Text';
+import { useTableContext } from './TableContext';
 
 export interface TableFooterProps extends ComponentPropsWithoutRef<'tfoot'> {
   currentPage?: number;
@@ -26,18 +29,11 @@ export const TableFooter = memo(
       },
       ref
     ) => {
+      const { size } = useTableContext();
+
       const footerClasses = useMemo(
         () => cn(TABLE_FOOTER_BASE_CLASSES, className),
         [className]
-      );
-
-      const paddingStyle = useMemo(
-        () => ({
-          paddingInline: 'var(--component-table-padding-md)',
-          paddingBlock: 'var(--component-table-padding-sm)',
-          minHeight: '44px',
-        }),
-        []
       );
 
       const showPagination = totalPages > 1 || totalItems !== undefined;
@@ -51,9 +47,9 @@ export const TableFooter = memo(
       return (
         <tfoot ref={ref} className={footerClasses} {...props}>
           <tr>
-            <td style={paddingStyle}>
+            <td className={TABLE_CELL_SIZE_STYLES[size]}>
               {children || (
-                <div className="flex items-center" style={{ justifyContent: 'space-between' }}>
+                <Flex align="center" justify="between">
                   {showPagination && (
                     <Pagination
                       totalPages={totalPages}
@@ -71,10 +67,10 @@ export const TableFooter = memo(
                       </Pagination.List>
                     </Pagination>
                   )}
-                  <div className="text-sm text-gray-600">
+                  <Text size="small" color="secondary">
                     Showing {startItem} to {endItem} of {total} items
-                  </div>
-                </div>
+                  </Text>
+                </Flex>
               )}
             </td>
           </tr>

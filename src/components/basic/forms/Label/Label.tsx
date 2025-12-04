@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import {
   BASE_CLASSES,
   COLOR_STYLES,
@@ -40,17 +40,22 @@ export const Label = memo(
     },
     ref
   ) {
+    const labelClasses = useMemo(
+      () => cn(
+        BASE_CLASSES,
+        SIZE_STYLES[size],
+        WEIGHT_STYLES[weight],
+        disabled ? COLOR_STYLES.disabled : COLOR_STYLES[color],
+        disabled && STATE_STYLES.disabled,
+        className
+      ),
+      [size, weight, color, disabled, className]
+    );
+
     return (
       <label
         ref={ref}
-        className={cn(
-          BASE_CLASSES,
-          SIZE_STYLES[size],
-          WEIGHT_STYLES[weight],
-          disabled ? COLOR_STYLES.disabled : COLOR_STYLES[color],
-          disabled && STATE_STYLES.disabled,
-          className
-        )}
+        className={labelClasses}
         data-size={size}
         data-color={disabled ? 'disabled' : color}
         {...rest}

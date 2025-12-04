@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 import { BiCheck, BiX, BiPlus, BiSearch, BiDownload } from 'react-icons/bi';
+import { Flex } from '../../layout/Flex';
 
 const meta: Meta<typeof Button> = {
   title: 'Forms/Button',
@@ -50,14 +51,14 @@ export const Default: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div className="flex flex-wrap gap-3">
+    <Flex wrap gap="sm">
       <Button variant="primary">Primary</Button>
       <Button variant="secondary">Secondary</Button>
       <Button variant="tertiary">Tertiary</Button>
       <Button variant="ghost">Ghost</Button>
       <Button variant="destructive">Destructive</Button>
       <Button variant="tabs">Tabs</Button>
-    </div>
+    </Flex>
   ),
   parameters: {
     docs: {
@@ -70,11 +71,11 @@ export const AllVariants: Story = {
 
 export const AllSizes: Story = {
   render: () => (
-    <div className="flex items-center gap-3">
+    <Flex align="center" gap="sm">
       <Button size="small">Small</Button>
       <Button size="default">Default</Button>
       <Button size="large">Large</Button>
-    </div>
+    </Flex>
   ),
   parameters: {
     docs: {
@@ -87,12 +88,12 @@ export const AllSizes: Story = {
 
 export const Loading: Story = {
   render: () => (
-    <div className="flex flex-wrap gap-3">
+    <Flex wrap gap="sm">
       <Button variant="primary" isLoading>Primary</Button>
       <Button variant="secondary" isLoading>Secondary</Button>
       <Button variant="tertiary" isLoading>Tertiary</Button>
       <Button variant="destructive" isLoading>Destructive</Button>
-    </div>
+    </Flex>
   ),
   parameters: {
     docs: {
@@ -105,12 +106,12 @@ export const Loading: Story = {
 
 export const Disabled: Story = {
   render: () => (
-    <div className="flex flex-wrap gap-3">
+    <Flex wrap gap="sm">
       <Button variant="primary" disabled>Primary</Button>
       <Button variant="secondary" disabled>Secondary</Button>
       <Button variant="tertiary" disabled>Tertiary</Button>
       <Button variant="destructive" disabled>Destructive</Button>
-    </div>
+    </Flex>
   ),
   parameters: {
     docs: {
@@ -123,11 +124,11 @@ export const Disabled: Story = {
 
 export const WithIcons: Story = {
   render: () => (
-    <div className="flex flex-wrap gap-3">
+    <Flex wrap gap="sm">
       <Button leadingIcon={<BiPlus />}>Add Item</Button>
       <Button trailingIcon={<BiDownload />}>Download</Button>
       <Button leadingIcon={<BiCheck />} trailingIcon={<BiX />}>Both Icons</Button>
-    </div>
+    </Flex>
   ),
   parameters: {
     docs: {
@@ -140,11 +141,11 @@ export const WithIcons: Story = {
 
 export const IconOnly: Story = {
   render: () => (
-    <div className="flex items-center gap-3">
+    <Flex align="center" gap="sm">
       <Button size="small" leadingIcon={<BiSearch />} aria-label="Search" />
       <Button size="default" leadingIcon={<BiSearch />} aria-label="Search" />
       <Button size="large" leadingIcon={<BiSearch />} aria-label="Search" />
-    </div>
+    </Flex>
   ),
   parameters: {
     docs: {
@@ -157,10 +158,10 @@ export const IconOnly: Story = {
 
 export const ButtonGroup: Story = {
   render: () => (
-    <div className="flex gap-3">
+    <Flex gap="sm">
       <Button variant="secondary">Cancel</Button>
       <Button variant="primary">Save Changes</Button>
-    </div>
+    </Flex>
   ),
   parameters: {
     docs: {
@@ -188,13 +189,13 @@ export const AsLink: Story = {
 
 export const VariantsWithIcons: Story = {
   render: () => (
-    <div className="flex flex-wrap gap-3">
+    <Flex wrap gap="sm">
       <Button variant="primary" leadingIcon={<BiCheck />}>Confirm</Button>
       <Button variant="secondary" leadingIcon={<BiPlus />}>Add</Button>
       <Button variant="tertiary" leadingIcon={<BiSearch />}>Search</Button>
       <Button variant="ghost" leadingIcon={<BiDownload />}>Download</Button>
       <Button variant="destructive" leadingIcon={<BiX />}>Delete</Button>
-    </div>
+    </Flex>
   ),
   parameters: {
     docs: {

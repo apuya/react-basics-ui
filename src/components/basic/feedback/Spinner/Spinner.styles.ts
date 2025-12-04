@@ -1,26 +1,65 @@
 import type { SpinnerSize, SpinnerColor } from './Spinner';
 
-export const BASE_CLASSES =
-  'inline-block rounded-full animate-spin';
+/**
+ * Base classes for the Spinner component
+ */
+export const BASE_CLASSES = 'inline-block rounded-full';
 
-export const SIZE_STYLES: Record<SpinnerSize, string> = {
-  xs: 'size-3',
-  sm: 'size-4',
-  md: 'size-6',
-  lg: 'size-8',
-  xl: 'size-12',
-};
+/**
+ * Size-specific styles using design tokens (applied via inline styles)
+ */
+export const SIZE_STYLES: Record<SpinnerSize, React.CSSProperties> = {
+  xs: {
+    width: 'var(--component-spinner-size-xs)',
+    height: 'var(--component-spinner-size-xs)',
+    borderWidth: 'var(--component-spinner-border-width-xs)',
+  },
+  sm: {
+    width: 'var(--component-spinner-size-sm)',
+    height: 'var(--component-spinner-size-sm)',
+    borderWidth: 'var(--component-spinner-border-width-sm)',
+  },
+  md: {
+    width: 'var(--component-spinner-size-md)',
+    height: 'var(--component-spinner-size-md)',
+    borderWidth: 'var(--component-spinner-border-width-md)',
+  },
+  lg: {
+    width: 'var(--component-spinner-size-lg)',
+    height: 'var(--component-spinner-size-lg)',
+    borderWidth: 'var(--component-spinner-border-width-lg)',
+  },
+  xl: {
+    width: 'var(--component-spinner-size-xl)',
+    height: 'var(--component-spinner-size-xl)',
+    borderWidth: 'var(--component-spinner-border-width-xl)',
+  },
+} as const;
 
-export const BORDER_WIDTH_STYLES: Record<SpinnerSize, string> = {
-  xs: 'border',
-  sm: 'border-2',
-  md: 'border-2',
-  lg: 'border-[3px]',
-  xl: 'border-4',
-};
+/**
+ * Color-specific styles using design tokens (applied via inline styles)
+ */
+export const COLOR_STYLES: Record<SpinnerColor, React.CSSProperties> = {
+  default: {
+    borderColor: 'var(--component-spinner-track-default)',
+    borderTopColor: 'var(--component-spinner-color-default)',
+  },
+  inverse: {
+    borderColor: 'var(--component-spinner-track-inverse)',
+    borderTopColor: 'var(--component-spinner-color-inverse)',
+  },
+  inherit: {
+    borderColor: 'color-mix(in srgb, currentColor 30%, transparent)',
+    borderTopColor: 'currentColor',
+  },
+} as const;
 
-export const COLOR_STYLES: Record<SpinnerColor, string> = {
-  default: 'border-gray-200 border-t-blue-600',
-  inverse: 'border-white/30 border-t-white',
-  inherit: 'border-current/30 border-t-current',
-};
+/**
+ * Animation styles using design tokens
+ */
+export const ANIMATION_STYLE: React.CSSProperties = {
+  animationName: 'spin',
+  animationDuration: 'var(--component-spinner-duration)',
+  animationTimingFunction: 'linear',
+  animationIterationCount: 'infinite',
+} as const;

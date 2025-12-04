@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn';
 import { generateFormId } from '@/lib/generateFormId';
 import { useControlledState } from '@/hooks/useControlledState';
-import { forwardRef, memo, useCallback, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, useCallback, useMemo, type ComponentPropsWithoutRef } from 'react';
 import {
   INPUT_BASE_CLASSES,
   INPUT_FOCUS_RING,
@@ -9,12 +9,16 @@ import {
   INPUT_MOZ_RANGE_TRACK,
   INPUT_WEBKIT_SLIDER_RUNNABLE_TRACK,
   INPUT_WEBKIT_SLIDER_THUMB,
-  LABEL_CLASSES,
-  LABEL_DISABLED_CLASSES,
-  VALUE_DISABLED_CLASSES,
-  VALUE_DISPLAY_CLASSES,
+  LABEL_BASE_CLASSES,
+  LABEL_STATE_STYLES,
+  VALUE_BASE_CLASSES,
+  VALUE_STATE_STYLES,
   WRAPPER_CLASSES,
 } from './Slider.styles';
+
+// Static styles for spacing
+const LABEL_STYLE = { marginBottom: 'var(--component-slider-label-gap)' } as const;
+const VALUE_STYLE = { marginTop: 'var(--component-slider-value-gap)' } as const;
 
 export interface SliderProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type' | 'onChange'> {
   /** Minimum value */
@@ -78,14 +82,33 @@ export const Slider = memo(
       [setValue]
     );
 
-    const inputClasses = cn(
-      INPUT_BASE_CLASSES,
-      INPUT_WEBKIT_SLIDER_RUNNABLE_TRACK,
-      INPUT_MOZ_RANGE_TRACK,
-      INPUT_WEBKIT_SLIDER_THUMB,
-      INPUT_MOZ_RANGE_THUMB,
-      INPUT_FOCUS_RING,
-      className
+    const labelClasses = useMemo(
+      () => cn(
+        LABEL_BASE_CLASSES,
+        disabled ? LABEL_STATE_STYLES.disabled : LABEL_STATE_STYLES.enabled
+      ),
+      [disabled]
+    );
+
+    const inputClasses = useMemo(
+      () => cn(
+        INPUT_BASE_CLASSES,
+        INPUT_WEBKIT_SLIDER_RUNNABLE_TRACK,
+        INPUT_MOZ_RANGE_TRACK,
+        INPUT_WEBKIT_SLIDER_THUMB,
+        INPUT_MOZ_RANGE_THUMB,
+        INPUT_FOCUS_RING,
+        className
+      ),
+      [className]
+    );
+
+    const valueClasses = useMemo(
+      () => cn(
+        VALUE_BASE_CLASSES,
+        disabled ? VALUE_STATE_STYLES.disabled : VALUE_STATE_STYLES.enabled
+      ),
+      [disabled]
     );
 
     return (
@@ -93,7 +116,8 @@ export const Slider = memo(
         {label && (
           <label
             htmlFor={sliderId}
-            className={disabled ? LABEL_DISABLED_CLASSES : LABEL_CLASSES}
+            className={labelClasses}
+            style={LABEL_STYLE}
           >
             {label}
           </label>
@@ -115,7 +139,7 @@ export const Slider = memo(
         />
         
         {(showValue || showMinMax) && (
-          <div className={disabled ? VALUE_DISABLED_CLASSES : VALUE_DISPLAY_CLASSES}>
+          <div className={valueClasses} style={VALUE_STYLE}>
             {showMinMax && <span>{formatValue(min)}</span>}
             {showValue && (
               <span className={showMinMax ? '' : 'ml-auto'}>

@@ -117,9 +117,11 @@ export const Text = memo(
 
     return (
       <Component
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Polymorphic ref forwarding requires any
         ref={ref as any}
         className={textClasses}
+        data-size={size}
+        data-color={color}
         {...rest}
       >
         {children}

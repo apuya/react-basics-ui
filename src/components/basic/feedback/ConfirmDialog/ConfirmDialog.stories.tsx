@@ -2,6 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { ConfirmDialog } from './ConfirmDialog';
 import { Button } from '../../forms/Button/Button';
+import { Flex } from '../../layout/Flex';
+import { Stack } from '../../layout/Stack';
+import { Text } from '../../typography/Text';
+import { Heading } from '../../typography/Heading';
 
 const meta = {
   title: 'Feedback/ConfirmDialog',
@@ -65,7 +69,7 @@ export const Default: Story = {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-      <>
+      <Stack spacing="default">
         <Button onClick={() => setIsOpen(true)}>Open Confirm Dialog</Button>
         <ConfirmDialog
           isOpen={isOpen}
@@ -77,101 +81,8 @@ export const Default: Story = {
             setIsOpen(false);
           }}
         />
-      </>
+      </Stack>
     );
-  },
-};
-
-export const Destructive: Story = {
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button variant="destructive" onClick={() => setIsOpen(true)}>
-          Delete Item
-        </Button>
-        <ConfirmDialog
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          title="Delete Item"
-          description="Are you sure you want to delete this item? This action cannot be undone."
-          variant="destructive"
-          confirmText="Delete"
-          onConfirm={() => {
-            alert('Deleted!');
-            setIsOpen(false);
-          }}
-        />
-      </>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Destructive variant for dangerous actions like deletions.',
-      },
-    },
-  },
-};
-
-export const Warning: Story = {
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Leave Page</Button>
-        <ConfirmDialog
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          title="Unsaved Changes"
-          description="You have unsaved changes. Are you sure you want to leave?"
-          variant="warning"
-          confirmText="Leave Page"
-          cancelText="Stay"
-          onConfirm={() => {
-            alert('Leaving...');
-            setIsOpen(false);
-          }}
-        />
-      </>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Warning variant for actions that need user attention.',
-      },
-    },
-  },
-};
-
-export const Info: Story = {
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Show Info</Button>
-        <ConfirmDialog
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          title="Information"
-          description="This is an informational message that requires acknowledgment."
-          variant="info"
-          confirmText="Got it"
-          onConfirm={() => setIsOpen(false)}
-        />
-      </>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Info variant for informational confirmations.',
-      },
-    },
   },
 };
 
@@ -179,56 +90,67 @@ export const AllVariants: Story = {
   render: () => {
     const [openDialog, setOpenDialog] = useState<string | null>(null);
 
-    return (
-      <div className="flex flex-wrap gap-3">
-        <Button onClick={() => setOpenDialog('default')}>Default</Button>
-        <Button variant="destructive" onClick={() => setOpenDialog('destructive')}>
-          Destructive
-        </Button>
-        <Button onClick={() => setOpenDialog('warning')}>Warning</Button>
-        <Button onClick={() => setOpenDialog('info')}>Info</Button>
+    const variants = [
+      { key: 'default', label: 'Default', buttonVariant: 'primary' as const },
+      { key: 'destructive', label: 'Destructive', buttonVariant: 'destructive' as const },
+      { key: 'warning', label: 'Warning', buttonVariant: 'primary' as const },
+      { key: 'info', label: 'Info', buttonVariant: 'primary' as const },
+    ];
 
-        <ConfirmDialog
-          isOpen={openDialog === 'default'}
-          onClose={() => setOpenDialog(null)}
-          title="Default Confirmation"
-          description="This is a default confirmation dialog."
-          onConfirm={() => setOpenDialog(null)}
-        />
-        <ConfirmDialog
-          isOpen={openDialog === 'destructive'}
-          onClose={() => setOpenDialog(null)}
-          title="Delete Item"
-          description="This action cannot be undone."
-          variant="destructive"
-          confirmText="Delete"
-          onConfirm={() => setOpenDialog(null)}
-        />
-        <ConfirmDialog
-          isOpen={openDialog === 'warning'}
-          onClose={() => setOpenDialog(null)}
-          title="Warning"
-          description="Please review before proceeding."
-          variant="warning"
-          confirmText="Continue"
-          onConfirm={() => setOpenDialog(null)}
-        />
-        <ConfirmDialog
-          isOpen={openDialog === 'info'}
-          onClose={() => setOpenDialog(null)}
-          title="Information"
-          description="This is an informational message."
-          variant="info"
-          confirmText="OK"
-          onConfirm={() => setOpenDialog(null)}
-        />
-      </div>
+    const dialogConfigs = {
+      default: {
+        title: 'Default Confirmation',
+        description: 'This is a default confirmation dialog.',
+      },
+      destructive: {
+        title: 'Delete Item',
+        description: 'This action cannot be undone.',
+        confirmText: 'Delete',
+      },
+      warning: {
+        title: 'Warning',
+        description: 'Please review before proceeding.',
+        confirmText: 'Continue',
+      },
+      info: {
+        title: 'Information',
+        description: 'This is an informational message.',
+        confirmText: 'OK',
+      },
+    };
+
+    return (
+      <Stack spacing="default">
+        <Heading level="h6">Click to preview each variant</Heading>
+        <Flex wrap="wrap" gap="sm">
+          {variants.map(({ key, label, buttonVariant }) => (
+            <Button
+              key={key}
+              variant={buttonVariant}
+              onClick={() => setOpenDialog(key)}
+            >
+              {label}
+            </Button>
+          ))}
+        </Flex>
+
+        {variants.map(({ key }) => (
+          <ConfirmDialog
+            key={key}
+            isOpen={openDialog === key}
+            onClose={() => setOpenDialog(null)}
+            variant={key as 'default' | 'destructive' | 'warning' | 'info'}
+            onConfirm={() => setOpenDialog(null)}
+            {...dialogConfigs[key as keyof typeof dialogConfigs]}
+          />
+        ))}
+      </Stack>
     );
   },
   parameters: {
     docs: {
       description: {
-        story: 'All variants for comparison.',
+        story: 'All variants for comparison: default, destructive, warning, and info.',
       },
     },
   },
@@ -248,7 +170,7 @@ export const WithLoading: Story = {
     };
 
     return (
-      <>
+      <Stack spacing="default">
         <Button onClick={() => setIsOpen(true)}>Save Changes</Button>
         <ConfirmDialog
           isOpen={isOpen}
@@ -259,13 +181,13 @@ export const WithLoading: Story = {
           isLoading={isLoading}
           onConfirm={handleConfirm}
         />
-      </>
+      </Stack>
     );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Loading state during async operations.',
+        story: 'Loading state during async operations. Buttons are disabled while loading.',
       },
     },
   },
@@ -276,7 +198,7 @@ export const WithoutIcon: Story = {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-      <>
+      <Stack spacing="default">
         <Button onClick={() => setIsOpen(true)}>Simple Confirm</Button>
         <ConfirmDialog
           isOpen={isOpen}
@@ -289,8 +211,15 @@ export const WithoutIcon: Story = {
             setIsOpen(false);
           }}
         />
-      </>
+      </Stack>
     );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Dialog without the variant icon for a cleaner look.',
+      },
+    },
   },
 };
 
@@ -299,7 +228,7 @@ export const CustomContent: Story = {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-      <>
+      <Stack spacing="default">
         <Button variant="destructive" onClick={() => setIsOpen(true)}>
           Delete Multiple Items
         </Button>
@@ -314,17 +243,17 @@ export const CustomContent: Story = {
             setIsOpen(false);
           }}
         >
-          <div className="space-y-3">
-            <p className="text-sm text-gray-600">You are about to delete:</p>
-            <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
-              <li>Document.pdf</li>
-              <li>Image.png</li>
-              <li>Spreadsheet.xlsx</li>
-            </ul>
-            <p className="text-sm font-semibold text-red-600">This action cannot be undone.</p>
-          </div>
+          <Stack spacing="compact">
+            <Text size="small" color="secondary">You are about to delete:</Text>
+            <Stack as="ul" spacing="none" className="list-disc list-inside">
+              <Text as="li" size="small" color="secondary">Document.pdf</Text>
+              <Text as="li" size="small" color="secondary">Image.png</Text>
+              <Text as="li" size="small" color="secondary">Spreadsheet.xlsx</Text>
+            </Stack>
+            <Text size="small" weight="semibold" color="error">This action cannot be undone.</Text>
+          </Stack>
         </ConfirmDialog>
-      </>
+      </Stack>
     );
   },
   parameters: {

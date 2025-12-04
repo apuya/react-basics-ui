@@ -63,7 +63,14 @@ export const Container = memo(
     );
 
     return (
-      <div ref={ref} className={classes} {...props}>
+      <div
+        ref={ref}
+        className={classes}
+        data-size={size}
+        data-padding={padding}
+        data-centered={centered || undefined}
+        {...props}
+      >
         {children}
       </div>
     );

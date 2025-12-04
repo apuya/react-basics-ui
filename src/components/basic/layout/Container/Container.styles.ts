@@ -1,19 +1,19 @@
-export const BASE_CLASSES = 'w-full mx-auto px-[length:var(--semantic-space-default)]';
+export const BASE_CLASSES = 'w-full mx-auto px-[length:var(--component-container-padding-inline-md)]';
 
 export const SIZE_STYLES = {
-  sm: 'max-w-[640px]',
-  md: 'max-w-[768px]',
-  lg: 'max-w-[1024px]',
-  xl: 'max-w-[1280px]',
-  '2xl': 'max-w-[1536px]',
-  full: 'max-w-full',
+  sm: 'max-w-[length:var(--component-container-max-width-sm)]',
+  md: 'max-w-[length:var(--component-container-max-width-md)]',
+  lg: 'max-w-[length:var(--component-container-max-width-lg)]',
+  xl: 'max-w-[length:var(--component-container-max-width-xl)]',
+  '2xl': 'max-w-[length:var(--component-container-max-width-2xl)]',
+  full: 'max-w-[length:var(--component-container-max-width-full)]',
   prose: 'max-w-[65ch]',
 } as const;
 
 export const PADDING_STYLES = {
   none: 'px-0',
-  sm: 'px-[length:var(--semantic-space-compact)]',
-  md: 'px-[length:var(--semantic-space-default)]',
-  lg: 'px-[length:var(--semantic-space-comfortable)]',
-  xl: 'px-[length:var(--semantic-space-loose)]',
+  sm: 'px-[length:var(--component-container-padding-inline-sm)]',
+  md: 'px-[length:var(--component-container-padding-inline-md)]',
+  lg: 'px-[length:var(--component-container-padding-inline-lg)]',
+  xl: 'px-[length:var(--component-container-padding-inline-xl)]',
 } as const;

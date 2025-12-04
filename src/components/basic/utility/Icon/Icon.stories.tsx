@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BiHome, BiUser, BiSearch, BiHeart, BiStar, BiCheck, BiX } from 'react-icons/bi';
 import { Icon } from './Icon';
+import { Flex } from '../../layout/Flex';
 
 const meta: Meta<typeof Icon> = {
   title: 'Utility/Icon',
@@ -301,14 +302,14 @@ export const AllSizes: Story = {
     },
   },
   render: () => (
-    <div className="flex items-end gap-4">
+    <Flex align="end" gap="md">
       <Icon icon={BiStar} size="xs" color="primary" />
       <Icon icon={BiStar} size="sm" color="primary" />
       <Icon icon={BiStar} size="md" color="primary" />
       <Icon icon={BiStar} size="lg" color="primary" />
       <Icon icon={BiStar} size="xl" color="primary" />
       <Icon icon={BiStar} size="2xl" color="primary" />
-    </div>
+    </Flex>
   ),
 };
 
@@ -322,7 +323,7 @@ export const AllColors: Story = {
     },
   },
   render: () => (
-    <div className="flex items-center gap-4">
+    <Flex align="center" gap="md">
       <Icon icon={BiHeart} size="lg" color="primary" />
       <Icon icon={BiHeart} size="lg" color="secondary" />
       <Icon icon={BiHeart} size="lg" color="tertiary" />
@@ -331,6 +332,6 @@ export const AllColors: Story = {
       <Icon icon={BiHeart} size="lg" color="error" />
       <Icon icon={BiHeart} size="lg" color="info" />
       <Icon icon={BiHeart} size="lg" color="disabled" />
-    </div>
+    </Flex>
   ),
 };

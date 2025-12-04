@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Skeleton } from './Skeleton';
+import { Stack } from '../../layout/Stack';
+import { Flex } from '../../layout/Flex';
+import { Box } from '../../layout/Box';
+import { Grid } from '../../layout/Grid';
+import { Text } from '../../typography/Text';
+import { Card } from '../../data-display/Card';
+import { Divider } from '../../layout/Divider';
 
 const meta = {
   title: 'Feedback/Skeleton',
@@ -55,30 +62,30 @@ export const Default: Story = {
 
 export const Variants: Story = {
   render: () => (
-    <div className="flex items-start gap-8">
-      <div className="flex flex-col items-center gap-2">
+    <Flex align="start" gap="xl">
+      <Stack align="center" gap="xs">
         <Skeleton variant="rectangle" width={100} height={80} />
-        <span className="text-xs text-gray-500">Rectangle</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
+        <Text size="caption" color="secondary">Rectangle</Text>
+      </Stack>
+      <Stack align="center" gap="xs">
         <Skeleton variant="rounded" width={100} height={80} />
-        <span className="text-xs text-gray-500">Rounded</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
+        <Text size="caption" color="secondary">Rounded</Text>
+      </Stack>
+      <Stack align="center" gap="xs">
         <Skeleton variant="circle" width={80} height={80} />
-        <span className="text-xs text-gray-500">Circle</span>
-      </div>
-      <div className="flex flex-col gap-2 w-32">
+        <Text size="caption" color="secondary">Circle</Text>
+      </Stack>
+      <Stack gap="xs" style={{ width: 128 }}>
         <Skeleton variant="text" />
         <Skeleton variant="text" width="80%" />
-        <span className="text-xs text-gray-500">Text</span>
-      </div>
-    </div>
+        <Text size="caption" color="secondary">Text</Text>
+      </Stack>
+    </Flex>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'All available skeleton variants.',
+        story: 'All available skeleton variants: rectangle, rounded, circle, and text.',
       },
     },
   },
@@ -86,25 +93,25 @@ export const Variants: Story = {
 
 export const Animations: Story = {
   render: () => (
-    <div className="flex gap-8">
-      <div className="flex flex-col items-center gap-2">
+    <Flex gap="xl">
+      <Stack align="center" gap="xs">
         <Skeleton animation="pulse" width={120} height={80} variant="rounded" />
-        <span className="text-xs text-gray-500">Pulse</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
+        <Text size="caption" color="secondary">Pulse</Text>
+      </Stack>
+      <Stack align="center" gap="xs">
         <Skeleton animation="wave" width={120} height={80} variant="rounded" />
-        <span className="text-xs text-gray-500">Wave</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
+        <Text size="caption" color="secondary">Wave</Text>
+      </Stack>
+      <Stack align="center" gap="xs">
         <Skeleton animation={false} width={120} height={80} variant="rounded" />
-        <span className="text-xs text-gray-500">None</span>
-      </div>
-    </div>
+        <Text size="caption" color="secondary">None</Text>
+      </Stack>
+    </Flex>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Animation styles: pulse (default), wave shimmer, or no animation.',
+        story: 'Animation styles: pulse (default), wave shimmer, or disabled.',
       },
     },
   },
@@ -112,156 +119,92 @@ export const Animations: Story = {
 
 export const TextLines: Story = {
   render: () => (
-    <div className="w-80">
+    <Box style={{ width: 320 }}>
       <Skeleton variant="text" count={4} />
-    </div>
+    </Box>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Multiple text lines with the last line automatically shorter (80%).',
+        story: 'Use `count` prop for multiple text lines. Last line is automatically 80% width.',
       },
     },
   },
 };
 
-export const CardSkeleton: Story = {
+export const CommonPatterns: Story = {
   render: () => (
-    <div className="w-72 space-y-3">
-      <Skeleton variant="rounded" width="100%" height={160} />
-      <Skeleton variant="text" width="70%" />
-      <Skeleton variant="text" count={2} />
-      <div className="flex gap-2 pt-2">
-        <Skeleton variant="rounded" width={80} height={32} />
-        <Skeleton variant="rounded" width={80} height={32} />
-      </div>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Card loading skeleton with image, title, description, and action buttons.',
-      },
-    },
-  },
-};
+    <Flex gap="xl" align="start" style={{ flexWrap: 'wrap' }}>
+      {/* Card Pattern */}
+      <Stack gap="xs">
+        <Text size="caption" color="secondary" weight="medium">Card</Text>
+        <Card variant="outlined" style={{ width: 240 }}>
+          <Skeleton variant="rounded" width="100%" height={120} />
+          <Card.Content>
+            <Stack gap="xs">
+              <Skeleton variant="text" width="70%" />
+              <Skeleton variant="text" width="100%" />
+              <Skeleton variant="text" width="80%" />
+            </Stack>
+          </Card.Content>
+        </Card>
+      </Stack>
 
-export const ProfileSkeleton: Story = {
-  render: () => (
-    <div className="flex gap-4 w-80">
-      <Skeleton variant="circle" width={64} height={64} />
-      <div className="flex-1 space-y-2 py-1">
-        <Skeleton variant="text" width="60%" />
-        <Skeleton variant="text" width="90%" />
-        <Skeleton variant="text" width="40%" />
-      </div>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'User profile skeleton with avatar and text.',
-      },
-    },
-  },
-};
+      {/* List Pattern */}
+      <Stack gap="xs">
+        <Text size="caption" color="secondary" weight="medium">List</Text>
+        <Stack gap="sm" style={{ width: 280 }}>
+          {[1, 2, 3].map((i) => (
+            <Flex key={i} align="center" gap="sm">
+              <Skeleton variant="circle" width={40} height={40} />
+              <Stack gap="xs" style={{ flex: 1 }}>
+                <Skeleton variant="text" width="50%" />
+                <Skeleton variant="text" width="80%" />
+              </Stack>
+            </Flex>
+          ))}
+        </Stack>
+      </Stack>
 
-export const ListSkeleton: Story = {
-  render: () => (
-    <div className="w-80 space-y-4">
-      {[1, 2, 3].map((i) => (
-        <div key={i} className="flex items-center gap-3">
-          <Skeleton variant="circle" width={40} height={40} />
-          <div className="flex-1 space-y-2">
-            <Skeleton variant="text" width="50%" />
-            <Skeleton variant="text" width="80%" />
-          </div>
-        </div>
-      ))}
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'List items skeleton with avatars.',
-      },
-    },
-  },
-};
+      {/* Grid Pattern */}
+      <Stack gap="xs">
+        <Text size="caption" color="secondary" weight="medium">Grid</Text>
+        <Grid columns={2} gap="sm" style={{ width: 200 }}>
+          {[1, 2, 3, 4].map((i) => (
+            <Stack key={i} gap="xs">
+              <Skeleton variant="rounded" width="100%" height={60} />
+              <Skeleton variant="text" />
+            </Stack>
+          ))}
+        </Grid>
+      </Stack>
 
-export const TableSkeleton: Story = {
-  render: () => (
-    <div className="w-[500px] space-y-3">
-      {/* Header */}
-      <div className="flex gap-4 pb-2 border-b border-gray-200">
-        <Skeleton variant="text" width="25%" />
-        <Skeleton variant="text" width="35%" />
-        <Skeleton variant="text" width="20%" />
-        <Skeleton variant="text" width="20%" />
-      </div>
-      {/* Rows */}
-      {[1, 2, 3, 4].map((i) => (
-        <div key={i} className="flex gap-4 items-center">
-          <div className="w-[25%] flex items-center gap-2">
-            <Skeleton variant="circle" width={28} height={28} />
-            <Skeleton variant="text" width="60%" />
-          </div>
-          <Skeleton variant="text" width="35%" />
-          <Skeleton variant="text" width="20%" />
-          <Skeleton variant="rounded" width={70} height={28} />
-        </div>
-      ))}
-    </div>
+      {/* Table Pattern */}
+      <Stack gap="xs">
+        <Text size="caption" color="secondary" weight="medium">Table</Text>
+        <Stack gap="xs" style={{ width: 320 }}>
+          <Flex gap="sm">
+            <Skeleton variant="text" width="30%" />
+            <Skeleton variant="text" width="40%" />
+            <Skeleton variant="text" width="30%" />
+          </Flex>
+          <Divider />
+          {[1, 2, 3].map((i) => (
+            <Flex key={i} gap="sm" align="center">
+              <Skeleton variant="circle" width={24} height={24} />
+              <Skeleton variant="text" width="25%" />
+              <Skeleton variant="text" width="35%" />
+              <Skeleton variant="rounded" width={60} height={24} />
+            </Flex>
+          ))}
+        </Stack>
+      </Stack>
+    </Flex>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Table skeleton with header and rows.',
-      },
-    },
-  },
-};
-
-export const GridSkeleton: Story = {
-  render: () => (
-    <div className="grid grid-cols-3 gap-4 w-[450px]">
-      {[1, 2, 3, 4, 5, 6].map((i) => (
-        <div key={i} className="space-y-2">
-          <Skeleton variant="rounded" width="100%" height={100} />
-          <Skeleton variant="text" />
-          <Skeleton variant="text" width="60%" />
-        </div>
-      ))}
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Product grid skeleton.',
-      },
-    },
-  },
-};
-
-export const ArticleSkeleton: Story = {
-  render: () => (
-    <div className="w-[500px] space-y-4">
-      <Skeleton variant="text" width="70%" height={32} />
-      <div className="flex items-center gap-3">
-        <Skeleton variant="circle" width={40} height={40} />
-        <div className="space-y-1">
-          <Skeleton variant="text" width={120} />
-          <Skeleton variant="text" width={80} />
-        </div>
-      </div>
-      <Skeleton variant="rounded" width="100%" height={250} />
-      <Skeleton variant="text" count={5} />
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Article page skeleton with title, author, image, and content.',
+        story: 'Common skeleton patterns: cards, lists, grids, and tables.',
       },
     },
   },

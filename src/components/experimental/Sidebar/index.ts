@@ -1,10 +1,10 @@
 export { Sidebar } from './Sidebar';
 export type {
   SidebarProps,
-  SidebarHeaderProps,
   SidebarContentProps,
   SidebarFooterProps,
   SidebarSectionProps,
+  SidebarSectionHeaderProps,
   SidebarItemProps,
   SidebarVariant,
   SidebarPosition,

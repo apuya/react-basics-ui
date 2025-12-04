@@ -69,6 +69,16 @@ describe('Textarea', () => {
       render(<Textarea data-testid="textarea" />);
       expect(screen.getByTestId('textarea')).not.toHaveAttribute('data-error');
     });
+
+    it('sets aria-invalid when error is true', () => {
+      render(<Textarea error data-testid="textarea" />);
+      expect(screen.getByTestId('textarea')).toHaveAttribute('aria-invalid', 'true');
+    });
+
+    it('does not have aria-invalid when no error', () => {
+      render(<Textarea data-testid="textarea" />);
+      expect(screen.getByTestId('textarea')).not.toHaveAttribute('aria-invalid');
+    });
   });
 
   describe('Resize Behavior', () => {
@@ -106,7 +116,7 @@ describe('Textarea', () => {
     });
 
     it('updates character count with value', () => {
-      render(<Textarea showCharCount maxLength={100} value="Hello" />);
+      render(<Textarea showCharCount maxLength={100} value="Hello" onChange={() => {}} />);
       expect(screen.getByText('5/100')).toBeInTheDocument();
     });
 
@@ -126,6 +136,14 @@ describe('Textarea', () => {
       expect(screen.getByText('Enter a description')).toBeInTheDocument();
       expect(screen.getByText('0/100')).toBeInTheDocument();
     });
+
+    it('updates character count on user input for uncontrolled mode', async () => {
+      const user = userEvent.setup();
+      render(<Textarea showCharCount maxLength={100} data-testid="textarea" />);
+      
+      await user.type(screen.getByTestId('textarea'), 'Hello');
+      expect(screen.getByText('5/100')).toBeInTheDocument();
+    });
   });
 
   describe('Disabled State', () => {
@@ -140,6 +158,11 @@ describe('Textarea', () => {
       const textarea = screen.getByTestId('textarea');
       await user.click(textarea);
       expect(textarea).not.toHaveFocus();
+    });
+
+    it('sets data-disabled when disabled', () => {
+      render(<Textarea disabled data-testid="textarea" />);
+      expect(screen.getByTestId('textarea')).toHaveAttribute('data-disabled', 'true');
     });
   });
 
@@ -210,6 +233,23 @@ describe('Textarea', () => {
       expect(screen.getByTestId('textarea')).toHaveAttribute('aria-describedby', 'help-text');
     });
 
+    it('auto-connects aria-describedby to helper text', () => {
+      render(<Textarea helperText="Some help" data-testid="textarea" />);
+      const textarea = screen.getByTestId('textarea');
+      const describedBy = textarea.getAttribute('aria-describedby');
+      expect(describedBy).toBeTruthy();
+      expect(screen.getByText('Some help').closest('[id]')).toHaveAttribute('id', describedBy);
+    });
+
+    it('merges user aria-describedby with auto-generated helper id', () => {
+      render(<Textarea aria-describedby="custom-id" helperText="Help text" data-testid="textarea" />);
+      const textarea = screen.getByTestId('textarea');
+      const describedBy = textarea.getAttribute('aria-describedby');
+      expect(describedBy).toContain('custom-id');
+      // Should also contain the auto-generated helper id
+      expect(describedBy?.split(' ')).toHaveLength(2);
+    });
+
     it('supports required attribute', () => {
       render(<Textarea required data-testid="textarea" />);
       expect(screen.getByTestId('textarea')).toBeRequired();
@@ -218,6 +258,11 @@ describe('Textarea', () => {
     it('supports readOnly attribute', () => {
       render(<Textarea readOnly data-testid="textarea" />);
       expect(screen.getByTestId('textarea')).toHaveAttribute('readonly');
+    });
+
+    it('shows required indicator in label', () => {
+      render(<Textarea label="Comments" required />);
+      expect(screen.getByText('*')).toBeInTheDocument();
     });
   });
 

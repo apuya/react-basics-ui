@@ -1,6 +1,7 @@
-import { forwardRef, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
-import { TAB_PANELS_BASE_CLASSES } from './Tabs.styles';
+import { useTabsContext } from './Tabs';
+import { TAB_PANELS_ORIENTATION_STYLES } from './Tabs.styles';
 
 /**
  * Props for the TabPanels component.
@@ -21,14 +22,21 @@ export interface TabPanelsProps extends ComponentPropsWithoutRef<'div'> {}
  * </Tabs.Panels>
  * ```
  */
-export const TabPanels = forwardRef<HTMLDivElement, TabPanelsProps>(
-  ({ className, children, ...props }, ref) => {
+export const TabPanels = memo(
+  forwardRef<HTMLDivElement, TabPanelsProps>(({ className, children, ...props }, ref) => {
+    const { orientation } = useTabsContext();
+
+    const panelsClasses = useMemo(
+      () => cn(TAB_PANELS_ORIENTATION_STYLES[orientation], className),
+      [orientation, className]
+    );
+
     return (
-      <div ref={ref} className={cn(TAB_PANELS_BASE_CLASSES, className)} {...props}>
+      <div ref={ref} className={panelsClasses} {...props}>
         {children}
       </div>
     );
-  }
+  })
 );
 
 TabPanels.displayName = 'Tabs.Panels';

@@ -1,11 +1,11 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useId, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { forwardRef, memo, useId, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import {
+  BASE_CLASSES,
   ERROR_CLASSES,
   HELPER_CLASSES,
   LABEL_CLASSES,
   REQUIRED_CLASSES,
-  WRAPPER_CLASSES,
 } from './FormField.styles';
 
 export interface FormFieldProps extends ComponentPropsWithoutRef<'div'> {
@@ -48,16 +48,18 @@ export const FormField = memo(
     const hasHelperContent = helperText || (error && errorMessage);
     const helperId = hasHelperContent ? (helperIdProp ?? `${generatedHelperId}-helper`) : undefined;
 
+    const wrapperClasses = useMemo(
+      () => cn(BASE_CLASSES, className),
+      [className]
+    );
+
     return (
       <div
         ref={ref}
-        className={cn(WRAPPER_CLASSES, className)}
+        className={wrapperClasses}
         data-error={error || undefined}
         data-disabled={disabled || undefined}
         data-required={required || undefined}
-        style={{
-          gap: 'var(--component-formfield-gap)',
-        }}
         {...rest}
       >
         {label && (

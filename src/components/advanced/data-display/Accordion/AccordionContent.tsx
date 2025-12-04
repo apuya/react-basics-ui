@@ -2,10 +2,12 @@ import {
   forwardRef,
   memo,
   useMemo,
+  useRef,
   type ReactNode,
   type ComponentPropsWithoutRef,
 } from 'react';
 import { cn } from '@/lib/cn';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { useAccordionItemContext } from './AccordionItem';
 import {
   ACCORDION_CONTENT_BASE_CLASSES,
@@ -17,8 +19,10 @@ export interface AccordionContentProps extends ComponentPropsWithoutRef<'div'> {
 }
 
 export const AccordionContent = memo(
-  forwardRef<HTMLDivElement, AccordionContentProps>(({ children, className, ...props }, ref) => {
+  forwardRef<HTMLDivElement, AccordionContentProps>(({ children, className, ...props }, forwardedRef) => {
     const { value, isOpen } = useAccordionItemContext();
+    const contentRef = useRef<HTMLDivElement>(null!);
+    const mergedRef = useMergedRefs(forwardedRef, contentRef);
 
     const contentClasses = useMemo(
       () => cn('grid', ACCORDION_CONTENT_BASE_CLASSES, className),
@@ -36,11 +40,12 @@ export const AccordionContent = memo(
 
     return (
       <div
-        ref={ref}
+        ref={mergedRef}
         id={`accordion-content-${value}`}
         role="region"
         aria-labelledby={`accordion-trigger-${value}`}
         data-state={isOpen ? 'open' : 'closed'}
+        data-open={isOpen || undefined}
         className={contentClasses}
         {...props}
       >

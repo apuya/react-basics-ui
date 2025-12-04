@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { TimePicker } from './TimePicker';
+import { TimePickerContext, type TimePickerContextValue } from './TimePickerContext';
+import { TimePickerTrigger } from './TimePickerTrigger';
+import { TimePickerMenu } from './TimePickerMenu';
+import { TimePickerLabel } from './TimePickerLabel';
+import { TimePickerHelper } from './TimePickerHelper';
 
 const meta: Meta<typeof TimePicker> = {
   title: 'Forms/TimePicker',
@@ -10,7 +15,7 @@ const meta: Meta<typeof TimePicker> = {
     docs: {
       description: {
         component:
-          'TimePicker component for selecting time with support for different sizes, labels, helper text, error states, and min/max time constraints. Uses the native HTML time input for consistent browser behavior and accessibility.',
+          'A time picker component with three-column selection for hour, minute, and AM/PM. Features a button trigger with clock icon, dropdown with independent scrollable columns, and 12-hour display format. Supports custom step intervals for minute options and controlled/uncontrolled modes.',
       },
     },
   },
@@ -19,275 +24,105 @@ const meta: Meta<typeof TimePicker> = {
     size: {
       control: 'select',
       options: ['small', 'default', 'large'],
-      description: 'Size of the time picker',
     },
-    error: {
-      control: 'boolean',
-      description: 'Error state',
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disabled state',
-    },
-    label: {
-      control: 'text',
-      description: 'Label text',
-    },
-    helperText: {
-      control: 'text',
-      description: 'Helper or error text',
-    },
-    min: {
-      control: 'text',
-      description: 'Minimum selectable time (HH:MM)',
-    },
-    max: {
-      control: 'text',
-      description: 'Maximum selectable time (HH:MM)',
-    },
-    step: {
-      control: 'number',
-      description: 'Step interval in seconds (default: 60 for 1 minute steps)',
-    },
+    error: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
+    label: { control: 'text' },
+    helperText: { control: 'text' },
+    placeholder: { control: 'text' },
+    step: { control: 'number' },
+    value: { control: 'text' },
+    defaultValue: { control: 'text' },
   },
-  decorators: [(Story) => <div style={{ width: '320px' }}><Story /></div>],
+  decorators: [(Story) => <div style={{ width: '320px', minHeight: '400px' }}><Story /></div>],
 };
 
 export default meta;
 type Story = StoryObj<typeof TimePicker>;
 
-export const Default: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Basic time picker without label or helper text. Simple time selection interface.',
-      },
-    },
-  },
-  args: {},
-};
+// ============================================================================
+// Basic Examples
+// ============================================================================
 
-export const WithLabel: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Time picker with a descriptive label for better form context and accessibility.',
-      },
-    },
-  },
+export const Default: Story = {
   args: {
     label: 'Select Time',
-  },
-};
-
-export const WithHelperText: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Time picker with helper text to provide additional guidance or context to users.',
-      },
-    },
-  },
-  args: {
-    label: 'Appointment Time',
-    helperText: 'Select your preferred appointment time',
+    placeholder: 'Choose a time',
   },
 };
 
 export const WithValue: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Time picker with a pre-selected time value in HH:MM format (24-hour).',
-      },
-    },
-  },
   args: {
     label: 'Meeting Time',
     defaultValue: '14:30',
-  },
-};
-
-export const SizeSmall: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Small size time picker for compact layouts or inline forms.',
-      },
-    },
-  },
-  args: {
-    size: 'small',
-    label: 'Time',
-  },
-};
-
-export const SizeDefault: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default size time picker, recommended for most form use cases.',
-      },
-    },
-  },
-  args: {
-    size: 'default',
-    label: 'Time',
-  },
-};
-
-export const SizeLarge: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large size time picker for prominent form fields or touch interfaces.',
-      },
-    },
-  },
-  args: {
-    size: 'large',
-    label: 'Time',
-  },
-};
-
-export const ErrorState: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Time picker in error state with error message. Use when time validation fails.',
-      },
-    },
-  },
-  args: {
-    label: 'Start Time',
-    error: true,
-    helperText: 'Please select a valid start time',
-  },
-};
-
-export const Disabled: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Disabled time picker that cannot be interacted with.',
-      },
-    },
-  },
-  args: {
-    label: 'Locked Time',
-    disabled: true,
-    defaultValue: '09:00',
-    helperText: 'This time cannot be changed',
-  },
-};
-
-export const WithMinTime: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Time picker with minimum time constraint. Users can only select times from 9:00 AM onwards.',
-      },
-    },
-  },
-  args: {
-    label: 'Business Hours',
-    min: '09:00',
-    helperText: 'Select a time from 9:00 AM onwards',
-  },
-};
-
-export const WithMaxTime: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Time picker with maximum time constraint. Users can only select times up to 5:00 PM.',
-      },
-    },
-  },
-  args: {
-    label: 'Office Hours',
-    max: '17:00',
-    helperText: 'Select a time up to 5:00 PM',
-  },
-};
-
-export const WithTimeRange: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Time picker with both min and max constraints, limiting selection to business hours (9 AM - 5 PM).',
-      },
-    },
-  },
-  args: {
-    label: 'Business Hours',
-    min: '09:00',
-    max: '17:00',
-    helperText: 'Select a time between 9:00 AM and 5:00 PM',
-  },
-};
-
-export const WithCustomStep: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Time picker with custom step interval of 15 minutes (900 seconds).',
-      },
-    },
-  },
-  args: {
-    label: 'Appointment Slot',
-    step: 900, // 15 minutes
-    helperText: 'Times available in 15-minute intervals',
-  },
-};
-
-export const ThirtyMinuteIntervals: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Time picker with 30-minute step intervals, useful for appointment booking systems.',
-      },
-    },
-  },
-  args: {
-    label: 'Meeting Time',
-    step: 1800, // 30 minutes
-    defaultValue: '09:00',
-    helperText: 'Times available every 30 minutes',
+    helperText: 'Pre-selected time displays in 12-hour format',
   },
 };
 
 export const Required: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Required time picker field. Useful in forms that need time validation.',
-      },
-    },
-  },
   args: {
-    label: 'Required Time',
+    label: 'Appointment Time',
     required: true,
     helperText: 'This field is required',
   },
 };
 
-// Interactive Examples
+// ============================================================================
+// Sizes & States
+// ============================================================================
 
-export const Controlled: Story = {
+export const Sizes: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <TimePicker size="small" label="Small" defaultValue="09:00" />
+      <TimePicker size="default" label="Default" defaultValue="09:00" />
+      <TimePicker size="large" label="Large" defaultValue="09:00" />
+    </div>
+  ),
+};
+
+export const States: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <TimePicker label="Default" helperText="Normal state" />
+      <TimePicker label="Error" error helperText="Please select a valid time" />
+      <TimePicker label="Disabled" disabled defaultValue="09:00" helperText="Cannot be changed" />
+    </div>
+  ),
+};
+
+// ============================================================================
+// Step Intervals
+// ============================================================================
+
+export const Intervals: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Controlled time picker with external state management. The selected time is displayed below.',
+        story: 'The step prop controls minute options: 900 (15min), 1800 (30min), 3600 (1hr).',
       },
     },
   },
+  render: () => (
+    <div className="space-y-4">
+      <TimePicker label="15-Minute Steps" step={900} helperText="step={900}" />
+      <TimePicker label="30-Minute Steps" step={1800} helperText="step={1800} (default)" />
+      <TimePicker label="Hourly Steps" step={3600} helperText="step={3600}" />
+    </div>
+  ),
+};
+
+// ============================================================================
+// Interactive Examples
+// ============================================================================
+
+export const Controlled: Story = {
   render: () => {
     const [time, setTime] = useState('');
     
-    const formatTime = (timeStr: string) => {
-      if (!timeStr) return '';
+    const formatDisplay = (timeStr: string) => {
+      if (!timeStr) return 'No time selected';
       const [hours, minutes] = timeStr.split(':');
       const hour = parseInt(hours);
       const ampm = hour >= 12 ? 'PM' : 'AM';
@@ -296,28 +131,76 @@ export const Controlled: Story = {
     };
     
     return (
-      <div>
+      <div className="space-y-4">
         <TimePicker
           label="Select Time"
           value={time}
-          onChange={(e) => setTime(e.target.value)}
-          helperText="Choose any time"
+          onChange={setTime}
+          helperText="Controlled component with external state"
         />
-        {time && (
-          <p className="mt-4 text-sm text-[color:var(--semantic-text-secondary)]">
-            Selected: {formatTime(time)}
-          </p>
-        )}
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-[color:var(--semantic-text-secondary)]">
+            Value: <strong>{formatDisplay(time)}</strong>
+          </span>
+          <button
+            onClick={() => setTime('')}
+            className="text-[color:var(--semantic-interactive-primary)] hover:underline"
+          >
+            Clear
+          </button>
+        </div>
       </div>
     );
   },
 };
 
-export const TimeRangeForm: Story = {
+export const WithConfirmation: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Example showing start and end time pickers working together to form a time range selector.',
+        story: 'Menu with Cancel and Save buttons for explicit confirmation before applying selection.',
+      },
+    },
+  },
+  render: () => {
+    const [time, setTime] = useState('');
+    const [pendingTime, setPendingTime] = useState('');
+    
+    const formatDisplay = (timeStr: string) => {
+      if (!timeStr) return 'No time selected';
+      const [hours, minutes] = timeStr.split(':');
+      const hour = parseInt(hours);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      const displayHour = hour % 12 || 12;
+      return `${displayHour}:${minutes} ${ampm}`;
+    };
+    
+    return (
+      <div className="space-y-4">
+        <TimePicker
+          label="Appointment Time"
+          value={time}
+          onChange={setPendingTime}
+          showConfirmation
+          cancelLabel="Cancel"
+          saveLabel="Confirm"
+          onCancel={() => setPendingTime(time)}
+          onSave={() => setTime(pendingTime)}
+          helperText="Click Save to confirm your selection"
+        />
+        <div className="text-sm text-[color:var(--semantic-text-secondary)]">
+          Confirmed: <strong>{formatDisplay(time)}</strong>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const TimeRange: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Two time pickers working together for start/end time selection with duration calculation.',
       },
     },
   },
@@ -325,13 +208,24 @@ export const TimeRangeForm: Story = {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     
-    const formatTime = (timeStr: string) => {
+    const formatDisplay = (timeStr: string) => {
       if (!timeStr) return '';
       const [hours, minutes] = timeStr.split(':');
       const hour = parseInt(hours);
       const ampm = hour >= 12 ? 'PM' : 'AM';
       const displayHour = hour % 12 || 12;
       return `${displayHour}:${minutes} ${ampm}`;
+    };
+    
+    const getDuration = () => {
+      if (!startTime || !endTime) return null;
+      const [sh, sm] = startTime.split(':').map(Number);
+      const [eh, em] = endTime.split(':').map(Number);
+      const mins = (eh * 60 + em) - (sh * 60 + sm);
+      if (mins <= 0) return null;
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return `${h}h${m > 0 ? ` ${m}m` : ''}`;
     };
     
     return (
@@ -339,21 +233,23 @@ export const TimeRangeForm: Story = {
         <TimePicker
           label="Start Time"
           value={startTime}
-          onChange={(e) => setStartTime(e.target.value)}
-          max={endTime || undefined}
-          helperText="Select start time"
+          onChange={setStartTime}
+          step={900}
         />
         <TimePicker
           label="End Time"
           value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
-          min={startTime || undefined}
-          helperText="Select end time"
+          onChange={setEndTime}
+          step={900}
+          disabled={!startTime}
+          helperText={!startTime ? 'Select start time first' : undefined}
         />
-        {startTime && endTime && (
-          <div className="mt-4 p-3 rounded-md bg-[color:var(--semantic-surface-elevated)] text-sm">
-            <strong>Selected Range:</strong><br />
-            {formatTime(startTime)} - {formatTime(endTime)}
+        {getDuration() && (
+          <div className="p-3 rounded-md bg-[color:var(--semantic-surface-elevated)] text-sm">
+            <strong>Duration:</strong> {getDuration()}
+            <span className="text-[color:var(--semantic-text-secondary)] ml-2">
+              ({formatDisplay(startTime)} – {formatDisplay(endTime)})
+            </span>
           </div>
         )}
       </div>
@@ -361,191 +257,177 @@ export const TimeRangeForm: Story = {
   },
 };
 
-export const WorkdayScheduler: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Real-world work schedule example with shift start and end times, limited to business hours.',
-      },
-    },
-  },
-  render: () => {
-    const [shiftStart, setShiftStart] = useState('');
-    const [shiftEnd, setShiftEnd] = useState('');
-    
-    const formatTime = (timeStr: string) => {
-      if (!timeStr) return '';
-      const [hours, minutes] = timeStr.split(':');
-      const hour = parseInt(hours);
-      const ampm = hour >= 12 ? 'PM' : 'AM';
-      const displayHour = hour % 12 || 12;
-      return `${displayHour}:${minutes} ${ampm}`;
-    };
-    
-    const calculateDuration = (start: string, end: string) => {
-      if (!start || !end) return null;
-      const [startHours, startMinutes] = start.split(':').map(Number);
-      const [endHours, endMinutes] = end.split(':').map(Number);
-      const startTotalMinutes = startHours * 60 + startMinutes;
-      const endTotalMinutes = endHours * 60 + endMinutes;
-      const durationMinutes = endTotalMinutes - startTotalMinutes;
-      
-      if (durationMinutes <= 0) return null;
-      
-      const hours = Math.floor(durationMinutes / 60);
-      const minutes = durationMinutes % 60;
-      return { hours, minutes, total: durationMinutes };
-    };
-    
-    const duration = calculateDuration(shiftStart, shiftEnd);
-    
-    return (
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-[color:var(--semantic-text-primary)]">
-          Schedule Your Shift
-        </h3>
-        <TimePicker
-          label="Shift Start"
-          value={shiftStart}
-          onChange={(e) => {
-            setShiftStart(e.target.value);
-            if (shiftEnd && e.target.value >= shiftEnd) {
-              setShiftEnd('');
-            }
-          }}
-          min="06:00"
-          max="22:00"
-          step={900} // 15 minute intervals
-          helperText="Select shift start time (6 AM - 10 PM)"
-        />
-        <TimePicker
-          label="Shift End"
-          value={shiftEnd}
-          onChange={(e) => setShiftEnd(e.target.value)}
-          min={shiftStart || '06:00'}
-          max="22:00"
-          step={900} // 15 minute intervals
-          disabled={!shiftStart}
-          helperText={!shiftStart ? 'Please select shift start time first' : 'Select shift end time'}
-        />
-        {duration && duration.total > 0 && (
-          <div className="mt-4 p-4 rounded-md bg-[color:var(--semantic-status-success-alpha)] text-sm">
-            <strong className="text-[color:var(--semantic-status-success-default)]">Shift Summary</strong><br />
-            <div className="mt-2 text-[color:var(--semantic-text-primary)]">
-              Start: {formatTime(shiftStart)}<br />
-              End: {formatTime(shiftEnd)}<br />
-              <strong>Duration: {duration.hours}h {duration.minutes}m</strong>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  },
-};
+// ============================================================================
+// Sub-Components (Isolated)
+// ============================================================================
 
-export const AppointmentBooking: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Appointment booking interface with time slots in 30-minute intervals during business hours.',
-      },
-    },
-  },
-  render: () => {
-    const [appointmentTime, setAppointmentTime] = useState('');
-    
-    const formatTime = (timeStr: string) => {
-      if (!timeStr) return '';
-      const [hours, minutes] = timeStr.split(':');
-      const hour = parseInt(hours);
-      const ampm = hour >= 12 ? 'PM' : 'AM';
-      const displayHour = hour % 12 || 12;
-      return `${displayHour}:${minutes} ${ampm}`;
-    };
-    
-    return (
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-[color:var(--semantic-text-primary)]">
-          Book an Appointment
-        </h3>
-        <TimePicker
-          label="Preferred Time"
-          value={appointmentTime}
-          onChange={(e) => setAppointmentTime(e.target.value)}
-          min="09:00"
-          max="17:00"
-          step={1800} // 30 minute intervals
-          helperText="Available slots: 9:00 AM - 5:00 PM (30-min intervals)"
-        />
-        {appointmentTime && (
-          <div className="mt-4 p-4 rounded-md bg-[color:var(--semantic-surface-elevated)] text-sm">
-            <strong>Your Appointment</strong><br />
-            <div className="mt-2">
-              Time: <strong>{formatTime(appointmentTime)}</strong>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  },
-};
+const createMockContext = (overrides: Partial<TimePickerContextValue> = {}): TimePickerContextValue => ({
+  isOpen: false,
+  setIsOpen: () => {},
+  value: undefined,
+  setValue: () => {},
+  selectedHour: undefined,
+  setSelectedHour: () => {},
+  selectedMinute: undefined,
+  setSelectedMinute: () => {},
+  selectedMeridiem: 'AM',
+  setSelectedMeridiem: () => {},
+  disabled: false,
+  error: false,
+  size: 'default',
+  step: 1800,
+  min: undefined,
+  max: undefined,
+  triggerId: 'trigger-id',
+  menuId: 'menu-id',
+  labelId: 'label-id',
+  ...overrides,
+});
 
-export const AllSizes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of all available time picker sizes.',
-      },
-    },
-  },
+const MenuWrapper = ({ children }: { children: React.ReactNode }) => (
+  <div className="relative w-64 bg-[color:var(--component-dropdown-bg)] border border-[color:var(--component-dropdown-border)] rounded-[length:var(--component-dropdown-radius)] shadow-[shadow:var(--component-dropdown-shadow)] overflow-hidden">
+    {children}
+  </div>
+);
+
+export const SubTrigger: Story = {
+  name: 'Sub: Trigger',
+  decorators: [],
+  parameters: { layout: 'padded' },
   render: () => (
-    <div className="space-y-4">
-      <TimePicker
-        size="small"
-        label="Small"
-        defaultValue="14:30"
-      />
-      <TimePicker
-        size="default"
-        label="Default"
-        defaultValue="14:30"
-      />
-      <TimePicker
-        size="large"
-        label="Large"
-        defaultValue="14:30"
-      />
+    <div className="space-y-6">
+      <div>
+        <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2 font-medium">States</p>
+        <div className="flex flex-wrap gap-4">
+          {[
+            { label: 'Default', props: {} },
+            { label: 'With Value', props: { value: '14:30' } },
+            { label: 'Open', props: { isOpen: true } },
+            { label: 'Error', props: { error: true } },
+            { label: 'Disabled', props: { disabled: true, value: '09:00' } },
+          ].map(({ label, props }) => (
+            <div key={label} style={{ width: 200 }}>
+              <p className="text-xs text-[color:var(--semantic-text-tertiary)] mb-1">{label}</p>
+              <TimePickerContext.Provider value={createMockContext(props)}>
+                <TimePickerTrigger placeholder="Select time" />
+              </TimePickerContext.Provider>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2 font-medium">Sizes</p>
+        <div className="flex flex-wrap items-end gap-4">
+          {(['small', 'default', 'large'] as const).map((size) => (
+            <div key={size} style={{ width: 200 }}>
+              <p className="text-xs text-[color:var(--semantic-text-tertiary)] mb-1">{size}</p>
+              <TimePickerContext.Provider value={createMockContext({ size, value: '10:00' })}>
+                <TimePickerTrigger />
+              </TimePickerContext.Provider>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   ),
 };
 
-export const AllStates: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Showcase of all time picker states: default, error, and disabled.',
-      },
-    },
+export const SubMenu: Story = {
+  name: 'Sub: Menu',
+  decorators: [],
+  parameters: { layout: 'padded' },
+  render: () => {
+    const [h1, setH1] = useState<number | undefined>(undefined);
+    const [m1, setM1] = useState<number | undefined>(undefined);
+    const [mer1, setMer1] = useState<'AM' | 'PM'>('AM');
+    
+    const [h2, setH2] = useState<number | undefined>(2);
+    const [m2, setM2] = useState<number | undefined>(30);
+    const [mer2, setMer2] = useState<'AM' | 'PM'>('PM');
+    
+    const [h3, setH3] = useState<number | undefined>(10);
+    const [m3, setM3] = useState<number | undefined>(30);
+    const [mer3, setMer3] = useState<'AM' | 'PM'>('AM');
+    
+    return (
+      <div className="flex gap-6">
+        <div>
+          <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2">Empty</p>
+          <MenuWrapper>
+            <TimePickerContext.Provider value={createMockContext({
+              isOpen: true, step: 1800,
+              selectedHour: h1, setSelectedHour: setH1,
+              selectedMinute: m1, setSelectedMinute: setM1,
+              selectedMeridiem: mer1, setSelectedMeridiem: setMer1,
+            })}>
+              <TimePickerMenu />
+            </TimePickerContext.Provider>
+          </MenuWrapper>
+        </div>
+        
+        <div>
+          <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2">With Selection</p>
+          <MenuWrapper>
+            <TimePickerContext.Provider value={createMockContext({
+              isOpen: true, step: 1800,
+              selectedHour: h2, setSelectedHour: setH2,
+              selectedMinute: m2, setSelectedMinute: setM2,
+              selectedMeridiem: mer2, setSelectedMeridiem: setMer2,
+            })}>
+              <TimePickerMenu />
+            </TimePickerContext.Provider>
+          </MenuWrapper>
+        </div>
+        
+        <div>
+          <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2">With Confirmation</p>
+          <MenuWrapper>
+            <TimePickerContext.Provider value={createMockContext({
+              isOpen: true, step: 1800,
+              selectedHour: h3, setSelectedHour: setH3,
+              selectedMinute: m3, setSelectedMinute: setM3,
+              selectedMeridiem: mer3, setSelectedMeridiem: setMer3,
+            })}>
+              <TimePickerMenu showConfirmation />
+            </TimePickerContext.Provider>
+          </MenuWrapper>
+        </div>
+      </div>
+    );
   },
+};
+
+export const SubLabelHelper: Story = {
+  name: 'Sub: Label & Helper',
+  decorators: [],
+  parameters: { layout: 'padded' },
   render: () => (
-    <div className="space-y-4">
-      <TimePicker
-        label="Default State"
-        defaultValue="09:00"
-        helperText="Normal state"
-      />
-      <TimePicker
-        label="Error State"
-        defaultValue="09:00"
-        error
-        helperText="Invalid time selected"
-      />
-      <TimePicker
-        label="Disabled State"
-        defaultValue="09:00"
-        disabled
-        helperText="Time cannot be changed"
-      />
+    <div className="space-y-6">
+      <div>
+        <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2 font-medium">Labels</p>
+        <div className="flex gap-8">
+          <TimePickerContext.Provider value={createMockContext()}>
+            <TimePickerLabel>Default Label</TimePickerLabel>
+          </TimePickerContext.Provider>
+          <TimePickerContext.Provider value={createMockContext()}>
+            <TimePickerLabel required>Required Label</TimePickerLabel>
+          </TimePickerContext.Provider>
+          <TimePickerContext.Provider value={createMockContext({ error: true })}>
+            <TimePickerLabel required>Error Label</TimePickerLabel>
+          </TimePickerContext.Provider>
+        </div>
+      </div>
+      <div>
+        <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2 font-medium">Helper Text</p>
+        <div className="flex gap-8">
+          <TimePickerContext.Provider value={createMockContext()}>
+            <TimePickerHelper>Default helper text</TimePickerHelper>
+          </TimePickerContext.Provider>
+          <TimePickerContext.Provider value={createMockContext({ error: true })}>
+            <TimePickerHelper>Error helper text</TimePickerHelper>
+          </TimePickerContext.Provider>
+        </div>
+      </div>
     </div>
   ),
 };

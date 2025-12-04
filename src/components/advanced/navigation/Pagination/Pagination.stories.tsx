@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Pagination } from './Pagination';
+import { Stack } from '../../../basic/layout/Stack';
+import { Text } from '../../../basic/typography/Text';
 
 const meta = {
   title: 'Navigation/Pagination',
@@ -263,7 +265,7 @@ export const WithPageInfo: Story = {
     const totalItems = 115;
 
     return (
-      <div className="flex flex-col items-center gap-4">
+      <Stack align="center" gap="md">
         <Pagination totalPages={totalPages} page={page} onChange={setPage}>
           <Pagination.List>
             <Pagination.Previous />
@@ -274,11 +276,11 @@ export const WithPageInfo: Story = {
             <Pagination.Next />
           </Pagination.List>
         </Pagination>
-        <div className="text-sm text-gray-600">
+        <Text size="sm" color="secondary">
           Showing {(page - 1) * itemsPerPage + 1} to{' '}
           {Math.min(page * itemsPerPage, totalItems)} of {totalItems} items
-        </div>
-      </div>
+        </Text>
+      </Stack>
     );
   },
 };

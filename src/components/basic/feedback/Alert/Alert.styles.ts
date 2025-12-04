@@ -9,20 +9,20 @@ import {
  * Base classes for the Alert component
  */
 export const BASE_CLASSES =
-  'flex items-start w-full rounded-[var(--component-alert-radius)] border-[var(--component-alert-border-width)]';
+  'flex items-start w-full rounded-[length:var(--component-alert-radius)]';
 
 /**
  * Variant-specific styles for the Alert component
- * Uses design tokens from global.css for backgrounds, borders, and text colors
+ * Uses design tokens from global.css for backgrounds and text colors
  */
 export const VARIANT_STYLES = {
-  info: 'bg-[var(--component-alert-bg-info)] border-[var(--component-alert-border-info)] text-[var(--component-alert-text-info)]',
+  info: 'bg-[color:var(--component-alert-bg-info)] text-[color:var(--component-alert-text-info)]',
   success:
-    'bg-[var(--component-alert-bg-success)] border-[var(--component-alert-border-success)] text-[var(--component-alert-text-success)]',
+    'bg-[color:var(--component-alert-bg-success)] text-[color:var(--component-alert-text-success)]',
   warning:
-    'bg-[var(--component-alert-bg-warning)] border-[var(--component-alert-border-warning)] text-[var(--component-alert-text-warning)]',
+    'bg-[color:var(--component-alert-bg-warning)] text-[color:var(--component-alert-text-warning)]',
   error:
-    'bg-[var(--component-alert-bg-error)] border-[var(--component-alert-border-error)] text-[var(--component-alert-text-error)]',
+    'bg-[color:var(--component-alert-bg-error)] text-[color:var(--component-alert-text-error)]',
 } as const;
 
 /**
@@ -39,10 +39,10 @@ export const VARIANT_ICONS = {
  * Icon color styles for each variant
  */
 export const ICON_COLOR_STYLES = {
-  info: 'text-[var(--component-alert-icon-info)]',
-  success: 'text-[var(--component-alert-icon-success)]',
-  warning: 'text-[var(--component-alert-icon-warning)]',
-  error: 'text-[var(--component-alert-icon-error)]',
+  info: 'text-[color:var(--component-alert-icon-info)]',
+  success: 'text-[color:var(--component-alert-icon-success)]',
+  warning: 'text-[color:var(--component-alert-icon-warning)]',
+  error: 'text-[color:var(--component-alert-icon-error)]',
 } as const;
 
 /**
@@ -81,3 +81,8 @@ export const CONTAINER_STYLES = {
 export const ICON_SIZE_STYLE = {
   fontSize: 'var(--component-alert-icon-size)',
 } as const;
+
+/**
+ * Content gap style for spacing between title and body
+ */
+export const CONTENT_GAP = 'var(--component-alert-content-gap)';

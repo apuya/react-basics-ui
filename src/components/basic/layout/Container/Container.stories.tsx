@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Container } from './Container';
+import { Box } from '../Box';
+import { VStack, HStack } from '../Stack';
+import { Grid } from '../Grid';
+import { Text } from '../../typography/Text';
+import { Heading } from '../../typography/Heading';
 
 const meta: Meta<typeof Container> = {
   title: 'Layout/Container',
@@ -9,7 +14,7 @@ const meta: Meta<typeof Container> = {
     docs: {
       description: {
         component:
-          'A responsive container component that centers content and constrains width. Provides consistent padding and max-width across different breakpoints. Useful for creating consistent page layouts and constraining content width for better readability.',
+          'A responsive container component that centers content and constrains width. Provides consistent padding and max-width across different breakpoints.',
       },
     },
   },
@@ -36,150 +41,67 @@ export default meta;
 type Story = StoryObj<typeof Container>;
 
 const DemoContent = ({ label = 'Container Content' }: { label?: string }) => (
-  <div className="bg-[color:var(--semantic-surface-elevated)] p-8 rounded-md border border-[color:var(--semantic-border-default)]">
-    <h2 className="text-2xl font-bold text-[color:var(--semantic-text-primary)] mb-4">{label}</h2>
-    <p className="text-[color:var(--semantic-text-secondary)] leading-relaxed">
-      This is demo content to show the container boundaries. The container constrains the maximum
-      width while maintaining consistent padding on the sides.
-    </p>
-  </div>
+  <Box
+    p={24}
+    borderRadius={8}
+    bg="var(--semantic-surface-elevated)"
+    borderWidth={1}
+    borderColor="var(--semantic-border-default)"
+  >
+    <VStack spacing="sm">
+      <Heading as="h3">{label}</Heading>
+      <Text color="secondary">
+        This is demo content to show the container boundaries. The container constrains the maximum
+        width while maintaining consistent padding on the sides.
+      </Text>
+    </VStack>
+  </Box>
 );
 
 export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default container with XL max-width (1280px) and medium padding. Suitable for most page layouts.',
+        story: 'Default container with XL max-width (1280px) and medium padding.',
       },
     },
   },
-  args: {},
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
+  render: () => (
+    <Box py={24} bg="var(--semantic-surface-base)">
+      <Container>
         <DemoContent />
       </Container>
-    </div>
+    </Box>
   ),
 };
 
-export const SizeSmall: Story = {
+export const Sizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Small container (640px) - ideal for narrow forms, login pages, or focused content.',
+        story: 'All available container sizes from sm (640px) to full width.',
       },
     },
   },
-  args: {
-    size: 'sm',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <DemoContent label="Small Container (640px)" />
-      </Container>
-    </div>
-  ),
-};
-
-export const SizeMedium: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Medium container (768px) - good for content-focused pages and articles.',
-      },
-    },
-  },
-  args: {
-    size: 'md',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <DemoContent label="Medium Container (768px)" />
-      </Container>
-    </div>
-  ),
-};
-
-export const SizeLarge: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large container (1024px) - suitable for dashboards and content-rich layouts.',
-      },
-    },
-  },
-  args: {
-    size: 'lg',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <DemoContent label="Large Container (1024px)" />
-      </Container>
-    </div>
-  ),
-};
-
-export const SizeExtraLarge: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Extra large container (1280px) - default size, great for most page layouts.',
-      },
-    },
-  },
-  args: {
-    size: 'xl',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <DemoContent label="Extra Large Container (1280px)" />
-      </Container>
-    </div>
-  ),
-};
-
-export const Size2XL: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: '2XL container (1536px) - for wide screens and spacious layouts.',
-      },
-    },
-  },
-  args: {
-    size: '2xl',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <DemoContent label="2XL Container (1536px)" />
-      </Container>
-    </div>
-  ),
-};
-
-export const SizeFull: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Full width container - takes up the entire available width while maintaining padding.',
-      },
-    },
-  },
-  args: {
-    size: 'full',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <DemoContent label="Full Width Container" />
-      </Container>
-    </div>
+  render: () => (
+    <Box py={24} bg="var(--semantic-surface-base)">
+      <VStack spacing="lg">
+        {(['sm', 'md', 'lg', 'xl', '2xl'] as const).map((size) => (
+          <Container key={size} size={size}>
+            <Box
+              p={16}
+              borderRadius={8}
+              bg="var(--semantic-brand-primary-default)"
+              className="text-center"
+            >
+              <Text color="inverse" weight="semibold">
+                size="{size}"
+              </Text>
+            </Box>
+          </Container>
+        ))}
+      </VStack>
+    </Box>
   ),
 };
 
@@ -187,110 +109,56 @@ export const SizeProse: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Prose container (65 characters) - optimized for reading long-form text content.',
+        story: 'Prose container (65 characters) - optimized for reading long-form text.',
       },
     },
   },
-  args: {
-    size: 'prose',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <div className="space-y-4">
-          <h1 className="text-3xl font-bold text-[color:var(--semantic-text-primary)]">Article Title</h1>
-          <p className="text-[color:var(--semantic-text-secondary)] leading-relaxed">
-            This prose container is optimized for readability with a maximum width of approximately 65 characters.
-            This width is considered ideal for reading comfort and comprehension.
-          </p>
-          <p className="text-[color:var(--semantic-text-secondary)] leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
-            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat.
-          </p>
-        </div>
+  render: () => (
+    <Box py={24} bg="var(--semantic-surface-base)">
+      <Container size="prose">
+        <VStack spacing="md">
+          <Heading as="h1">Article Title</Heading>
+          <Text color="secondary" lineHeight="relaxed">
+            This prose container is optimized for readability with a maximum width of approximately
+            65 characters. This width is considered ideal for reading comfort and comprehension.
+          </Text>
+          <Text color="secondary" lineHeight="relaxed">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </Text>
+        </VStack>
       </Container>
-    </div>
+    </Box>
   ),
 };
 
-export const PaddingNone: Story = {
+export const PaddingSizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Container with no padding - useful when you need edge-to-edge content.',
+        story: 'Different padding options for the container.',
       },
     },
   },
-  args: {
-    padding: 'none',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <DemoContent label="No Padding" />
-      </Container>
-    </div>
-  ),
-};
-
-export const PaddingSmall: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Container with small padding - minimal side spacing.',
-      },
-    },
-  },
-  args: {
-    padding: 'sm',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <DemoContent label="Small Padding" />
-      </Container>
-    </div>
-  ),
-};
-
-export const PaddingLarge: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Container with large padding - generous side spacing.',
-      },
-    },
-  },
-  args: {
-    padding: 'lg',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <DemoContent label="Large Padding" />
-      </Container>
-    </div>
-  ),
-};
-
-export const PaddingExtraLarge: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Container with extra large padding - maximum side spacing.',
-      },
-    },
-  },
-  args: {
-    padding: 'xl',
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
-        <DemoContent label="Extra Large Padding" />
-      </Container>
-    </div>
+  render: () => (
+    <Box py={24} bg="var(--semantic-surface-base)">
+      <VStack spacing="lg">
+        {(['none', 'sm', 'md', 'lg', 'xl'] as const).map((padding) => (
+          <Container key={padding} padding={padding} size="lg">
+            <Box
+              p={16}
+              borderRadius={8}
+              bg="var(--semantic-bg-secondary)"
+              borderWidth={1}
+              borderColor="var(--semantic-border-default)"
+            >
+              <Text weight="semibold">padding="{padding}"</Text>
+            </Box>
+          </Container>
+        ))}
+      </VStack>
+    </Box>
   ),
 };
 
@@ -302,42 +170,12 @@ export const NotCentered: Story = {
       },
     },
   },
-  args: {
-    centered: false,
-  },
-  render: (args) => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container {...args}>
+  render: () => (
+    <Box py={24} bg="var(--semantic-surface-base)">
+      <Container centered={false} size="md">
         <DemoContent label="Not Centered" />
       </Container>
-    </div>
-  ),
-};
-
-export const NestedContainers: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Example showing nested containers with different sizes for complex layouts.',
-      },
-    },
-  },
-  render: () => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8">
-      <Container size="2xl">
-        <div className="bg-[color:var(--semantic-surface-elevated)] p-8 rounded-md mb-6">
-          <h2 className="text-2xl font-bold mb-4 text-[color:var(--semantic-text-primary)]">Outer Container (2XL)</h2>
-          <Container size="md" padding="lg">
-            <div className="bg-[color:var(--semantic-brand-primary-default)] bg-opacity-10 p-6 rounded-md">
-              <h3 className="text-xl font-semibold mb-2 text-[color:var(--semantic-text-primary)]">Inner Container (MD)</h3>
-              <p className="text-[color:var(--semantic-text-secondary)]">
-                Nested containers can be useful for creating focused sections within a larger layout.
-              </p>
-            </div>
-          </Container>
-        </div>
-      </Container>
-    </div>
+    </Box>
   ),
 };
 
@@ -345,103 +183,82 @@ export const PageLayout: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Real-world example of using Container for a typical page layout with header, content, and footer.',
+        story: 'Real-world example of using Container for a typical page layout.',
       },
     },
   },
   render: () => (
-    <div className="bg-[color:var(--semantic-surface-base)]">
+    <Box bg="var(--semantic-surface-base)">
       {/* Header */}
-      <div className="bg-[color:var(--semantic-surface-elevated)] border-b border-[color:var(--semantic-border-subtle)] py-4">
+      <Box
+        py={16}
+        bg="var(--semantic-surface-elevated)"
+        borderWidth={1}
+        borderColor="var(--semantic-border-subtle)"
+        style={{ borderTop: 'none', borderLeft: 'none', borderRight: 'none' }}
+      >
         <Container>
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-[color:var(--semantic-text-primary)]">My Website</h1>
-            <nav className="flex gap-6">
-              <a href="#" className="text-[color:var(--semantic-text-secondary)] hover:text-[color:var(--semantic-text-primary)]">
-                Home
-              </a>
-              <a href="#" className="text-[color:var(--semantic-text-secondary)] hover:text-[color:var(--semantic-text-primary)]">
-                About
-              </a>
-              <a href="#" className="text-[color:var(--semantic-text-secondary)] hover:text-[color:var(--semantic-text-primary)]">
-                Contact
-              </a>
-            </nav>
-          </div>
+          <HStack justify="between" align="center">
+            <Heading as="h2">My Website</Heading>
+            <HStack spacing="lg">
+              <Text color="secondary">Home</Text>
+              <Text color="secondary">About</Text>
+              <Text color="secondary">Contact</Text>
+            </HStack>
+          </HStack>
         </Container>
-      </div>
+      </Box>
 
       {/* Main Content */}
       <Container size="lg">
-        <div className="py-12 space-y-8">
-          <section>
-            <h2 className="text-3xl font-bold text-[color:var(--semantic-text-primary)] mb-4">Welcome</h2>
-            <p className="text-[color:var(--semantic-text-secondary)] leading-relaxed">
-              This is an example of how to use the Container component to create a consistent page layout.
-              The container ensures content stays within comfortable reading widths and maintains proper spacing.
-            </p>
-          </section>
+        <Box py={32}>
+          <VStack spacing="xl">
+            <VStack spacing="sm">
+              <Heading as="h1">Welcome</Heading>
+              <Text color="secondary" lineHeight="relaxed">
+                This is an example of how to use the Container component to create a consistent
+                page layout. The container ensures content stays within comfortable reading widths
+                and maintains proper spacing.
+              </Text>
+            </VStack>
 
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-[color:var(--semantic-surface-elevated)] p-6 rounded-lg border border-[color:var(--semantic-border-default)]">
-                <h3 className="text-xl font-semibold mb-2 text-[color:var(--semantic-text-primary)]">Feature {i}</h3>
-                <p className="text-[color:var(--semantic-text-secondary)]">
-                  Description of feature {i} with some example content.
-                </p>
-              </div>
-            ))}
-          </section>
-        </div>
+            <Grid cols={3} gap="lg">
+              {[1, 2, 3].map((i) => (
+                <Box
+                  key={i}
+                  p={24}
+                  bg="var(--semantic-surface-elevated)"
+                  borderRadius={12}
+                  borderWidth={1}
+                  borderColor="var(--semantic-border-default)"
+                >
+                  <VStack spacing="sm">
+                    <Heading as="h4">Feature {i}</Heading>
+                    <Text color="secondary" size="small">
+                      Description of feature {i} with some example content.
+                    </Text>
+                  </VStack>
+                </Box>
+              ))}
+            </Grid>
+          </VStack>
+        </Box>
       </Container>
 
       {/* Footer */}
-      <div className="bg-[color:var(--semantic-surface-elevated)] border-t border-[color:var(--semantic-border-subtle)] py-8 mt-12">
+      <Box
+        py={24}
+        bg="var(--semantic-surface-elevated)"
+        borderWidth={1}
+        borderColor="var(--semantic-border-subtle)"
+        style={{ borderBottom: 'none', borderLeft: 'none', borderRight: 'none' }}
+      >
         <Container>
-          <p className="text-center text-[color:var(--semantic-text-secondary)]">
+          <Text color="secondary" align="center">
             © 2024 My Website. All rights reserved.
-          </p>
+          </Text>
         </Container>
-      </div>
-    </div>
-  ),
-};
-
-export const AllSizes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of all available container sizes stacked vertically.',
-      },
-    },
-  },
-  render: () => (
-    <div className="bg-[color:var(--semantic-surface-base)] py-8 space-y-6">
-      <Container size="sm">
-        <div className="bg-[color:var(--semantic-status-info-alpha)] p-4 rounded text-center">
-          <strong>SM</strong> - 640px
-        </div>
-      </Container>
-      <Container size="md">
-        <div className="bg-[color:var(--semantic-status-success-alpha)] p-4 rounded text-center">
-          <strong>MD</strong> - 768px
-        </div>
-      </Container>
-      <Container size="lg">
-        <div className="bg-[color:var(--semantic-status-warning-alpha)] p-4 rounded text-center">
-          <strong>LG</strong> - 1024px
-        </div>
-      </Container>
-      <Container size="xl">
-        <div className="bg-[color:var(--semantic-brand-primary-default)] bg-opacity-20 p-4 rounded text-center">
-          <strong>XL</strong> - 1280px (default)
-        </div>
-      </Container>
-      <Container size="2xl">
-        <div className="bg-[color:var(--semantic-status-error-alpha)] p-4 rounded text-center">
-          <strong>2XL</strong> - 1536px
-        </div>
-      </Container>
-    </div>
+      </Box>
+    </Box>
   ),
 };

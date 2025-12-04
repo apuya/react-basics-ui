@@ -1,12 +1,18 @@
 import { cn } from '@/lib/cn';
-import { createContext, forwardRef, memo, useContext, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { createContext, forwardRef, memo, useContext, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import {
   BREADCRUMB_CLASSES,
+  BREADCRUMB_ELLIPSIS_CLASSES,
   BREADCRUMB_ITEM_CLASSES,
   BREADCRUMB_LINK_CLASSES,
   BREADCRUMB_LINK_CURRENT_CLASSES,
+  BREADCRUMB_LIST_CLASSES,
   BREADCRUMB_SEPARATOR_CLASSES,
-  BREADCRUMB_ELLIPSIS_CLASSES,
+  ELLIPSIS_TYPOGRAPHY_STYLES,
+  ITEM_GAP_STYLES,
+  LINK_CURRENT_TYPOGRAPHY_STYLES,
+  LINK_TYPOGRAPHY_STYLES,
+  SEPARATOR_SPACING_STYLES,
 } from './Breadcrumb.styles';
 
 // Context for Breadcrumb configuration
@@ -29,15 +35,20 @@ export const BreadcrumbRoot = memo(
     { children, separator = '/', className, ...props },
     ref
   ) {
+    const navClasses = useMemo(
+      () => cn(BREADCRUMB_CLASSES, className),
+      [className]
+    );
+
     return (
       <BreadcrumbContext.Provider value={{ separator }}>
         <nav
           ref={ref}
           aria-label="Breadcrumb"
-          className={cn(BREADCRUMB_CLASSES, className)}
+          className={navClasses}
           {...props}
         >
-          <ol className="flex items-center">{children}</ol>
+          <ol className={BREADCRUMB_LIST_CLASSES}>{children}</ol>
         </nav>
       </BreadcrumbContext.Provider>
     );
@@ -61,16 +72,26 @@ export const BreadcrumbItem = memo(
   ) {
     const { separator } = useBreadcrumbContext();
 
+    const itemClasses = useMemo(
+      () => cn(BREADCRUMB_ITEM_CLASSES, className),
+      [className]
+    );
+
     return (
       <li
         ref={ref}
-        className={cn(BREADCRUMB_ITEM_CLASSES, className)}
-        aria-current={isCurrent ? 'page' : undefined}
+        className={itemClasses}
+        style={ITEM_GAP_STYLES}
+        data-current={isCurrent || undefined}
         {...props}
       >
         {children}
         {!isCurrent && showSeparator && (
-          <span className={BREADCRUMB_SEPARATOR_CLASSES} aria-hidden="true">
+          <span
+            className={BREADCRUMB_SEPARATOR_CLASSES}
+            style={SEPARATOR_SPACING_STYLES}
+            aria-hidden="true"
+          >
             {separator}
           </span>
         )}
@@ -79,7 +100,7 @@ export const BreadcrumbItem = memo(
   })
 );
 
-BreadcrumbItem.displayName = 'BreadcrumbItem';
+BreadcrumbItem.displayName = 'Breadcrumb.Item';
 
 // BreadcrumbLink component
 export interface BreadcrumbLinkProps extends ComponentPropsWithoutRef<'a'> {
@@ -88,21 +109,32 @@ export interface BreadcrumbLinkProps extends ComponentPropsWithoutRef<'a'> {
 }
 
 export const BreadcrumbLink = memo(
-  forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(function BreadcrumbLink(
+  forwardRef<HTMLAnchorElement | HTMLSpanElement, BreadcrumbLinkProps>(function BreadcrumbLink(
     { children, isCurrent = false, className, href, ...props },
     ref
   ) {
     const Component = isCurrent || !href ? 'span' : 'a';
-    const linkClasses = isCurrent
-      ? BREADCRUMB_LINK_CURRENT_CLASSES
-      : BREADCRUMB_LINK_CLASSES;
+
+    const linkClasses = useMemo(
+      () => cn(
+        isCurrent ? BREADCRUMB_LINK_CURRENT_CLASSES : BREADCRUMB_LINK_CLASSES,
+        className
+      ),
+      [isCurrent, className]
+    );
+
+    const typographyStyles = isCurrent
+      ? LINK_CURRENT_TYPOGRAPHY_STYLES
+      : LINK_TYPOGRAPHY_STYLES;
 
     return (
       <Component
-        ref={!isCurrent && href ? ref : undefined}
+        ref={ref as any}
         href={!isCurrent ? href : undefined}
-        className={cn(linkClasses, className)}
+        className={linkClasses}
+        style={typographyStyles}
         aria-current={isCurrent ? 'page' : undefined}
+        data-current={isCurrent || undefined}
         {...(props as any)}
       >
         {children}
@@ -111,7 +143,7 @@ export const BreadcrumbLink = memo(
   })
 );
 
-BreadcrumbLink.displayName = 'BreadcrumbLink';
+BreadcrumbLink.displayName = 'Breadcrumb.Link';
 
 // BreadcrumbEllipsis component for collapsed items
 export interface BreadcrumbEllipsisProps extends ComponentPropsWithoutRef<'span'> {}
@@ -121,12 +153,18 @@ export const BreadcrumbEllipsis = memo(
     { className, children = '...', ...props },
     ref
   ) {
+    const ellipsisClasses = useMemo(
+      () => cn(BREADCRUMB_ELLIPSIS_CLASSES, className),
+      [className]
+    );
+
     return (
       <span
         ref={ref}
         role="presentation"
         aria-hidden="true"
-        className={cn(BREADCRUMB_ELLIPSIS_CLASSES, className)}
+        className={ellipsisClasses}
+        style={ELLIPSIS_TYPOGRAPHY_STYLES}
         {...props}
       >
         {children}
@@ -135,7 +173,7 @@ export const BreadcrumbEllipsis = memo(
   })
 );
 
-BreadcrumbEllipsis.displayName = 'BreadcrumbEllipsis';
+BreadcrumbEllipsis.displayName = 'Breadcrumb.Ellipsis';
 
 // Compound component with sub-components
 export const Breadcrumb = Object.assign(BreadcrumbRoot, {

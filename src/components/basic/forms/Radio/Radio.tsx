@@ -1,6 +1,6 @@
 import { cn } from '@/lib/cn';
 import { generateFormId } from '@/lib/generateFormId';
-import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import {
   DOT_CLASSES,
   INPUT_CLASSES,
@@ -8,8 +8,8 @@ import {
   RADIO_CLASSES,
   SIZE_DOT_STYLES,
   SIZE_RADIO_STYLES,
-  WRAPPER_CLASSES,
-  WRAPPER_DISABLED_CLASSES,
+  WRAPPER_BASE_CLASSES,
+  WRAPPER_STATE_STYLES,
 } from './Radio.styles';
 
 export type RadioSize = 'small' | 'default' | 'large';
@@ -23,6 +23,9 @@ export interface RadioProps extends Omit<ComponentPropsWithoutRef<'input'>, 'typ
   wrapperClassName?: string;
 }
 
+// Static style for wrapper gap
+const WRAPPER_STYLE = { gap: 'var(--component-radio-gap)' } as const;
+
 export const Radio = memo(
   forwardRef<HTMLInputElement, RadioProps>(function Radio(
     { size = 'default', label, disabled, className, wrapperClassName, id, ...rest },
@@ -30,12 +33,30 @@ export const Radio = memo(
   ) {
     const radioId = id || generateFormId('radio', label);
 
+    const wrapperClasses = useMemo(
+      () => cn(
+        WRAPPER_BASE_CLASSES,
+        disabled ? WRAPPER_STATE_STYLES.disabled : WRAPPER_STATE_STYLES.enabled,
+        wrapperClassName
+      ),
+      [disabled, wrapperClassName]
+    );
+
+    const radioClasses = useMemo(
+      () => cn(RADIO_CLASSES, SIZE_RADIO_STYLES[size]),
+      [size]
+    );
+
+    const dotClasses = useMemo(
+      () => cn(DOT_CLASSES, SIZE_DOT_STYLES[size]),
+      [size]
+    );
+
     return (
       <label
-        className={cn(
-          disabled ? WRAPPER_DISABLED_CLASSES : WRAPPER_CLASSES,
-          wrapperClassName
-        )}
+        className={wrapperClasses}
+        style={WRAPPER_STYLE}
+        data-disabled={disabled || undefined}
       >
         <input
           ref={ref}
@@ -47,12 +68,10 @@ export const Radio = memo(
           {...rest}
         />
         <span
-          className={cn(RADIO_CLASSES, SIZE_RADIO_STYLES[size])}
+          className={radioClasses}
           aria-hidden="true"
         >
-          <span
-            className={cn(DOT_CLASSES, SIZE_DOT_STYLES[size])}
-          />
+          <span className={dotClasses} />
         </span>
         {label && <span className={LABEL_CLASSES}>{label}</span>}
       </label>

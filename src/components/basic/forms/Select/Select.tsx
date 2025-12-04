@@ -18,13 +18,13 @@ import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/basic/utility/Icon';
 import {
-  HELPER_CLASSES,
-  HELPER_ERROR_CLASSES,
-  ICON_CLASSES,
-  ICON_DISABLED_CLASSES,
+  HELPER_BASE_CLASSES,
+  HELPER_STATE_STYLES,
+  ICON_BASE_CLASSES,
   ICON_OPEN_CLASSES,
-  LABEL_CLASSES,
-  LABEL_ERROR_CLASSES,
+  ICON_STATE_STYLES,
+  LABEL_BASE_CLASSES,
+  LABEL_STATE_STYLES,
   MENU_BASE_CLASSES,
   MENU_VISIBLE_CLASS,
   MENU_WRAPPER_CLASSES,
@@ -71,6 +71,10 @@ export interface SelectProps {
   className?: string;
   id?: string;
 }
+
+// Static styles for inline spacing
+const LABEL_STYLE = { marginBottom: 'var(--component-input-gap-compact)' } as const;
+const HELPER_STYLE = { marginTop: 'var(--component-input-gap-compact)' } as const;
 
 const SelectRoot = ({
   children,
@@ -146,7 +150,8 @@ const SelectRoot = ({
           <label
             id={labelId}
             htmlFor={triggerId}
-            className={error ? LABEL_ERROR_CLASSES : LABEL_CLASSES}
+            className={cn(LABEL_BASE_CLASSES, error ? LABEL_STATE_STYLES.error : LABEL_STATE_STYLES.default)}
+            style={LABEL_STYLE}
           >
             {label}
           </label>
@@ -155,7 +160,10 @@ const SelectRoot = ({
           {children}
         </div>
         {helperText && (
-          <p className={error ? HELPER_ERROR_CLASSES : HELPER_CLASSES}>
+          <p
+            className={cn(HELPER_BASE_CLASSES, error ? HELPER_STATE_STYLES.error : HELPER_STATE_STYLES.default)}
+            style={HELPER_STYLE}
+          >
             {helperText}
           </p>
         )}
@@ -225,7 +233,8 @@ const SelectTrigger = memo(
           <Icon
             icon={BiChevronDown}
             className={cn(
-              disabled ? ICON_DISABLED_CLASSES : ICON_CLASSES,
+              ICON_BASE_CLASSES,
+              disabled ? ICON_STATE_STYLES.disabled : ICON_STATE_STYLES.default,
               isOpen && ICON_OPEN_CLASSES
             )}
             aria-hidden

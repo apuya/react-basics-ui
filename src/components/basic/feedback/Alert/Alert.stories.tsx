@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Alert } from './Alert';
+import { Stack } from '../../layout/Stack';
+import { Box } from '../../layout/Box';
+import { Text } from '../../typography/Text';
 
 const meta = {
   title: 'Feedback/Alert',
@@ -53,21 +56,23 @@ export const Default: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="max-w-lg">
+      <Box style={{ maxWidth: '32rem' }}>
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
 
 export const AllVariants: StoryWithRender = {
   render: () => (
-    <div className="flex flex-col gap-4 max-w-lg">
-      <Alert variant="info" title="Information" description="This is an informational alert." />
-      <Alert variant="success" title="Success!" description="Your changes have been saved successfully." />
-      <Alert variant="warning" title="Warning" description="This action cannot be undone." />
-      <Alert variant="error" title="Error" description="Something went wrong. Please try again." />
-    </div>
+    <Box style={{ maxWidth: '32rem' }}>
+      <Stack spacing="md">
+        <Alert variant="info" title="Information" description="This is an informational alert." />
+        <Alert variant="success" title="Success!" description="Your changes have been saved successfully." />
+        <Alert variant="warning" title="Warning" description="This action cannot be undone." />
+        <Alert variant="error" title="Error" description="Something went wrong. Please try again." />
+      </Stack>
+    </Box>
   ),
   parameters: {
     docs: {
@@ -85,9 +90,9 @@ export const TitleOnly: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="max-w-lg">
+      <Box style={{ maxWidth: '32rem' }}>
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
@@ -99,9 +104,9 @@ export const DescriptionOnly: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="max-w-lg">
+      <Box style={{ maxWidth: '32rem' }}>
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
@@ -115,41 +120,43 @@ export const WithoutIcon: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="max-w-lg">
+      <Box style={{ maxWidth: '32rem' }}>
         <Story />
-      </div>
+      </Box>
     ),
   ],
 };
 
 export const Dismissible: StoryWithRender = {
   render: () => (
-    <div className="flex flex-col gap-4 max-w-lg">
-      <Alert
-        variant="info"
-        title="Info Alert"
-        description="Dismissible information alert."
-        onClose={() => console.log('Dismissed')}
-      />
-      <Alert
-        variant="success"
-        title="Success Alert"
-        description="Dismissible success alert."
-        onClose={() => console.log('Dismissed')}
-      />
-      <Alert
-        variant="warning"
-        title="Warning Alert"
-        description="Dismissible warning alert."
-        onClose={() => console.log('Dismissed')}
-      />
-      <Alert
-        variant="error"
-        title="Error Alert"
-        description="Dismissible error alert."
-        onClose={() => console.log('Dismissed')}
-      />
-    </div>
+    <Box style={{ maxWidth: '32rem' }}>
+      <Stack spacing="md">
+        <Alert
+          variant="info"
+          title="Info Alert"
+          description="Dismissible information alert."
+          onClose={() => console.log('Dismissed')}
+        />
+        <Alert
+          variant="success"
+          title="Success Alert"
+          description="Dismissible success alert."
+          onClose={() => console.log('Dismissed')}
+        />
+        <Alert
+          variant="warning"
+          title="Warning Alert"
+          description="Dismissible warning alert."
+          onClose={() => console.log('Dismissed')}
+        />
+        <Alert
+          variant="error"
+          title="Error Alert"
+          description="Dismissible error alert."
+          onClose={() => console.log('Dismissed')}
+        />
+      </Stack>
+    </Box>
   ),
   parameters: {
     docs: {
@@ -162,20 +169,20 @@ export const Dismissible: StoryWithRender = {
 
 export const WithChildren: StoryWithRender = {
   render: () => (
-    <div className="max-w-lg">
+    <Box style={{ maxWidth: '32rem' }}>
       <Alert variant="info" onClose={() => console.log('Dismissed')}>
-        <div>
-          <p className="font-semibold">Update Available</p>
-          <p className="mt-1">
+        <Stack spacing="xs">
+          <Text weight="semibold">Update Available</Text>
+          <Text size="sm">
             A new version is available.{' '}
-            <a href="#" className="underline hover:no-underline">
+            <a href="#" style={{ textDecoration: 'underline' }}>
               View release notes
             </a>
             .
-          </p>
-        </div>
+          </Text>
+        </Stack>
       </Alert>
-    </div>
+    </Box>
   ),
   parameters: {
     docs: {
@@ -196,9 +203,9 @@ export const LongContent: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="max-w-lg">
+      <Box style={{ maxWidth: '32rem' }}>
         <Story />
-      </div>
+      </Box>
     ),
   ],
   parameters: {

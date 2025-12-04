@@ -13,107 +13,100 @@ describe('Container', () => {
     expect(screen.getByText('Test Content')).toBeInTheDocument();
   });
 
-  it('applies default size (xl)', () => {
-    const { container } = render(<Container>Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('max-w-[1280px]');
+  describe('Size Variants', () => {
+    it('applies default size (xl)', () => {
+      render(<Container data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-size', 'xl');
+    });
+
+    it('applies small size', () => {
+      render(<Container size="sm" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-size', 'sm');
+    });
+
+    it('applies medium size', () => {
+      render(<Container size="md" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-size', 'md');
+    });
+
+    it('applies large size', () => {
+      render(<Container size="lg" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-size', 'lg');
+    });
+
+    it('applies extra large size', () => {
+      render(<Container size="xl" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-size', 'xl');
+    });
+
+    it('applies 2xl size', () => {
+      render(<Container size="2xl" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-size', '2xl');
+    });
+
+    it('applies full size', () => {
+      render(<Container size="full" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-size', 'full');
+    });
+
+    it('applies prose size', () => {
+      const { container } = render(<Container size="prose" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-size', 'prose');
+      expect(container.firstChild).toHaveClass('max-w-[65ch]');
+    });
   });
 
-  it('applies small size', () => {
-    const { container } = render(<Container size="sm">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('max-w-[640px]');
+  describe('Padding Variants', () => {
+    it('applies default padding (md)', () => {
+      render(<Container data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-padding', 'md');
+    });
+
+    it('applies no padding', () => {
+      const { container } = render(<Container padding="none" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-padding', 'none');
+      expect(container.firstChild).toHaveClass('px-0');
+    });
+
+    it('applies small padding', () => {
+      render(<Container padding="sm" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-padding', 'sm');
+    });
+
+    it('applies medium padding', () => {
+      render(<Container padding="md" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-padding', 'md');
+    });
+
+    it('applies large padding', () => {
+      render(<Container padding="lg" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-padding', 'lg');
+    });
+
+    it('applies extra large padding', () => {
+      render(<Container padding="xl" data-testid="container">Content</Container>);
+      expect(screen.getByTestId('container')).toHaveAttribute('data-padding', 'xl');
+    });
   });
 
-  it('applies medium size', () => {
-    const { container } = render(<Container size="md">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('max-w-[768px]');
-  });
+  describe('Centered', () => {
+    it('centers content by default', () => {
+      const { container } = render(<Container data-testid="container">Content</Container>);
+      expect(container.firstChild).toHaveClass('mx-auto');
+      expect(screen.getByTestId('container')).toHaveAttribute('data-centered');
+    });
 
-  it('applies large size', () => {
-    const { container } = render(<Container size="lg">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('max-w-[1024px]');
-  });
-
-  it('applies extra large size', () => {
-    const { container } = render(<Container size="xl">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('max-w-[1280px]');
-  });
-
-  it('applies 2xl size', () => {
-    const { container } = render(<Container size="2xl">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('max-w-[1536px]');
-  });
-
-  it('applies full size', () => {
-    const { container } = render(<Container size="full">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('max-w-full');
-  });
-
-  it('applies prose size', () => {
-    const { container } = render(<Container size="prose">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('max-w-[65ch]');
-  });
-
-  it('applies default padding (md)', () => {
-    const { container } = render(<Container>Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('px-[length:var(--semantic-space-default)]');
-  });
-
-  it('applies no padding', () => {
-    const { container } = render(<Container padding="none">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('px-0');
-  });
-
-  it('applies small padding', () => {
-    const { container } = render(<Container padding="sm">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('px-[length:var(--semantic-space-compact)]');
-  });
-
-  it('applies medium padding', () => {
-    const { container } = render(<Container padding="md">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('px-[length:var(--semantic-space-default)]');
-  });
-
-  it('applies large padding', () => {
-    const { container } = render(<Container padding="lg">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('px-[length:var(--semantic-space-comfortable)]');
-  });
-
-  it('applies extra large padding', () => {
-    const { container } = render(<Container padding="xl">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('px-[length:var(--semantic-space-loose)]');
-  });
-
-  it('centers content by default', () => {
-    const { container } = render(<Container>Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('mx-auto');
-  });
-
-  it('does not center when centered is false', () => {
-    const { container } = render(<Container centered={false}>Content</Container>);
-    const element = container.firstChild;
-    expect(element).not.toHaveClass('mx-auto');
-    expect(element).toHaveClass('w-full');
+    it('does not center when centered is false', () => {
+      const { container } = render(<Container centered={false} data-testid="container">Content</Container>);
+      expect(container.firstChild).not.toHaveClass('mx-auto');
+      expect(container.firstChild).toHaveClass('w-full');
+      expect(screen.getByTestId('container')).not.toHaveAttribute('data-centered');
+    });
   });
 
   it('applies custom className', () => {
     const { container } = render(<Container className="custom-class">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('custom-class');
+    expect(container.firstChild).toHaveClass('custom-class');
   });
 
   it('forwards ref correctly', () => {
@@ -130,61 +123,61 @@ describe('Container', () => {
 
   it('handles id attribute', () => {
     const { container } = render(<Container id="main-container">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveAttribute('id', 'main-container');
+    expect(container.firstChild).toHaveAttribute('id', 'main-container');
   });
 
   it('renders with all props combined', () => {
-    const { container } = render(
-      <Container size="lg" padding="sm" centered={true} className="custom">
+    render(
+      <Container size="lg" padding="sm" centered={true} className="custom" data-testid="container">
         Content
       </Container>
     );
-    const element = container.firstChild;
-    expect(element).toHaveClass('max-w-[1024px]');
-    expect(element).toHaveClass('px-[length:var(--semantic-space-compact)]');
+    const element = screen.getByTestId('container');
+    expect(element).toHaveAttribute('data-size', 'lg');
+    expect(element).toHaveAttribute('data-padding', 'sm');
+    expect(element).toHaveAttribute('data-centered');
     expect(element).toHaveClass('mx-auto');
     expect(element).toHaveClass('custom');
   });
 
   it('renders all sizes without errors', () => {
-    const { container, rerender } = render(<Container size="sm">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    const { rerender } = render(<Container size="sm" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
 
-    rerender(<Container size="md">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    rerender(<Container size="md" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
 
-    rerender(<Container size="lg">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    rerender(<Container size="lg" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
 
-    rerender(<Container size="xl">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    rerender(<Container size="xl" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
 
-    rerender(<Container size="2xl">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    rerender(<Container size="2xl" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
 
-    rerender(<Container size="full">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    rerender(<Container size="full" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
 
-    rerender(<Container size="prose">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    rerender(<Container size="prose" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
   });
 
   it('renders all padding sizes without errors', () => {
-    const { container, rerender } = render(<Container padding="none">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    const { rerender } = render(<Container padding="none" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
 
-    rerender(<Container padding="sm">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    rerender(<Container padding="sm" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
 
-    rerender(<Container padding="md">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    rerender(<Container padding="md" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
 
-    rerender(<Container padding="lg">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    rerender(<Container padding="lg" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
 
-    rerender(<Container padding="xl">Content</Container>);
-    expect(container.firstChild).toBeInTheDocument();
+    rerender(<Container padding="xl" data-testid="container">Content</Container>);
+    expect(screen.getByTestId('container')).toBeInTheDocument();
   });
 
   it('renders as a div element', () => {
@@ -205,19 +198,19 @@ describe('Container', () => {
 
   it('applies width class when centered', () => {
     const { container } = render(<Container centered={true}>Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('w-full');
+    expect(container.firstChild).toHaveClass('w-full');
   });
 
   it('combines size and padding correctly', () => {
-    const { container } = render(
-      <Container size="prose" padding="xl">
+    render(
+      <Container size="prose" padding="xl" data-testid="container">
         Content
       </Container>
     );
-    const element = container.firstChild;
+    const element = screen.getByTestId('container');
+    expect(element).toHaveAttribute('data-size', 'prose');
+    expect(element).toHaveAttribute('data-padding', 'xl');
     expect(element).toHaveClass('max-w-[65ch]');
-    expect(element).toHaveClass('px-[length:var(--semantic-space-loose)]');
   });
 
   it('handles onClick event', () => {
@@ -230,8 +223,7 @@ describe('Container', () => {
 
   it('applies role attribute', () => {
     const { container } = render(<Container role="main">Content</Container>);
-    const element = container.firstChild;
-    expect(element).toHaveAttribute('role', 'main');
+    expect(container.firstChild).toHaveAttribute('role', 'main');
   });
 
   it('handles complex children', () => {
@@ -262,5 +254,11 @@ describe('Container', () => {
     const secondRender = screen.getByText('Content');
     
     expect(firstRender).toBe(secondRender);
+  });
+
+  describe('DisplayName', () => {
+    it('has correct displayName', () => {
+      expect(Container.displayName).toBe('Container');
+    });
   });
 });

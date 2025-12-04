@@ -603,8 +603,8 @@ describe('Pagination', () => {
       );
 
       const pageButton = screen.getByLabelText('Go to page 1');
-      // Small size has h-7 class
-      expect(pageButton.className).toContain('h-7');
+      // Small size uses height token
+      expect(pageButton.className).toContain('h-[length:var(--component-pagination-height-sm)]');
     });
 
     it('should render medium size (default)', () => {
@@ -617,8 +617,8 @@ describe('Pagination', () => {
       );
 
       const pageButton = screen.getByLabelText('Go to page 1');
-      // Medium size has h-9 class
-      expect(pageButton.className).toContain('h-9');
+      // Medium size uses height token
+      expect(pageButton.className).toContain('h-[length:var(--component-pagination-height-md)]');
     });
 
     it('should render large size', () => {
@@ -631,8 +631,8 @@ describe('Pagination', () => {
       );
 
       const pageButton = screen.getByLabelText('Go to page 1');
-      // Large size has h-11 class
-      expect(pageButton.className).toContain('h-11');
+      // Large size uses height token
+      expect(pageButton.className).toContain('h-[length:var(--component-pagination-height-lg)]');
     });
   });
 

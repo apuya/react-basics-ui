@@ -1,7 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Modal } from './Modal';
-import { Button } from '../../forms/Button/Button';
+import { Button } from '../../forms/Button';
+import { Input } from '../../forms/Input';
+import { Label } from '../../forms/Label';
+import { Checkbox } from '../../forms/Checkbox';
+import { Text } from '../../typography/Text';
+import { Heading } from '../../typography/Heading';
+import { Stack } from '../../layout/Stack';
+import { Flex } from '../../layout/Flex';
+import { List } from '../../data-display/List';
 
 const meta: Meta<typeof Modal> = {
   title: 'Overlay/Modal',
@@ -10,7 +18,8 @@ const meta: Meta<typeof Modal> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A modal dialog component that renders in a portal with focus trap, body scroll lock, and keyboard support. Built using the compound component pattern with `Modal.Header`, `Modal.Title`, `Modal.Content`, and `Modal.Footer` subcomponents. Supports multiple sizes (sm, md, lg, xl, full) and customizable overlay behavior.',
+        component:
+          'Modal dialog component for focused content in an overlay. Features focus trap, body scroll lock, and keyboard support. Uses compound component pattern with `Modal.Header`, `Modal.Title`, `Modal.Content`, and `Modal.Footer`.',
       },
     },
   },
@@ -18,28 +27,29 @@ const meta: Meta<typeof Modal> = {
   argTypes: {
     isOpen: {
       control: 'boolean',
-      description: 'Controls the visibility of the modal',
+      description: 'Controls modal visibility',
+      table: { defaultValue: { summary: 'false' } },
     },
     size: {
       control: 'select',
       options: ['sm', 'md', 'lg', 'xl', 'full'],
-      description: 'The size of the modal',
+      description: 'Modal size preset',
+      table: { defaultValue: { summary: 'md' } },
     },
     closeOnOverlayClick: {
       control: 'boolean',
-      description: 'Whether clicking the overlay closes the modal',
+      description: 'Close when clicking overlay',
+      table: { defaultValue: { summary: 'true' } },
     },
     closeOnEscape: {
       control: 'boolean',
-      description: 'Whether pressing Escape closes the modal',
+      description: 'Close when pressing Escape',
+      table: { defaultValue: { summary: 'true' } },
     },
     showCloseButton: {
       control: 'boolean',
-      description: 'Whether to show the close button',
-    },
-    preventBodyScroll: {
-      control: 'boolean',
-      description: 'Whether to prevent body scrolling when modal is open',
+      description: 'Show close button',
+      table: { defaultValue: { summary: 'true' } },
     },
   },
 };
@@ -47,356 +57,223 @@ const meta: Meta<typeof Modal> = {
 export default meta;
 type Story = StoryObj<typeof Modal>;
 
-// Compound Component Overview
-export const CompoundComponents: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Modal is built using the compound component pattern. It consists of: `Modal` (root container with overlay), `Modal.Header` (header section), `Modal.Title` (heading element), `Modal.Content` (main content wrapper), and `Modal.Footer` (action buttons section). The close button is rendered automatically unless `showCloseButton={false}`.',
-      },
-    },
-  },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
+// Helper component to reduce story boilerplate
+const ModalDemo = ({
+  buttonLabel = 'Open Modal',
+  buttonVariant = 'primary' as const,
+  children,
+  ...modalProps
+}: {
+  buttonLabel?: string;
+  buttonVariant?: 'primary' | 'secondary' | 'destructive';
+  children: (onClose: () => void) => React.ReactNode;
+} & Omit<React.ComponentProps<typeof Modal>, 'isOpen' | 'onClose' | 'children'>) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <>
+      <Button variant={buttonVariant} onClick={() => setIsOpen(true)}>
+        {buttonLabel}
+      </Button>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} {...modalProps}>
+        {children(() => setIsOpen(false))}
+      </Modal>
+    </>
+  );
+};
 
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+// Default Example
+export const Default: Story = {
+  render: () => (
+    <ModalDemo buttonLabel="Open Modal">
+      {(onClose) => (
+        <>
           <Modal.Header>
-            <Modal.Title>Modal Components</Modal.Title>
+            <Modal.Title>Modal Title</Modal.Title>
           </Modal.Header>
           <Modal.Content>
-            <p>This demonstrates all compound components:</p>
-            <ul style={{ marginTop: '0.5rem', marginLeft: '1.5rem' }}>
-              <li>Modal.Header - Contains the title</li>
-              <li>Modal.Title - Heading element</li>
-              <li>Modal.Content - Main content area</li>
-              <li>Modal.Footer - Action buttons</li>
-            </ul>
+            <Text>This is the modal content. Add any content here.</Text>
           </Modal.Content>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setIsOpen(false)}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
-            <Button onClick={() => setIsOpen(false)}>Confirm</Button>
+            <Button onClick={onClose}>Confirm</Button>
           </Modal.Footer>
-        </Modal>
-      </>
-    );
-  },
+        </>
+      )}
+    </ModalDemo>
+  ),
 };
 
-// Basic Examples
-export const Default: Story = {
+// All Sizes
+export const Sizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Basic modal with header, content, and footer sections. Default size is medium.',
+        story: 'Modal supports sm, md, lg, xl, and full sizes.',
       },
     },
   },
   render: () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [openSize, setOpenSize] = useState<string | null>(null);
+    const sizes = ['sm', 'md', 'lg', 'xl', 'full'] as const;
 
     return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-          <Modal.Content>
+      <Flex gap="sm" wrap="wrap">
+        {sizes.map((size) => (
+          <Button key={size} size="small" onClick={() => setOpenSize(size)}>
+            {size.toUpperCase()}
+          </Button>
+        ))}
+        {sizes.map((size) => (
+          <Modal
+            key={size}
+            isOpen={openSize === size}
+            onClose={() => setOpenSize(null)}
+            size={size}
+          >
             <Modal.Header>
-              <Modal.Title>Default Modal</Modal.Title>
+              <Modal.Title>{size.toUpperCase()} Modal</Modal.Title>
             </Modal.Header>
-            <p>This is the modal body content. You can add any content here.</p>
+            <Modal.Content>
+              <Text>
+                {size === 'full'
+                  ? 'This modal covers the entire viewport.'
+                  : `This is a ${size} size modal.`}
+              </Text>
+            </Modal.Content>
             <Modal.Footer>
-              <Button variant="secondary" onClick={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={() => setIsOpen(false)}>Confirm</Button>
+              <Button onClick={() => setOpenSize(null)}>Close</Button>
             </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-      </>
+          </Modal>
+        ))}
+      </Flex>
     );
   },
 };
 
-export const Small: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Small modal size, ideal for simple confirmations, alerts, or compact forms.',
-      },
-    },
-  },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Small Modal</Button>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="sm">
-          <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Small Modal</Modal.Title>
-            </Modal.Header>
-            <p>Small modals work well for simple forms or notifications.</p>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={() => setIsOpen(false)}>OK</Button>
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-      </>
-    );
-  },
-};
-
-export const Large: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large modal provides more room for detailed content, complex forms, or data displays.',
-      },
-    },
-  },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Large Modal</Button>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="lg">
-          <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Large Modal</Modal.Title>
-            </Modal.Header>
-            <p>Large modals provide more room for detailed content, forms, or data displays.</p>
-            <p style={{ marginTop: '1rem' }}>
-              They're ideal when you need to present comprehensive information or collect extensive user input.
-            </p>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={() => setIsOpen(false)}>Save</Button>
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-      </>
-    );
-  },
-};
-
-export const ExtraLarge: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Extra large modal for comprehensive forms, rich editors, data tables, or detailed settings panels.',
-      },
-    },
-  },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open XL Modal</Button>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="xl">
-          <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Extra Large Modal</Modal.Title>
-            </Modal.Header>
-            <div>
-              <p>Extra large modals are perfect for:</p>
-              <ul style={{ marginTop: '0.5rem', marginLeft: '1.5rem' }}>
-                <li>Complex multi-step forms</li>
-                <li>Rich content editors</li>
-                <li>Data tables</li>
-                <li>Image galleries</li>
-                <li>Detailed settings panels</li>
-              </ul>
-            </div>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={() => setIsOpen(false)}>Confirm</Button>
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-      </>
-    );
-  },
-};
-
+// Common Use Cases
 export const WithForm: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Example of a modal containing a form with multiple input fields.',
+        story: 'Modal with form inputs.',
       },
     },
   },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Create Account</Button>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+  render: () => (
+    <ModalDemo buttonLabel="Create Account">
+      {(onClose) => (
+        <>
+          <Modal.Header>
+            <Modal.Title>Create Account</Modal.Title>
+          </Modal.Header>
           <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Create New Account</Modal.Title>
-            </Modal.Header>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div>
-                <label htmlFor="name" style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', fontWeight: 500 }}>Full Name</label>
-                <input id="name" placeholder="John Doe" style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--semantic-border-radius-md)', border: '1px solid var(--semantic-color-border-default)' }} />
-              </div>
-              <div>
-                <label htmlFor="email" style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.875rem', fontWeight: 500 }}>Email</label>
-                <input id="email" type="email" placeholder="john@example.com" style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--semantic-border-radius-md)', border: '1px solid var(--semantic-color-border-default)' }} />
-              </div>
-            </div>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={() => setIsOpen(false)}>Create Account</Button>
-            </Modal.Footer>
+            <Stack spacing="md">
+              <Stack spacing="xs">
+                <Label htmlFor="name">Full Name</Label>
+                <Input id="name" placeholder="John Doe" />
+              </Stack>
+              <Stack spacing="xs">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" placeholder="john@example.com" />
+              </Stack>
+            </Stack>
           </Modal.Content>
-        </Modal>
-      </>
-    );
-  },
+          <Modal.Footer>
+            <Button variant="secondary" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button onClick={onClose}>Create</Button>
+          </Modal.Footer>
+        </>
+      )}
+    </ModalDemo>
+  ),
 };
 
 export const Confirmation: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Confirmation dialog for destructive actions. Uses small size and destructive button variant.',
+        story: 'Confirmation dialog for destructive actions.',
       },
     },
   },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button variant="destructive" onClick={() => setIsOpen(true)}>
-          Delete Item
-        </Button>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="sm">
+  render: () => (
+    <ModalDemo buttonLabel="Delete Item" buttonVariant="destructive" size="sm">
+      {(onClose) => (
+        <>
+          <Modal.Header>
+            <Modal.Title>Confirm Deletion</Modal.Title>
+          </Modal.Header>
           <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Confirm Deletion</Modal.Title>
-            </Modal.Header>
-            <p>Are you sure you want to delete this item? This action cannot be undone.</p>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-              <Button variant="destructive" onClick={() => setIsOpen(false)}>
-                Delete
-              </Button>
-            </Modal.Footer>
+            <Text>Are you sure you want to delete this item? This action cannot be undone.</Text>
           </Modal.Content>
-        </Modal>
-      </>
-    );
-  },
-};
-
-export const WithoutFooter: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Modal without a footer section. Users can close via the close button or Escape key.',
-      },
-    },
-  },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Notice</Button>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="sm">
-          <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Important Notice</Modal.Title>
-            </Modal.Header>
-            <p>This modal doesn't have a footer. Users can close it by clicking the X button or pressing Escape.</p>
-          </Modal.Content>
-        </Modal>
-      </>
-    );
-  },
+          <Modal.Footer>
+            <Button variant="secondary" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={onClose}>
+              Delete
+            </Button>
+          </Modal.Footer>
+        </>
+      )}
+    </ModalDemo>
+  ),
 };
 
 export const ScrollableContent: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Modal with scrollable content area. The header and footer remain fixed while content scrolls.',
+        story: 'Modal with scrollable content. Header and footer remain fixed.',
       },
     },
   },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Scrollable Modal</Button>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+  render: () => (
+    <ModalDemo buttonLabel="View Terms">
+      {(onClose) => (
+        <>
+          <Modal.Header>
+            <Modal.Title>Terms and Conditions</Modal.Title>
+          </Modal.Header>
           <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Terms and Conditions</Modal.Title>
-            </Modal.Header>
-            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-              <h3 style={{ fontWeight: 600, marginBottom: '0.5rem' }}>1. Introduction</h3>
-              <p style={{ marginBottom: '1rem' }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-              <h3 style={{ fontWeight: 600, marginBottom: '0.5rem' }}>2. User Agreement</h3>
-              <p style={{ marginBottom: '1rem' }}>
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </p>
-              <h3 style={{ fontWeight: 600, marginBottom: '0.5rem' }}>3. Privacy Policy</h3>
-              <p style={{ marginBottom: '1rem' }}>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              </p>
-              <h3 style={{ fontWeight: 600, marginBottom: '0.5rem' }}>4. Data Collection</h3>
-              <p style={{ marginBottom: '1rem' }}>
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-              <h3 style={{ fontWeight: 600, marginBottom: '0.5rem' }}>5. Cookie Policy</h3>
-              <p style={{ marginBottom: '1rem' }}>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
-              </p>
-            </div>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setIsOpen(false)}>
-                Decline
-              </Button>
-              <Button onClick={() => setIsOpen(false)}>Accept</Button>
-            </Modal.Footer>
+            <Stack spacing="md">
+              {['Introduction', 'User Agreement', 'Privacy Policy', 'Data Collection', 'Cookie Policy'].map(
+                (section, i) => (
+                  <Stack key={section} spacing="xs">
+                    <Heading size="small">
+                      {i + 1}. {section}
+                    </Heading>
+                    <Text>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </Text>
+                  </Stack>
+                )
+              )}
+            </Stack>
           </Modal.Content>
-        </Modal>
-      </>
-    );
-  },
+          <Modal.Footer>
+            <Button variant="secondary" onClick={onClose}>
+              Decline
+            </Button>
+            <Button onClick={onClose}>Accept</Button>
+          </Modal.Footer>
+        </>
+      )}
+    </ModalDemo>
+  ),
 };
 
 export const MultiStepWizard: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Example of a multi-step wizard using modal state management. Shows how to handle navigation between steps.',
+        story: 'Multi-step wizard with navigation.',
       },
     },
   },
@@ -405,76 +282,57 @@ export const MultiStepWizard: Story = {
     const [step, setStep] = useState(1);
     const totalSteps = 3;
 
-    const handleNext = () => {
-      if (step < totalSteps) setStep(step + 1);
-      else setIsOpen(false);
-    };
-
-    const handleBack = () => {
-      if (step > 1) setStep(step - 1);
-    };
-
     const handleClose = () => {
       setIsOpen(false);
       setStep(1);
     };
 
+    const steps = [
+      {
+        title: 'Basic Information',
+        content: <Text color="secondary">Configure your username and display name.</Text>,
+      },
+      {
+        title: 'Preferences',
+        content: (
+          <Stack spacing="xs">
+            <Checkbox id="notifications" defaultChecked label="Enable notifications" />
+            <Checkbox id="newsletter" label="Subscribe to newsletter" />
+          </Stack>
+        ),
+      },
+      {
+        title: 'Review',
+        content: (
+          <List>
+            <List.Item>Username configured</List.Item>
+            <List.Item>Preferences set</List.Item>
+            <List.Item>Ready to get started</List.Item>
+          </List>
+        ),
+      },
+    ];
+
     return (
       <>
-        <Button onClick={() => setIsOpen(true)}>Start Setup Wizard</Button>
+        <Button onClick={() => setIsOpen(true)}>Start Wizard</Button>
         <Modal isOpen={isOpen} onClose={handleClose}>
-          <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Setup Wizard - Step {step} of {totalSteps}</Modal.Title>
-            </Modal.Header>
-            {step === 1 && (
-              <div>
-                <p>Step 1: Basic Information</p>
-                <p style={{ color: 'var(--semantic-color-text-secondary)', marginTop: '0.5rem' }}>
-                  Configure your username and display name.
-                </p>
-              </div>
-            )}
-            {step === 2 && (
-              <div>
-                <p>Step 2: Preferences</p>
-                <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <input type="checkbox" id="notifications" defaultChecked />
-                    <label htmlFor="notifications">Enable notifications</label>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <input type="checkbox" id="newsletter" />
-                    <label htmlFor="newsletter">Subscribe to newsletter</label>
-                  </div>
-                </div>
-              </div>
-            )}
-            {step === 3 && (
-              <div>
-                <p style={{ marginBottom: '1rem' }}>Step 3: Review your settings</p>
-                <ul style={{ marginLeft: '1.5rem' }}>
-                  <li>Username configured</li>
-                  <li>Preferences set</li>
-                  <li>Ready to get started</li>
-                </ul>
-              </div>
-            )}
-            <Modal.Footer>
-              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <Button 
-                  variant="secondary" 
-                  onClick={handleBack}
-                  disabled={step === 1}
-                >
-                  Back
-                </Button>
-                <Button onClick={handleNext}>
-                  {step === totalSteps ? 'Finish' : 'Next'}
-                </Button>
-              </div>
-            </Modal.Footer>
-          </Modal.Content>
+          <Modal.Header>
+            <Modal.Title>
+              Step {step} of {totalSteps}: {steps[step - 1].title}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Content>{steps[step - 1].content}</Modal.Content>
+          <Modal.Footer>
+            <Flex justify="between" className="w-full">
+              <Button variant="secondary" onClick={() => setStep(step - 1)} disabled={step === 1}>
+                Back
+              </Button>
+              <Button onClick={() => (step === totalSteps ? handleClose() : setStep(step + 1))}>
+                {step === totalSteps ? 'Finish' : 'Next'}
+              </Button>
+            </Flex>
+          </Modal.Footer>
         </Modal>
       </>
     );
@@ -482,216 +340,90 @@ export const MultiStepWizard: Story = {
 };
 
 // Behavior Options
-export const DisableOverlayClick: Story = {
+export const BehaviorOptions: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Modal that cannot be closed by clicking the overlay. Users must use the close button or Escape key.',
+        story:
+          'Modal with different behavior configurations: disable overlay click, disable escape key, or hide close button.',
       },
     },
   },
   render: () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [openModal, setOpenModal] = useState<string | null>(null);
+
+    const options = [
+      {
+        id: 'overlay',
+        label: 'No Overlay Close',
+        props: { closeOnOverlayClick: false },
+        description: "Clicking the overlay won't close this modal.",
+      },
+      {
+        id: 'escape',
+        label: 'No Escape Close',
+        props: { closeOnEscape: false },
+        description: "Pressing Escape won't close this modal.",
+      },
+      {
+        id: 'button',
+        label: 'No Close Button',
+        props: { showCloseButton: false },
+        description: 'This modal has no X button.',
+      },
+    ];
 
     return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
-        <Modal 
-          isOpen={isOpen} 
-          onClose={() => setIsOpen(false)}
-          closeOnOverlayClick={false}
-        >
-          <Modal.Header>
-            <Modal.Title>Overlay Click Disabled</Modal.Title>
-          </Modal.Header>
-          <Modal.Content>
-            <p>Try clicking the dark overlay - it won't close the modal.</p>
-            <p style={{ marginTop: '0.5rem' }}>You must click the X button or press Escape to close.</p>
-          </Modal.Content>
-          <Modal.Footer>
-            <Button onClick={() => setIsOpen(false)}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-      </>
+      <Flex gap="sm" wrap="wrap">
+        {options.map((opt) => (
+          <Button key={opt.id} size="small" variant="secondary" onClick={() => setOpenModal(opt.id)}>
+            {opt.label}
+          </Button>
+        ))}
+        {options.map((opt) => (
+          <Modal
+            key={opt.id}
+            isOpen={openModal === opt.id}
+            onClose={() => setOpenModal(null)}
+            size="sm"
+            {...opt.props}
+          >
+            <Modal.Header>
+              <Modal.Title>{opt.label}</Modal.Title>
+            </Modal.Header>
+            <Modal.Content>
+              <Text>{opt.description}</Text>
+            </Modal.Content>
+            <Modal.Footer>
+              <Button onClick={() => setOpenModal(null)}>Close</Button>
+            </Modal.Footer>
+          </Modal>
+        ))}
+      </Flex>
     );
   },
 };
 
-export const DisableEscapeKey: Story = {
+export const WithoutFooter: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Modal that cannot be closed with the Escape key. Useful for critical confirmations.',
+        story: 'Modal without a footer section. Close via X button or Escape.',
       },
     },
   },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
-        <Modal 
-          isOpen={isOpen} 
-          onClose={() => setIsOpen(false)}
-          closeOnEscape={false}
-        >
+  render: () => (
+    <ModalDemo buttonLabel="Open Notice" size="sm">
+      {() => (
+        <>
           <Modal.Header>
-            <Modal.Title>Escape Key Disabled</Modal.Title>
+            <Modal.Title>Important Notice</Modal.Title>
           </Modal.Header>
           <Modal.Content>
-            <p>Pressing Escape won't close this modal.</p>
-            <p style={{ marginTop: '0.5rem' }}>You must explicitly click a button to proceed.</p>
+            <Text>Close via the X button or press Escape.</Text>
           </Modal.Content>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setIsOpen(false)}>Cancel</Button>
-            <Button onClick={() => setIsOpen(false)}>Confirm</Button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  },
-};
-
-export const HideCloseButton: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Modal without the close button. Users must interact with footer buttons or click overlay.',
-      },
-    },
-  },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
-        <Modal 
-          isOpen={isOpen} 
-          onClose={() => setIsOpen(false)}
-          showCloseButton={false}
-        >
-          <Modal.Header>
-            <Modal.Title>No Close Button</Modal.Title>
-          </Modal.Header>
-          <Modal.Content>
-            <p>This modal doesn't have an X button in the corner.</p>
-            <p style={{ marginTop: '0.5rem' }}>Click a footer button or the overlay to close.</p>
-          </Modal.Content>
-          <Modal.Footer>
-            <Button onClick={() => setIsOpen(false)}>OK</Button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  },
-};
-
-export const FullSize: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Full-screen modal that covers the entire viewport. Ideal for immersive experiences or complex workflows.',
-      },
-    },
-  },
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <Button onClick={() => setIsOpen(true)}>Open Full-Screen Modal</Button>
-        <Modal 
-          isOpen={isOpen} 
-          onClose={() => setIsOpen(false)}
-          size="full"
-        >
-          <Modal.Header>
-            <Modal.Title>Full-Screen Modal</Modal.Title>
-          </Modal.Header>
-          <Modal.Content>
-            <p>This modal takes up the entire viewport.</p>
-            <p style={{ marginTop: '0.5rem' }}>
-              Perfect for rich content editors, image galleries, or complex multi-step forms.
-            </p>
-          </Modal.Content>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setIsOpen(false)}>Close</Button>
-            <Button onClick={() => setIsOpen(false)}>Save</Button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  },
-};
-
-export const AllSizes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of all modal sizes (sm, md, lg, xl). Click buttons to see each size.',
-      },
-    },
-  },
-  render: () => {
-    const [openSize, setOpenSize] = useState<string | null>(null);
-
-    return (
-      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-        <Button size="small" onClick={() => setOpenSize('sm')}>SM</Button>
-        <Button size="small" onClick={() => setOpenSize('md')}>MD</Button>
-        <Button size="small" onClick={() => setOpenSize('lg')}>LG</Button>
-        <Button size="small" onClick={() => setOpenSize('xl')}>XL</Button>
-
-        <Modal isOpen={openSize === 'sm'} onClose={() => setOpenSize(null)} size="sm">
-          <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Small</Modal.Title>
-            </Modal.Header>
-            <p>This is a small modal.</p>
-            <Modal.Footer>
-              <Button size="small" onClick={() => setOpenSize(null)}>Close</Button>
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-
-        <Modal isOpen={openSize === 'md'} onClose={() => setOpenSize(null)}>
-          <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Medium</Modal.Title>
-            </Modal.Header>
-            <p>This is a medium modal (default size).</p>
-            <Modal.Footer>
-              <Button onClick={() => setOpenSize(null)}>Close</Button>
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-
-        <Modal isOpen={openSize === 'lg'} onClose={() => setOpenSize(null)} size="lg">
-          <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Large</Modal.Title>
-            </Modal.Header>
-            <p>This is a large modal.</p>
-            <Modal.Footer>
-              <Button onClick={() => setOpenSize(null)}>Close</Button>
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-
-        <Modal isOpen={openSize === 'xl'} onClose={() => setOpenSize(null)} size="xl">
-          <Modal.Content>
-            <Modal.Header>
-              <Modal.Title>Extra Large</Modal.Title>
-            </Modal.Header>
-            <p>This is an XL modal.</p>
-            <Modal.Footer>
-              <Button onClick={() => setOpenSize(null)}>Close</Button>
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-      </div>
-    );
-  },
+        </>
+      )}
+    </ModalDemo>
+  ),
 };

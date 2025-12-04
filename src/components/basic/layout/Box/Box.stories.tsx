@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Box } from './Box';
+import { VStack, HStack } from '../Stack';
+import { Text } from '../../typography/Text';
+import { Heading } from '../../typography/Heading';
+import { Button } from '../../forms/Button';
 
 const meta: Meta<typeof Box> = {
   title: 'Layout/Box',
@@ -59,7 +63,7 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Basic Box component with default styles.',
+        story: 'Basic Box with padding.',
       },
     },
   },
@@ -69,90 +73,82 @@ export const Default: Story = {
   },
 };
 
-export const WithPadding: Story = {
+export const Padding: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Box with padding on all sides.',
-      },
-    },
-  },
-  args: {
-    children: 'Box with padding',
-    p: 24,
-    bg: '#f3f4f6',
-  },
-};
-
-export const WithMargin: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Box with margin on all sides.',
+        story: 'Box supports uniform padding (p) or directional padding (pt, pr, pb, pl, px, py).',
       },
     },
   },
   render: () => (
-    <div style={{ border: '2px dashed #e5e7eb', padding: '8px' }}>
-      <Box m={16} p={16} bg="#dbeafe">
-        Box with margin
-      </Box>
-    </div>
+    <VStack spacing="lg">
+      <VStack spacing="xs">
+        <Text weight="semibold" size="small">p={24} (all sides)</Text>
+        <Box p={24} bg="var(--semantic-bg-secondary)" borderRadius={8}>
+          <Text>Uniform padding</Text>
+        </Box>
+      </VStack>
+      <VStack spacing="xs">
+        <Text weight="semibold" size="small">px={32} py={16} (horizontal/vertical)</Text>
+        <Box px={32} py={16} bg="var(--semantic-bg-secondary)" borderRadius={8}>
+          <Text>Horizontal and vertical padding</Text>
+        </Box>
+      </VStack>
+      <VStack spacing="xs">
+        <Text weight="semibold" size="small">pt={8} pr={24} pb={16} pl={32} (directional)</Text>
+        <Box pt={8} pr={24} pb={16} pl={32} bg="var(--semantic-bg-secondary)" borderRadius={8}>
+          <Text>Directional padding</Text>
+        </Box>
+      </VStack>
+    </VStack>
   ),
 };
 
-export const WithDirectionalPadding: Story = {
+export const Margin: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Box with different padding values for each side.',
+        story: 'Box supports margin props (m, mt, mr, mb, ml, mx, my).',
       },
     },
   },
-  args: {
-    children: 'Directional padding',
-    pt: 8,
-    pr: 24,
-    pb: 16,
-    pl: 32,
-    bg: '#fef3c7',
-  },
+  render: () => (
+    <Box borderWidth={2} borderColor="var(--semantic-border-default)" borderRadius={8} p={8}>
+      <Box m={16} p={16} bg="var(--semantic-bg-secondary)" borderRadius={8}>
+        <Text>Box with m={16}</Text>
+      </Box>
+    </Box>
+  ),
 };
 
-export const WithHorizontalAndVerticalPadding: Story = {
+export const Background: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Box with horizontal and vertical padding using px and py props.',
+        story: 'Box with background color and text color.',
       },
     },
   },
-  args: {
-    children: 'Horizontal and vertical padding',
-    px: 32,
-    py: 16,
-    bg: '#ddd6fe',
-  },
+  render: () => (
+    <HStack spacing="md">
+      <Box p={16} bg="var(--semantic-brand-primary-default)" color="white" borderRadius={8}>
+        <Text>Primary</Text>
+      </Box>
+      <Box p={16} bg="var(--semantic-status-success-default)" color="white" borderRadius={8}>
+        <Text>Success</Text>
+      </Box>
+      <Box p={16} bg="var(--semantic-status-warning-default)" color="white" borderRadius={8}>
+        <Text>Warning</Text>
+      </Box>
+      <Box p={16} bg="var(--semantic-status-error-default)" color="white" borderRadius={8}>
+        <Text>Error</Text>
+      </Box>
+    </HStack>
+  ),
 };
 
-export const WithBackgroundAndColor: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Box with custom background and text color.',
-      },
-    },
-  },
-  args: {
-    children: 'Styled Box',
-    p: 24,
-    bg: '#3b82f6',
-    color: '#ffffff',
-    borderRadius: 8,
-  },
-};
-
-export const WithBorder: Story = {
+export const Border: Story = {
   parameters: {
     docs: {
       description: {
@@ -160,180 +156,106 @@ export const WithBorder: Story = {
       },
     },
   },
-  args: {
-    children: 'Box with border',
-    p: 24,
-    borderWidth: 2,
-    borderColor: '#3b82f6',
-    borderRadius: 12,
-  },
-};
-
-export const WithSizing: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Box with explicit width and height.',
-      },
-    },
-  },
-  args: {
-    children: 'Fixed size box',
-    w: 200,
-    h: 150,
-    p: 16,
-    bg: '#fecaca',
-    display: 'flex',
-  },
-  render: (args) => (
-    <Box {...args} style={{ alignItems: 'center', justifyContent: 'center' }}>
-      {args.children}
-    </Box>
+  render: () => (
+    <HStack spacing="md">
+      <Box p={16} borderWidth={1} borderColor="var(--semantic-border-default)" borderRadius={4}>
+        <Text>Subtle border</Text>
+      </Box>
+      <Box p={16} borderWidth={2} borderColor="var(--semantic-brand-primary-default)" borderRadius={8}>
+        <Text>Primary border</Text>
+      </Box>
+      <Box p={16} borderWidth={2} borderColor="var(--semantic-status-error-default)" borderRadius={12}>
+        <Text>Error border</Text>
+      </Box>
+    </HStack>
   ),
 };
 
-export const WithMinMaxSizing: Story = {
+export const Sizing: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Box with minimum and maximum width constraints.',
+        story: 'Box supports explicit sizing (w, h) and constraints (minW, maxW, minH, maxH).',
       },
     },
   },
-  args: {
-    children: 'This box has a minimum width of 200px and maximum width of 400px',
-    p: 16,
-    minW: 200,
-    maxW: 400,
-    bg: '#e9d5ff',
-    borderRadius: 8,
-  },
+  render: () => (
+    <VStack spacing="lg">
+      <VStack spacing="xs">
+        <Text weight="semibold" size="small">Fixed size (w={200} h={100})</Text>
+        <Box
+          w={200}
+          h={100}
+          p={16}
+          bg="var(--semantic-bg-secondary)"
+          borderRadius={8}
+          display="flex"
+          style={{ alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Text>200×100</Text>
+        </Box>
+      </VStack>
+      <VStack spacing="xs">
+        <Text weight="semibold" size="small">Constrained (minW={200} maxW={400})</Text>
+        <Box minW={200} maxW={400} p={16} bg="var(--semantic-bg-secondary)" borderRadius={8}>
+          <Text>This box has min-width of 200px and max-width of 400px</Text>
+        </Box>
+      </VStack>
+    </VStack>
+  ),
 };
 
-export const AsSection: Story = {
+export const PolymorphicAs: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Box rendered as a section element using the polymorphic `as` prop.',
+        story: 'Box can render as different HTML elements using the `as` prop.',
       },
     },
   },
-  args: {
-    as: 'section',
-    children: 'This is a <section> element',
-    p: 24,
-    bg: '#f0fdf4',
-    borderRadius: 8,
-  },
-};
-
-export const AsArticle: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Box rendered as an article element.',
-      },
-    },
-  },
-  args: {
-    as: 'article',
-    children: 'This is an <article> element',
-    p: 24,
-    bg: '#fef2f2',
-    borderRadius: 8,
-  },
+  render: () => (
+    <VStack spacing="md">
+      <Box as="section" p={16} bg="var(--semantic-bg-secondary)" borderRadius={8}>
+        <Text>Rendered as &lt;section&gt;</Text>
+      </Box>
+      <Box as="article" p={16} bg="var(--semantic-bg-secondary)" borderRadius={8}>
+        <Text>Rendered as &lt;article&gt;</Text>
+      </Box>
+      <Box as="aside" p={16} bg="var(--semantic-bg-secondary)" borderRadius={8}>
+        <Text>Rendered as &lt;aside&gt;</Text>
+      </Box>
+    </VStack>
+  ),
 };
 
 export const FlexContainer: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Box used as a flex container.',
+        story: 'Box used as a flex container with display="flex".',
       },
     },
   },
   render: () => (
-    <Box display="flex" p={16} bg="#f3f4f6" borderRadius={8}>
-      <Box p={12} m={4} bg="#dbeafe" borderRadius={4}>
-        Item 1
+    <Box display="flex" p={16} bg="var(--semantic-bg-secondary)" borderRadius={8} style={{ gap: '8px' }}>
+      <Box p={12} bg="var(--semantic-brand-primary-default)" color="white" borderRadius={4}>
+        <Text>Item 1</Text>
       </Box>
-      <Box p={12} m={4} bg="#dbeafe" borderRadius={4}>
-        Item 2
+      <Box p={12} bg="var(--semantic-brand-primary-default)" color="white" borderRadius={4}>
+        <Text>Item 2</Text>
       </Box>
-      <Box p={12} m={4} bg="#dbeafe" borderRadius={4}>
-        Item 3
+      <Box p={12} bg="var(--semantic-brand-primary-default)" color="white" borderRadius={4}>
+        <Text>Item 3</Text>
       </Box>
     </Box>
   ),
 };
 
-export const GridContainer: Story = {
+export const CardExample: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Box used as a grid container.',
-      },
-    },
-  },
-  render: () => (
-    <Box
-      display="grid"
-      p={16}
-      bg="#f3f4f6"
-      borderRadius={8}
-      style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}
-    >
-      <Box p={12} bg="#fecaca" borderRadius={4}>
-        Grid 1
-      </Box>
-      <Box p={12} bg="#fecaca" borderRadius={4}>
-        Grid 2
-      </Box>
-      <Box p={12} bg="#fecaca" borderRadius={4}>
-        Grid 3
-      </Box>
-      <Box p={12} bg="#fecaca" borderRadius={4}>
-        Grid 4
-      </Box>
-      <Box p={12} bg="#fecaca" borderRadius={4}>
-        Grid 5
-      </Box>
-      <Box p={12} bg="#fecaca" borderRadius={4}>
-        Grid 6
-      </Box>
-    </Box>
-  ),
-};
-
-export const CenteredContent: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Box with centered content using flexbox.',
-      },
-    },
-  },
-  render: () => (
-    <Box
-      display="flex"
-      w={300}
-      h={200}
-      bg="#e0e7ff"
-      borderRadius={12}
-      style={{ alignItems: 'center', justifyContent: 'center' }}
-    >
-      <Box p={16} bg="white" borderRadius={8}>
-        Centered content
-      </Box>
-    </Box>
-  ),
-};
-
-export const Card: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Box component used to create a card-like component.',
+        story: 'Box component used to create a card-like layout.',
       },
     },
   },
@@ -341,60 +263,24 @@ export const Card: Story = {
     <Box
       w={320}
       p={24}
-      bg="white"
+      bg="var(--semantic-surface-elevated)"
       borderWidth={1}
-      borderColor="#e5e7eb"
+      borderColor="var(--semantic-border-default)"
       borderRadius={12}
       style={{ boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)' }}
     >
-      <Box as="h3" mb={8} style={{ fontSize: '18px', fontWeight: 600 }}>
-        Card Title
-      </Box>
-      <Box color="#6b7280" mb={16}>
-        This is a card built using the Box component with various styling props.
-      </Box>
-      <Box display="flex" style={{ gap: '8px' }}>
-        <Box
-          as="button"
-          px={16}
-          py={8}
-          bg="#3b82f6"
-          color="white"
-          borderRadius={6}
-          style={{ cursor: 'pointer', border: 'none', fontSize: '14px', fontWeight: 500 }}
-        >
-          Action
-        </Box>
-        <Box
-          as="button"
-          px={16}
-          py={8}
-          borderWidth={1}
-          borderColor="#e5e7eb"
-          borderRadius={6}
-          style={{ cursor: 'pointer', backgroundColor: 'white', fontSize: '14px', fontWeight: 500 }}
-        >
-          Cancel
-        </Box>
-      </Box>
+      <VStack spacing="md">
+        <Heading as="h3">Card Title</Heading>
+        <Text color="secondary">
+          This is a card built using the Box component with various styling props.
+        </Text>
+        <HStack spacing="sm">
+          <Button>Action</Button>
+          <Button variant="secondary">Cancel</Button>
+        </HStack>
+      </VStack>
     </Box>
   ),
-};
-
-export const ResponsiveBox: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Box with responsive behavior using className for Tailwind classes.',
-      },
-    },
-  },
-  args: {
-    children: 'Resize the window to see responsive padding',
-    className: 'p-4 md:p-8 lg:p-12',
-    bg: '#bfdbfe',
-    borderRadius: 8,
-  },
 };
 
 export const NestedBoxes: Story = {
@@ -406,25 +292,27 @@ export const NestedBoxes: Story = {
     },
   },
   render: () => (
-    <Box p={24} bg="#f9fafb" borderRadius={12}>
-      <Box mb={16} p={16} bg="#dbeafe" borderRadius={8}>
-        <Box as="h4" mb={8} style={{ fontSize: '16px', fontWeight: 600 }}>
-          Header
+    <Box p={24} bg="var(--semantic-bg-secondary)" borderRadius={12}>
+      <VStack spacing="md">
+        <Box p={16} bg="var(--semantic-status-info-alpha)" borderRadius={8}>
+          <VStack spacing="xs">
+            <Heading as="h4">Header</Heading>
+            <Text color="secondary">This is the header section</Text>
+          </VStack>
         </Box>
-        <Box color="#1e40af">This is the header section</Box>
-      </Box>
-      <Box mb={16} p={16} bg="#fef3c7" borderRadius={8}>
-        <Box as="h4" mb={8} style={{ fontSize: '16px', fontWeight: 600 }}>
-          Content
+        <Box p={16} bg="var(--semantic-status-warning-alpha)" borderRadius={8}>
+          <VStack spacing="xs">
+            <Heading as="h4">Content</Heading>
+            <Text color="secondary">This is the main content section</Text>
+          </VStack>
         </Box>
-        <Box color="#92400e">This is the main content section</Box>
-      </Box>
-      <Box p={16} bg="#d1fae5" borderRadius={8}>
-        <Box as="h4" mb={8} style={{ fontSize: '16px', fontWeight: 600 }}>
-          Footer
+        <Box p={16} bg="var(--semantic-status-success-alpha)" borderRadius={8}>
+          <VStack spacing="xs">
+            <Heading as="h4">Footer</Heading>
+            <Text color="secondary">This is the footer section</Text>
+          </VStack>
         </Box>
-        <Box color="#065f46">This is the footer section</Box>
-      </Box>
+      </VStack>
     </Box>
   ),
 };

@@ -39,26 +39,32 @@ export const OPTION_STATE_STYLES = {
 } as const;
 
 // Label and helper text
-export const LABEL_CLASSES =
-  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)] text-[color:var(--component-select-label-default)] mb-[length:var(--component-input-gap-compact)]';
+export const LABEL_BASE_CLASSES =
+  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)]';
 
-export const LABEL_ERROR_CLASSES =
-  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)] text-[color:var(--component-select-label-error)] mb-[length:var(--component-input-gap-compact)]';
+export const LABEL_STATE_STYLES = {
+  default: 'text-[color:var(--component-select-label-default)]',
+  error: 'text-[color:var(--component-select-label-error)]',
+} as const;
 
-export const HELPER_CLASSES =
-  'mt-[length:var(--component-input-gap-compact)] text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)] text-[color:var(--component-select-helper-default)]';
+export const HELPER_BASE_CLASSES =
+  'text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)]';
 
-export const HELPER_ERROR_CLASSES =
-  'mt-[length:var(--component-input-gap-compact)] text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)] text-[color:var(--component-select-helper-error)]';
+export const HELPER_STATE_STYLES = {
+  default: 'text-[color:var(--component-select-helper-default)]',
+  error: 'text-[color:var(--component-select-helper-error)]',
+} as const;
 
 // Icon styles
-export const ICON_CLASSES =
-  'w-[length:var(--component-input-icon-size-default)] h-[length:var(--component-input-icon-size-default)] text-[color:var(--component-select-icon-default)] transition-transform duration-200 shrink-0';
+export const ICON_BASE_CLASSES =
+  'w-[length:var(--component-input-icon-size-default)] h-[length:var(--component-input-icon-size-default)] shrink-0';
+
+export const ICON_STATE_STYLES = {
+  default: 'text-[color:var(--component-select-icon-default)] transition-transform duration-200',
+  disabled: 'text-[color:var(--component-select-icon-disabled)]',
+} as const;
 
 export const ICON_OPEN_CLASSES = 'rotate-180';
-
-export const ICON_DISABLED_CLASSES =
-  'w-[length:var(--component-input-icon-size-default)] h-[length:var(--component-input-icon-size-default)] text-[color:var(--component-select-icon-disabled)] shrink-0';
 
 // Placeholder text
 export const PLACEHOLDER_CLASSES = 'text-[color:var(--component-select-text-placeholder)]';

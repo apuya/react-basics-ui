@@ -1,21 +1,74 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 
-type Theme = 'light' | 'dark' | 'system';
+/** Available theme options */
+export type Theme = 'light' | 'dark' | 'system';
 
-interface ThemeContextValue {
+/** Resolved theme after system preference is applied */
+export type ResolvedTheme = 'light' | 'dark';
+
+/** Context value provided by ThemeProvider */
+export interface ThemeContextValue {
+  /** Current theme setting (may be 'system') */
   theme: Theme;
-  resolvedTheme: 'light' | 'dark';
+  /** Actual applied theme (resolves 'system' to 'light' or 'dark') */
+  resolvedTheme: ResolvedTheme;
+  /** Function to update the theme */
   setTheme: (theme: Theme) => void;
+}
+
+/** Props for ThemeProvider component */
+export interface ThemeProviderProps {
+  /** Child components to wrap */
+  children: ReactNode;
+  /** Initial theme setting @default 'system' */
+  defaultTheme?: Theme;
+  /** localStorage key for persistence @default 'ui-theme' */
+  storageKey?: string;
 }
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-interface ThemeProviderProps {
-  children: ReactNode;
-  defaultTheme?: Theme;
-  storageKey?: string;
+/**
+ * Helper to get initial resolved theme for SSR-safe initialization
+ */
+function getInitialResolvedTheme(theme: Theme): ResolvedTheme {
+  if (typeof window === 'undefined') return 'light';
+  if (theme === 'system') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  return theme;
 }
 
+/**
+ * ThemeProvider component for managing light/dark mode theming.
+ *
+ * Features:
+ * - Supports 'light', 'dark', or 'system' (auto-detect) themes
+ * - Persists user preference to localStorage
+ * - Listens to system preference changes when set to 'system'
+ * - Sets `data-theme="dark"` on document root for CSS targeting
+ *
+ * @example
+ * ```tsx
+ * <ThemeProvider defaultTheme="system">
+ *   <App />
+ * </ThemeProvider>
+ *
+ * // Access theme in components
+ * function ThemeToggle() {
+ *   const { theme, setTheme, resolvedTheme } = useTheme();
+ *   return <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />;
+ * }
+ * ```
+ */
 export function ThemeProvider({
   children,
   defaultTheme = 'system',
@@ -26,7 +79,9 @@ export function ThemeProvider({
     return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
   });
 
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() =>
+    getInitialResolvedTheme(theme)
+  );
 
   useEffect(() => {
     const root = document.documentElement;
@@ -55,19 +110,39 @@ export function ThemeProvider({
     }
   }, [theme]);
 
-  const setTheme = (newTheme: Theme) => {
-    localStorage.setItem(storageKey, newTheme);
-    setThemeState(newTheme);
-  };
-
-  return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
+  const setTheme = useCallback(
+    (newTheme: Theme) => {
+      localStorage.setItem(storageKey, newTheme);
+      setThemeState(newTheme);
+    },
+    [storageKey]
   );
+
+  const value = useMemo<ThemeContextValue>(
+    () => ({ theme, resolvedTheme, setTheme }),
+    [theme, resolvedTheme, setTheme]
+  );
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
-export function useTheme() {
+ThemeProvider.displayName = 'ThemeProvider';
+
+/**
+ * Hook to access the current theme context.
+ *
+ * @returns Theme context value with theme, resolvedTheme, and setTheme
+ * @throws Error if used outside of ThemeProvider
+ *
+ * @example
+ * ```tsx
+ * function MyComponent() {
+ *   const { theme, resolvedTheme, setTheme } = useTheme();
+ *   return <button onClick={() => setTheme('dark')}>Dark Mode</button>;
+ * }
+ * ```
+ */
+export function useTheme(): ThemeContextValue {
   const context = useContext(ThemeContext);
   if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');

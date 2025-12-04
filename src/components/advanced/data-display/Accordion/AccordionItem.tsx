@@ -1,12 +1,14 @@
 import {
   useMemo,
   useEffect,
+  useRef,
   type ReactNode,
   type ComponentPropsWithoutRef,
   forwardRef,
   memo,
 } from 'react';
 import { cn } from '@/lib/cn';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { createComponentContext } from '@/lib/createComponentContext';
 import { useAccordionContext } from './Accordion';
 import { ACCORDION_ITEM_BASE_CLASSES, ACCORDION_ITEM_VARIANT_STYLES } from './Accordion.styles';
@@ -31,9 +33,11 @@ const { Context: AccordionItemContext, useContext: useAccordionItemContext } =
 export { useAccordionItemContext };
 
 export const AccordionItem = memo(
-  forwardRef<HTMLDivElement, AccordionItemProps>(({ value, children, className, style, disabled = false, ...props }, ref) => {
+  forwardRef<HTMLDivElement, AccordionItemProps>(({ value, children, className, style, disabled = false, ...props }, forwardedRef) => {
     const { activeItems, variant, disabledItems } = useAccordionContext();
     const isOpen = activeItems.includes(value);
+    const itemRef = useRef<HTMLDivElement>(null!);
+    const mergedRef = useMergedRefs(forwardedRef, itemRef);
 
     // Register/unregister disabled state with parent
     useEffect(() => {
@@ -75,7 +79,15 @@ export const AccordionItem = memo(
 
     return (
       <AccordionItemContext.Provider value={contextValue}>
-        <div ref={ref} className={itemClasses} style={inlineStyle} {...props}>
+        <div
+          ref={mergedRef}
+          className={itemClasses}
+          style={inlineStyle}
+          data-value={value}
+          data-open={isOpen || undefined}
+          data-disabled={disabled || undefined}
+          {...props}
+        >
           {children}
         </div>
       </AccordionItemContext.Provider>

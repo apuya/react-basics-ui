@@ -27,7 +27,8 @@ export type ButtonVariant =
   | 'tertiary'
   | 'ghost'
   | 'destructive'
-  | 'tabs';
+  | 'tabs'
+  | 'nav';
 
 /** Available button sizes */
 export type ButtonSize = 'small' | 'default' | 'large';

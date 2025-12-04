@@ -7,6 +7,7 @@ import {
   ICON_SIZE_STYLES,
   SIZE_STYLES,
   STATE_STYLES,
+  SUFFIX_STYLE,
 } from './Input.styles';
 
 export type InputSize = keyof typeof SIZE_STYLES;
@@ -24,6 +25,8 @@ export interface InputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'siz
   leadingIcon?: ReactNode;
   /** Icon displayed at the end of the input */
   trailingIcon?: ReactNode;
+  /** Suffix text displayed inside the input, aligned right (e.g., "kg", "cm", "$") */
+  suffix?: string;
   /** Additional className for the wrapper element */
   wrapperClassName?: string;
 }
@@ -48,6 +51,7 @@ export const Input = memo(
       helperText,
       leadingIcon,
       trailingIcon,
+      suffix,
       className,
       wrapperClassName,
       id,
@@ -69,19 +73,19 @@ export const Input = memo(
     );
 
     const inputStyle = useMemo(
-      () => ({
-        height: `var(--component-input-height-${size})`,
-        paddingInline: leadingIcon || trailingIcon
-          ? undefined
-          : 'var(--component-input-padding-inline)',
-        paddingLeft: leadingIcon
-          ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
-          : undefined,
-        paddingRight: trailingIcon
-          ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
-          : undefined,
-      }),
-      [size, leadingIcon, trailingIcon]
+      () => {
+        const hasSuffixOrTrailing = suffix || trailingIcon;
+        return {
+          height: `var(--component-input-height-${size})`,
+          paddingLeft: leadingIcon
+            ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
+            : 'var(--component-input-padding-inline)',
+          paddingRight: hasSuffixOrTrailing
+            ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
+            : 'var(--component-input-padding-inline)',
+        };
+      },
+      [size, leadingIcon, trailingIcon, suffix]
     );
 
     // Simple lookup - no memoization needed
@@ -131,6 +135,16 @@ export const Input = memo(
               aria-hidden="true"
             >
               {trailingIcon}
+            </span>
+          )}
+
+          {suffix && !trailingIcon && (
+            <span
+              className="absolute top-1/2 right-0 -translate-y-1/2 pointer-events-none select-none"
+              style={SUFFIX_STYLE}
+              aria-hidden="true"
+            >
+              {suffix}
             </span>
           )}
         </div>

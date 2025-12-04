@@ -225,17 +225,11 @@ const PopoverDescription = memo(
     ({ className, children, ...props }, ref) => {
       const { descriptionId } = usePopoverContext();
 
-      const descriptionStyle = useMemo(
-        () => ({ marginTop: 'var(--component-popover-gap)' }),
-        []
-      );
-
       return (
         <p
           ref={ref}
           id={descriptionId}
           className={cn(DESCRIPTION_CLASSES, className)}
-          style={descriptionStyle}
           {...props}
         >
           {children}

@@ -64,6 +64,7 @@ interface AutocompleteContextValue {
   disabled: boolean;
   error: boolean;
   size: AutocompleteSize;
+  placeholder: string;
   options: AutocompleteOptionData[];
   filteredOptions: AutocompleteOptionData[];
   highlightedIndex: number;
@@ -184,6 +185,7 @@ const AutocompleteRoot = ({
       disabled,
       error,
       size,
+      placeholder: placeholder || 'Search...',
       options,
       filteredOptions,
       highlightedIndex,
@@ -192,7 +194,7 @@ const AutocompleteRoot = ({
       listRef,
       listId,
     }),
-    [isOpen, setIsOpen, selectedValue, selectOption, query, multiple, disabled, error, size, options, filteredOptions, highlightedIndex, listId]
+    [isOpen, setIsOpen, selectedValue, selectOption, query, multiple, disabled, error, size, placeholder, options, filteredOptions, highlightedIndex, listId]
   );
 
   const autocompleteClasses = useMemo(
@@ -209,13 +211,24 @@ const AutocompleteRoot = ({
       disabled={disabled}
     >
       <AutocompleteContext.Provider value={contextValue}>
-        <div ref={containerRef} className={autocompleteClasses} {...props}>
+        <div
+          ref={containerRef}
+          className={autocompleteClasses}
+          data-size={size}
+          data-error={error || undefined}
+          data-disabled={disabled || undefined}
+          data-open={isOpen}
+          data-multiple={multiple || undefined}
+          {...props}
+        >
           {children}
         </div>
       </AutocompleteContext.Provider>
     </FormField>
   );
 };
+
+AutocompleteRoot.displayName = 'Autocomplete';
 
 export const Autocomplete = Object.assign(AutocompleteRoot, {
   Input: AutocompleteInput,

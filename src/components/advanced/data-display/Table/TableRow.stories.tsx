@@ -1,20 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Table } from './Table';
-import { Text } from '../../../basic/typography/Text';
+import { TableRow } from './TableRow';
+import { TableContext } from './TableContext';
 
 const meta = {
   title: 'Data Display/Table/TableRow',
-  component: Table.Row,
+  component: TableRow,
   parameters: {
     layout: 'padded',
     docs: {
       description: {
-        component: 'The TableRow component represents a single row in the table.',
+        component: 'The TableRow component represents a single row in the table. It uses TableContext for variant styling.',
       },
     },
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Table.Row>;
+  decorators: [
+    (Story, context) => (
+      <TableContext.Provider value={{ size: 'md', variant: context.args.variant || 'default' }}>
+        <table className="w-full border-collapse">
+          <tbody>
+            <Story />
+          </tbody>
+        </table>
+      </TableContext.Provider>
+    ),
+  ],
+} satisfies Meta<typeof TableRow>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -23,66 +34,36 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Basic table rows with default styling.',
+        story: 'Default table row with basic styling.',
       },
     },
   },
   render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-          <Table.Cell>Admin</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Jane Smith</Table.Cell>
-          <Table.Cell>jane@example.com</Table.Cell>
-          <Table.Cell>Editor</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    <TableRow>
+      <td className="p-3">John Doe</td>
+      <td className="p-3">john@example.com</td>
+      <td className="p-3">Admin</td>
+    </TableRow>
   ),
 };
 
-export const WithCustomStyles: Story = {
+export const WithCustomClassName: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Table rows with custom styling applied.',
+        story: 'TableRow with custom className for additional styling.',
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Status</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row style={{ backgroundColor: '#f0f9ff' }}>
-          <Table.Cell>Active User</Table.Cell>
-          <Table.Cell>
-            <Text color="success" weight="medium">Active</Text>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row style={{ backgroundColor: '#fef2f2' }}>
-          <Table.Cell>Inactive User</Table.Cell>
-          <Table.Cell>
-            <Text color="error" weight="medium">Inactive</Text>
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+  args: {
+    className: 'bg-blue-50',
+  },
+  render: (args) => (
+    <TableRow {...args}>
+      <td className="p-3">Highlighted Row</td>
+      <td className="p-3">custom@example.com</td>
+      <td className="p-3">Special</td>
+    </TableRow>
   ),
 };
 
@@ -90,36 +71,19 @@ export const Clickable: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Clickable table rows with hover effects.',
+        story: 'Clickable table row with onClick handler.',
       },
     },
   },
-  render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row
-          onClick={() => alert('Row 1 clicked')}
-          style={{ cursor: 'pointer' }}
-          className="hover:bg-gray-50"
-        >
-          <Table.Cell>John Doe</Table.Cell>
-          <Table.Cell>john@example.com</Table.Cell>
-        </Table.Row>
-        <Table.Row
-          onClick={() => alert('Row 2 clicked')}
-          style={{ cursor: 'pointer' }}
-          className="hover:bg-gray-50"
-        >
-          <Table.Cell>Jane Smith</Table.Cell>
-          <Table.Cell>jane@example.com</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+  args: {
+    onClick: () => alert('Row clicked'),
+    style: { cursor: 'pointer' },
+  },
+  render: (args) => (
+    <TableRow {...args}>
+      <td className="p-3">Click me</td>
+      <td className="p-3">Clickable row</td>
+      <td className="p-3">Interactive</td>
+    </TableRow>
   ),
 };

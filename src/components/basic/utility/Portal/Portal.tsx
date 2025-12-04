@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { memo, useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 export interface PortalProps {
@@ -8,28 +8,28 @@ export interface PortalProps {
 
 /**
  * Portal component for rendering children into a DOM node outside the parent component hierarchy.
- * 
- * Uses React's createPortal to render content at the document root level, breaking out of 
+ *
+ * Uses React's createPortal to render content at the document root level, breaking out of
  * CSS constraints like overflow: hidden or z-index stacking contexts.
- * 
+ *
  * Automatically creates the target container if it doesn't exist and cleans up on unmount.
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage
  * <Portal>
  *   <div>This renders at document.body</div>
  * </Portal>
- * 
+ *
  * // Custom container
  * <Portal containerId="modal-root">
  *   <Modal />
  * </Portal>
  * ```
  */
-export const Portal = ({ children, containerId = 'portal-root' }: PortalProps) => {
-  const [mounted, setMounted] = useState(false);
-  const elRef = useRef<HTMLElement | null>(null);
+export const Portal = memo(({ children, containerId = 'portal-root' }: PortalProps) => {
+  const [container, setContainer] = useState<HTMLElement | null>(null);
+  const createdByUs = useRef(false);
 
   useEffect(() => {
     let portalRoot = document.getElementById(containerId);
@@ -38,18 +38,22 @@ export const Portal = ({ children, containerId = 'portal-root' }: PortalProps) =
       portalRoot = document.createElement('div');
       portalRoot.id = containerId;
       document.body.appendChild(portalRoot);
+      createdByUs.current = true;
+    } else {
+      createdByUs.current = false;
     }
 
-    elRef.current = portalRoot;
-    setMounted(true);
+    setContainer(portalRoot);
 
     return () => {
-      // Only remove if empty and we created it
-      if (portalRoot && portalRoot.childNodes.length === 0 && portalRoot.id === containerId) {
+      // Only remove if we created it and it's empty
+      if (createdByUs.current && portalRoot && portalRoot.childNodes.length === 0) {
         portalRoot.remove();
       }
     };
   }, [containerId]);
 
-  return mounted && elRef.current ? createPortal(children, elRef.current) : null;
-};
+  return container ? createPortal(children, container) : null;
+});
+
+Portal.displayName = 'Portal';

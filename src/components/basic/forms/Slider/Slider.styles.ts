@@ -1,10 +1,12 @@
 export const WRAPPER_CLASSES = 'w-full';
 
-export const LABEL_CLASSES =
-  'mb-[length:var(--component-slider-label-gap)] block text-[length:var(--component-slider-label-size)] font-[number:var(--component-slider-label-weight)] text-[color:var(--component-slider-label-color)]';
+export const LABEL_BASE_CLASSES =
+  'block text-[length:var(--component-slider-label-size)] font-[number:var(--component-slider-label-weight)]';
 
-export const LABEL_DISABLED_CLASSES =
-  'mb-[length:var(--component-slider-label-gap)] block text-[length:var(--component-slider-label-size)] font-[number:var(--component-slider-label-weight)] text-[color:var(--component-slider-label-color-disabled)]';
+export const LABEL_STATE_STYLES = {
+  enabled: 'text-[color:var(--component-slider-label-color)]',
+  disabled: 'text-[color:var(--component-slider-label-color-disabled)]',
+} as const;
 
 export const INPUT_BASE_CLASSES =
   'w-full appearance-none bg-transparent cursor-pointer disabled:cursor-not-allowed disabled:opacity-[var(--component-slider-disabled-opacity)] focus-visible:outline-none';
@@ -24,8 +26,10 @@ export const INPUT_MOZ_RANGE_THUMB =
 export const INPUT_FOCUS_RING =
   'focus-visible:[&::-webkit-slider-thumb]:ring-[length:var(--semantic-focus-ring-width)] focus-visible:[&::-webkit-slider-thumb]:ring-offset-[length:var(--semantic-focus-ring-offset)] focus-visible:[&::-webkit-slider-thumb]:ring-[color:var(--semantic-border-focus)] focus-visible:[&::-moz-range-thumb]:ring-[length:var(--semantic-focus-ring-width)] focus-visible:[&::-moz-range-thumb]:ring-offset-[length:var(--semantic-focus-ring-offset)] focus-visible:[&::-moz-range-thumb]:ring-[color:var(--semantic-border-focus)]';
 
-export const VALUE_DISPLAY_CLASSES =
-  'mt-[length:var(--component-slider-value-gap)] flex justify-between text-[length:var(--component-slider-value-size)] font-[number:var(--component-slider-value-weight)] text-[color:var(--component-slider-value-color)]';
+export const VALUE_BASE_CLASSES =
+  'flex justify-between text-[length:var(--component-slider-value-size)] font-[number:var(--component-slider-value-weight)]';
 
-export const VALUE_DISABLED_CLASSES =
-  'mt-[length:var(--component-slider-value-gap)] flex justify-between text-[length:var(--component-slider-value-size)] font-[number:var(--component-slider-value-weight)] text-[color:var(--component-slider-value-color-disabled)]';
+export const VALUE_STATE_STYLES = {
+  enabled: 'text-[color:var(--component-slider-value-color)]',
+  disabled: 'text-[color:var(--component-slider-value-color-disabled)]',
+} as const;

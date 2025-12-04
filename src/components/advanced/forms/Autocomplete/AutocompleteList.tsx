@@ -7,7 +7,7 @@ import {
   type CSSProperties,
 } from 'react';
 import { cn } from '@/lib/cn';
-import { Portal } from '@/components/basic/utility/Portal';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { useAutocompleteContext } from './Autocomplete';
 import {
   AUTOCOMPLETE_LIST_BASE_CLASSES,
@@ -23,6 +23,7 @@ export const AutocompleteList = memo(
   forwardRef<HTMLDivElement, AutocompleteListProps>(
     ({ children, className, style, ...props }, forwardedRef) => {
       const { isOpen, listRef, listId } = useAutocompleteContext();
+      const mergedRef = useMergedRefs(forwardedRef, listRef);
 
       const listClasses = useMemo(
         () =>
@@ -44,25 +45,17 @@ export const AutocompleteList = memo(
       );
 
       return (
-        <Portal>
-          <div
-            ref={(node) => {
-              if (node) listRef.current = node;
-              if (typeof forwardedRef === 'function') {
-                forwardedRef(node);
-              } else if (forwardedRef) {
-                forwardedRef.current = node;
-              }
-            }}
-            id={listId}
-            role="listbox"
-            className={listClasses}
-            style={listStyle}
-            {...props}
-          >
-            {children}
-          </div>
-        </Portal>
+        <div
+          ref={mergedRef}
+          id={listId}
+          role="listbox"
+          className={listClasses}
+          style={listStyle}
+          data-open={isOpen}
+          {...props}
+        >
+          {children}
+        </div>
       );
     }
   )
