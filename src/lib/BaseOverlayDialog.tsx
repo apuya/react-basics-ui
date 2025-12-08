@@ -11,8 +11,8 @@ import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { cn } from '@/lib/cn';
-import { Portal } from '@/components/basic/utility/Portal';
-import { Button } from '@/components/basic/forms/Button';
+import { Portal } from '@/components/utility/Portal';
+import { Button } from '@/components/forms/Button';
 import { BiX } from 'react-icons/bi';
 
 export interface BaseOverlayDialogProps {
