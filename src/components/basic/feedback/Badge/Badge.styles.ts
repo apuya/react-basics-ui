@@ -1,13 +1,13 @@
 export const BASE_CLASSES =
-  'inline-flex justify-center items-center content-center flex-wrap rounded-[length:var(--component-badge-radius)] transition-colors duration-[var(--component-badge-transition-duration)] whitespace-nowrap';
+  'inline-flex justify-center items-center content-center flex-wrap rounded-full transition-colors duration-200 whitespace-nowrap';
 
 export const SIZE_STYLES = {
   small:
-    'min-h-[length:var(--component-badge-height-min-small)] gap-[length:var(--component-badge-gap-space-small)] text-[length:var(--component-badge-font-size-small)] font-[number:var(--component-badge-font-weight-small)] leading-[var(--component-badge-line-height-small)]',
+    'min-h-5 gap-1 text-xs font-medium leading-none',
   default:
-    'min-h-[length:var(--component-badge-height-min-default)] gap-[length:var(--component-badge-gap-space-default)] text-[length:var(--component-badge-font-size-default)] font-[number:var(--component-badge-font-weight-default)] leading-[var(--component-badge-line-height-default)]',
+    'min-h-6 gap-1.5 text-sm font-medium leading-none',
   large:
-    'h-[length:var(--component-badge-height-large)] min-h-[length:var(--component-badge-height-min-large)] gap-[length:var(--component-badge-gap-space-large)] text-[length:var(--component-badge-font-size-large)] font-[number:var(--component-badge-font-weight-large)] leading-[var(--component-badge-line-height-large)] flex-shrink-0',
+    'h-7 min-h-7 gap-2 text-sm font-medium leading-none flex-shrink-0',
 } as const;
 
 // =============================================================================

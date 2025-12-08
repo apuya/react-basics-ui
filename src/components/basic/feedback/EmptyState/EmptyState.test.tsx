@@ -218,35 +218,28 @@ describe('EmptyState', () => {
   });
 
   describe('Styling', () => {
-    it('should apply proper spacing tokens via inline styles', () => {
+    it('should apply proper spacing classes', () => {
       const { container } = render(<EmptyState title="Test" />);
       const emptyState = container.firstChild as HTMLElement;
-      expect(emptyState).toHaveStyle({
-        paddingBlock: 'var(--component-emptystate-padding-block)',
-        paddingInline: 'var(--component-emptystate-padding-inline)',
-      });
+      expect(emptyState).toHaveClass('py-8', 'px-4');
     });
 
-    it('should apply proper title spacing', () => {
+    it('should apply proper title spacing class', () => {
       render(<EmptyState title="Test Title" />);
       const title = screen.getByText('Test Title');
       // Title uses Heading component, spacing on wrapper div
       const titleWrapper = title.parentElement;
-      expect(titleWrapper).toHaveStyle({
-        marginBottom: 'var(--component-emptystate-title-gap)',
-      });
+      expect(titleWrapper).toHaveClass('mb-2');
       // Verify it's an h3 element (rendered by Heading component)
       expect(title.tagName).toBe('H3');
     });
 
-    it('should apply proper description spacing', () => {
+    it('should apply proper description spacing class', () => {
       render(<EmptyState description="Test Description" />);
       const description = screen.getByText('Test Description');
       // Description uses Text component, spacing on wrapper div
       const descriptionWrapper = description.parentElement;
-      expect(descriptionWrapper).toHaveStyle({
-        marginBottom: 'var(--component-emptystate-description-gap)',
-      });
+      expect(descriptionWrapper).toHaveClass('mb-4');
       // Verify it's a p element (rendered by Text component)
       expect(description.tagName).toBe('P');
     });

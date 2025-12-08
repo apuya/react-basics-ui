@@ -809,8 +809,8 @@ describe('Tabs', () => {
       );
 
       const tab = screen.getByRole('tab');
-      // Small size uses CSS variable for height
-      expect(tab.className).toContain('h-[length:var(--component-tabs-height-sm)]');
+      // Small size uses Tailwind h-8 class
+      expect(tab.className).toContain('h-8');
     });
 
     it('should render medium size tabs (default)', () => {
@@ -826,7 +826,7 @@ describe('Tabs', () => {
       );
 
       const tab = screen.getByRole('tab');
-      expect(tab.className).toContain('h-[length:var(--component-tabs-height-md)]');
+      expect(tab.className).toContain('h-10');
     });
 
     it('should render large size tabs', () => {
@@ -842,7 +842,7 @@ describe('Tabs', () => {
       );
 
       const tab = screen.getByRole('tab');
-      expect(tab.className).toContain('h-[length:var(--component-tabs-height-lg)]');
+      expect(tab.className).toContain('h-12');
     });
   });
 

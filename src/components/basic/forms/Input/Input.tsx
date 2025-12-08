@@ -7,7 +7,7 @@ import {
   ICON_SIZE_STYLES,
   SIZE_STYLES,
   STATE_STYLES,
-  SUFFIX_STYLE,
+  SUFFIX_CLASSES,
 } from './Input.styles';
 
 export type InputSize = keyof typeof SIZE_STYLES;
@@ -31,16 +31,9 @@ export interface InputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'siz
   wrapperClassName?: string;
 }
 
-/** Static styles for icon positioning */
-const LEADING_ICON_STYLE = {
-  left: 'var(--component-input-padding-inline)',
-  color: 'var(--component-input-text-placeholder)',
-} as const;
-
-const TRAILING_ICON_STYLE = {
-  right: 'var(--component-input-padding-inline)',
-  color: 'var(--component-input-text-placeholder)',
-} as const;
+/** Static classes for icon positioning */
+const LEADING_ICON_CLASSES = 'left-3 text-[color:var(--component-input-text-placeholder)]';
+const TRAILING_ICON_CLASSES = 'right-3 text-[color:var(--component-input-text-placeholder)]';
 
 export const Input = memo(
   forwardRef<HTMLInputElement, InputProps>(function Input(
@@ -63,29 +56,19 @@ export const Input = memo(
     const inputId = id || generateFormId('input', label);
 
     const inputClasses = useMemo(
-      () => cn(
-        BASE_CLASSES,
-        SIZE_STYLES[size],
-        error ? STATE_STYLES.error : STATE_STYLES.default,
-        className
-      ),
-      [size, error, className]
-    );
-
-    const inputStyle = useMemo(
       () => {
-        const hasSuffixOrTrailing = suffix || trailingIcon;
-        return {
-          height: `var(--component-input-height-${size})`,
-          paddingLeft: leadingIcon
-            ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
-            : 'var(--component-input-padding-inline)',
-          paddingRight: hasSuffixOrTrailing
-            ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
-            : 'var(--component-input-padding-inline)',
-        };
+        const paddingClasses = leadingIcon ? 'pl-10' : '';
+        const rightPaddingClasses = (suffix || trailingIcon) ? 'pr-10' : '';
+        return cn(
+          BASE_CLASSES,
+          SIZE_STYLES[size],
+          error ? STATE_STYLES.error : STATE_STYLES.default,
+          paddingClasses,
+          rightPaddingClasses,
+          className
+        );
       },
-      [size, leadingIcon, trailingIcon, suffix]
+      [size, error, leadingIcon, trailingIcon, suffix, className]
     );
 
     // Simple lookup - no memoization needed
@@ -105,9 +88,9 @@ export const Input = memo(
             <span
               className={cn(
                 'absolute top-1/2 -translate-y-1/2',
+                LEADING_ICON_CLASSES,
                 iconWrapperClasses
               )}
-              style={LEADING_ICON_STYLE}
               aria-hidden="true"
             >
               {leadingIcon}
@@ -119,7 +102,6 @@ export const Input = memo(
             id={inputId}
             disabled={disabled}
             className={inputClasses}
-            style={inputStyle}
             data-size={size}
             data-error={error || undefined}
             {...rest}
@@ -129,9 +111,9 @@ export const Input = memo(
             <span
               className={cn(
                 'absolute top-1/2 -translate-y-1/2',
+                TRAILING_ICON_CLASSES,
                 iconWrapperClasses
               )}
-              style={TRAILING_ICON_STYLE}
               aria-hidden="true"
             >
               {trailingIcon}
@@ -140,8 +122,10 @@ export const Input = memo(
 
           {suffix && !trailingIcon && (
             <span
-              className="absolute top-1/2 right-0 -translate-y-1/2 pointer-events-none select-none"
-              style={SUFFIX_STYLE}
+              className={cn(
+                'absolute top-1/2 right-0 -translate-y-1/2 pointer-events-none select-none',
+                SUFFIX_CLASSES
+              )}
               aria-hidden="true"
             >
               {suffix}

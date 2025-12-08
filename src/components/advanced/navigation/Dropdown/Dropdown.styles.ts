@@ -13,7 +13,7 @@
 export type DropdownItemVariant = 'default' | 'danger' | 'warning' | 'success' | 'info';
 
 export const BASE_CLASSES =
-  'absolute bg-[color:var(--component-dropdown-bg)] border-[length:var(--component-dropdown-border-width)] border-solid border-[color:var(--component-dropdown-border)] rounded-[length:var(--component-dropdown-radius)] shadow-[shadow:var(--component-dropdown-shadow)] z-[var(--component-dropdown-z-index)] min-w-[length:var(--component-dropdown-min-width)] max-w-[length:var(--component-dropdown-max-width)] opacity-0 pointer-events-none transition-opacity duration-[var(--component-dropdown-transition-duration)]';
+  'absolute bg-dropdown border border-solid border-dropdown-border rounded-dropdown shadow-dropdown z-dropdown min-w-48 max-w-80 opacity-0 pointer-events-none transition-opacity duration-dropdown';
 
 export const VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 
@@ -24,11 +24,11 @@ export const SIDE_STYLES = {
   right: 'left-full',
 } as const;
 
-export const SIDE_GAP_STYLE = {
-  marginTop: 'var(--component-dropdown-gap)',
-  marginBottom: 'var(--component-dropdown-gap)',
-  marginLeft: 'var(--component-dropdown-gap)',
-  marginRight: 'var(--component-dropdown-gap)',
+export const SIDE_GAP_CLASSES = {
+  top: 'mb-1',
+  bottom: 'mt-1',
+  left: 'mr-1',
+  right: 'ml-1',
 } as const;
 
 // Horizontal alignment (for top/bottom sides)
@@ -50,7 +50,7 @@ export const TRIGGER_WRAPPER_CLASSES = 'relative inline-block';
 export const MENU_WRAPPER_CLASSES = 'flex flex-col';
 
 export const ITEM_BASE_CLASSES =
-  'flex items-center text-[length:var(--component-dropdown-item-font-size)] font-[number:var(--component-dropdown-item-font-weight)] leading-[number:var(--component-dropdown-item-line-height)] cursor-pointer transition-colors outline-none';
+  'flex items-center text-sm font-normal leading-5 cursor-pointer transition-colors outline-none';
 
 export const ITEM_VARIANT_STYLES: Record<DropdownItemVariant, { default: string; hoverClasses: string; activeClasses: string }> = {
   default: {
@@ -114,58 +114,26 @@ export const ICON_WRAPPER_CLASSES = 'shrink-0';
 
 export const SHORTCUT_CLASSES = 'ml-auto';
 
-export const DISABLED_ITEM_CLASSES = 'bg-[color:var(--component-dropdown-item-bg-disabled)] text-[color:var(--component-dropdown-item-text-disabled)] cursor-not-allowed opacity-[var(--semantic-opacity-disabled)]';
+export const DISABLED_ITEM_CLASSES = 'bg-[color:var(--component-dropdown-item-bg-disabled)] text-[color:var(--component-dropdown-item-text-disabled)] cursor-not-allowed opacity-50';
 
 export const DISABLED_ICON_CLASSES = 'text-[color:var(--component-dropdown-item-icon-disabled)]';
 
-// MenuItem padding and gap styles using tokens
-export const MENU_ITEM_PADDING_STYLE = {
-  paddingInline: 'var(--component-dropdown-item-padding-inline)',
-  paddingBlock: 'var(--component-dropdown-item-padding-block)',
-} as const;
+// MenuItem padding and gap classes using Tailwind
+export const MENU_ITEM_PADDING_CLASSES = 'px-3 py-2';
 
-export const MENU_ITEM_GAP_STYLE = {
-  marginBlock: 'var(--component-dropdown-gap)',
-} as const;
+export const MENU_ITEM_GAP_CLASSES = 'my-0.5';
 
 // SearchBar container padding
-export const SEARCH_CONTAINER_PADDING_STYLE = {
-  paddingInline: 'var(--component-dropdown-padding-inline)',
-  paddingBlock: 'calc(var(--component-dropdown-item-padding-block) * 0.75)',
-} as const;
+export const SEARCH_CONTAINER_PADDING_CLASSES = 'px-3 py-1.5';
 
-// Header text styles
-export const HEADER_TEXT_STYLE = {
-  color: 'var(--component-dropdown-header-text-color)',
-  fontSize: 'var(--component-dropdown-header-font-size)',
-  fontWeight: 'var(--component-dropdown-header-font-weight)',
-  lineHeight: 'var(--component-dropdown-header-line-height)',
-  letterSpacing: 'var(--component-dropdown-header-letter-spacing)',
-  fontFamily: 'var(--semantic-font-family-base)',
-} as const;
+// Header text classes
+export const HEADER_TEXT_CLASSES = 'text-[color:var(--component-dropdown-header-text-color)] text-xs font-semibold leading-4 tracking-wide';
 
-// Description text styles
-export const DESCRIPTION_TEXT_STYLE = {
-  color: 'var(--component-dropdown-description-text-color)',
-  fontSize: 'var(--component-dropdown-description-font-size)',
-  fontWeight: 'var(--component-dropdown-description-font-weight)',
-  lineHeight: 'var(--component-dropdown-description-line-height)',
-  letterSpacing: 'var(--component-dropdown-description-letter-spacing)',
-  fontFamily: 'var(--semantic-font-family-base)',
-} as const;
+// Description text classes
+export const DESCRIPTION_TEXT_CLASSES = 'text-[color:var(--component-dropdown-description-text-color)] text-xs font-normal leading-4 tracking-normal';
 
-// Item style generator
-export const ITEM_STYLE = (hasDescription: boolean) => ({
-  minHeight: '32px',
-  height: hasDescription ? 'auto' : '32px',
-  paddingInline: 'var(--component-dropdown-item-padding-inline)',
-  paddingBlock: 'var(--component-dropdown-item-padding-block)',
-  gap: 'var(--component-dropdown-item-gap)',
-  borderRadius: 'var(--component-dropdown-item-radius)',
-} as const);
+// Item classes
+export const ITEM_CLASSES = 'min-h-8 px-3 py-2 gap-2 rounded';
 
-// Icon style
-export const ICON_STYLE = {
-  width: 'var(--component-dropdown-icon-size)',
-  height: 'var(--component-dropdown-icon-size)',
-} as const;
+// Icon classes
+export const ICON_CLASSES = 'size-4';

@@ -1,19 +1,19 @@
-export const BASE_CLASSES = 'w-full mx-auto px-[length:var(--component-container-padding-inline-md)]';
+export const BASE_CLASSES = 'w-full mx-auto px-4';
 
 export const SIZE_STYLES = {
-  sm: 'max-w-[length:var(--component-container-max-width-sm)]',
-  md: 'max-w-[length:var(--component-container-max-width-md)]',
-  lg: 'max-w-[length:var(--component-container-max-width-lg)]',
-  xl: 'max-w-[length:var(--component-container-max-width-xl)]',
-  '2xl': 'max-w-[length:var(--component-container-max-width-2xl)]',
-  full: 'max-w-[length:var(--component-container-max-width-full)]',
-  prose: 'max-w-[65ch]',
+  sm: 'max-w-screen-sm',
+  md: 'max-w-screen-md',
+  lg: 'max-w-screen-lg',
+  xl: 'max-w-screen-xl',
+  '2xl': 'max-w-screen-2xl',
+  full: 'max-w-full',
+  prose: 'max-w-prose',
 } as const;
 
 export const PADDING_STYLES = {
   none: 'px-0',
-  sm: 'px-[length:var(--component-container-padding-inline-sm)]',
-  md: 'px-[length:var(--component-container-padding-inline-md)]',
-  lg: 'px-[length:var(--component-container-padding-inline-lg)]',
-  xl: 'px-[length:var(--component-container-padding-inline-xl)]',
+  sm: 'px-2',
+  md: 'px-4',
+  lg: 'px-6',
+  xl: 'px-8',
 } as const;

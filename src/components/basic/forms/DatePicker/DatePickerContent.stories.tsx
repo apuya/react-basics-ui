@@ -6,10 +6,8 @@ import { DatePickerConfirmation } from './DatePickerConfirmation';
 import {
   CONTENT_LAYOUT_CLASSES,
   CONTENT_ROW_CLASSES,
-  CONTENT_ROW_STYLE,
   PRESETS_WRAPPER_CLASSES,
-  PRESETS_WRAPPER_STYLE,
-  CONTENT_BASE_STYLE,
+  CONTENT_BASE_CLASSES,
 } from './DatePicker.styles';
 import type { DateRange } from './DatePicker.types';
 import { cn } from '@/lib/cn';
@@ -25,9 +23,9 @@ const IsolatedContent = ({
   <div
     className={cn(
       'relative inline-flex bg-[color:var(--component-datepicker-bg-default)] border border-[color:var(--component-datepicker-border-default)] shadow-[var(--component-datepicker-shadow)]',
+      CONTENT_BASE_CLASSES,
       CONTENT_LAYOUT_CLASSES[variant]
     )}
-    style={CONTENT_BASE_STYLE}
   >
     {children}
   </div>
@@ -153,8 +151,8 @@ export const DoublePresetsLayout: Story = {
 
     return (
       <IsolatedContent variant="double-presets">
-        <div className={CONTENT_ROW_CLASSES} style={CONTENT_ROW_STYLE}>
-          <div className={PRESETS_WRAPPER_CLASSES} style={PRESETS_WRAPPER_STYLE}>
+        <div className={CONTENT_ROW_CLASSES}>
+          <div className={PRESETS_WRAPPER_CLASSES}>
             <DatePickerPresets
               variant="positioned"
               presets={DEFAULT_PRESETS}

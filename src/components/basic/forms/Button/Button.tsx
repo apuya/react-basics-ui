@@ -14,7 +14,6 @@ import {
   ICON_SIZE_STYLES,
   ICON_WRAPPER_CLASSES,
   SIZE_STYLES,
-  SPINNER_BORDER_STYLE,
   SPINNER_CLASSES,
   SPINNER_WRAPPER_CLASSES,
   VARIANT_STYLES,
@@ -65,10 +64,7 @@ const Spinner = memo(({ size }: { size: ButtonSize }) => (
     className={cn(SPINNER_WRAPPER_CLASSES, ICON_SIZE_STYLES[size])}
     aria-hidden="true"
   >
-    <span
-      className={SPINNER_CLASSES}
-      style={SPINNER_BORDER_STYLE}
-    />
+    <span className={SPINNER_CLASSES} />
   </span>
 ));
 Spinner.displayName = 'Spinner';

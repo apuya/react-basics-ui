@@ -68,19 +68,19 @@ describe('Progress', () => {
     it('should apply default size by default', () => {
       const { container } = render(<Progress value={50} />);
       const progressBar = container.querySelector('[role="progressbar"]');
-      expect(progressBar).toHaveClass('h-[length:var(--component-progress-height)]');
+      expect(progressBar).toHaveClass('h-2');
     });
 
     it('should apply small size', () => {
       const { container } = render(<Progress value={50} size="sm" />);
       const progressBar = container.querySelector('[role="progressbar"]');
-      expect(progressBar).toHaveClass('h-[length:var(--component-progress-height-sm)]');
+      expect(progressBar).toHaveClass('h-1');
     });
 
     it('should apply large size', () => {
       const { container } = render(<Progress value={50} size="lg" />);
       const progressBar = container.querySelector('[role="progressbar"]');
-      expect(progressBar).toHaveClass('h-[length:var(--component-progress-height-lg)]');
+      expect(progressBar).toHaveClass('h-3');
     });
 
     it('should set data-size attribute', () => {
@@ -223,7 +223,7 @@ describe('Progress', () => {
       const progressBar = container.querySelector('[role="progressbar"]');
       expect(progressBar).toHaveClass('w-full');
       expect(progressBar).toHaveClass('overflow-hidden');
-      expect(progressBar).toHaveClass('rounded-[length:var(--component-progress-radius)]');
+      expect(progressBar).toHaveClass('rounded-full');
       expect(progressBar).toHaveClass('bg-[color:var(--component-progress-bg-track)]');
     });
 
@@ -232,9 +232,9 @@ describe('Progress', () => {
       const fill = container.querySelector('[role="progressbar"] > div');
       expect(fill).toHaveClass('h-full');
       expect(fill).toHaveClass('transition-all');
-      expect(fill).toHaveClass('duration-[var(--component-progress-transition)]');
+      expect(fill).toHaveClass('duration-300');
       expect(fill).toHaveClass('ease-in-out');
-      expect(fill).toHaveClass('rounded-[length:var(--component-progress-radius)]');
+      expect(fill).toHaveClass('rounded-full');
     });
   });
 

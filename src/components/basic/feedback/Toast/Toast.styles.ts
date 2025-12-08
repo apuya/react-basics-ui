@@ -4,7 +4,7 @@ import type { ToastVariant } from './Toast';
  * Base classes for the Toast component
  */
 export const BASE_CLASSES =
-  'flex items-start rounded-[var(--component-toast-radius)] shadow-[shadow:var(--component-toast-shadow)]';
+  'flex items-start rounded-lg shadow-lg';
 
 /**
  * Variant-specific styles for the Toast component
@@ -34,11 +34,9 @@ export const ICON_COLOR_STYLES: Record<ToastVariant, string> = {
 } as const;
 
 /**
- * Icon size style using design tokens
+ * Icon size class using Tailwind scale
  */
-export const ICON_SIZE_STYLE = {
-  fontSize: 'var(--component-toast-icon-size)',
-} as const;
+export const ICON_SIZE_CLASS = 'text-xl';
 
 /**
  * Content container classes
@@ -46,31 +44,19 @@ export const ICON_SIZE_STYLE = {
 export const CONTENT_CLASSES = 'flex-1 min-w-0';
 
 /**
- * Container layout styles using design tokens
+ * Container layout classes using Tailwind scales
  */
-export const CONTAINER_STYLES = {
-  paddingBlock: 'var(--component-toast-padding-block)',
-  paddingInline: 'var(--component-toast-padding-inline)',
-  gap: 'var(--component-toast-gap)',
-} as const;
+export const CONTAINER_CLASSES = 'py-3 px-4 gap-3';
 
 /**
- * Title content styles using design tokens
+ * Title content classes using Tailwind scales
  */
-export const TITLE_STYLES = {
-  fontSize: 'var(--component-toast-title-size)',
-  fontWeight: 'var(--component-toast-title-weight)',
-  lineHeight: 'var(--component-toast-title-line-height)',
-} as const;
+export const TITLE_CLASSES = 'text-sm font-medium leading-tight';
 
 /**
- * Body content styles using design tokens
+ * Body content classes using Tailwind scales
  */
-export const BODY_STYLES = {
-  fontSize: 'var(--component-toast-body-size)',
-  fontWeight: 'var(--component-toast-body-weight)',
-  lineHeight: 'var(--component-toast-body-line-height)',
-} as const;
+export const BODY_CLASSES = 'text-sm font-normal leading-snug';
 
 /**
  * Close button classes

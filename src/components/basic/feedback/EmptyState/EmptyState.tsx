@@ -9,13 +9,12 @@ import { cn } from '@/lib/cn';
 import { Heading } from '@/components/basic/typography/Heading';
 import { Text } from '@/components/basic/typography/Text';
 import {
-  ACTION_WRAPPER_STYLES,
+  ACTION_WRAPPER_CLASS,
   BASE_CLASSES,
-  CONTAINER_STYLES,
-  DESCRIPTION_SPACING_STYLES,
+  CONTAINER_CLASSES,
+  DESCRIPTION_SPACING_CLASS,
   ICON_WRAPPER_CLASSES,
-  ICON_WRAPPER_STYLES,
-  TITLE_SPACING_STYLES,
+  TITLE_SPACING_CLASS,
 } from './EmptyState.styles';
 
 export interface EmptyStateProps
@@ -80,18 +79,14 @@ export const EmptyState = memo(
     return (
       <div
         ref={ref}
-        className={containerClasses}
-        style={CONTAINER_STYLES}
+        className={cn(containerClasses, CONTAINER_CLASSES)}
         {...rest}
       >
         {/* Icon */}
         {icon && (
           <div
             className={ICON_WRAPPER_CLASSES}
-            style={{
-              ...ICON_WRAPPER_STYLES,
-              fontSize: `${iconSize}px`,
-            }}
+            style={{ fontSize: `${iconSize}px` }}
             aria-hidden="true"
           >
             {icon}
@@ -102,14 +97,14 @@ export const EmptyState = memo(
         {hasContent && (
           <div className="flex flex-col items-center">
             {title && (
-              <div style={TITLE_SPACING_STYLES}>
+              <div className={TITLE_SPACING_CLASS}>
                 <Heading as="h3" level="h3">
                   {title}
                 </Heading>
               </div>
             )}
             {description && (
-              <div style={DESCRIPTION_SPACING_STYLES} className="max-w-md">
+              <div className={cn(DESCRIPTION_SPACING_CLASS, 'max-w-md')}>
                 <Text as="p" size="body" color="secondary">
                   {description}
                 </Text>
@@ -120,7 +115,7 @@ export const EmptyState = memo(
         )}
 
         {/* Action */}
-        {action && <div style={ACTION_WRAPPER_STYLES}>{action}</div>}
+        {action && <div className={ACTION_WRAPPER_CLASS}>{action}</div>}
       </div>
     );
   })

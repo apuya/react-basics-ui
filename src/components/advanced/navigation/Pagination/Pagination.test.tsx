@@ -603,8 +603,8 @@ describe('Pagination', () => {
       );
 
       const pageButton = screen.getByLabelText('Go to page 1');
-      // Small size uses height token
-      expect(pageButton.className).toContain('h-[length:var(--component-pagination-height-sm)]');
+      // Small size uses Tailwind h-8 class
+      expect(pageButton.className).toContain('h-8');
     });
 
     it('should render medium size (default)', () => {
@@ -617,8 +617,8 @@ describe('Pagination', () => {
       );
 
       const pageButton = screen.getByLabelText('Go to page 1');
-      // Medium size uses height token
-      expect(pageButton.className).toContain('h-[length:var(--component-pagination-height-md)]');
+      // Medium size uses Tailwind h-10 class
+      expect(pageButton.className).toContain('h-10');
     });
 
     it('should render large size', () => {
@@ -631,8 +631,8 @@ describe('Pagination', () => {
       );
 
       const pageButton = screen.getByLabelText('Go to page 1');
-      // Large size uses height token
-      expect(pageButton.className).toContain('h-[length:var(--component-pagination-height-lg)]');
+      // Large size uses Tailwind h-12 class
+      expect(pageButton.className).toContain('h-12');
     });
   });
 

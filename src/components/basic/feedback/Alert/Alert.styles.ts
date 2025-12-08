@@ -9,7 +9,7 @@ import {
  * Base classes for the Alert component
  */
 export const BASE_CLASSES =
-  'flex items-start w-full rounded-[length:var(--component-alert-radius)]';
+  'flex items-start w-full rounded-lg';
 
 /**
  * Variant-specific styles for the Alert component

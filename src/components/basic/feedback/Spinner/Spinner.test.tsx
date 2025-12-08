@@ -66,17 +66,20 @@ describe('Spinner', () => {
       expect(spinner).toHaveAttribute('data-size', 'xl');
     });
 
-    it('applies token-based size styles', () => {
+    it('applies Tailwind size classes', () => {
       const { container } = render(<Spinner size="md" />);
       const spinner = container.firstChild as HTMLElement;
-      expect(spinner).toHaveStyle({ width: 'var(--component-spinner-size-md)' });
-      expect(spinner).toHaveStyle({ height: 'var(--component-spinner-size-md)' });
+      expect(spinner).toHaveClass('size-6', 'border-2');
     });
 
-    it('applies token-based border width styles', () => {
-      const { container } = render(<Spinner size="md" />);
-      const spinner = container.firstChild as HTMLElement;
-      expect(spinner).toHaveStyle({ borderWidth: 'var(--component-spinner-border-width-md)' });
+    it('applies different size classes for different sizes', () => {
+      const { container, rerender } = render(<Spinner size="xs" />);
+      let spinner = container.firstChild as HTMLElement;
+      expect(spinner).toHaveClass('size-3');
+      
+      rerender(<Spinner size="xl" />);
+      spinner = container.firstChild as HTMLElement;
+      expect(spinner).toHaveClass('size-12');
     });
   });
 

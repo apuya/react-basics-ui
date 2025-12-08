@@ -1,15 +1,15 @@
 import type { PopoverSide, PopoverAlign } from './Popover';
 
 export const BASE_CLASSES =
-  'absolute flex flex-col gap-[length:var(--component-popover-gap)] bg-[color:var(--component-popover-bg)] text-[color:var(--component-popover-text)] border-[length:var(--component-popover-border-width)] border-[color:var(--component-popover-border)] rounded-[length:var(--component-popover-radius)] shadow-[shadow:var(--component-popover-shadow)] z-[var(--component-popover-z-index)] min-w-[length:var(--component-popover-min-width)] max-w-[length:var(--component-popover-max-width)] opacity-0 pointer-events-none transition-opacity duration-[var(--component-popover-transition-duration)]';
+  'absolute flex flex-col gap-2 bg-[color:var(--component-popover-bg)] text-[color:var(--component-popover-text)] border border-[color:var(--component-popover-border)] rounded-lg shadow-lg z-50 min-w-48 max-w-80 opacity-0 pointer-events-none transition-opacity duration-200';
 
 export const VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 
 export const SIDE_STYLES: Record<PopoverSide, string> = {
-  top: 'bottom-full mb-[length:var(--component-popover-offset)]',
-  bottom: 'top-full mt-[length:var(--component-popover-offset)]',
-  left: 'right-full mr-[length:var(--component-popover-offset)]',
-  right: 'left-full ml-[length:var(--component-popover-offset)]',
+  top: 'bottom-full mb-2',
+  bottom: 'top-full mt-2',
+  left: 'right-full mr-2',
+  right: 'left-full ml-2',
 };
 
 // Combined side + align positioning
@@ -38,8 +38,8 @@ export const POSITION_STYLES: Record<PopoverSide, Record<PopoverAlign, string>> 
 
 export const TRIGGER_WRAPPER_CLASSES = 'relative inline-block';
 
-export const TITLE_CLASSES = 'text-[length:var(--component-popover-title-size)] font-[number:var(--component-popover-title-weight)] text-[color:var(--component-popover-text)]';
+export const TITLE_CLASSES = 'text-base font-semibold text-[color:var(--component-popover-text)]';
 
-export const DESCRIPTION_CLASSES = 'text-[length:var(--component-popover-description-size)] font-[number:var(--component-popover-description-weight)] text-[color:var(--component-popover-text-secondary)]';
+export const DESCRIPTION_CLASSES = 'text-sm font-normal text-[color:var(--component-popover-text-secondary)]';
 
-export const CLOSE_BUTTON_CLASSES = 'absolute top-[length:var(--component-popover-close-offset)] right-[length:var(--component-popover-close-offset)] p-[length:var(--component-popover-close-offset)] rounded-[length:var(--component-popover-radius)] hover:bg-[color:var(--component-popover-close-hover-bg)] transition-colors';
+export const CLOSE_BUTTON_CLASSES = 'absolute top-2 right-2 p-1 rounded-md hover:bg-[color:var(--component-popover-close-hover-bg)] transition-colors';

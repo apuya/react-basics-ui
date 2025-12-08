@@ -1,10 +1,10 @@
 export const BASE_CLASSES =
-  'w-full rounded-[length:var(--component-input-radius)] border bg-[color:var(--component-textarea-bg-default)] text-[color:var(--component-textarea-text-default)] transition-colors duration-[var(--component-input-transition-duration)] placeholder:text-[color:var(--component-textarea-text-placeholder)] focus:outline-none focus-visible:ring-[length:var(--semantic-focus-ring-width)] focus-visible:ring-offset-[length:var(--semantic-focus-ring-offset)] focus-visible:ring-[color:var(--semantic-border-focus)] disabled:cursor-not-allowed disabled:bg-[color:var(--component-textarea-bg-disabled)] disabled:text-[color:var(--component-textarea-text-disabled)] disabled:opacity-[var(--semantic-opacity-disabled)]';
+  'w-full rounded-md border bg-[color:var(--component-textarea-bg-default)] text-[color:var(--component-textarea-text-default)] transition-colors duration-200 placeholder:text-[color:var(--component-textarea-text-placeholder)] focus:outline-none focus-visible:ring-focus focus-visible:ring-offset-focus focus-visible:ring-ring-focus disabled:cursor-not-allowed disabled:bg-[color:var(--component-textarea-bg-disabled)] disabled:text-[color:var(--component-textarea-text-disabled)] disabled:opacity-disabled';
 
 export const SIZE_STYLES = {
-  small: 'text-[length:var(--component-input-font-size-small)]',
-  default: 'text-[length:var(--component-input-font-size-default)]',
-  large: 'text-[length:var(--component-input-font-size-large)]',
+  small: 'p-2 text-sm',
+  default: 'p-3 text-sm',
+  large: 'p-4 text-base',
 } as const;
 
 export const STATE_STYLES = {

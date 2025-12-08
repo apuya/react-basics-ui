@@ -1,6 +1,6 @@
 import { type ComponentPropsWithoutRef, forwardRef, memo, useMemo } from 'react';
 import { cn } from '@/lib/cn';
-import { ANIMATION_STYLE, BASE_CLASSES, COLOR_STYLES, SIZE_STYLES } from './Spinner.styles';
+import { ANIMATION_STYLE, BASE_CLASSES, COLOR_STYLES, SIZE_CLASSES } from './Spinner.styles';
 
 /** Available spinner sizes from extra small to extra large. */
 export type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -39,16 +39,15 @@ export const Spinner = memo(
     { size = 'md', color = 'default', label = 'Loading...', className, style, ...rest },
     ref
   ) {
-    const spinnerClasses = useMemo(() => cn(BASE_CLASSES, className), [className]);
+    const spinnerClasses = useMemo(() => cn(BASE_CLASSES, SIZE_CLASSES[size], className), [size, className]);
 
     const spinnerStyles = useMemo(
       () => ({
-        ...SIZE_STYLES[size],
         ...COLOR_STYLES[color],
         ...ANIMATION_STYLE,
         ...style,
       }),
-      [size, color, style]
+      [color, style]
     );
 
     return (

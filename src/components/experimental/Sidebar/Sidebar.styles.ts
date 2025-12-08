@@ -10,7 +10,7 @@ export const BASE_CLASSES =
 export const VARIANT_STYLES: Record<SidebarVariant, string> = {
   default: '',
   bordered: 'border-r border-[color:var(--component-sidebar-border)]',
-  elevated: 'shadow-[shadow:var(--component-sidebar-shadow)]',
+  elevated: 'shadow-lg',
 } as const;
 
 // =============================================================================
@@ -36,17 +36,17 @@ export const SECTION_CLASSES = 'flex flex-col';
 // =============================================================================
 
 export const SECTION_HEADER_CLASSES =
-  'uppercase tracking-wider text-[length:var(--component-sidebar-section-header-font-size)] font-[number:var(--component-sidebar-section-header-font-weight)] text-[color:var(--component-sidebar-section-header-text)]';
+  'uppercase tracking-wider text-xs font-semibold text-[color:var(--component-sidebar-section-header-text)]';
 
 // =============================================================================
 // ITEM STYLES
 // =============================================================================
 
 export const ITEM_BASE_CLASSES =
-  'flex items-center w-full text-left text-[color:var(--component-sidebar-item-text)] hover:bg-[color:var(--component-sidebar-item-bg-hover)] hover:text-[color:var(--component-sidebar-item-text-hover)] transition-colors duration-[var(--component-sidebar-item-transition-duration)] focus:outline-none focus-visible:ring-[length:var(--component-sidebar-focus-ring-width)] focus-visible:ring-[color:var(--component-sidebar-focus-ring-color)] focus-visible:ring-inset';
+  'flex items-center w-full text-left text-[color:var(--component-sidebar-item-text)] hover:bg-[color:var(--component-sidebar-item-bg-hover)] hover:text-[color:var(--component-sidebar-item-text-hover)] transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset';
 
 export const ITEM_ACTIVE_CLASS =
-  'bg-[color:var(--component-sidebar-item-active-bg)] text-[color:var(--component-sidebar-item-active-text)] font-[number:var(--component-sidebar-item-active-font-weight)] hover:bg-[color:var(--component-sidebar-item-active-bg-hover)] hover:text-[color:var(--component-sidebar-item-active-text)]';
+  'bg-[color:var(--component-sidebar-item-active-bg)] text-[color:var(--component-sidebar-item-active-text)] font-medium hover:bg-[color:var(--component-sidebar-item-active-bg-hover)] hover:text-[color:var(--component-sidebar-item-active-text)]';
 
 // =============================================================================
 // ICON STYLES

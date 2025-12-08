@@ -5,14 +5,14 @@ import { Icon } from '@/components/basic/utility/Icon';
 import { Text } from '@/components/basic/typography/Text';
 import { useDropdownContext } from './Dropdown';
 import {
-  DESCRIPTION_TEXT_STYLE,
+  DESCRIPTION_TEXT_CLASSES,
   DISABLED_ICON_CLASSES,
   DISABLED_ITEM_CLASSES,
-  ICON_STYLE,
+  ICON_CLASSES,
   ICON_VARIANT_STYLES,
   ICON_WRAPPER_CLASSES,
   ITEM_BASE_CLASSES,
-  ITEM_STYLE,
+  ITEM_CLASSES,
   ITEM_VARIANT_STYLES,
   SHORTCUT_CLASSES,
   type DropdownItemVariant,
@@ -107,15 +107,12 @@ export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
     
     const effectiveVariant = destructive ? 'danger' : variant;
 
-    // Get style objects from constants
-    const itemStyle = ITEM_STYLE(!!description);
-    const iconStyle = ICON_STYLE;
-
     // Build CSS classes with variant-specific styling
     const itemClasses = disabled
-      ? cn(ITEM_BASE_CLASSES, DISABLED_ITEM_CLASSES, className)
+      ? cn(ITEM_BASE_CLASSES, ITEM_CLASSES, DISABLED_ITEM_CLASSES, className)
       : cn(
           ITEM_BASE_CLASSES,
+          ITEM_CLASSES,
           ITEM_VARIANT_STYLES[effectiveVariant].default,
           ITEM_VARIANT_STYLES[effectiveVariant].hoverClasses,
           ITEM_VARIANT_STYLES[effectiveVariant].activeClasses,
@@ -165,8 +162,7 @@ export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
         role={isCheckbox ? 'menuitemcheckbox' : 'menuitem'}
         aria-checked={isCheckbox ? effectiveChecked : undefined}
         disabled={disabled}
-        className={cn('group', itemClasses)}
-        style={itemStyle}
+        className={cn('group', itemClasses, description && 'h-auto')}
         onClick={handleClick}
         {...props}
       >
@@ -192,7 +188,7 @@ export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
             </span>
           )}
           {leadingIcon && (
-            <span className={iconClasses} style={iconStyle} aria-hidden="true">
+            <span className={cn(iconClasses, ICON_CLASSES)} aria-hidden="true">
               {leadingIcon}
             </span>
           )}
@@ -201,8 +197,7 @@ export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
             {description && (
               <Text
                 as="div"
-                className="overflow-hidden text-ellipsis"
-                style={{ ...DESCRIPTION_TEXT_STYLE, marginTop: 'var(--component-dropdown-item-gap)' }}
+                className={cn('overflow-hidden text-ellipsis mt-1', DESCRIPTION_TEXT_CLASSES)}
               >
                 {description}
               </Text>

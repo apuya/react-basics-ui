@@ -2,12 +2,12 @@ export type SelectSize = 'small' | 'default' | 'large';
 
 // Trigger button styles
 export const TRIGGER_BASE_CLASSES =
-  'w-full flex items-center justify-between appearance-none rounded-[length:var(--component-input-radius)] border bg-[color:var(--component-select-bg-default)] text-[color:var(--component-select-text-default)] transition-colors duration-[var(--component-input-transition-duration)] focus:outline-none focus-visible:ring-[length:var(--component-select-focus-ring-width)] focus-visible:ring-offset-[length:var(--component-select-focus-ring-offset)] focus-visible:ring-[color:var(--component-select-focus-ring-color)] disabled:cursor-not-allowed disabled:bg-[color:var(--component-select-bg-disabled)] disabled:text-[color:var(--component-select-text-disabled)] disabled:opacity-[number:var(--component-select-disabled-opacity)]';
+  'w-full flex items-center justify-between appearance-none rounded-md border bg-[color:var(--component-select-bg-default)] text-[color:var(--component-select-text-default)] transition-colors duration-200 focus:outline-none focus-visible:ring-focus focus-visible:ring-offset-focus focus-visible:ring-ring-focus disabled:cursor-not-allowed disabled:bg-[color:var(--component-select-bg-disabled)] disabled:text-[color:var(--component-select-text-disabled)] disabled:opacity-disabled';
 
 export const TRIGGER_SIZE_STYLES = {
-  small: 'text-[length:var(--component-input-font-size-small)]',
-  default: 'text-[length:var(--component-input-font-size-default)]',
-  large: 'text-[length:var(--component-input-font-size-large)]',
+  small: 'h-8 px-3 text-sm',
+  default: 'h-10 px-3 text-sm',
+  large: 'h-12 px-4 text-base',
 } as const;
 
 export const TRIGGER_STATE_STYLES = {
@@ -21,7 +21,7 @@ export const TRIGGER_STATE_STYLES = {
 
 // Menu styles
 export const MENU_BASE_CLASSES =
-  'absolute bg-[color:var(--component-dropdown-bg)] border-[length:var(--component-dropdown-border-width)] border-[color:var(--component-dropdown-border)] rounded-[length:var(--component-dropdown-radius)] shadow-[shadow:var(--component-dropdown-shadow)] z-[number:var(--component-dropdown-z-index)] w-full opacity-0 pointer-events-none transition-opacity duration-[var(--component-dropdown-transition-duration)]';
+  'absolute bg-[color:var(--component-dropdown-bg)] border border-[color:var(--component-dropdown-border)] rounded-lg shadow-lg z-50 w-full opacity-0 pointer-events-none transition-opacity duration-200';
 
 export const MENU_VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 
@@ -29,7 +29,7 @@ export const MENU_WRAPPER_CLASSES = 'flex flex-col';
 
 // Option styles
 export const OPTION_BASE_CLASSES =
-  'flex items-center text-[length:var(--component-dropdown-item-font-size)] font-[number:var(--component-dropdown-item-font-weight)] leading-[number:var(--component-dropdown-item-line-height)] rounded-[length:var(--component-dropdown-item-radius)] cursor-pointer transition-colors outline-none';
+  'flex items-center px-3 py-2 text-sm font-normal leading-normal rounded cursor-pointer transition-colors outline-none';
 
 export const OPTION_STATE_STYLES = {
   default: 'bg-[color:var(--component-dropdown-item-bg-default)] text-[color:var(--component-dropdown-item-text-default)]',
@@ -40,7 +40,7 @@ export const OPTION_STATE_STYLES = {
 
 // Label and helper text
 export const LABEL_BASE_CLASSES =
-  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)]';
+  'block text-sm font-medium';
 
 export const LABEL_STATE_STYLES = {
   default: 'text-[color:var(--component-select-label-default)]',
@@ -48,7 +48,7 @@ export const LABEL_STATE_STYLES = {
 } as const;
 
 export const HELPER_BASE_CLASSES =
-  'text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)]';
+  'text-xs font-normal';
 
 export const HELPER_STATE_STYLES = {
   default: 'text-[color:var(--component-select-helper-default)]',
@@ -57,7 +57,7 @@ export const HELPER_STATE_STYLES = {
 
 // Icon styles
 export const ICON_BASE_CLASSES =
-  'w-[length:var(--component-input-icon-size-default)] h-[length:var(--component-input-icon-size-default)] shrink-0';
+  'size-5 shrink-0';
 
 export const ICON_STATE_STYLES = {
   default: 'text-[color:var(--component-select-icon-default)] transition-transform duration-200',

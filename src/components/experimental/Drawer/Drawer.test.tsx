@@ -100,7 +100,7 @@ describe('Drawer', () => {
       const title = screen.getByTestId('title');
       expect(title).toBeInTheDocument();
       expect(title.tagName).toBe('H2');
-      expect(title).toHaveStyle({ fontSize: 'var(--component-drawer-title-size)' });
+      expect(title).toHaveClass('text-lg', 'font-semibold');
     });
   });
 

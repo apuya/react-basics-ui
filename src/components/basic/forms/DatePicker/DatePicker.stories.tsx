@@ -9,9 +9,7 @@ import { DatePickerConfirmation } from './DatePickerConfirmation';
 import type { DateRange } from './DatePicker.types';
 import {
   CONTENT_ROW_CLASSES,
-  CONTENT_ROW_STYLE,
   PRESETS_WRAPPER_CLASSES,
-  PRESETS_WRAPPER_STYLE,
 } from './DatePicker.styles';
 
 const meta: Meta<typeof DatePicker> = {
@@ -268,9 +266,9 @@ export const DoublePresets: Story = {
           <DatePickerTrigger placeholder="Select date range" />
           <DatePickerContent>
             {/* Row: Presets | Calendars */}
-            <div className={CONTENT_ROW_CLASSES} style={CONTENT_ROW_STYLE}>
+            <div className={CONTENT_ROW_CLASSES}>
               {/* Presets wrapper for height constraint */}
-              <div className={PRESETS_WRAPPER_CLASSES} style={PRESETS_WRAPPER_STYLE}>
+              <div className={PRESETS_WRAPPER_CLASSES}>
                 <DatePickerPresets
                   variant="positioned"
                   presets={DEFAULT_PRESETS}

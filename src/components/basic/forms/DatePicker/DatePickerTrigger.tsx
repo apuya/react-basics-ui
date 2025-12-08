@@ -5,11 +5,9 @@ import { HiOutlineCalendar } from 'react-icons/hi';
 import { useDatePickerContext } from './DatePickerContext';
 import {
   TRIGGER_BASE_CLASSES,
-  TRIGGER_BASE_STYLE,
   TRIGGER_SIZE_CLASSES,
-  TRIGGER_SIZE_STYLES,
   TRIGGER_STATE_STYLES,
-  TRIGGER_DISABLED_STYLE,
+  TRIGGER_DISABLED_CLASS,
   TRIGGER_ICON_CLASSES,
   TRIGGER_PLACEHOLDER_CLASSES,
   TRIGGER_VALUE_CLASSES,
@@ -117,13 +115,6 @@ export const DatePickerTrigger = memo(
     // Determine state
     const stateKey = disabled ? 'disabled' : error ? 'error' : 'default';
 
-    // Combine inline styles
-    const triggerStyle = useMemo(() => ({
-      ...TRIGGER_BASE_STYLE,
-      ...TRIGGER_SIZE_STYLES[size as keyof typeof TRIGGER_SIZE_STYLES],
-      ...(disabled ? TRIGGER_DISABLED_STYLE : {}),
-    }), [size, disabled]);
-
     return (
       <button
         ref={setRef}
@@ -140,9 +131,9 @@ export const DatePickerTrigger = memo(
           TRIGGER_BASE_CLASSES,
           TRIGGER_SIZE_CLASSES[size as keyof typeof TRIGGER_SIZE_CLASSES],
           TRIGGER_STATE_STYLES[stateKey],
+          disabled && TRIGGER_DISABLED_CLASS,
           className
         )}
-        style={triggerStyle}
         {...rest}
       >
         <Icon 

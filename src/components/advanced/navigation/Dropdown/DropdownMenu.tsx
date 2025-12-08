@@ -10,7 +10,7 @@ import {
   ALIGN_STYLES,
   BASE_CLASSES,
   MENU_WRAPPER_CLASSES,
-  SIDE_GAP_STYLE,
+  SIDE_GAP_CLASSES,
   SIDE_STYLES,
   VERTICAL_ALIGN_STYLES,
   VISIBLE_CLASS,
@@ -109,9 +109,6 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
       const menuStyle: React.CSSProperties = {
         paddingInline: 'var(--component-dropdown-padding-inline)',
         paddingBlock: 'var(--component-dropdown-padding-block)',
-        ...(side === 'top' || side === 'bottom'
-          ? { marginTop: SIDE_GAP_STYLE.marginTop, marginBottom: SIDE_GAP_STYLE.marginBottom }
-          : { marginLeft: SIDE_GAP_STYLE.marginLeft, marginRight: SIDE_GAP_STYLE.marginRight }),
       };
 
       // Use horizontal alignment for top/bottom, vertical alignment for left/right
@@ -122,6 +119,7 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
       const menuClasses = cn(
         BASE_CLASSES,
         SIDE_STYLES[side],
+        SIDE_GAP_CLASSES[side],
         alignStyles,
         enableAnimation && 'transition-all duration-[var(--component-dropdown-transition-duration)]',
         enableAnimation && !isOpen && 'scale-[var(--component-dropdown-animation-scale)]',

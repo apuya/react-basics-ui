@@ -1,7 +1,7 @@
 export const TABLE_BASE_CLASSES =
   'w-full caption-bottom';
 
-export const TABLE_WRAPPER_CLASSES = 'relative w-full overflow-auto bg-[color:var(--component-table-bg)] rounded-[length:var(--component-table-radius)] border border-[color:var(--component-table-border)]';
+export const TABLE_WRAPPER_CLASSES = 'relative w-full overflow-auto bg-[color:var(--component-table-bg)] rounded-lg border border-[color:var(--component-table-border)]';
 
 export const TABLE_WRAPPER_STICKY_CLASS = 'max-h-[600px]';
 

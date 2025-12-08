@@ -52,7 +52,7 @@ describe('Container', () => {
     it('applies prose size', () => {
       const { container } = render(<Container size="prose" data-testid="container">Content</Container>);
       expect(screen.getByTestId('container')).toHaveAttribute('data-size', 'prose');
-      expect(container.firstChild).toHaveClass('max-w-[65ch]');
+      expect(container.firstChild).toHaveClass('max-w-prose');
     });
   });
 
@@ -210,7 +210,7 @@ describe('Container', () => {
     const element = screen.getByTestId('container');
     expect(element).toHaveAttribute('data-size', 'prose');
     expect(element).toHaveAttribute('data-padding', 'xl');
-    expect(element).toHaveClass('max-w-[65ch]');
+    expect(element).toHaveClass('max-w-prose');
   });
 
   it('handles onClick event', () => {

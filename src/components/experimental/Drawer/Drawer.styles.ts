@@ -1,20 +1,20 @@
 import type { DrawerPlacement, DrawerSize } from './Drawer';
 
 export const OVERLAY_CLASSES =
-  'fixed inset-0 bg-[color:var(--component-drawer-overlay-bg)] z-[number:var(--component-drawer-z-index)] opacity-0 transition-opacity duration-[var(--component-drawer-transition-duration)]';
+  'fixed inset-0 bg-[color:var(--component-drawer-overlay-bg)] z-50 opacity-0 transition-opacity duration-300';
 
 export const OVERLAY_VISIBLE_CLASS = 'opacity-100';
 
 export const DRAWER_BASE_CLASSES =
-  'fixed bg-[color:var(--component-drawer-bg)] text-[color:var(--component-drawer-text)] shadow-[shadow:var(--component-drawer-shadow)] border-[color:var(--component-drawer-border)] flex flex-col opacity-0 transition-all duration-[var(--component-drawer-transition-duration)] z-[calc(var(--component-drawer-z-index)+1)]';
+  'fixed bg-[color:var(--component-drawer-bg)] text-[color:var(--component-drawer-text)] shadow-lg border-[color:var(--component-drawer-border)] flex flex-col opacity-0 transition-all duration-300 z-[51]';
 
 export const DRAWER_VISIBLE_CLASS = 'opacity-100';
 
 export const PLACEMENT_STYLES: Record<DrawerPlacement, string> = {
-  left: 'top-0 left-0 h-full border-r-[length:var(--component-drawer-border-width)] -translate-x-full rounded-r-[length:var(--component-drawer-radius)]',
-  right: 'top-0 right-0 h-full border-l-[length:var(--component-drawer-border-width)] translate-x-full rounded-l-[length:var(--component-drawer-radius)]',
-  top: 'top-0 left-0 w-full border-b-[length:var(--component-drawer-border-width)] -translate-y-full rounded-b-[length:var(--component-drawer-radius)]',
-  bottom: 'bottom-0 left-0 w-full border-t-[length:var(--component-drawer-border-width)] translate-y-full rounded-t-[length:var(--component-drawer-radius)]',
+  left: 'top-0 left-0 h-full border-r -translate-x-full rounded-r-lg',
+  right: 'top-0 right-0 h-full border-l translate-x-full rounded-l-lg',
+  top: 'top-0 left-0 w-full border-b -translate-y-full rounded-b-lg',
+  bottom: 'bottom-0 left-0 w-full border-t translate-y-full rounded-t-lg',
 };
 
 export const PLACEMENT_VISIBLE_STYLES: Record<DrawerPlacement, string> = {
@@ -26,34 +26,34 @@ export const PLACEMENT_VISIBLE_STYLES: Record<DrawerPlacement, string> = {
 
 export const SIZE_STYLES: Record<DrawerPlacement, Record<DrawerSize, string>> = {
   left: {
-    sm: 'w-[length:var(--component-drawer-width-sm)]',
-    md: 'w-[length:var(--component-drawer-width-md)]',
-    lg: 'w-[length:var(--component-drawer-width-lg)]',
+    sm: 'w-80',
+    md: 'w-[28rem]',
+    lg: 'w-[36rem]',
     full: 'w-full',
   },
   right: {
-    sm: 'w-[length:var(--component-drawer-width-sm)]',
-    md: 'w-[length:var(--component-drawer-width-md)]',
-    lg: 'w-[length:var(--component-drawer-width-lg)]',
+    sm: 'w-80',
+    md: 'w-[28rem]',
+    lg: 'w-[36rem]',
     full: 'w-full',
   },
   top: {
-    sm: 'h-[length:var(--component-drawer-height-sm)]',
-    md: 'h-[length:var(--component-drawer-height-md)]',
-    lg: 'h-[length:var(--component-drawer-height-lg)]',
+    sm: 'h-48',
+    md: 'h-80',
+    lg: 'h-[28rem]',
     full: 'h-full',
   },
   bottom: {
-    sm: 'h-[length:var(--component-drawer-height-sm)]',
-    md: 'h-[length:var(--component-drawer-height-md)]',
-    lg: 'h-[length:var(--component-drawer-height-lg)]',
+    sm: 'h-48',
+    md: 'h-80',
+    lg: 'h-[28rem]',
     full: 'h-full',
   },
 };
 
 // Close button styles - uses tabs variant pattern
 export const CLOSE_BUTTON_CLASSES =
-  'absolute inline-flex items-center justify-center p-1 rounded-[length:var(--component-button-radius)] bg-[color:var(--component-button-bg-tabs-default)] border border-[color:var(--component-button-border-tabs-default)] text-[color:var(--component-button-text-tabs-default)] hover:bg-[color:var(--component-button-bg-tabs-hover)] hover:border-[color:var(--component-button-border-tabs-hover)] hover:text-[color:var(--component-button-text-tabs-hover)] active:bg-[color:var(--component-button-bg-tabs-active)] active:border-[color:var(--component-button-border-tabs-active)] active:text-[color:var(--component-button-text-tabs-active)] transition-colors z-10';
+  'absolute inline-flex items-center justify-center p-1 rounded bg-[color:var(--component-button-bg-tabs-default)] border border-[color:var(--component-button-border-tabs-default)] text-[color:var(--component-button-text-tabs-default)] hover:bg-[color:var(--component-button-bg-tabs-hover)] hover:border-[color:var(--component-button-border-tabs-hover)] hover:text-[color:var(--component-button-text-tabs-hover)] active:bg-[color:var(--component-button-bg-tabs-active)] active:border-[color:var(--component-button-border-tabs-active)] active:text-[color:var(--component-button-text-tabs-active)] transition-colors z-10';
 
 export const CLOSE_BUTTON_POSITION_STYLE = {
   top: 'var(--component-drawer-header-padding-block)',
@@ -93,10 +93,5 @@ export const FOOTER_STYLE = {
 } as const;
 
 // Title styles - inline for proper token usage
-export const TITLE_CLASSES = 'm-0';
-
-export const TITLE_STYLE = {
-  fontSize: 'var(--component-drawer-title-size)',
-  fontWeight: 'var(--component-drawer-title-weight)',
-} as const;
+export const TITLE_CLASSES = 'm-0 text-lg font-semibold';
 

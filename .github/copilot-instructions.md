@@ -96,27 +96,58 @@ export const Modal = Object.assign(ModalRoot, {
 
 ### Styling Architecture
 
-- **CSS Variables** - All styling uses design tokens via CSS custom properties (`var(--component-*)`)
+**Hybrid Approach**: Use Tailwind's built-in scales for layout properties, CSS tokens only for colors.
+
+- **Tailwind Scales** - Use Tailwind's default scale for heights, gaps, radii, durations, font sizes
+- **CSS Tokens** - Use `--component-*` tokens only for **colors** that need theming
+- **@theme Block** - Minimal: only focus ring and disabled opacity (accessibility, themeable)
 - **Style Files** - Export `const` objects mapping variants to Tailwind classes
 - **Class Merging** - Always use `cn()` from `@/lib/cn` (clsx + tailwind-merge)
-- **Design Tokens** - Defined in `src/global.css`, JS access via `src/tokens/index.ts`
+
+**Core Principle**: Tailwind for layout, tokens for colors.
 
 **Style File Structure** (`Component.styles.ts`):
 ```typescript
-// Base classes - always applied
-export const BASE_CLASSES = 'inline-flex items-center justify-center...';
+// Base classes - Tailwind scales for layout, tokens for colors
+export const BASE_CLASSES = 
+  'inline-flex items-center gap-2 rounded-md duration-200 ' +
+  'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring-focus ' +
+  'disabled:opacity-disabled ' +
+  'bg-[color:var(--component-button-bg-primary)] text-[color:var(--component-button-text-primary)]';
 
-// Variant mappings - keyed by prop value
+// Size variants - use Tailwind scales
 export const SIZE_STYLES = {
-  small: 'h-[length:var(--component-button-height-small)]',
-  default: 'h-[length:var(--component-button-height-default)]',
+  small: 'h-8 px-3 text-sm gap-1.5',     // 32px height
+  default: 'h-10 px-4 text-base gap-2',  // 40px height
+  large: 'h-12 px-6 text-lg gap-2.5',    // 48px height
 } as const;
 
+// Color variants - use CSS tokens for theming
 export const VARIANT_STYLES = {
-  primary: 'bg-[color:var(--component-button-bg-primary)]...',
-  secondary: 'bg-[color:var(--component-button-bg-secondary)]...',
+  primary: 'bg-[color:var(--component-button-bg-primary)] text-[color:var(--component-button-text-primary)]',
+  secondary: 'bg-[color:var(--component-button-bg-secondary)] text-[color:var(--component-button-text-secondary)]',
 } as const;
 ```
+
+**Tailwind Scale Reference** (commonly used):
+| Property | Values | Pixels |
+|----------|--------|--------|
+| Height | `h-8`, `h-10`, `h-12` | 32px, 40px, 48px |
+| Size | `size-4`, `size-5`, `size-6` | 16px, 20px, 24px |
+| Gap | `gap-1`, `gap-2`, `gap-3`, `gap-4` | 4px, 8px, 12px, 16px |
+| Padding | `p-2`, `p-3`, `p-4`, `px-4`, `py-2` | 8px, 12px, 16px |
+| Radius | `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-full` | 2px, 6px, 8px, 9999px |
+| Duration | `duration-150`, `duration-200`, `duration-300` | 150ms, 200ms, 300ms |
+| Font Size | `text-xs`, `text-sm`, `text-base`, `text-lg` | 12px, 14px, 16px, 18px |
+| Font Weight | `font-normal`, `font-medium`, `font-semibold`, `font-bold` | 400, 500, 600, 700 |
+| Shadow | `shadow-sm`, `shadow-md`, `shadow-lg` | standard Tailwind shadows |
+| Z-Index | `z-10`, `z-20`, `z-50` | 10, 20, 50 |
+
+**Available @theme Utilities** (defined in `src/global.css`):
+| Category | Utilities |
+|----------|-----------|
+| Focus Ring | `ring-focus`, `ring-offset-focus`, `ring-ring-focus` |
+| Disabled | `opacity-disabled` |
 
 **Component Style Pattern**:
 ```tsx
@@ -126,45 +157,46 @@ const buttonClasses = useMemo(
   [size, variant, className]
 );
 
-// Use inline styles for dynamic token values
-const paddingStyle = useMemo(
-  () => ({ paddingInline: `var(--component-button-padding-inline-${size})` }),
-  [size]
-);
-
 // Add data attributes for testing/debugging
-<button className={buttonClasses} style={paddingStyle} data-variant={variant} data-size={size}>
+<button className={buttonClasses} data-variant={variant} data-size={size}>
 ```
 
-**Tailwind v4 Arbitrary Value Syntax** - Use typed hints for CSS variables:
+**When to Use Tailwind Scale vs CSS Token:**
+| Property | Approach | Example |
+|----------|----------|---------|
+| Height, width, padding, gap, margin | Tailwind scale | `h-10`, `gap-2`, `px-4` |
+| Border radius | Tailwind scale | `rounded-md`, `rounded-lg` |
+| Duration/transition | Tailwind scale | `duration-200`, `duration-300` |
+| Font size, weight | Tailwind scale | `text-sm`, `font-medium` |
+| Shadow | Tailwind scale | `shadow-md`, `shadow-lg` |
+| Z-index | Tailwind scale | `z-50` |
+| Background color | CSS token | `bg-[color:var(--component-*-bg)]` |
+| Text color | CSS token | `text-[color:var(--component-*-text)]` |
+| Border color | CSS token | `border-[color:var(--component-*-border)]` |
+
+**Tailwind v4 Arbitrary Value Syntax** - Use type hints for color tokens:
 ```typescript
-// ✅ Correct - with type hints
-'h-[length:var(--component-button-height-small)]'
+// ✅ Correct - with color type hint
 'bg-[color:var(--component-button-bg-primary)]'
-'font-[number:var(--component-button-font-weight)]'
-'shadow-[shadow:var(--component-card-shadow)]'
-'duration-[var(--component-button-transition)]'  // time doesn't need hint
+'text-[color:var(--component-button-text-primary)]'
+'border-[color:var(--component-card-border)]'
 
 // ❌ Wrong - missing type hints (won't compile)
-'h-[var(--component-button-height-small)]'
 'bg-[var(--component-button-bg-primary)]'
+
+// ✅ Use Tailwind scales directly (no tokens needed)
+'h-10 rounded-md duration-200 text-sm font-medium gap-2 px-4'
 ```
 
 **Token Hierarchy** (in `src/global.css`):
 ```
---primitive-*   → Raw values (colors, spacing numbers)
---semantic-*    → Contextual meaning (--semantic-text-primary, --semantic-space-default)
---component-*   → Component-specific (--component-button-height-small)
+--primitive-*   → Raw color values (--primitive-color-blue-500)
+--semantic-*    → Contextual meaning (--semantic-text-primary, --semantic-status-error)
+--component-*   → Component colors (--component-button-bg-primary)
+@theme { }      → Focus ring + disabled opacity only
 ```
-Always reference `--component-*` tokens in style files. Never use raw values.
 
-Example style file pattern (`Component.styles.ts`):
-```typescript
-export const SIZE_STYLES = {
-  small: 'h-[length:var(--component-button-height-small)]',
-  default: 'h-[length:var(--component-button-height-default)]',
-} as const;
-```
+Reference `--component-*` color tokens in style files. Use Tailwind scales for everything else.
 
 ### Path Aliases
 Use `@/*` for imports from `src/*`:
@@ -309,28 +341,38 @@ const ICON_STYLE = { color: 'var(--token)' } as const;
 
 ## Token Creation Rules
 
-### When Adding New Tokens to global.css
+### When Adding New Color Tokens to global.css
 
-1. **Always create component-level tokens**, even if they just reference semantic tokens:
+1. **Create component-level color tokens** that reference semantic tokens:
    ```css
-   /* ✅ Correct - component token references semantic */
+   /* ✅ Correct - component color token references semantic */
    --component-label-required-color: var(--semantic-text-error);
+   --component-button-bg-primary: var(--semantic-brand-secondary-default);
    
    /* ❌ Wrong - using semantic directly in style file */
    'text-[color:var(--semantic-text-error)]'
    ```
 
-2. **Token naming pattern:**
+2. **Use Tailwind scales for layout properties** - no tokens needed:
+   ```typescript
+   // ✅ Correct - Tailwind scales for layout
+   'h-10 px-4 gap-2 rounded-md duration-200 text-sm font-medium'
+   
+   // ❌ Wrong - tokens for layout properties
+   'h-[length:var(--component-button-height-default)]'
    ```
-   --component-{componentname}-{property}-{variant}
+
+3. **Token naming pattern** (for colors only):
+   ```
+   --component-{componentname}-{bg|text|border}-{variant}
    
    Examples:
    --component-button-bg-primary
-   --component-input-height-small
-   --component-label-required-spacing
+   --component-button-text-primary
+   --component-card-border
    ```
 
-3. **Group tokens by component** in global.css with comment headers:
+4. **Group tokens by component** in global.css with comment headers:
    ```css
    /* Label Component */
    --component-label-color: ...;
@@ -417,15 +459,17 @@ Before submitting component changes:
 - [ ] **Sub-component displayName**: `Parent.Child` format (`Modal.Header`, `Table.Row`)
 
 ### Tailwind JIT Compiler Compliance
-- [ ] Arbitrary values include type hints: `[length:...]`, `[color:...]`, `[number:...]`, `[shadow:...]`
+- [ ] Arbitrary values include type hints for colors: `[color:var(--component-*)]`
+- [ ] Use Tailwind scales for layout: `h-10`, `gap-2`, `rounded-md`, `duration-200`
 - [ ] No dynamic class generation (e.g., `` `text-${color}` ``) - use style objects or complete class strings
 - [ ] All classes are statically analyzable - no template literals for class names
 - [ ] Use `style` prop for truly dynamic values that can't be predetermined
 
-### Token & Styling
-- [ ] All styles use `--component-*` tokens (no raw values)
-- [ ] No `--primitive-*` or `--semantic-*` tokens in component style files
-- [ ] No hardcoded colors (`bg-blue-500`) - use token-based classes
+### Token & Styling (Hybrid Approach)
+- [ ] Use Tailwind scales for layout properties: height, gap, padding, radius, duration, font-size, font-weight
+- [ ] Use `--component-*` color tokens for bg, text, border colors only
+- [ ] No `--primitive-*` or `--semantic-*` tokens directly in component style files
+- [ ] No hardcoded colors (`bg-blue-500`) - use token-based classes for theming
 - [ ] `data-*` attributes added for variant/size/state (enables testing & CSS targeting)
 
 ### Performance Optimization

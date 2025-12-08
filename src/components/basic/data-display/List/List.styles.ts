@@ -13,7 +13,7 @@ export const VARIANT_STYLES: Record<ListVariant, string> = {
   divided:
     'bg-[color:var(--component-list-bg)] [&>li:not(:last-child)]:border-b [&>li:not(:last-child)]:border-[color:var(--component-list-divider-color)]',
   bordered:
-    'border border-[color:var(--component-list-border)] rounded-[length:var(--component-list-radius)] overflow-hidden',
+    'border border-[color:var(--component-list-border)] rounded-lg overflow-hidden',
   interactive: 'bg-[color:var(--component-list-bg)]',
 };
 

@@ -32,13 +32,13 @@ export const WRAP_STYLES = {
   'wrap-reverse': 'flex-wrap-reverse',
 } as const;
 
-// Spacing/gap sizes using component tokens
+// Spacing/gap sizes using Tailwind scales
 export const SPACING_STYLES = {
-  none: 'gap-[length:var(--component-stack-gap-none)]',
-  xs: 'gap-[length:var(--component-stack-gap-tight)]',
-  sm: 'gap-[length:var(--component-stack-gap-compact)]',
-  md: 'gap-[length:var(--component-stack-gap-default)]',
-  lg: 'gap-[length:var(--component-stack-gap-comfortable)]',
-  xl: 'gap-[length:var(--component-stack-gap-loose)]',
-  '2xl': 'gap-[length:var(--component-stack-gap-spacious)]',
+  none: 'gap-0',
+  xs: 'gap-1',
+  sm: 'gap-2',
+  md: 'gap-4',
+  lg: 'gap-6',
+  xl: 'gap-8',
+  '2xl': 'gap-12',
 } as const;

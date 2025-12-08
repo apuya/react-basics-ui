@@ -4,7 +4,7 @@ import {
   ANIMATION_CLASSES,
   BASE_CLASSES,
   TEXT_CONTAINER_STYLE,
-  VARIANT_STYLES,
+  VARIANT_CLASSES,
   type SkeletonAnimation,
   type SkeletonVariant,
 } from './Skeleton.styles';
@@ -69,14 +69,13 @@ export const Skeleton = memo(
     const animationClass = animation ? ANIMATION_CLASSES[animation] : '';
 
     const skeletonClasses = useMemo(
-      () => cn(BASE_CLASSES, animationClass, className),
-      [animationClass, className]
+      () => cn(BASE_CLASSES, VARIANT_CLASSES[variant], animationClass, className),
+      [variant, animationClass, className]
     );
 
     const computedStyle = useMemo(() => {
       const styles: React.CSSProperties = {
         backgroundColor: 'var(--component-skeleton-bg)',
-        ...VARIANT_STYLES[variant],
         ...style,
       };
 

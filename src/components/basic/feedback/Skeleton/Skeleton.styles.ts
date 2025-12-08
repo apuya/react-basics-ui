@@ -7,24 +7,13 @@ export type SkeletonAnimation = 'pulse' | 'wave' | 'none';
 export const BASE_CLASSES = 'block relative overflow-hidden';
 
 /**
- * Variant-specific styles using design tokens
+ * Variant-specific classes using Tailwind scales
  */
-export const VARIANT_STYLES: Record<SkeletonVariant, React.CSSProperties> = {
-  rectangle: {
-    borderRadius: 'var(--component-skeleton-radius-none)',
-  },
-  rounded: {
-    borderRadius: 'var(--component-skeleton-radius-md)',
-  },
-  circle: {
-    borderRadius: 'var(--component-skeleton-radius-full)',
-    aspectRatio: '1',
-  },
-  text: {
-    borderRadius: 'var(--component-skeleton-radius-sm)',
-    height: '1em',
-    width: '100%',
-  },
+export const VARIANT_CLASSES: Record<SkeletonVariant, string> = {
+  rectangle: 'rounded-none',
+  rounded: 'rounded-md',
+  circle: 'rounded-full aspect-square',
+  text: 'rounded-sm h-[1em] w-full',
 } as const;
 
 /**

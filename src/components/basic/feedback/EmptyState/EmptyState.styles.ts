@@ -5,43 +5,27 @@ export const BASE_CLASSES =
   'flex flex-col items-center justify-center text-center';
 
 /**
- * Container padding styles using design tokens
+ * Container padding classes using Tailwind scales
  */
-export const CONTAINER_STYLES = {
-  paddingBlock: 'var(--component-emptystate-padding-block)',
-  paddingInline: 'var(--component-emptystate-padding-inline)',
-} as const;
+export const CONTAINER_CLASSES = 'py-8 px-4';
 
 /**
- * Icon wrapper classes
+ * Icon wrapper classes with margin
  */
 export const ICON_WRAPPER_CLASSES =
-  'flex items-center justify-center text-[color:var(--component-emptystate-icon-color)]';
+  'flex items-center justify-center text-[color:var(--component-emptystate-icon-color)] mb-4';
 
 /**
- * Icon wrapper styles - margin applied inline
+ * Title spacing class
  */
-export const ICON_WRAPPER_STYLES = {
-  marginBottom: 'var(--component-emptystate-icon-gap)',
-} as const;
+export const TITLE_SPACING_CLASS = 'mb-2';
 
 /**
- * Title spacing styles (typography handled by Heading component)
+ * Description spacing class
  */
-export const TITLE_SPACING_STYLES = {
-  marginBottom: 'var(--component-emptystate-title-gap)',
-} as const;
+export const DESCRIPTION_SPACING_CLASS = 'mb-4';
 
 /**
- * Description spacing styles (typography handled by Text component)
+ * Action wrapper class
  */
-export const DESCRIPTION_SPACING_STYLES = {
-  marginBottom: 'var(--component-emptystate-description-gap)',
-} as const;
-
-/**
- * Action wrapper styles - margin applied inline
- */
-export const ACTION_WRAPPER_STYLES = {
-  marginTop: 'var(--component-emptystate-action-gap)',
-} as const;
+export const ACTION_WRAPPER_CLASS = 'mt-4';

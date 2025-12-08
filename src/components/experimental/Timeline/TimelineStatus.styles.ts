@@ -3,13 +3,13 @@ import type { IconSize } from '@/components/basic/utility/Icon';
 
 // Status area container
 export const STATUS_BASE_CLASSES =
-  'flex w-full items-start transition-colors duration-[var(--component-timeline-transition)] text-left';
+  'flex w-full items-start transition-colors duration-200 text-left';
 
 export const STATUS_INTERACTIVE_CLASSES =
   'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--component-timeline-item-focus-ring)] focus-visible:ring-offset-1';
 
 export const STATUS_DISABLED_CLASSES =
-  'opacity-[number:var(--component-timeline-disabled-opacity)] pointer-events-none cursor-not-allowed';
+  'opacity-50 pointer-events-none cursor-not-allowed';
 
 // Status variant classes - bg and icon colors from variant, text always dark
 export const STATUS_VARIANT_STYLES: Record<TimelineStatusVariant, string> = {

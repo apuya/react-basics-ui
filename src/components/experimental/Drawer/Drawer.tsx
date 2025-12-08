@@ -34,7 +34,6 @@ import {
   PLACEMENT_VISIBLE_STYLES,
   SIZE_STYLES,
   TITLE_CLASSES,
-  TITLE_STYLE,
 } from './Drawer.styles';
 
 export type DrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
@@ -134,7 +133,7 @@ const DrawerTitle = memo(
       <h2
         ref={ref}
         className={cn(TITLE_CLASSES, className)}
-        style={{ ...TITLE_STYLE, ...style }}
+        style={style}
         {...props}
       >
         {children}

@@ -13,7 +13,7 @@ export const TIMELINE_POSITION_STYLES: Record<TimelinePosition, string> = {
 // Timeline item
 export const ITEM_BASE_CLASSES = 'relative flex items-start';
 
-export const ITEM_DISABLED_CLASSES = 'opacity-[number:var(--component-timeline-disabled-opacity)] pointer-events-none';
+export const ITEM_DISABLED_CLASSES = 'opacity-50 pointer-events-none';
 
 export const ITEM_POSITION_STYLES: Record<TimelinePosition, string> = {
   left: 'flex-row',
@@ -26,19 +26,19 @@ export const DOT_CONTAINER_CLASSES = 'relative flex flex-col items-center shrink
 
 // Dot base classes
 export const DOT_BASE_CLASSES =
-  'relative z-10 inline-flex items-center justify-center rounded-full border-[length:var(--component-timeline-dot-border-width)] border-[color:var(--component-timeline-dot-border)] bg-[color:var(--component-timeline-dot-bg)] transition-colors duration-[var(--component-timeline-transition)]';
+  'relative z-10 inline-flex items-center justify-center rounded-full border-2 border-[color:var(--component-timeline-dot-border)] bg-[color:var(--component-timeline-dot-bg)] transition-colors duration-200';
 
 export const DOT_SIZE_STYLES: Record<TimelineSize, string> = {
-  sm: 'w-[length:var(--component-timeline-dot-size-sm)] h-[length:var(--component-timeline-dot-size-sm)]',
-  md: 'w-[length:var(--component-timeline-dot-size-md)] h-[length:var(--component-timeline-dot-size-md)]',
-  lg: 'w-[length:var(--component-timeline-dot-size-lg)] h-[length:var(--component-timeline-dot-size-lg)]',
+  sm: 'size-2',
+  md: 'size-3',
+  lg: 'size-4',
 };
 
 // Dot container sizes when containing an icon - larger to accommodate icon
 export const DOT_ICON_CONTAINER_SIZE_STYLES: Record<TimelineSize, string> = {
-  sm: 'w-[length:var(--component-timeline-dot-icon-container-size-sm)] h-[length:var(--component-timeline-dot-icon-container-size-sm)]',
-  md: 'w-[length:var(--component-timeline-dot-icon-container-size-md)] h-[length:var(--component-timeline-dot-icon-container-size-md)]',
-  lg: 'w-[length:var(--component-timeline-dot-icon-container-size-lg)] h-[length:var(--component-timeline-dot-icon-container-size-lg)]',
+  sm: 'size-5',
+  md: 'size-6',
+  lg: 'size-8',
 };
 
 export const DOT_VARIANT_STYLES: Record<TimelineVariant, string> = {
@@ -57,7 +57,7 @@ export const DOT_VARIANT_STYLES: Record<TimelineVariant, string> = {
 
 // Connector base - position set via inline style based on dot size
 export const CONNECTOR_CLASSES =
-  'absolute w-[length:var(--component-timeline-connector-width)] bg-[color:var(--component-timeline-connector-bg)]';
+  'absolute w-0.5 bg-[color:var(--component-timeline-connector-bg)]';
 
 // Left-aligned connector (default) - uses left position with negative translate
 export const CONNECTOR_LEFT_CLASSES = '-translate-x-1/2';

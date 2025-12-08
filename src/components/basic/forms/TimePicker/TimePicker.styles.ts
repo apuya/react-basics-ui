@@ -5,12 +5,12 @@ export type TimePickerSize = 'small' | 'default' | 'large';
 // ============================================================================
 
 export const TRIGGER_BASE_CLASSES =
-  'w-full flex items-center appearance-none rounded-[length:var(--component-input-radius)] border bg-[color:var(--component-timepicker-bg-default)] text-[color:var(--component-timepicker-text-default)] transition-colors duration-[var(--component-input-transition-duration)] focus:outline-none focus-visible:ring-[length:var(--component-timepicker-focus-ring-width)] focus-visible:ring-offset-[length:var(--component-timepicker-focus-ring-offset)] focus-visible:ring-[color:var(--component-timepicker-focus-ring-color)] disabled:cursor-not-allowed disabled:bg-[color:var(--component-timepicker-bg-disabled)] disabled:text-[color:var(--component-timepicker-text-disabled)] disabled:opacity-[var(--component-timepicker-disabled-opacity)]';
+  'w-full flex items-center appearance-none rounded-md border bg-[color:var(--component-timepicker-bg-default)] text-[color:var(--component-timepicker-text-default)] transition-colors duration-200 focus:outline-none focus-visible:ring-focus focus-visible:ring-offset-focus focus-visible:ring-ring-focus disabled:cursor-not-allowed disabled:bg-[color:var(--component-timepicker-bg-disabled)] disabled:text-[color:var(--component-timepicker-text-disabled)] disabled:opacity-disabled';
 
 export const TRIGGER_SIZE_STYLES = {
-  small: 'text-[length:var(--component-input-font-size-small)]',
-  default: 'text-[length:var(--component-input-font-size-default)]',
-  large: 'text-[length:var(--component-input-font-size-large)]',
+  small: 'h-8 px-3 text-sm',
+  default: 'h-10 px-3 text-sm',
+  large: 'h-12 px-4 text-base',
 } as const;
 
 export const TRIGGER_STATE_STYLES = {
@@ -27,7 +27,7 @@ export const TRIGGER_STATE_STYLES = {
 // ============================================================================
 
 export const MENU_BASE_CLASSES =
-  'absolute bg-[color:var(--component-dropdown-bg)] border-[length:var(--component-dropdown-border-width)] border-[color:var(--component-dropdown-border)] rounded-[length:var(--component-dropdown-radius)] shadow-[shadow:var(--component-dropdown-shadow)] z-[number:var(--component-dropdown-z-index)] w-full overflow-hidden opacity-0 pointer-events-none transition-opacity duration-[var(--component-dropdown-transition-duration)]';
+  'absolute bg-[color:var(--component-dropdown-bg)] border border-[color:var(--component-dropdown-border)] rounded-lg shadow-lg z-50 w-full overflow-hidden opacity-0 pointer-events-none transition-opacity duration-200';
 
 export const MENU_VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 
@@ -36,16 +36,16 @@ export const MENU_VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 // ============================================================================
 
 export const LABEL_CLASSES =
-  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)] text-[color:var(--component-timepicker-label-default)] mb-[length:var(--component-input-gap-compact)]';
+  'block text-sm font-medium text-[color:var(--component-timepicker-label-default)] mb-1';
 
 export const LABEL_ERROR_CLASSES =
-  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)] text-[color:var(--component-timepicker-label-error)] mb-[length:var(--component-input-gap-compact)]';
+  'block text-sm font-medium text-[color:var(--component-timepicker-label-error)] mb-1';
 
 export const HELPER_CLASSES =
-  'mt-[length:var(--component-input-gap-compact)] text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)] text-[color:var(--component-timepicker-helper-default)]';
+  'mt-1 text-xs font-normal text-[color:var(--component-timepicker-helper-default)]';
 
 export const HELPER_ERROR_CLASSES =
-  'mt-[length:var(--component-input-gap-compact)] text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)] text-[color:var(--component-timepicker-helper-error)]';
+  'mt-1 text-xs font-normal text-[color:var(--component-timepicker-helper-error)]';
 
 // ============================================================================
 // Placeholder Styles
@@ -58,7 +58,7 @@ export const PLACEHOLDER_CLASSES = 'text-[color:var(--component-timepicker-text-
 // ============================================================================
 
 export const OPTION_BASE_CLASSES =
-  'w-full flex items-center justify-between text-[length:var(--component-dropdown-font-size)] font-[number:var(--component-dropdown-font-weight)] transition-colors duration-[var(--component-dropdown-transition-duration)] cursor-pointer disabled:cursor-not-allowed disabled:opacity-[var(--component-timepicker-disabled-opacity)]';
+  'w-full flex items-center justify-between px-3 py-2 text-sm font-normal transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-disabled';
 
 export const OPTION_STATE_STYLES = {
   default:

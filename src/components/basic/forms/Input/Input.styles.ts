@@ -1,10 +1,10 @@
 export const BASE_CLASSES =
-  'w-full rounded-[length:var(--component-input-radius)] border bg-[color:var(--component-input-bg-default)] text-[color:var(--component-input-text-default)] transition-colors duration-[var(--component-input-transition-duration)] placeholder:text-[color:var(--component-input-text-placeholder)] focus:outline-none focus-visible:ring-[length:var(--semantic-focus-ring-width)] focus-visible:ring-offset-[length:var(--semantic-focus-ring-offset)] focus-visible:ring-[color:var(--semantic-border-focus)] disabled:cursor-not-allowed disabled:bg-[color:var(--component-input-bg-disabled)] disabled:text-[color:var(--component-input-text-disabled)] disabled:opacity-[var(--semantic-opacity-disabled)] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none';
+  'w-full rounded-md border bg-[color:var(--component-input-bg-default)] text-[color:var(--component-input-text-default)] transition-colors duration-200 placeholder:text-[color:var(--component-input-text-placeholder)] focus:outline-none focus-visible:ring-focus focus-visible:ring-offset-focus focus-visible:ring-ring-focus disabled:cursor-not-allowed disabled:bg-[color:var(--component-input-bg-disabled)] disabled:text-[color:var(--component-input-text-disabled)] disabled:opacity-disabled [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none';
 
 export const SIZE_STYLES = {
-  small: 'text-[length:var(--component-input-font-size-small)]',
-  default: 'text-[length:var(--component-input-font-size-default)]',
-  large: 'text-[length:var(--component-input-font-size-large)]',
+  small: 'h-8 px-3 text-sm',
+  default: 'h-10 px-3 text-sm',
+  large: 'h-12 px-4 text-base',
 } as const;
 
 export const STATE_STYLES = {
@@ -15,16 +15,10 @@ export const STATE_STYLES = {
 } as const;
 
 export const ICON_SIZE_STYLES = {
-  small: 'w-[length:var(--component-input-icon-size-small)] h-[length:var(--component-input-icon-size-small)]',
-  default: 'w-[length:var(--component-input-icon-size-default)] h-[length:var(--component-input-icon-size-default)]',
-  large: 'w-[length:var(--component-input-icon-size-large)] h-[length:var(--component-input-icon-size-large)]',
+  small: 'size-4',
+  default: 'size-5',
+  large: 'size-6',
 } as const;
 
 /** Suffix style for unit labels (e.g., kg, cm, $) */
-export const SUFFIX_STYLE: React.CSSProperties = {
-  color: 'var(--component-input-suffix-color)',
-  fontSize: 'var(--component-input-suffix-font-size)',
-  fontWeight: 'var(--component-input-suffix-font-weight)',
-  paddingLeft: 'var(--component-input-suffix-padding-inline)',
-  paddingRight: 'var(--component-input-padding-inline)',
-} as const;
+export const SUFFIX_CLASSES = 'pl-2 pr-3 text-sm font-normal text-[color:var(--component-input-suffix-color)]';

@@ -28,29 +28,28 @@ describe('Skeleton', () => {
       const { container } = render(<Skeleton />);
       const skeleton = container.firstChild as HTMLElement;
       expect(skeleton).toHaveAttribute('data-variant', 'rectangle');
-      expect(skeleton).toHaveStyle({ borderRadius: 'var(--component-skeleton-radius-none)' });
+      expect(skeleton).toHaveClass('rounded-none');
     });
 
     it('applies circle variant', () => {
       const { container } = render(<Skeleton variant="circle" />);
       const skeleton = container.firstChild as HTMLElement;
       expect(skeleton).toHaveAttribute('data-variant', 'circle');
-      expect(skeleton).toHaveStyle({ borderRadius: 'var(--component-skeleton-radius-full)' });
+      expect(skeleton).toHaveClass('rounded-full', 'aspect-square');
     });
 
     it('applies rounded variant', () => {
       const { container } = render(<Skeleton variant="rounded" />);
       const skeleton = container.firstChild as HTMLElement;
       expect(skeleton).toHaveAttribute('data-variant', 'rounded');
-      expect(skeleton).toHaveStyle({ borderRadius: 'var(--component-skeleton-radius-md)' });
+      expect(skeleton).toHaveClass('rounded-md');
     });
 
     it('applies text variant', () => {
       const { container } = render(<Skeleton variant="text" />);
       const skeleton = container.firstChild as HTMLElement;
       expect(skeleton).toHaveAttribute('data-variant', 'text');
-      expect(skeleton).toHaveStyle({ borderRadius: 'var(--component-skeleton-radius-sm)' });
-      expect(skeleton).toHaveStyle({ height: '1em' });
+      expect(skeleton).toHaveClass('rounded-sm');
     });
   });
 

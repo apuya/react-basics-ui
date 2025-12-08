@@ -3,7 +3,6 @@ import { forwardRef, memo, useCallback, useEffect } from 'react';
 import { useDatePickerContext } from './DatePickerContext';
 import {
   CONTENT_BASE_CLASSES,
-  CONTENT_BASE_STYLE,
   CONTENT_VISIBLE_CLASS,
   CONTENT_POSITION_STYLES,
   CONTENT_LAYOUT_CLASSES,
@@ -114,7 +113,6 @@ export const DatePickerContent = memo(
           isOpen && CONTENT_VISIBLE_CLASS,
           className
         )}
-        style={CONTENT_BASE_STYLE}
         {...rest}
       >
         {children}

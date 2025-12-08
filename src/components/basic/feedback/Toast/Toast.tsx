@@ -3,14 +3,14 @@ import { BiCheckCircle, BiErrorCircle, BiInfoCircle, BiXCircle, BiX } from 'reac
 import { cn } from '@/lib/cn';
 import {
   BASE_CLASSES,
-  BODY_STYLES,
+  BODY_CLASSES,
   CLOSE_BUTTON_CLASSES,
   CLOSE_BUTTON_SIZE_STYLE,
-  CONTAINER_STYLES,
+  CONTAINER_CLASSES,
   CONTENT_CLASSES,
   ICON_COLOR_STYLES,
-  ICON_SIZE_STYLE,
-  TITLE_STYLES,
+  ICON_SIZE_CLASS,
+  TITLE_CLASSES,
   VARIANT_STYLES,
 } from './Toast.styles';
 
@@ -93,16 +93,14 @@ export const Toast = memo(
         ref={ref}
         role="alert"
         aria-live="polite"
-        className={toastClasses}
-        style={CONTAINER_STYLES}
+        className={cn(toastClasses, CONTAINER_CLASSES)}
         data-variant={variant}
         {...rest}
       >
         {/* Icon */}
         {showIcon && (
           <span
-            className={cn('shrink-0', ICON_COLOR_STYLES[variant])}
-            style={ICON_SIZE_STYLE}
+            className={cn('shrink-0', ICON_COLOR_STYLES[variant], ICON_SIZE_CLASS)}
             aria-hidden="true"
           >
             <IconComponent />
@@ -112,23 +110,17 @@ export const Toast = memo(
         {/* Content */}
         {hasContent && (
           <div className={CONTENT_CLASSES}>
-            {title && <div style={TITLE_STYLES}>{title}</div>}
+            {title && <div className={TITLE_CLASSES}>{title}</div>}
             {description && (
               <div
-                style={{
-                  ...BODY_STYLES,
-                  marginTop: title ? 'var(--semantic-space-tight)' : '0',
-                }}
+                className={cn(BODY_CLASSES, title && 'mt-1')}
               >
                 {description}
               </div>
             )}
             {children && !description && (
               <div
-                style={{
-                  ...BODY_STYLES,
-                  marginTop: title ? 'var(--semantic-space-tight)' : '0',
-                }}
+                className={cn(BODY_CLASSES, title && 'mt-1')}
               >
                 {children}
               </div>

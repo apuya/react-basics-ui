@@ -6,34 +6,14 @@ import type { SpinnerSize, SpinnerColor } from './Spinner';
 export const BASE_CLASSES = 'inline-block rounded-full';
 
 /**
- * Size-specific styles using design tokens (applied via inline styles)
+ * Size-specific classes using Tailwind scales
  */
-export const SIZE_STYLES: Record<SpinnerSize, React.CSSProperties> = {
-  xs: {
-    width: 'var(--component-spinner-size-xs)',
-    height: 'var(--component-spinner-size-xs)',
-    borderWidth: 'var(--component-spinner-border-width-xs)',
-  },
-  sm: {
-    width: 'var(--component-spinner-size-sm)',
-    height: 'var(--component-spinner-size-sm)',
-    borderWidth: 'var(--component-spinner-border-width-sm)',
-  },
-  md: {
-    width: 'var(--component-spinner-size-md)',
-    height: 'var(--component-spinner-size-md)',
-    borderWidth: 'var(--component-spinner-border-width-md)',
-  },
-  lg: {
-    width: 'var(--component-spinner-size-lg)',
-    height: 'var(--component-spinner-size-lg)',
-    borderWidth: 'var(--component-spinner-border-width-lg)',
-  },
-  xl: {
-    width: 'var(--component-spinner-size-xl)',
-    height: 'var(--component-spinner-size-xl)',
-    borderWidth: 'var(--component-spinner-border-width-xl)',
-  },
+export const SIZE_CLASSES: Record<SpinnerSize, string> = {
+  xs: 'size-3 border',
+  sm: 'size-4 border-2',
+  md: 'size-6 border-2',
+  lg: 'size-8 border-[3px]',
+  xl: 'size-12 border-4',
 } as const;
 
 /**

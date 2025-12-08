@@ -1,13 +1,10 @@
 export const BASE_CLASSES =
-  'inline-flex items-center justify-center gap-[length:var(--component-button-gap)] rounded-[length:var(--component-button-radius)] border border-transparent font-[number:var(--component-button-font-weight-default)] transition-colors duration-[var(--component-button-transition-duration)] focus-visible:outline-none focus-visible:ring-[length:var(--component-button-focus-ring-width)] focus-visible:ring-offset-[length:var(--component-button-focus-ring-offset)] focus-visible:ring-[color:var(--component-button-focus-ring-color)] disabled:cursor-not-allowed disabled:opacity-[var(--component-button-disabled-opacity)]';
+  'inline-flex items-center justify-center gap-2 rounded-md border border-transparent font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-focus focus-visible:ring-offset-focus focus-visible:ring-ring-focus disabled:cursor-not-allowed disabled:opacity-disabled';
 
 export const SIZE_STYLES = {
-  small:
-    'h-[length:var(--component-button-height-small)] text-[length:var(--component-button-font-size-small)] font-[number:var(--component-button-font-weight-small)]',
-  default:
-    'h-[length:var(--component-button-height-default)] text-[length:var(--component-button-font-size-default)] font-[number:var(--component-button-font-weight-default)]',
-  large:
-    'h-[length:var(--component-button-height-large)] text-[length:var(--component-button-font-size-large)] font-[number:var(--component-button-font-weight-large)]',
+  small: 'h-8 px-3 text-sm font-medium',
+  default: 'h-10 px-4 text-sm font-medium',
+  large: 'h-12 px-6 text-base font-medium',
 } as const;
 
 export const VARIANT_STYLES = {
@@ -31,14 +28,12 @@ export const ICON_WRAPPER_CLASSES = 'inline-flex items-center justify-center shr
 
 export const SPINNER_WRAPPER_CLASSES = 'inline-flex items-center justify-center shrink-0 animate-spin';
 
-export const SPINNER_CLASSES = 'h-full w-full rounded-[var(--component-button-spinner-radius)] border-current border-t-transparent';
-
-export const SPINNER_BORDER_STYLE = { borderWidth: 'var(--component-button-spinner-border-width)' };
+export const SPINNER_CLASSES = 'h-full w-full rounded-full border-2 border-current border-t-transparent';
 
 export const CONTENT_CLASSES = 'inline-flex items-center justify-center';
 
 export const ICON_SIZE_STYLES = {
-  small: 'w-[length:var(--component-button-icon-size-small)] h-[length:var(--component-button-icon-size-small)]',
-  default: 'w-[length:var(--component-button-icon-size-default)] h-[length:var(--component-button-icon-size-default)]',
-  large: 'w-[length:var(--component-button-icon-size-large)] h-[length:var(--component-button-icon-size-large)]',
+  small: 'size-4',
+  default: 'size-5',
+  large: 'size-6',
 } as const;

@@ -108,14 +108,11 @@ export const Checkbox = memo(
       [id, label]
     );
 
-    // Compute checkbox classes
+    // Compute checkbox classes including size
     const checkboxClasses = useMemo(
-      () => cn(CHECKBOX_BASE_CLASSES, className),
-      [className]
+      () => cn(CHECKBOX_BASE_CLASSES, CHECKBOX_SIZE_STYLES[size], className),
+      [size, className]
     );
-
-    // Get size-specific styles
-    const sizeStyle = CHECKBOX_SIZE_STYLES[size];
 
     return (
       <label className={WRAPPER_BASE_CLASSES}>
@@ -123,7 +120,6 @@ export const Checkbox = memo(
           className={checkboxClasses}
           data-error={error || undefined}
           data-size={size}
-          style={sizeStyle}
         >
           <input
             ref={(node) => {

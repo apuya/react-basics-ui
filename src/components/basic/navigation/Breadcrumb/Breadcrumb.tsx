@@ -8,11 +8,11 @@ import {
   BREADCRUMB_LINK_CURRENT_CLASSES,
   BREADCRUMB_LIST_CLASSES,
   BREADCRUMB_SEPARATOR_CLASSES,
-  ELLIPSIS_TYPOGRAPHY_STYLES,
-  ITEM_GAP_STYLES,
-  LINK_CURRENT_TYPOGRAPHY_STYLES,
-  LINK_TYPOGRAPHY_STYLES,
-  SEPARATOR_SPACING_STYLES,
+  ELLIPSIS_TYPOGRAPHY_CLASSES,
+  ITEM_GAP_CLASSES,
+  LINK_CURRENT_TYPOGRAPHY_CLASSES,
+  LINK_TYPOGRAPHY_CLASSES,
+  SEPARATOR_SPACING_CLASSES,
 } from './Breadcrumb.styles';
 
 // Context for Breadcrumb configuration
@@ -73,7 +73,7 @@ export const BreadcrumbItem = memo(
     const { separator } = useBreadcrumbContext();
 
     const itemClasses = useMemo(
-      () => cn(BREADCRUMB_ITEM_CLASSES, className),
+      () => cn(BREADCRUMB_ITEM_CLASSES, ITEM_GAP_CLASSES, className),
       [className]
     );
 
@@ -81,15 +81,13 @@ export const BreadcrumbItem = memo(
       <li
         ref={ref}
         className={itemClasses}
-        style={ITEM_GAP_STYLES}
         data-current={isCurrent || undefined}
         {...props}
       >
         {children}
         {!isCurrent && showSeparator && (
           <span
-            className={BREADCRUMB_SEPARATOR_CLASSES}
-            style={SEPARATOR_SPACING_STYLES}
+            className={cn(BREADCRUMB_SEPARATOR_CLASSES, SEPARATOR_SPACING_CLASSES)}
             aria-hidden="true"
           >
             {separator}
@@ -118,21 +116,17 @@ export const BreadcrumbLink = memo(
     const linkClasses = useMemo(
       () => cn(
         isCurrent ? BREADCRUMB_LINK_CURRENT_CLASSES : BREADCRUMB_LINK_CLASSES,
+        isCurrent ? LINK_CURRENT_TYPOGRAPHY_CLASSES : LINK_TYPOGRAPHY_CLASSES,
         className
       ),
       [isCurrent, className]
     );
-
-    const typographyStyles = isCurrent
-      ? LINK_CURRENT_TYPOGRAPHY_STYLES
-      : LINK_TYPOGRAPHY_STYLES;
 
     return (
       <Component
         ref={ref as any}
         href={!isCurrent ? href : undefined}
         className={linkClasses}
-        style={typographyStyles}
         aria-current={isCurrent ? 'page' : undefined}
         data-current={isCurrent || undefined}
         {...(props as any)}
@@ -154,7 +148,7 @@ export const BreadcrumbEllipsis = memo(
     ref
   ) {
     const ellipsisClasses = useMemo(
-      () => cn(BREADCRUMB_ELLIPSIS_CLASSES, className),
+      () => cn(BREADCRUMB_ELLIPSIS_CLASSES, ELLIPSIS_TYPOGRAPHY_CLASSES, className),
       [className]
     );
 
@@ -164,7 +158,6 @@ export const BreadcrumbEllipsis = memo(
         role="presentation"
         aria-hidden="true"
         className={ellipsisClasses}
-        style={ELLIPSIS_TYPOGRAPHY_STYLES}
         {...props}
       >
         {children}

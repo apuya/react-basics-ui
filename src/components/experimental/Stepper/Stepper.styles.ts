@@ -18,22 +18,18 @@ export const STEP_ORIENTATION = {
 // STYLE GENERATORS
 // =============================================================================
 
-/** Generates indicator size classes for a given size */
-const indicatorSize = (size: string) =>
-  `w-[length:var(--component-stepper-indicator-size-${size})] h-[length:var(--component-stepper-indicator-size-${size})] text-[length:var(--component-stepper-indicator-font-size-${size})]`;
-
 /** Generates indicator state classes for a given status */
 const indicatorState = (status: string, borderWidth = '2') =>
   `bg-[color:var(--component-stepper-indicator-bg-${status})] text-[color:var(--component-stepper-indicator-text-${status})] border-[${borderWidth}px] border-[color:var(--component-stepper-indicator-border-${status})]`;
 
 // Step indicator (circle with number/icon)
 export const STEP_INDICATOR_BASE_CLASSES =
-  'flex items-center justify-center rounded-full transition-all duration-[var(--component-stepper-transition)] font-[number:var(--component-stepper-indicator-font-weight)] shrink-0';
+  'flex items-center justify-center rounded-full transition-all duration-200 font-medium shrink-0';
 
 export const STEP_INDICATOR_SIZE: Record<'sm' | 'md' | 'lg', string> = {
-  sm: indicatorSize('sm'),
-  md: indicatorSize('md'),
-  lg: indicatorSize('lg'),
+  sm: 'size-6 text-xs',
+  md: 'size-8 text-sm',
+  lg: 'size-10 text-base',
 };
 
 export const STEP_INDICATOR_STATES: Record<'completed' | 'active' | 'upcoming' | 'error', string> = {
@@ -44,11 +40,11 @@ export const STEP_INDICATOR_STATES: Record<'completed' | 'active' | 'upcoming' |
 };
 
 // Step connector (line between steps)
-export const STEP_CONNECTOR_BASE_CLASSES = 'transition-colors duration-[var(--component-stepper-transition)]';
+export const STEP_CONNECTOR_BASE_CLASSES = 'transition-colors duration-200';
 
 export const STEP_CONNECTOR_ORIENTATION = {
-  horizontal: 'flex-1 h-[length:var(--component-stepper-connector-height)]',
-  vertical: 'w-[length:var(--component-stepper-connector-width)] h-[length:var(--component-stepper-connector-height-vertical)]',
+  horizontal: 'flex-1 h-0.5',
+  vertical: 'w-0.5 h-16',
 } as const;
 
 /** Generates connector background class for a given status */
@@ -66,7 +62,7 @@ export const STEP_CONTENT_ORIENTATION = {
 } as const;
 
 // Label base classes - transition only, Text component handles typography
-export const STEP_LABEL_BASE_CLASSES = 'transition-colors duration-[var(--component-stepper-transition)]';
+export const STEP_LABEL_BASE_CLASSES = 'transition-colors duration-200';
 
 // =============================================================================
 // INLINE STYLE TOKENS

@@ -4,12 +4,12 @@ import { Button } from '@/components/basic/forms/Button';
 import { SearchBar } from '@/components/basic/forms/SearchBar';
 import { Text } from '@/components/basic/typography/Text';
 import { 
-  DESCRIPTION_TEXT_STYLE,
+  DESCRIPTION_TEXT_CLASSES,
   DIVIDER_CLASSES, 
-  HEADER_TEXT_STYLE,
-  MENU_ITEM_GAP_STYLE, 
-  MENU_ITEM_PADDING_STYLE, 
-  SEARCH_CONTAINER_PADDING_STYLE,
+  HEADER_TEXT_CLASSES,
+  MENU_ITEM_GAP_CLASSES, 
+  MENU_ITEM_PADDING_CLASSES, 
+  SEARCH_CONTAINER_PADDING_CLASSES,
 } from './Dropdown.styles';
 
 /**
@@ -88,8 +88,7 @@ export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps
           <div
             ref={ref}
             role="separator"
-            className={cn(DIVIDER_CLASSES, className)}
-            style={MENU_ITEM_GAP_STYLE}
+            className={cn(DIVIDER_CLASSES, MENU_ITEM_GAP_CLASSES, className)}
             {...props}
           />
         );
@@ -100,22 +99,19 @@ export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps
         return (
           <div
             ref={ref}
-            className={cn('flex flex-col', className)}
-            style={{ ...MENU_ITEM_PADDING_STYLE, gap: 'var(--component-dropdown-item-gap)' }}
+            className={cn('flex flex-col gap-1', MENU_ITEM_PADDING_CLASSES, className)}
             {...props}
           >
             {label && (
               <div
-                className="overflow-hidden text-ellipsis whitespace-nowrap"
-                style={HEADER_TEXT_STYLE}
+                className={cn('overflow-hidden text-ellipsis whitespace-nowrap', HEADER_TEXT_CLASSES)}
               >
                 {label}
               </div>
             )}
             {description && (
               <div
-                className="overflow-hidden text-ellipsis whitespace-nowrap"
-                style={DESCRIPTION_TEXT_STYLE}
+                className={cn('overflow-hidden text-ellipsis whitespace-nowrap', DESCRIPTION_TEXT_CLASSES)}
               >
                 {description}
               </div>
@@ -129,8 +125,7 @@ export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps
         return (
           <div
             ref={ref}
-            className={className}
-            style={SEARCH_CONTAINER_PADDING_STYLE}
+            className={cn(SEARCH_CONTAINER_PADDING_CLASSES, className)}
             {...props}
           >
             <SearchBar
@@ -149,8 +144,7 @@ export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps
         return (
           <div
             ref={ref}
-            className={cn('flex items-center justify-between', className)}
-            style={MENU_ITEM_PADDING_STYLE}
+            className={cn('flex items-center justify-between', MENU_ITEM_PADDING_CLASSES, className)}
             {...props}
           >
             <Text size="small" color="secondary">

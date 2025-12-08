@@ -26,37 +26,37 @@ export const ROWS_STYLES = {
   6: 'grid-rows-6',
 } as const;
 
-// Gap sizes using component tokens
+// Gap sizes using Tailwind scales
 export const GAP_STYLES = {
-  none: 'gap-[length:var(--component-grid-gap-none)]',
-  xs: 'gap-[length:var(--component-grid-gap-tight)]',
-  sm: 'gap-[length:var(--component-grid-gap-compact)]',
-  md: 'gap-[length:var(--component-grid-gap-default)]',
-  lg: 'gap-[length:var(--component-grid-gap-comfortable)]',
-  xl: 'gap-[length:var(--component-grid-gap-loose)]',
-  '2xl': 'gap-[length:var(--component-grid-gap-spacious)]',
+  none: 'gap-0',
+  xs: 'gap-1',
+  sm: 'gap-2',
+  md: 'gap-4',
+  lg: 'gap-6',
+  xl: 'gap-8',
+  '2xl': 'gap-12',
 } as const;
 
-// Gap X (horizontal) sizes using component tokens
+// Gap X (horizontal) sizes using Tailwind scales
 export const GAP_X_STYLES = {
-  none: 'gap-x-[length:var(--component-grid-gap-none)]',
-  xs: 'gap-x-[length:var(--component-grid-gap-tight)]',
-  sm: 'gap-x-[length:var(--component-grid-gap-compact)]',
-  md: 'gap-x-[length:var(--component-grid-gap-default)]',
-  lg: 'gap-x-[length:var(--component-grid-gap-comfortable)]',
-  xl: 'gap-x-[length:var(--component-grid-gap-loose)]',
-  '2xl': 'gap-x-[length:var(--component-grid-gap-spacious)]',
+  none: 'gap-x-0',
+  xs: 'gap-x-1',
+  sm: 'gap-x-2',
+  md: 'gap-x-4',
+  lg: 'gap-x-6',
+  xl: 'gap-x-8',
+  '2xl': 'gap-x-12',
 } as const;
 
-// Gap Y (vertical) sizes using component tokens
+// Gap Y (vertical) sizes using Tailwind scales
 export const GAP_Y_STYLES = {
-  none: 'gap-y-[length:var(--component-grid-gap-none)]',
-  xs: 'gap-y-[length:var(--component-grid-gap-tight)]',
-  sm: 'gap-y-[length:var(--component-grid-gap-compact)]',
-  md: 'gap-y-[length:var(--component-grid-gap-default)]',
-  lg: 'gap-y-[length:var(--component-grid-gap-comfortable)]',
-  xl: 'gap-y-[length:var(--component-grid-gap-loose)]',
-  '2xl': 'gap-y-[length:var(--component-grid-gap-spacious)]',
+  none: 'gap-y-0',
+  xs: 'gap-y-1',
+  sm: 'gap-y-2',
+  md: 'gap-y-4',
+  lg: 'gap-y-6',
+  xl: 'gap-y-8',
+  '2xl': 'gap-y-12',
 } as const;
 
 // Align items

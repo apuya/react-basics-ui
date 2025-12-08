@@ -22,22 +22,22 @@ export const SPACING_STYLES = {
 
 export const SPACING_STYLES_HORIZONTAL = {
   none: 'my-0',
-  xs: 'my-[length:var(--semantic-spacing-xs)]',
-  sm: 'my-[length:var(--semantic-spacing-sm)]',
-  md: 'my-[length:var(--semantic-spacing-md)]',
-  lg: 'my-[length:var(--semantic-spacing-lg)]',
-  xl: 'my-[length:var(--semantic-spacing-xl)]',
+  xs: 'my-1',
+  sm: 'my-2',
+  md: 'my-4',
+  lg: 'my-6',
+  xl: 'my-8',
 } as const;
 
 export const SPACING_STYLES_VERTICAL = {
   none: 'mx-0',
-  xs: 'mx-[length:var(--semantic-spacing-xs)]',
-  sm: 'mx-[length:var(--semantic-spacing-sm)]',
-  md: 'mx-[length:var(--semantic-spacing-md)]',
-  lg: 'mx-[length:var(--semantic-spacing-lg)]',
-  xl: 'mx-[length:var(--semantic-spacing-xl)]',
+  xs: 'mx-1',
+  sm: 'mx-2',
+  md: 'mx-4',
+  lg: 'mx-6',
+  xl: 'mx-8',
 } as const;
 
 export const LABEL_WRAPPER_CLASSES = 'flex items-center w-full';
 
-export const LABEL_CLASSES = 'text-[length:var(--component-text-font-size-small)] text-[color:var(--semantic-text-secondary)] px-[length:var(--semantic-spacing-md)]';
+export const LABEL_CLASSES = 'text-sm text-[color:var(--semantic-text-secondary)] px-4';

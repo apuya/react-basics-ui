@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Breadcrumb } from './Breadcrumb';
-import { ICON_SIZE_STYLES } from './Breadcrumb.styles';
+import { ICON_SIZE_CLASSES } from './Breadcrumb.styles';
 import { FiChevronRight, FiHome, FiFolder, FiFile } from 'react-icons/fi';
 
 const meta: Meta<typeof Breadcrumb> = {
@@ -55,7 +55,7 @@ export const WithCustomSeparator: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Breadcrumb with custom text or icon separator. Use `ICON_SIZE_STYLES` for proper icon sizing.',
+        story: 'Breadcrumb with custom text or icon separator. Use `ICON_SIZE_CLASSES` for proper icon sizing.',
       },
     },
   },
@@ -75,7 +75,7 @@ export const WithCustomSeparator: Story = {
       </Breadcrumb>
 
       {/* Icon separator */}
-      <Breadcrumb separator={<FiChevronRight style={ICON_SIZE_STYLES} />}>
+      <Breadcrumb separator={<FiChevronRight className={ICON_SIZE_CLASSES} />}>
         <Breadcrumb.Item>
           <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
         </Breadcrumb.Item>
@@ -99,7 +99,7 @@ export const WithIcons: Story = {
     },
   },
   render: () => (
-    <Breadcrumb separator={<FiChevronRight style={ICON_SIZE_STYLES} />}>
+    <Breadcrumb separator={<FiChevronRight className={ICON_SIZE_CLASSES} />}>
       <Breadcrumb.Item>
         <Breadcrumb.Link href="/" className="inline-flex items-center gap-1.5">
           <FiHome className="h-4 w-4" aria-hidden="true" />

@@ -1,15 +1,15 @@
 export const BASE_CLASSES = 'inline-block';
 
 export const SIZE_STYLES = {
-  small: 'text-[length:var(--component-label-font-size-small)]',
-  default: 'text-[length:var(--component-label-font-size)]',
-  large: 'text-[length:var(--component-label-font-size-large)]',
+  small: 'text-xs',
+  default: 'text-sm',
+  large: 'text-base',
 } as const;
 
 export const WEIGHT_STYLES = {
-  normal: 'font-[number:var(--component-label-font-weight)]',
-  medium: 'font-[number:var(--component-label-font-weight-medium)]',
-  semibold: 'font-[number:var(--component-label-font-weight-semibold)]',
+  normal: 'font-normal',
+  medium: 'font-medium',
+  semibold: 'font-semibold',
 } as const;
 
 export const COLOR_STYLES = {
@@ -24,4 +24,4 @@ export const STATE_STYLES = {
   required: '',
 } as const;
 
-export const REQUIRED_CLASSES = 'text-[color:var(--component-label-required-color)] ml-[length:var(--component-label-required-spacing)]';
+export const REQUIRED_CLASSES = 'ml-0.5 text-[color:var(--component-label-required-color)]';

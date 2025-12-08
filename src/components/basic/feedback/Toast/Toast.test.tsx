@@ -143,12 +143,10 @@ describe('Toast', () => {
     });
   });
 
-  it('applies inline padding and gap styles', () => {
+  it('applies padding and gap classes', () => {
     const { getByRole } = render(<Toast title="Test" />);
     const toast = getByRole('alert');
-    expect(toast).toHaveStyle({ paddingInline: 'var(--component-toast-padding-inline)' });
-    expect(toast).toHaveStyle({ paddingBlock: 'var(--component-toast-padding-block)' });
-    expect(toast).toHaveStyle({ gap: 'var(--component-toast-gap)' });
+    expect(toast).toHaveClass('py-3', 'px-4', 'gap-3');
   });
 
   it('applies data-variant attribute', () => {
