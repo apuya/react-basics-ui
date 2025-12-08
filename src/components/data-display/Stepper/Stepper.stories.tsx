@@ -8,11 +8,11 @@ import {
   BiHome,
   BiFile,
 } from 'react-icons/bi';
-import { Button } from '../../basic/forms/Button';
-import { Heading } from '../../basic/typography/Heading';
-import { Text } from '../../basic/typography/Text';
-import { Box } from '../../basic/layout/Box';
-import { Flex } from '../../basic/layout/Flex';
+import { Button } from '../forms/Button';
+import { Heading } from '../typography/Heading';
+import { Text } from '../typography/Text';
+import { Box } from '../layout/Box';
+import { Flex } from '../layout/Flex';
 import { Stepper } from './Stepper';
 
 const meta: Meta<typeof Stepper> = {

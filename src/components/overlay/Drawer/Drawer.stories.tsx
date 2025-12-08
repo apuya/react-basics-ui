@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Drawer } from './Drawer';
-import { Button } from '../../basic/forms/Button/Button';
-import { Text } from '../../basic/typography/Text/Text';
-import { Stack } from '../../basic/layout/Stack/Stack';
+import { Button } from '../forms/Button/Button';
+import { Text } from '../typography/Text/Text';
+import { Stack } from '../layout/Stack/Stack';
 
 const meta: Meta<typeof Drawer> = {
   title: 'Experimental/Drawer',

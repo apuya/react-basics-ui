@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BiUser, BiCheckCircle, BiStar, BiHeart, BiLock } from 'react-icons/bi';
-import { Text } from '../../basic/typography/Text';
-import { Box } from '../../basic/layout/Box';
-import { Flex } from '../../basic/layout/Flex';
+import { Text } from '../typography/Text';
+import { Box } from '../layout/Box';
+import { Flex } from '../layout/Flex';
 import { Stepper } from './Stepper';
 
 const meta: Meta<typeof Stepper.Indicator> = {

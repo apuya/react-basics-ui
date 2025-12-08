@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Autocomplete, type AutocompleteOptionData } from './Autocomplete';
 import { BiSearch, BiPlus } from 'react-icons/bi';
-import { Button } from '../../../basic/forms/Button';
+import { Button } from '../../forms/Button';
 
 const meta: Meta<typeof Autocomplete.Empty> = {
   title: 'Advanced/Forms/Autocomplete/Empty',

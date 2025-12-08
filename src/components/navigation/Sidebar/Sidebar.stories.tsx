@@ -9,8 +9,8 @@ import {
   BiChart,
   BiGridAlt,
 } from 'react-icons/bi';
-import { Heading } from '../../basic/typography/Heading';
-import { Text } from '../../basic/typography/Text';
+import { Heading } from '../typography/Heading';
+import { Text } from '../typography/Text';
 
 const meta: Meta<typeof Sidebar> = {
   title: 'Experimental/Sidebar',

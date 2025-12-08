@@ -4,7 +4,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { Modal } from './Modal';
 
 // Mock Portal to render inline for testing
-vi.mock('@/components/basic/utility/Portal', () => ({
+vi.mock('@/components/utility/Portal', () => ({
   Portal: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 

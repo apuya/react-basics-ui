@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Accordion } from './Accordion';
-import { Stack } from '../../../basic/layout/Stack';
-import { Flex } from '../../../basic/layout/Flex';
-import { Text } from '../../../basic/typography/Text';
+import { Stack } from '../../layout/Stack';
+import { Flex } from '../../layout/Flex';
+import { Text } from '../../typography/Text';
 
 const meta = {
   title: 'Data Display/Accordion',

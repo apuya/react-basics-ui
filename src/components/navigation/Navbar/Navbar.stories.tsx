@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { Navbar } from './Navbar';
 import { FOCUS_RING_CLASSES, NOTIFICATION_INDICATOR_CLASSES } from './Navbar.styles';
 import { FiSearch, FiBell, FiMoreVertical } from 'react-icons/fi';
-import { Button } from '../../basic/forms/Button';
-import { Avatar } from '../../basic/data-display/Avatar';
-import { Input } from '../../basic/forms/Input';
-import { Select } from '../../basic/forms/Select';
-import { Heading } from '../../basic/typography/Heading';
+import { Button } from '../forms/Button';
+import { Avatar } from '../data-display/Avatar';
+import { Input } from '../forms/Input';
+import { Select } from '../forms/Select';
+import { Heading } from '../typography/Heading';
 
 // Consistent icon size for navbar - 20px
 const ICON_CLASS = 'w-5 h-5 shrink-0';

@@ -15,12 +15,12 @@ import {
   BiHeart,
   BiStar,
 } from 'react-icons/bi';
-import { Text } from '../../basic/typography/Text';
-import { Heading } from '../../basic/typography/Heading';
-import { Button } from '../../basic/forms/Button';
-import { Box } from '../../basic/layout/Box';
-import { Flex } from '../../basic/layout/Flex';
-import { Stack } from '../../basic/layout/Stack';
+import { Text } from '../typography/Text';
+import { Heading } from '../typography/Heading';
+import { Button } from '../forms/Button';
+import { Box } from '../layout/Box';
+import { Flex } from '../layout/Flex';
+import { Stack } from '../layout/Stack';
 
 const meta = {
   title: 'Experimental/Tree',

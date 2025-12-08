@@ -3,7 +3,7 @@ import { Table } from './Table';
 import { useState } from 'react';
 import { BiFilter, BiDownload, BiRefresh, BiPlus } from 'react-icons/bi';
 import { Dropdown } from '../../navigation/Dropdown';
-import { Flex } from '../../../basic/layout/Flex';
+import { Flex } from '../../layout/Flex';
 
 const meta = {
   title: 'Data Display/Table',

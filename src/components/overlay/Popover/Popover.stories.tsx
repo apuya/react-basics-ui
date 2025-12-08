@@ -1,20 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Popover, type PopoverSide, type PopoverAlign } from './Popover';
-import { Button } from '../../../basic/forms/Button/Button';
-import { Badge } from '../../../basic/feedback/Badge/Badge';
-import { Avatar } from '../../../basic/data-display/Avatar/Avatar';
-import { Box } from '../../../basic/layout/Box/Box';
-import { VStack } from '../../../basic/layout/Stack/Stack';
-import { Flex } from '../../../basic/layout/Flex/Flex';
-import { Grid } from '../../../basic/layout/Grid/Grid';
-import { Divider } from '../../../basic/layout/Divider/Divider';
-import { Text } from '../../../basic/typography/Text/Text';
+import { Button } from '../../forms/Button/Button';
+import { Badge } from '../../feedback/Badge/Badge';
+import { Avatar } from '../../data-display/Avatar/Avatar';
+import { Box } from '../../layout/Box/Box';
+import { VStack } from '../../layout/Stack/Stack';
+import { Flex } from '../../layout/Flex/Flex';
+import { Grid } from '../../layout/Grid/Grid';
+import { Divider } from '../../layout/Divider/Divider';
+import { Text } from '../../typography/Text/Text';
 import {
   BASE_CLASSES as BUTTON_BASE,
   SIZE_STYLES as BUTTON_SIZE,
   VARIANT_STYLES as BUTTON_VARIANT,
-} from '../../../basic/forms/Button/Button.styles';
+} from '../../forms/Button/Button.styles';
 import { cn } from '@/lib/cn';
 
 // ============================================================================
