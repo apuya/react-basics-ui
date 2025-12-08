@@ -3,10 +3,10 @@ import { cn } from '@/lib/cn';
 import { useTableContext } from './TableContext';
 import { TABLE_ROW_BASE_CLASSES, TABLE_ROW_VARIANT_STYLES } from './Table.styles';
 
-export interface TableRowProps extends ComponentPropsWithoutRef<'tr'> {}
+export interface TableRowContainerProps extends ComponentPropsWithoutRef<'tr'> {}
 
-export const TableRow = memo(
-  forwardRef<HTMLTableRowElement, TableRowProps>(({ className, children, ...props }, ref) => {
+export const TableRowContainer = memo(
+  forwardRef<HTMLTableRowElement, TableRowContainerProps>(({ className, children, ...props }, ref) => {
     const { variant } = useTableContext();
 
     const rowClasses = useMemo(
@@ -22,4 +22,4 @@ export const TableRow = memo(
   })
 );
 
-TableRow.displayName = 'Table.Row';
+TableRowContainer.displayName = 'Table.Row';

@@ -1789,7 +1789,7 @@ svg {
   --component-checkbox-border-focus: var(--semantic-border-focus);
   --component-checkbox-check-default: var(--semantic-surface-elevated);
   --component-checkbox-check-disabled: var(--semantic-text-disabled);
-  --component-checkbox-size-small: var(--semantic-icon-medium);
+  --component-checkbox-size-small: var(--primitive-size-200);
   --component-checkbox-size-default: var(--semantic-icon-medium);
   --component-checkbox-size-large: var(--semantic-icon-large);
   --component-checkbox-gap: var(--semantic-space-compact);
@@ -1991,15 +1991,16 @@ svg {
 
   /* Table Component */
   /* Table - Colors */
-  --component-table-bg: var(--semantic-surface-base);
+  --component-table-bg: var(--primitive-color-gray-50);
   --component-table-border: var(--semantic-border-subtle);
-  --component-table-header-bg: var(--semantic-surface-base);
+  --component-table-header-bg: var(--semantic-surface-elevated);
   --component-table-header-text: var(--semantic-text-primary);
+  --component-table-header-cell-bg: var(--semantic-surface-elevated);
+  --component-table-header-cell-bg-white: var(--primitive-color-gray-50);
+  --component-table-header-cell-bg-muted: var(--primitive-color-gray-100);
   --component-table-row-bg-default: var(--semantic-surface-transparent);
   --component-table-row-bg-hover: var(--semantic-surface-hover);
   --component-table-row-bg-striped: var(--semantic-surface-base);
-  --component-table-cell-bg-default: var(--semantic-surface-elevated);
-  --component-table-cell-bg-total: var(--semantic-surface-base);
   --component-table-cell-border: var(--semantic-border-disabled);
   --component-table-cell-text: var(--semantic-text-primary);
   --component-table-cell-text-header: var(--semantic-text-secondary);
@@ -2009,16 +2010,66 @@ svg {
   --component-table-footer-bg: var(--semantic-surface-base);
   --component-table-footer-border: var(--semantic-border-disabled);
   --component-table-footer-text: var(--semantic-text-secondary);
+  --component-table-footer-padding-block: var(--semantic-space-compact);
+  --component-table-footer-padding-inline: var(--semantic-space-default);
+  --component-table-footer-min-height: var(--primitive-size-550);
+  --component-table-footer-gap: var(--semantic-space-compact);
   --component-table-action-bar-bg: var(--semantic-surface-elevated);
   --component-table-action-bar-border: var(--semantic-border-disabled);
+  --component-table-action-bar-padding-block: var(--semantic-space-compact);
+  --component-table-action-bar-padding-inline: var(--semantic-space-default);
+  --component-table-action-bar-gap: var(--semantic-space-compact);
+  --component-table-action-bar-min-height: var(--primitive-size-550);
   /* Table - Sizing */
   --component-table-padding-sm: var(--semantic-space-compact);
   --component-table-padding-md: var(--semantic-space-default);
   --component-table-padding-lg: var(--semantic-space-comfortable);
   --component-table-header-font-weight: var(--semantic-text-weight-semibold);
+  --component-table-header-height: var(--primitive-size-600);
+  --component-table-header-checkbox-padding: var(--primitive-size-100);
+  --component-table-header-checkbox-min-width: var(--primitive-size-500);
+  --component-table-header-checkbox-min-height: var(--primitive-size-500);
+  --component-table-header-cell-padding-block: var(--primitive-size-100);
+  --component-table-header-cell-padding-inline: var(--primitive-size-200);
+  --component-table-header-cell-sortable-padding-inline: var(--primitive-size-100);
+  --component-table-header-cell-min-height: var(--primitive-size-500);
+  --component-table-header-cell-min-width: 120px;
+  /* Table Header Sort Button */
+  --component-table-header-sort-bg-default: var(--semantic-surface-transparent);
+  --component-table-header-sort-bg-hover: var(--semantic-surface-alt);
+  --component-table-header-sort-bg-active: var(--semantic-surface-base);
+  --component-table-header-sort-bg-disabled: var(--semantic-surface-transparent);
+  --component-table-header-sort-text-default: var(--semantic-text-primary);
+  --component-table-header-sort-text-hover: var(--semantic-text-primary);
+  --component-table-header-sort-text-active: var(--semantic-text-primary);
+  --component-table-header-sort-text-disabled: var(--semantic-text-disabled);
+  --component-table-header-sort-border-default: var(--semantic-surface-transparent);
+  --component-table-header-sort-border-hover: var(--semantic-border-default);
+  --component-table-header-sort-border-active: var(--semantic-border-subtle);
+  --component-table-header-sort-border-disabled: var(--semantic-surface-transparent);
+  --component-table-header-sort-icon-default: var(--semantic-text-tertiary);
+  --component-table-header-sort-icon-hover: var(--semantic-text-primary);
+  --component-table-header-sort-icon-active: var(--semantic-text-primary);
+  --component-table-header-sort-icon-disabled: var(--semantic-text-disabled);
+  --component-table-header-sort-radius: var(--semantic-radius-sm);
+  --component-table-header-sort-padding-inline: var(--primitive-size-100);
+  --component-table-header-sort-padding-block: var(--primitive-size-50);
+  --component-table-header-sort-gap: var(--primitive-size-100);
+  --component-table-header-sort-font-size: var(--semantic-text-size-small);
+  --component-table-header-sort-font-weight: var(--semantic-text-weight-medium);
+  --component-table-header-sort-icon-size: var(--primitive-size-200);
+  --component-table-header-sort-icon-gap: -2px;
+  --component-table-header-sort-transition: var(--semantic-duration-fast);
   --component-table-cell-font-size-sm: var(--semantic-text-size-small);
   --component-table-cell-font-size-md: var(--semantic-text-size-body);
   --component-table-cell-font-size-lg: var(--semantic-text-size-body);
+  --component-table-cell-padding-block: var(--component-table-header-cell-padding-block);
+  --component-table-cell-padding-inline: var(--component-table-header-cell-padding-inline);
+  --component-table-cell-min-height: var(--component-table-header-cell-min-height);
+  --component-table-cell-min-width: 120px;
+  --component-table-cell-checkbox-padding: var(--component-table-header-checkbox-padding);
+  --component-table-cell-checkbox-min-width: var(--component-table-header-checkbox-min-width);
+  --component-table-cell-checkbox-min-height: var(--component-table-header-checkbox-min-height);
   --component-table-border-width: var(--semantic-border-width-default);
   --component-table-radius: var(--semantic-radius-md);
 

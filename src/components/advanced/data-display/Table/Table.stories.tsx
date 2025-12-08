@@ -10,8 +10,38 @@ const meta = {
   component: Table,
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: 'A composable table component with support for sorting, pagination, actions, and various cell variants.',
+      },
+    },
   },
   tags: ['autodocs'],
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+      description: 'Table size variant affecting padding and font size',
+      table: {
+        defaultValue: { summary: 'md' },
+      },
+    },
+    variant: {
+      control: 'select',
+      options: ['default', 'striped'],
+      description: 'Table style variant',
+      table: {
+        defaultValue: { summary: 'default' },
+      },
+    },
+    stickyHeader: {
+      control: 'boolean',
+      description: 'Enable sticky header for scrollable tables',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+    },
+  },
 } satisfies Meta<typeof Table>;
 
 export default meta;
@@ -27,24 +57,38 @@ const sampleData = [
 
 export const Default: Story = {
   render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar colSpan={4} />
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-          <Table.Header>Status</Table.Header>
-        </Table.Row>
-      </Table.Head>
+    <Table
+      actionBar={{
+        variant: 'actions',
+        colSpan: 5,
+        primaryAction: { label: 'Add', icon: BiPlus },
+        secondaryAction: { label: 'Refresh', icon: BiRefresh },
+      }}
+      headerCells={
+        <>
+          <Table.HeaderCell variant="checkbox" checkboxAriaLabel="Select all" />
+          <Table.HeaderCell sortable>Name</Table.HeaderCell>
+          <Table.HeaderCell sortable>Email</Table.HeaderCell>
+          <Table.HeaderCell sortable>Role</Table.HeaderCell>
+          <Table.HeaderCell sortable>Status</Table.HeaderCell>
+        </>
+      }
+      footer={{
+        variant: 'pagination',
+        colSpan: 5,
+        currentPage: 1,
+        totalPages: 3,
+        totalItems: 5,
+        showPageInfo: true,
+      }}
+    >
       <Table.Body>
         {sampleData.map((user) => (
           <Table.Row key={user.id}>
-            <Table.Cell>{user.name}</Table.Cell>
-            <Table.Cell>{user.email}</Table.Cell>
-            <Table.Cell>{user.role}</Table.Cell>
+            <Table.Cell variant="checkbox" checkboxAriaLabel={`Select ${user.name}`} />
+            <Table.Cell variant="text">{user.name}</Table.Cell>
+            <Table.Cell variant="text">{user.email}</Table.Cell>
+            <Table.Cell variant="text">{user.role}</Table.Cell>
             <Table.Cell>
               <span
                 className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
@@ -59,24 +103,24 @@ export const Default: Story = {
           </Table.Row>
         ))}
       </Table.Body>
-      <Table.Footer totalItems={5} />
     </Table>
   ),
 };
 
 export const SmallSize: Story = {
   render: () => (
-    <Table size="sm">"
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar colSpan={3} />
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Product</Table.Header>
-          <Table.Header>Price</Table.Header>
-          <Table.Header>Stock</Table.Header>
-        </Table.Row>
-      </Table.Head>
+    <Table
+      size="sm"
+      actionBar={{ colSpan: 3 }}
+      headerCells={
+        <>
+          <Table.HeaderCell>Product</Table.HeaderCell>
+          <Table.HeaderCell>Price</Table.HeaderCell>
+          <Table.HeaderCell>Stock</Table.HeaderCell>
+        </>
+      }
+      footer={{ totalItems: 3, colSpan: 3 }}
+    >
       <Table.Body>
         <Table.Row>
           <Table.Cell>Widget A</Table.Cell>
@@ -94,25 +138,25 @@ export const SmallSize: Story = {
           <Table.Cell>7</Table.Cell>
         </Table.Row>
       </Table.Body>
-      <Table.Footer totalItems={3} />
     </Table>
   ),
 };
 
 export const LargeSize: Story = {
   render: () => (
-    <Table size="lg">
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar colSpan={4} />
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Project</Table.Header>
-          <Table.Header>Client</Table.Header>
-          <Table.Header>Deadline</Table.Header>
-          <Table.Header>Progress</Table.Header>
-        </Table.Row>
-      </Table.Head>
+    <Table
+      size="lg"
+      actionBar={{ colSpan: 4 }}
+      headerCells={
+        <>
+          <Table.HeaderCell>Project</Table.HeaderCell>
+          <Table.HeaderCell>Client</Table.HeaderCell>
+          <Table.HeaderCell>Deadline</Table.HeaderCell>
+          <Table.HeaderCell>Progress</Table.HeaderCell>
+        </>
+      }
+      footer={{ totalItems: 2, colSpan: 4 }}
+    >
       <Table.Body>
         <Table.Row>
           <Table.Cell>Website Redesign</Table.Cell>
@@ -127,25 +171,25 @@ export const LargeSize: Story = {
           <Table.Cell>45%</Table.Cell>
         </Table.Row>
       </Table.Body>
-      <Table.Footer totalItems={2} />
     </Table>
   ),
 };
 
 export const StripedVariant: Story = {
   render: () => (
-    <Table variant="striped">
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar colSpan={4} />
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Order ID</Table.Header>
-          <Table.Header>Customer</Table.Header>
-          <Table.Header>Amount</Table.Header>
-          <Table.Header>Date</Table.Header>
-        </Table.Row>
-      </Table.Head>
+    <Table
+      variant="striped"
+      actionBar={{ colSpan: 4 }}
+      headerCells={
+        <>
+          <Table.HeaderCell>Order ID</Table.HeaderCell>
+          <Table.HeaderCell>Customer</Table.HeaderCell>
+          <Table.HeaderCell>Amount</Table.HeaderCell>
+          <Table.HeaderCell>Date</Table.HeaderCell>
+        </>
+      }
+      footer={{ totalItems: 4, colSpan: 4 }}
+    >
       <Table.Body>
         <Table.Row>
           <Table.Cell>#1001</Table.Cell>
@@ -172,25 +216,25 @@ export const StripedVariant: Story = {
           <Table.Cell>Nov 22, 2025</Table.Cell>
         </Table.Row>
       </Table.Body>
-      <Table.Footer totalItems={4} />
     </Table>
   ),
 };
 
 export const BorderedVariant: Story = {
   render: () => (
-    <Table variant="bordered">
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar colSpan={4} />
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Feature</Table.Header>
-          <Table.Header>Basic</Table.Header>
-          <Table.Header>Pro</Table.Header>
-          <Table.Header>Enterprise</Table.Header>
-        </Table.Row>
-      </Table.Head>
+    <Table
+      variant="bordered"
+      actionBar={{ colSpan: 4 }}
+      headerCells={
+        <>
+          <Table.HeaderCell>Feature</Table.HeaderCell>
+          <Table.HeaderCell>Basic</Table.HeaderCell>
+          <Table.HeaderCell>Pro</Table.HeaderCell>
+          <Table.HeaderCell>Enterprise</Table.HeaderCell>
+        </>
+      }
+      footer={{ totalItems: 3, colSpan: 4 }}
+    >
       <Table.Body>
         <Table.Row>
           <Table.Cell>Users</Table.Cell>
@@ -211,25 +255,24 @@ export const BorderedVariant: Story = {
           <Table.Cell>24/7 Phone</Table.Cell>
         </Table.Row>
       </Table.Body>
-      <Table.Footer totalItems={3} />
     </Table>
   ),
 };
 
 export const WithFooter: Story = {
   render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar colSpan={4} />
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Item</Table.Header>
-          <Table.Header>Quantity</Table.Header>
-          <Table.Header>Price</Table.Header>
-          <Table.Header>Total</Table.Header>
-        </Table.Row>
-      </Table.Head>
+    <Table
+      actionBar={{ colSpan: 4 }}
+      footer={{ totalItems: 3 }}
+      header={
+        <>
+          <Table.HeaderCell>Item</Table.HeaderCell>
+          <Table.HeaderCell>Quantity</Table.HeaderCell>
+          <Table.HeaderCell>Price</Table.HeaderCell>
+          <Table.HeaderCell>Total</Table.HeaderCell>
+        </>
+      }
+    >
       <Table.Body>
         <Table.Row>
           <Table.Cell>Product A</Table.Cell>
@@ -250,25 +293,25 @@ export const WithFooter: Story = {
           <Table.Cell>$59.97</Table.Cell>
         </Table.Row>
       </Table.Body>
-      <Table.Footer totalItems={3} />
     </Table>
   ),
 };
 
 export const StickyHeader: Story = {
   render: () => (
-    <Table stickyHeader>
-      <Table.Head sticky>
-        <Table.Row>
-          <Table.ActionBar colSpan={4} />
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>ID</Table.Header>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Department</Table.Header>
-          <Table.Header>Salary</Table.Header>
-        </Table.Row>
-      </Table.Head>
+    <Table
+      stickyHeader
+      actionBar={{ colSpan: 4 }}
+      footer={{ totalItems: 20 }}
+      header={
+        <>
+          <Table.HeaderCell>ID</Table.HeaderCell>
+          <Table.HeaderCell>Name</Table.HeaderCell>
+          <Table.HeaderCell>Department</Table.HeaderCell>
+          <Table.HeaderCell>Salary</Table.HeaderCell>
+        </>
+      }
+    >
       <Table.Body>
         {Array.from({ length: 20 }, (_, i) => (
           <Table.Row key={i}>
@@ -279,25 +322,24 @@ export const StickyHeader: Story = {
           </Table.Row>
         ))}
       </Table.Body>
-      <Table.Footer totalItems={20} />
     </Table>
   ),
 };
 
 export const WithActions: Story = {
   render: () => (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.ActionBar colSpan={4} />
-        </Table.Row>
-        <Table.Row>
-          <Table.Header>Name</Table.Header>
-          <Table.Header>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
-          <Table.Header>Actions</Table.Header>
-        </Table.Row>
-      </Table.Head>
+    <Table
+      actionBar={{ colSpan: 4 }}
+      footer={{ totalItems: 3 }}
+      header={
+        <>
+          <Table.HeaderCell>Name</Table.HeaderCell>
+          <Table.HeaderCell>Email</Table.HeaderCell>
+          <Table.HeaderCell>Role</Table.HeaderCell>
+          <Table.HeaderCell>Actions</Table.HeaderCell>
+        </>
+      }
+    >
       <Table.Body>
         {sampleData.slice(0, 3).map((user) => (
           <Table.Row key={user.id}>
@@ -313,7 +355,6 @@ export const WithActions: Story = {
           </Table.Row>
         ))}
       </Table.Body>
-      <Table.Footer totalItems={3} />
     </Table>
   ),
 };
@@ -322,73 +363,65 @@ export const WithSearchAndDropdown: Story = {
   render: () => {
     const [searchValue, setSearchValue] = useState('');
     
+    const filteredData = sampleData.filter((user) =>
+      searchValue
+        ? user.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchValue.toLowerCase())
+        : true
+    );
+
     return (
-      <Table>
-        <Table.Head>
-          <Table.Row>
-            <Table.ActionBar
-              variant="search"
-              colSpan={4}
-              searchProps={{
-                value: searchValue,
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value),
-                placeholder: 'Search users...',
-                showClearButton: true,
-              }}
-              dropdownTriggerLabel="Filter"
-              dropdownTriggerIcon={BiFilter}
-              dropdownMenu={
-                <Dropdown.Menu>
-                  <Dropdown.Item leadingIcon={<BiFilter />}>Active Users</Dropdown.Item>
-                  <Dropdown.Item leadingIcon={<BiFilter />}>Inactive Users</Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item leadingIcon={<BiDownload />}>Export</Dropdown.Item>
-                </Dropdown.Menu>
-              }
-            />
-          </Table.Row>
-          <Table.Row>
-            <Table.Header>Name</Table.Header>
-            <Table.Header>Email</Table.Header>
-            <Table.Header>Role</Table.Header>
-            <Table.Header>Status</Table.Header>
-          </Table.Row>
-        </Table.Head>
+      <Table
+        actionBar={{
+          variant: 'search',
+          colSpan: 4,
+          searchProps: {
+            value: searchValue,
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value),
+            placeholder: 'Search users...',
+            showClearButton: true,
+          },
+          dropdownTriggerLabel: 'Filter',
+          dropdownTriggerIcon: BiFilter,
+          dropdownMenu: (
+            <Dropdown.Menu>
+              <Dropdown.Item leadingIcon={<BiFilter />}>Active Users</Dropdown.Item>
+              <Dropdown.Item leadingIcon={<BiFilter />}>Inactive Users</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item leadingIcon={<BiDownload />}>Export</Dropdown.Item>
+            </Dropdown.Menu>
+          ),
+        }}
+        footer={{ totalItems: filteredData.length }}
+        header={
+          <>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Email</Table.HeaderCell>
+            <Table.HeaderCell>Role</Table.HeaderCell>
+            <Table.HeaderCell>Status</Table.HeaderCell>
+          </>
+        }
+      >
         <Table.Body>
-          {sampleData
-            .filter((user) =>
-              searchValue
-                ? user.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-                  user.email.toLowerCase().includes(searchValue.toLowerCase())
-                : true
-            )
-            .map((user) => (
-              <Table.Row key={user.id}>
-                <Table.Cell>{user.name}</Table.Cell>
-                <Table.Cell>{user.email}</Table.Cell>
-                <Table.Cell>{user.role}</Table.Cell>
-                <Table.Cell>
-                  <span
-                    className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      user.status === 'Active'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}
-                  >
-                    {user.status}
-                  </span>
-                </Table.Cell>
-              </Table.Row>
-            ))}
+          {filteredData.map((user) => (
+            <Table.Row key={user.id}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.role}</Table.Cell>
+              <Table.Cell>
+                <span
+                  className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                    user.status === 'Active'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  {user.status}
+                </span>
+              </Table.Cell>
+            </Table.Row>
+          ))}
         </Table.Body>
-        <Table.Footer
-          totalItems={sampleData.filter((user) =>
-            searchValue
-              ? user.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-                user.email.toLowerCase().includes(searchValue.toLowerCase())
-              : true
-          ).length}
-        />
       </Table>
     );
   },
@@ -397,33 +430,32 @@ export const WithSearchAndDropdown: Story = {
 export const WithDualButtons: Story = {
   render: () => {
     return (
-      <Table>
-        <Table.Head>
-          <Table.Row>
-            <Table.ActionBar
-              variant="actions"
-              colSpan={4}
-              primaryAction={{
-                label: 'Add User',
-                icon: BiPlus,
-                onClick: () => alert('Add user clicked'),
-              }}
-              secondaryAction={{
-                label: 'Refresh',
-                icon: BiRefresh,
-                onClick: () => alert('Refresh clicked'),
-              }}
-            >
-              User Management
-            </Table.ActionBar>
-          </Table.Row>
-          <Table.Row>
-            <Table.Header>Name</Table.Header>
-            <Table.Header>Email</Table.Header>
-            <Table.Header>Role</Table.Header>
-            <Table.Header>Status</Table.Header>
-          </Table.Row>
-        </Table.Head>
+      <Table
+        actionBar={{
+          variant: 'actions',
+          colSpan: 4,
+          primaryAction: {
+            label: 'Add User',
+            icon: BiPlus,
+            onClick: () => alert('Add user clicked'),
+          },
+          secondaryAction: {
+            label: 'Refresh',
+            icon: BiRefresh,
+            onClick: () => alert('Refresh clicked'),
+          },
+          children: 'User Management',
+        }}
+        footer={{ totalItems: 5 }}
+        header={
+          <>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Email</Table.HeaderCell>
+            <Table.HeaderCell>Role</Table.HeaderCell>
+            <Table.HeaderCell>Status</Table.HeaderCell>
+          </>
+        }
+      >
         <Table.Body>
           {sampleData.map((user) => (
             <Table.Row key={user.id}>
@@ -444,7 +476,6 @@ export const WithDualButtons: Story = {
             </Table.Row>
           ))}
         </Table.Body>
-        <Table.Footer totalItems={5} />
       </Table>
     );
   },
@@ -467,31 +498,33 @@ export const WithCheckboxHeader: Story = {
     };
 
     return (
-      <Table>
-        <Table.Head>
-          <Table.Row>
-            <Table.Header
+      <Table
+        actionBar={{ colSpan: 5 }}
+        footer={{ totalItems: 5 }}
+        header={
+          <>
+            <Table.HeaderCell
               variant="checkbox"
               checked={selectedAll}
               indeterminate={selectedRows.length > 0 && selectedRows.length < sampleData.length}
               onCheckboxChange={handleSelectAll}
             />
-            <Table.Header>Name</Table.Header>
-            <Table.Header>Email</Table.Header>
-            <Table.Header>Role</Table.Header>
-            <Table.Header>Status</Table.Header>
-          </Table.Row>
-        </Table.Head>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Email</Table.HeaderCell>
+            <Table.HeaderCell>Role</Table.HeaderCell>
+            <Table.HeaderCell>Status</Table.HeaderCell>
+          </>
+        }
+      >
         <Table.Body>
           {sampleData.map((user) => (
             <Table.Row key={user.id}>
-              <Table.Cell>
-                <input
-                  type="checkbox"
-                  checked={selectedRows.includes(user.id)}
-                  onChange={(e) => handleSelectRow(user.id, e.target.checked)}
-                />
-              </Table.Cell>
+              <Table.Cell
+                variant="checkbox"
+                checked={selectedRows.includes(user.id)}
+                onCheckboxChange={(checked) => handleSelectRow(user.id, checked)}
+                checkboxAriaLabel={`Select ${user.name}`}
+              />
               <Table.Cell>{user.name}</Table.Cell>
               <Table.Cell>{user.email}</Table.Cell>
               <Table.Cell>{user.role}</Table.Cell>
@@ -509,7 +542,6 @@ export const WithCheckboxHeader: Story = {
             </Table.Row>
           ))}
         </Table.Body>
-        <Table.Footer totalItems={5} />
       </Table>
     );
   },
@@ -530,43 +562,42 @@ export const WithSortableHeaders: Story = {
     };
 
     return (
-      <Table>
-        <Table.Head>
-          <Table.Row>
-            <Table.Header
-              variant="header"
+      <Table
+        actionBar={{ colSpan: 4 }}
+        footer={{ totalItems: 5 }}
+        header={
+          <>
+            <Table.HeaderCell
               sortable
               sortDirection={sortColumn === 'name' ? sortDirection : null}
               onSort={() => handleSort('name')}
             >
               Name
-            </Table.Header>
-            <Table.Header
-              variant="header"
+            </Table.HeaderCell>
+            <Table.HeaderCell
               sortable
               sortDirection={sortColumn === 'email' ? sortDirection : null}
               onSort={() => handleSort('email')}
             >
               Email
-            </Table.Header>
-            <Table.Header
-              variant="header"
+            </Table.HeaderCell>
+            <Table.HeaderCell
               sortable
               sortDirection={sortColumn === 'role' ? sortDirection : null}
               onSort={() => handleSort('role')}
             >
               Role
-            </Table.Header>
-            <Table.Header
-              variant="header"
+            </Table.HeaderCell>
+            <Table.HeaderCell
               sortable
               sortDirection={sortColumn === 'status' ? sortDirection : null}
               onSort={() => handleSort('status')}
             >
               Status
-            </Table.Header>
-          </Table.Row>
-        </Table.Head>
+            </Table.HeaderCell>
+          </>
+        }
+      >
         <Table.Body>
           {sampleData.map((user) => (
             <Table.Row key={user.id}>
@@ -587,7 +618,6 @@ export const WithSortableHeaders: Story = {
             </Table.Row>
           ))}
         </Table.Body>
-        <Table.Footer totalItems={5} />
       </Table>
     );
   },
@@ -621,52 +651,51 @@ export const WithCheckboxAndSortable: Story = {
     };
 
     return (
-      <Table>
-        <Table.Head>
-          <Table.Row>
-            <Table.Header
+      <Table
+        actionBar={{ colSpan: 5 }}
+        footer={{ totalItems: 5 }}
+        header={
+          <>
+            <Table.HeaderCell
               variant="checkbox"
               checked={selectedAll}
               indeterminate={selectedRows.length > 0 && selectedRows.length < sampleData.length}
               onCheckboxChange={handleSelectAll}
             />
-            <Table.Header
-              variant="header"
+            <Table.HeaderCell
               sortable
               sortDirection={sortColumn === 'name' ? sortDirection : null}
               onSort={() => handleSort('name')}
             >
               Name
-            </Table.Header>
-            <Table.Header
-              variant="header"
+            </Table.HeaderCell>
+            <Table.HeaderCell
               sortable
               sortDirection={sortColumn === 'email' ? sortDirection : null}
               onSort={() => handleSort('email')}
             >
               Email
-            </Table.Header>
-            <Table.Header
-              variant="header"
+            </Table.HeaderCell>
+            <Table.HeaderCell
               sortable
               sortDirection={sortColumn === 'role' ? sortDirection : null}
               onSort={() => handleSort('role')}
             >
               Role
-            </Table.Header>
-            <Table.Header>Status</Table.Header>
-          </Table.Row>
-        </Table.Head>
+            </Table.HeaderCell>
+            <Table.HeaderCell>Status</Table.HeaderCell>
+          </>
+        }
+      >
         <Table.Body>
           {sampleData.map((user) => (
             <Table.Row key={user.id}>
-              <Table.Cell>
-                <input
-                  type="checkbox"
-                  checked={selectedRows.includes(user.id)}
-                  onChange={(e) => handleSelectRow(user.id, e.target.checked)}
-                />
-              </Table.Cell>
+              <Table.Cell
+                variant="checkbox"
+                checked={selectedRows.includes(user.id)}
+                onCheckboxChange={(checked) => handleSelectRow(user.id, checked)}
+                checkboxAriaLabel={`Select ${user.name}`}
+              />
               <Table.Cell>{user.name}</Table.Cell>
               <Table.Cell>{user.email}</Table.Cell>
               <Table.Cell>{user.role}</Table.Cell>
@@ -684,8 +713,65 @@ export const WithCheckboxAndSortable: Story = {
             </Table.Row>
           ))}
         </Table.Body>
-        <Table.Footer totalItems={5} />
       </Table>
     );
   },
+};
+
+export const WithComparisonHeaders: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Table with comparison variant headers showing dimension/comparison pairs, useful for analytics and reporting dashboards.',
+      },
+    },
+  },
+  render: () => (
+    <Table
+      actionBar={{ colSpan: 4 }}
+      footer={{ totalItems: 3 }}
+      header={
+        <>
+          <Table.HeaderCell>Product</Table.HeaderCell>
+          <Table.HeaderCell
+            variant="comparison"
+            comparisonDimension="This Week"
+            comparisonLabel="vs Last Week"
+          />
+          <Table.HeaderCell
+            variant="comparison"
+            comparisonDimension="This Month"
+            comparisonLabel="vs Last Month"
+          />
+          <Table.HeaderCell
+            variant="comparison"
+            comparisonDimension="YTD"
+            comparisonLabel="vs Last Year"
+          />
+        </>
+      }
+    >
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell variant="text">Widget Pro</Table.Cell>
+          <Table.Cell variant="comparison" comparisonPrimary="2,456" comparisonSecondary="+18%" />
+          <Table.Cell variant="comparison" comparisonPrimary="10,234" comparisonSecondary="+12%" />
+          <Table.Cell variant="comparison" comparisonPrimary="89,456" comparisonSecondary="+25%" />
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell variant="text">Widget Basic</Table.Cell>
+          <Table.Cell variant="comparison" comparisonPrimary="1,823" comparisonSecondary="+5%" />
+          <Table.Cell variant="comparison" comparisonPrimary="7,891" comparisonSecondary="-3%" />
+          <Table.Cell variant="comparison" comparisonPrimary="67,234" comparisonSecondary="+8%" />
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell variant="text">Widget Elite</Table.Cell>
+          <Table.Cell variant="comparison" comparisonPrimary="567" comparisonSecondary="+42%" />
+          <Table.Cell variant="comparison" comparisonPrimary="2,345" comparisonSecondary="+38%" />
+          <Table.Cell variant="comparison" comparisonPrimary="18,901" comparisonSecondary="+52%" />
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
 };

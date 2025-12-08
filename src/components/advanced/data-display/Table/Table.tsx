@@ -3,16 +3,17 @@ import {
   type ComponentPropsWithoutRef,
   forwardRef,
   memo,
+  type ReactNode,
 } from 'react';
 import { cn } from '@/lib/cn';
 import { TableContext, type TableSize, type TableVariant } from './TableContext';
-import { TableHead } from './TableHead';
+import { TableHeaderContainer } from './TableHeaderContainer';
 import { TableBody } from './TableBody';
-import { TableRow } from './TableRow';
-import { TableHeader } from './TableHeader';
+import { TableRowContainer } from './TableRowContainer';
+import { TableHeaderCell } from './TableHeaderCell';
 import { TableCell } from './TableCell';
-import { TableFooter } from './TableFooter';
-import { TableActionBar } from './TableActionBar';
+import { TableFooter, type TableFooterProps } from './TableFooter';
+import { TableActionBar, type TableActionBarProps } from './TableActionBar';
 import {
   TABLE_BASE_CLASSES,
   TABLE_WRAPPER_CLASSES,
@@ -22,15 +23,23 @@ import {
 export type { TableSize, TableVariant } from './TableContext';
 export { useTableContext } from './TableContext';
 
-export interface TableProps extends ComponentPropsWithoutRef<'table'> {
+export interface TableProps extends Omit<ComponentPropsWithoutRef<'table'>, 'children'> {
   size?: TableSize;
   variant?: TableVariant;
   stickyHeader?: boolean;
+  /** Required: Props for the action bar in the header */
+  actionBar: Omit<TableActionBarProps, 'ref'>;
+  /** Required: Header cells to render in the header row (e.g., <Table.HeaderCell>Name</Table.HeaderCell>) */
+  headerCells: ReactNode;
+  /** Required: Props for the footer */
+  footer: Omit<TableFooterProps, 'ref'>;
+  /** Table body content (typically <Table.Body>...</Table.Body>) */
+  children: ReactNode;
 }
 
 const TableRoot = memo(
   forwardRef<HTMLTableElement, TableProps>(
-    ({ size = 'md', variant = 'default', stickyHeader = false, className, children, ...props }, ref) => {
+    ({ size = 'md', variant = 'default', stickyHeader = false, actionBar, headerCells, footer, className, children, ...props }, ref) => {
       const contextValue = useMemo(
         () => ({ size, variant }),
         [size, variant]
@@ -57,7 +66,16 @@ const TableRoot = memo(
               data-sticky-header={stickyHeader || undefined}
               {...props}
             >
+              <TableHeaderContainer sticky={stickyHeader}>
+                <TableRowContainer>
+                  <TableActionBar {...actionBar} />
+                </TableRowContainer>
+                <TableRowContainer>
+                  {headerCells}
+                </TableRowContainer>
+              </TableHeaderContainer>
               {children}
+              <TableFooter {...footer} />
             </table>
           </TableContext.Provider>
         </div>
@@ -69,10 +87,10 @@ const TableRoot = memo(
 TableRoot.displayName = 'Table';
 
 export const Table = Object.assign(TableRoot, {
-  Head: TableHead,
+  HeaderContainer: TableHeaderContainer,
   Body: TableBody,
-  Row: TableRow,
-  Header: TableHeader,
+  Row: TableRowContainer,
+  HeaderCell: TableHeaderCell,
   Cell: TableCell,
   Footer: TableFooter,
   ActionBar: TableActionBar,

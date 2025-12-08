@@ -156,6 +156,107 @@ export const AllPositions: Story = {
 };
 
 // ============================================================================
+// RESPONSIVE POSITIONING
+// ============================================================================
+
+export const ResponsivePositioning: Story = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story: `
+**Smart Viewport-Aware Positioning**
+
+Set \`responsive={true}\` to enable automatic repositioning when the popover would overflow the viewport.
+
+**Supported flips:**
+- \`side="bottom"\` → flips to \`top\` when insufficient space below
+- \`side="left"\` → flips to \`right\` when insufficient space on left
+- \`side="right"\` → flips to \`left\` when insufficient space on right
+- Alignment adjusts to prevent horizontal/vertical overflow
+
+**Note:** \`side="top"\` does not flip to bottom (rarely needed use case).
+
+**When to use:**
+- Popovers that may appear near screen edges
+- Dynamic content where trigger position varies
+- Mobile-responsive interfaces
+        `,
+      },
+    },
+  },
+  render: () => (
+    <Box style={{ width: '100vw', height: '100vh', position: 'fixed', top: 0, left: 0 }}>
+      {/* Center info */}
+      <Flex align="center" justify="center" style={{ height: '100%', pointerEvents: 'none' }}>
+        <VStack spacing="sm" align="center">
+          <Badge variant="secondary">responsive=true</Badge>
+          <Text size="small" color="secondary" style={{ maxWidth: '300px', textAlign: 'center' }}>
+            Hover buttons at the edges. The popover will flip sides when there's no room in the preferred direction.
+          </Text>
+        </VStack>
+      </Flex>
+
+      {/* Bottom-left corner */}
+      <Box style={{ position: 'absolute', bottom: '8px', left: '8px' }}>
+        <Popover>
+          <Popover.Trigger className={SMALL_TRIGGER_CLASSES}>↙ Bottom-Left</Popover.Trigger>
+          <Popover.Content responsive side="bottom" align="start">
+            <Popover.Close />
+            <Popover.Title>Side Flipped</Popover.Title>
+            <Popover.Description>
+              Preferred side="bottom", but flipped to top since there's no space below.
+            </Popover.Description>
+          </Popover.Content>
+        </Popover>
+      </Box>
+
+      {/* Bottom-right corner */}
+      <Box style={{ position: 'absolute', bottom: '8px', right: '8px' }}>
+        <Popover>
+          <Popover.Trigger className={SMALL_TRIGGER_CLASSES}>Bottom-Right ↘</Popover.Trigger>
+          <Popover.Content responsive side="bottom" align="end">
+            <Popover.Close />
+            <Popover.Title>Side Flipped</Popover.Title>
+            <Popover.Description>
+              Preferred side="bottom", but flipped to top since there's no space below.
+            </Popover.Description>
+          </Popover.Content>
+        </Popover>
+      </Box>
+
+      {/* Left edge */}
+      <Box style={{ position: 'absolute', top: '50%', left: '8px', transform: 'translateY(-50%)' }}>
+        <Popover>
+          <Popover.Trigger className={SMALL_TRIGGER_CLASSES}>← Left</Popover.Trigger>
+          <Popover.Content responsive side="left" align="center">
+            <Popover.Close />
+            <Popover.Title>Horizontal Flip</Popover.Title>
+            <Popover.Description>
+              Preferred side="left", but flipped to right since there's no space on the left.
+            </Popover.Description>
+          </Popover.Content>
+        </Popover>
+      </Box>
+
+      {/* Right edge */}
+      <Box style={{ position: 'absolute', top: '50%', right: '8px', transform: 'translateY(-50%)' }}>
+        <Popover>
+          <Popover.Trigger className={SMALL_TRIGGER_CLASSES}>Right →</Popover.Trigger>
+          <Popover.Content responsive side="right" align="center">
+            <Popover.Close />
+            <Popover.Title>Horizontal Flip</Popover.Title>
+            <Popover.Description>
+              Preferred side="right", but flipped to left since there's no space on the right.
+            </Popover.Description>
+          </Popover.Content>
+        </Popover>
+      </Box>
+    </Box>
+  ),
+};
+
+// ============================================================================
 // RICH CONTENT EXAMPLES
 // ============================================================================
 

@@ -3,6 +3,19 @@ import { TableActionBar } from './TableActionBar';
 import { TableContext } from './TableContext';
 import { BiRefresh, BiPlus, BiFilter } from 'react-icons/bi';
 import { useState } from 'react';
+import { Dropdown } from '@/components/advanced/navigation/Dropdown';
+import { Stack } from '@/components/basic/layout/Stack';
+import { Text } from '@/components/basic/typography/Text';
+
+const TableWrapper = ({ children }: { children: React.ReactNode }) => (
+  <TableContext.Provider value={{ size: 'md', variant: 'default' }}>
+    <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid var(--component-table-border)' }}>
+      <thead>
+        <tr>{children}</tr>
+      </thead>
+    </table>
+  </TableContext.Provider>
+);
 
 const meta = {
   title: 'Data Display/Table/TableActionBar',
@@ -11,22 +24,45 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'The TableActionBar component provides a header bar with actions, search, or title.',
+        component: 'The TableActionBar component provides a header bar with actions or search. Features min-height of 44px with content-hugging height. Padding: block 8px, inline 16px. Actions can be aligned left or right.',
       },
     },
   },
   tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['default', 'search', 'actions'],
+      description: 'Action bar variant - default (empty), search (with search input), or actions (with buttons)',
+      table: {
+        defaultValue: { summary: 'default' },
+      },
+    },
+    align: {
+      control: 'select',
+      options: ['left', 'right'],
+      description: 'Alignment of action buttons (only applies to actions variant)',
+      table: {
+        defaultValue: { summary: 'right' },
+      },
+    },
+    colSpan: {
+      control: 'number',
+      description: 'Number of columns the action bar should span',
+    },
+    dropdownTriggerLabel: {
+      control: 'text',
+      description: 'Label for the dropdown trigger button (search variant)',
+      table: {
+        defaultValue: { summary: 'Actions' },
+      },
+    },
+  },
   decorators: [
     (Story) => (
-      <TableContext.Provider value={{ size: 'md', variant: 'default' }}>
-        <table className="w-full border-collapse">
-          <thead>
-            <tr>
-              <Story />
-            </tr>
-          </thead>
-        </table>
-      </TableContext.Provider>
+      <TableWrapper>
+        <Story />
+      </TableWrapper>
     ),
   ],
 } satisfies Meta<typeof TableActionBar>;
@@ -38,14 +74,38 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default empty action bar.',
+        story: 'Default action bar with action buttons aligned to the right.',
       },
     },
   },
   args: {
+    variant: 'actions',
+    colSpan: 3,
+    primaryAction: {
+      label: 'Add',
+      icon: BiPlus,
+      onClick: () => {},
+    },
+    secondaryAction: {
+      label: 'Refresh',
+      icon: BiRefresh,
+      onClick: () => {},
+    },
+  },
+};
+
+export const Empty: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Empty action bar (default variant) with min-height of 44px. Useful as a spacer or placeholder.',
+      },
+    },
+  },
+  args: {
+    variant: 'default',
     colSpan: 3,
   },
-  render: (args) => <TableActionBar {...args} />,
 };
 
 export const WithSearch: Story = {
@@ -89,20 +149,19 @@ export const WithSearchAndDropdown: Story = {
     dropdownTriggerLabel: 'Filter',
     dropdownTriggerIcon: BiFilter,
     dropdownMenu: (
-      <div className="p-2">
-        <button className="block w-full text-left px-2 py-1 hover:bg-gray-100">Option 1</button>
-        <button className="block w-full text-left px-2 py-1 hover:bg-gray-100">Option 2</button>
-      </div>
+      <Dropdown.Menu>
+        <Dropdown.Item>Option 1</Dropdown.Item>
+        <Dropdown.Item>Option 2</Dropdown.Item>
+      </Dropdown.Menu>
     ),
   },
-  render: (args) => <TableActionBar {...args} />,
 };
 
 export const WithActions: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Action bar with primary and secondary action buttons.',
+        story: 'Action bar with primary and secondary action buttons. Default alignment is right.',
       },
     },
   },
@@ -119,9 +178,32 @@ export const WithActions: Story = {
       icon: BiRefresh,
       onClick: () => alert('Refresh clicked'),
     },
-    children: 'User Management',
   },
-  render: (args) => <TableActionBar {...args} />,
+};
+
+export const ActionsLeftAligned: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Action bar with buttons aligned to the left.',
+      },
+    },
+  },
+  args: {
+    variant: 'actions',
+    align: 'left',
+    colSpan: 3,
+    primaryAction: {
+      label: 'Add User',
+      icon: BiPlus,
+      onClick: () => alert('Add user clicked'),
+    },
+    secondaryAction: {
+      label: 'Refresh',
+      icon: BiRefresh,
+      onClick: () => alert('Refresh clicked'),
+    },
+  },
 };
 
 export const ActionsWithDisabled: Story = {
@@ -146,7 +228,78 @@ export const ActionsWithDisabled: Story = {
       onClick: () => {},
       disabled: true,
     },
-    children: 'User Management',
   },
-  render: (args) => <TableActionBar {...args} />,
+};
+
+export const ActionsOnly: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Action bar with only a primary action button.',
+      },
+    },
+  },
+  args: {
+    variant: 'actions',
+    colSpan: 3,
+    primaryAction: {
+      label: 'Add',
+      icon: BiPlus,
+      onClick: () => {},
+    },
+  },
+};
+
+export const AllVariants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'All variants and alignments: default, search, actions (right), and actions (left).',
+      },
+    },
+  },
+  decorators: [],
+  render: () => (
+    <Stack spacing="lg">
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Variant: default</Text>
+        <TableWrapper>
+          <TableActionBar variant="default" colSpan={3} />
+        </TableWrapper>
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Variant: search</Text>
+        <TableWrapper>
+          <TableActionBar
+            variant="search"
+            colSpan={3}
+            searchProps={{ placeholder: 'Search...' }}
+          />
+        </TableWrapper>
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Variant: actions (align: right - default)</Text>
+        <TableWrapper>
+          <TableActionBar
+            variant="actions"
+            colSpan={3}
+            primaryAction={{ label: 'Add', icon: BiPlus }}
+            secondaryAction={{ label: 'Refresh', icon: BiRefresh }}
+          />
+        </TableWrapper>
+      </Stack>
+      <Stack spacing="xs">
+        <Text size="small" color="secondary">Variant: actions (align: left)</Text>
+        <TableWrapper>
+          <TableActionBar
+            variant="actions"
+            align="left"
+            colSpan={3}
+            primaryAction={{ label: 'Add', icon: BiPlus }}
+            secondaryAction={{ label: 'Refresh', icon: BiRefresh }}
+          />
+        </TableWrapper>
+      </Stack>
+    </Stack>
+  ),
 };

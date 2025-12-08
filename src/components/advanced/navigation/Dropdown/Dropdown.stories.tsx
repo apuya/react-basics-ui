@@ -368,3 +368,107 @@ export const WithErrorBoundary: Story = {
     </DropdownErrorBoundary>
   ),
 };
+
+// Responsive Positioning
+export const ResponsivePositioning: Story = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story: `
+**Smart Viewport-Aware Positioning**
+
+Set \`responsive={true}\` on \`Dropdown.Menu\` to enable automatic repositioning when the menu would overflow the viewport.
+
+**Supported flips:**
+- \`side="bottom"\` → flips to \`top\` when insufficient space below
+- \`side="left"\` → flips to \`right\` when insufficient space on left
+- \`side="right"\` → flips to \`left\` when insufficient space on right
+- Alignment adjusts to prevent horizontal/vertical overflow
+
+**Note:** \`side="top"\` does not flip to bottom (rarely needed use case).
+
+**When to use:**
+- Dropdown menus that may appear near screen edges (e.g., in tables, sidebars)
+- Dynamic layouts where trigger position varies
+- Mobile-responsive interfaces
+        `,
+      },
+    },
+  },
+  render: () => (
+    <Box style={{ width: '100vw', height: '100vh', position: 'fixed', top: 0, left: 0 }}>
+      {/* Center info */}
+      <Box style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}>
+        <Box className="flex flex-col items-center gap-3 text-center">
+          <Box className="px-3 py-1 rounded-full bg-[color:var(--semantic-bg-secondary)] text-[color:var(--semantic-text-secondary)] text-xs font-medium">
+            responsive=true
+          </Box>
+          <Text size="small" color="secondary" style={{ maxWidth: '280px' }}>
+            Click buttons at the edges. The menu will flip sides when there's no room in the preferred direction.
+          </Text>
+        </Box>
+      </Box>
+
+      {/* Bottom-left corner */}
+      <Box style={{ position: 'absolute', bottom: '8px', left: '8px' }}>
+        <Dropdown>
+          <Dropdown.Trigger>
+            <Button variant="tertiary" size="small">↙ Bottom-Left</Button>
+          </Dropdown.Trigger>
+          <Dropdown.Menu responsive side="bottom" align="start">
+            <Dropdown.MenuItem variant="header" label="side='bottom' → flipped to top" />
+            <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
+            <Dropdown.Item leadingIcon={<BiCopy />}>Copy</Dropdown.Item>
+            <Dropdown.Item leadingIcon={<BiTrash />} variant="danger">Delete</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </Box>
+
+      {/* Bottom-right corner */}
+      <Box style={{ position: 'absolute', bottom: '8px', right: '8px' }}>
+        <Dropdown>
+          <Dropdown.Trigger>
+            <Button variant="tertiary" size="small">Bottom-Right ↘</Button>
+          </Dropdown.Trigger>
+          <Dropdown.Menu responsive side="bottom" align="end">
+            <Dropdown.MenuItem variant="header" label="side='bottom' → flipped to top" />
+            <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
+            <Dropdown.Item leadingIcon={<BiCopy />}>Copy</Dropdown.Item>
+            <Dropdown.Item leadingIcon={<BiTrash />} variant="danger">Delete</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </Box>
+
+      {/* Left edge */}
+      <Box style={{ position: 'absolute', top: '50%', left: '8px', transform: 'translateY(-50%)' }}>
+        <Dropdown>
+          <Dropdown.Trigger>
+            <Button variant="tertiary" size="small">← Left</Button>
+          </Dropdown.Trigger>
+          <Dropdown.Menu responsive side="left" align="center">
+            <Dropdown.MenuItem variant="header" label="side='left' → flipped to right" />
+            <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
+            <Dropdown.Item leadingIcon={<BiCopy />}>Copy</Dropdown.Item>
+            <Dropdown.Item leadingIcon={<BiTrash />} variant="danger">Delete</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </Box>
+
+      {/* Right edge */}
+      <Box style={{ position: 'absolute', top: '50%', right: '8px', transform: 'translateY(-50%)' }}>
+        <Dropdown>
+          <Dropdown.Trigger>
+            <Button variant="tertiary" size="small">Right →</Button>
+          </Dropdown.Trigger>
+          <Dropdown.Menu responsive side="right" align="center">
+            <Dropdown.MenuItem variant="header" label="side='right' → flipped to left" />
+            <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
+            <Dropdown.Item leadingIcon={<BiCopy />}>Copy</Dropdown.Item>
+            <Dropdown.Item leadingIcon={<BiTrash />} variant="danger">Delete</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </Box>
+    </Box>
+  ),
+};

@@ -31,10 +31,18 @@ export const SIDE_GAP_STYLE = {
   marginRight: 'var(--component-dropdown-gap)',
 } as const;
 
+// Horizontal alignment (for top/bottom sides)
 export const ALIGN_STYLES = {
   start: 'left-0',
   center: 'left-1/2 -translate-x-1/2',
   end: 'right-0',
+} as const;
+
+// Vertical alignment (for left/right sides)
+export const VERTICAL_ALIGN_STYLES = {
+  start: 'top-0',
+  center: 'top-1/2 -translate-y-1/2',
+  end: 'bottom-0',
 } as const;
 
 export const TRIGGER_WRAPPER_CLASSES = 'relative inline-block';

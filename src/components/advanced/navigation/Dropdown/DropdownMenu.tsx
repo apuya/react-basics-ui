@@ -4,6 +4,7 @@ import { useClickOutsideWithExclusions } from '@/hooks/useClickOutsideWithExclus
 import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { useMenuKeyboardNavigation } from '@/hooks/useMenuKeyboardNavigation';
+import { useResponsivePosition } from '@/hooks/useResponsivePosition';
 import { useDropdownContext, type DropdownAlign, type DropdownSide } from './Dropdown';
 import {
   ALIGN_STYLES,
@@ -11,6 +12,7 @@ import {
   MENU_WRAPPER_CLASSES,
   SIDE_GAP_STYLE,
   SIDE_STYLES,
+  VERTICAL_ALIGN_STYLES,
   VISIBLE_CLASS,
 } from './Dropdown.styles';
 
@@ -18,14 +20,26 @@ import {
  * Props for the DropdownMenu component.
  */
 export interface DropdownMenuProps extends ComponentPropsWithoutRef<'div'> {
-  /** Position of the menu relative to the trigger */
+  /** Which side of the trigger to position the menu. Defaults to 'bottom'. */
   side?: DropdownSide;
-  /** Alignment of the menu relative to the trigger */
+  /** How to align the menu along the trigger's edge. Defaults to 'start'. */
   align?: DropdownAlign;
   /** Maximum height of the menu (enables scrolling). Defaults to token value. */
   maxHeight?: string | number;
   /** Enable enter/exit animations. Defaults to true. */
   enableAnimation?: boolean;
+  /** 
+   * When enabled, automatically repositions the menu to stay within the viewport.
+   * If the preferred `side` would cause the menu to overflow, it flips to the opposite side.
+   * If the preferred `align` would cause overflow, it adjusts alignment accordingly.
+   * Useful for menus near screen edges. Defaults to false.
+   */
+  responsive?: boolean;
+  /** 
+   * Minimum distance (in pixels) to maintain from viewport edges when `responsive` is enabled.
+   * Defaults to 8.
+   */
+  viewportPadding?: number;
 }
 
 /**
@@ -49,12 +63,40 @@ export interface DropdownMenuProps extends ComponentPropsWithoutRef<'div'> {
  */
 
 export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
-  ({ side = 'bottom', align = 'start', maxHeight, enableAnimation = true, className, children, ...props }, forwardedRef) => {
+  ({ 
+    side: preferredSide = 'bottom', 
+    align: preferredAlign = 'start', 
+    maxHeight, 
+    enableAnimation = true, 
+    responsive = false,
+    viewportPadding = 8,
+    className, 
+    children, 
+    ...props 
+  }, forwardedRef) => {
       const { isOpen, setIsOpen, triggerRef, menuId } = useDropdownContext();
       const menuRef = useRef<HTMLDivElement>(null!);
       
       // Merge external ref with internal menu ref
       const mergedRef = useMergedRefs(forwardedRef, menuRef);
+
+      // Use responsive positioning if enabled
+      // Pass isOpen so the hook knows when to calculate position
+      const { side: responsiveSide, align: responsiveAlign } = useResponsivePosition(
+        triggerRef,
+        menuRef,
+        {
+          preferredSide,
+          preferredAlign,
+          viewportPadding,
+          enabled: responsive,
+          isOpen,
+        }
+      );
+
+      // Use responsive values if enabled, otherwise use provided values
+      const side = responsive ? responsiveSide : preferredSide;
+      const align = responsive ? responsiveAlign : preferredAlign;
 
       // Calculate menu wrapper style with optional max-height and scrolling
       const menuWrapperStyle: React.CSSProperties = {
@@ -72,10 +114,15 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
           : { marginLeft: SIDE_GAP_STYLE.marginLeft, marginRight: SIDE_GAP_STYLE.marginRight }),
       };
 
+      // Use horizontal alignment for top/bottom, vertical alignment for left/right
+      const alignStyles = (side === 'top' || side === 'bottom') 
+        ? ALIGN_STYLES[align] 
+        : VERTICAL_ALIGN_STYLES[align];
+
       const menuClasses = cn(
         BASE_CLASSES,
         SIDE_STYLES[side],
-        ALIGN_STYLES[align],
+        alignStyles,
         enableAnimation && 'transition-all duration-[var(--component-dropdown-transition-duration)]',
         enableAnimation && !isOpen && 'scale-[var(--component-dropdown-animation-scale)]',
         isOpen && VISIBLE_CLASS,

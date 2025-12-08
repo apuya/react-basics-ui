@@ -1,15 +1,15 @@
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef, type ReactNode, type CSSProperties } from 'react';
 import { cn } from '@/lib/cn';
 import { useTableContext } from './TableContext';
-import { TABLE_HEADER_BASE_CLASSES, TABLE_ACTION_BAR_BASE_CLASSES, TABLE_CELL_SIZE_STYLES } from './Table.styles';
+import { TABLE_ACTION_BAR_HEADER_CLASSES, TABLE_ACTION_BAR_BASE_CLASSES } from './Table.styles';
 import { SearchBar, type SearchBarProps } from '@/components/basic/forms/SearchBar';
 import { Button } from '@/components/basic/forms/Button';
 import { Dropdown } from '@/components/advanced/navigation/Dropdown';
 import { Icon } from '@/components/basic/utility/Icon';
-import { Flex } from '@/components/basic/layout/Flex';
 import { type IconType } from 'react-icons';
 
 export type TableActionBarVariant = 'default' | 'search' | 'actions';
+export type TableActionBarAlign = 'left' | 'right';
 
 export interface TableActionBarActionButton {
   label: string;
@@ -20,6 +20,8 @@ export interface TableActionBarActionButton {
 
 export interface TableActionBarProps extends ComponentPropsWithoutRef<'th'> {
   variant?: TableActionBarVariant;
+  /** Alignment of action buttons (only applies to actions variant) */
+  align?: TableActionBarAlign;
   // Props for search variant
   searchProps?: Omit<SearchBarProps, 'size'>;
   dropdownTriggerLabel?: string;
@@ -30,11 +32,25 @@ export interface TableActionBarProps extends ComponentPropsWithoutRef<'th'> {
   secondaryAction?: TableActionBarActionButton;
 }
 
+// Inline styles for flex container with gap
+const FLEX_CONTAINER_STYLE: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 'var(--component-table-action-bar-gap)',
+  width: '100%',
+};
+
+// Inline style for default variant - fixed height, no padding
+const DEFAULT_CELL_STYLE: CSSProperties = {
+  height: 'var(--component-table-action-bar-min-height)',
+};
+
 export const TableActionBar = memo(
   forwardRef<HTMLTableCellElement, TableActionBarProps>(({ 
     variant = 'default',
+    align = 'right',
     className,
-    children,
+    style,
     searchProps,
     dropdownTriggerLabel = 'Actions',
     dropdownTriggerIcon,
@@ -46,15 +62,34 @@ export const TableActionBar = memo(
     const { size } = useTableContext();
 
     const headerClasses = useMemo(
-      () => cn(TABLE_HEADER_BASE_CLASSES, TABLE_ACTION_BAR_BASE_CLASSES, TABLE_CELL_SIZE_STYLES[size], className),
-      [size, className]
+      () => cn(TABLE_ACTION_BAR_HEADER_CLASSES, TABLE_ACTION_BAR_BASE_CLASSES, className),
+      [className]
     );
 
-    // Render search variant
+    // Default variant - early return for performance (no padding, fixed height)
+    if (variant === 'default') {
+      const defaultCellStyle: CSSProperties = style 
+        ? { ...DEFAULT_CELL_STYLE, ...style }
+        : DEFAULT_CELL_STYLE;
+      
+      return (
+        <th ref={ref} className={headerClasses} style={defaultCellStyle} data-variant={variant} data-size={size} {...props} />
+      );
+    }
+
+    // Cell style with padding - only computed for non-default variants
+    const cellStyle: CSSProperties = {
+      minHeight: 'var(--component-table-action-bar-min-height)',
+      paddingBlock: 'var(--component-table-action-bar-padding-block)',
+      paddingInline: 'var(--component-table-action-bar-padding-inline)',
+      ...style,
+    };
+
+    // Search variant
     if (variant === 'search') {
       return (
-        <th ref={ref} className={headerClasses} data-variant={variant} {...props}>
-          <Flex align="center" gap="sm" className="w-full">
+        <th ref={ref} className={headerClasses} style={cellStyle} data-variant={variant} data-size={size} {...props}>
+          <div style={FLEX_CONTAINER_STYLE}>
             <SearchBar
               size="small"
               {...searchProps}
@@ -74,49 +109,44 @@ export const TableActionBar = memo(
                 {dropdownMenu}
               </Dropdown>
             )}
-          </Flex>
+          </div>
         </th>
       );
     }
 
-    // Render actions variant
-    if (variant === 'actions') {
-      return (
-        <th ref={ref} className={headerClasses} data-variant={variant} {...props}>
-          <Flex align="center" gap="sm" className="w-full">
-            {children && <span className="flex-1">{children}</span>}
-            <Flex align="center" gap="sm">
-              {secondaryAction && (
-                <Button
-                  size="small"
-                  variant="tertiary"
-                  onClick={secondaryAction.onClick}
-                  disabled={secondaryAction.disabled}
-                  leadingIcon={secondaryAction.icon ? <Icon icon={secondaryAction.icon} size="sm" /> : undefined}
-                >
-                  {secondaryAction.label}
-                </Button>
-              )}
-              {primaryAction && (
-                <Button
-                  size="small"
-                  variant="tertiary"
-                  onClick={primaryAction.onClick}
-                  disabled={primaryAction.disabled}
-                  leadingIcon={primaryAction.icon ? <Icon icon={primaryAction.icon} size="sm" /> : undefined}
-                >
-                  {primaryAction.label}
-                </Button>
-              )}
-            </Flex>
-          </Flex>
-        </th>
-      );
-    }
+    // Actions variant
+    const actionsContainerStyle: CSSProperties = {
+      ...FLEX_CONTAINER_STYLE,
+      justifyContent: align === 'left' ? 'flex-start' : 'flex-end',
+    };
 
-    // Default variant - empty
     return (
-      <th ref={ref} className={headerClasses} data-variant={variant} {...props} />
+      <th ref={ref} className={headerClasses} style={cellStyle} data-variant={variant} data-align={align} data-size={size} {...props}>
+        <div style={actionsContainerStyle}>
+          {secondaryAction && (
+            <Button
+              size="small"
+              variant="tertiary"
+              onClick={secondaryAction.onClick}
+              disabled={secondaryAction.disabled}
+              leadingIcon={secondaryAction.icon ? <Icon icon={secondaryAction.icon} size="sm" /> : undefined}
+            >
+              {secondaryAction.label}
+            </Button>
+          )}
+          {primaryAction && (
+            <Button
+              size="small"
+              variant="tertiary"
+              onClick={primaryAction.onClick}
+              disabled={primaryAction.disabled}
+              leadingIcon={primaryAction.icon ? <Icon icon={primaryAction.icon} size="sm" /> : undefined}
+            >
+              {primaryAction.label}
+            </Button>
+          )}
+        </div>
+      </th>
     );
   })
 );

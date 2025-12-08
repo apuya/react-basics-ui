@@ -12,6 +12,7 @@ import {
 import { useClickOutsideWithExclusions } from '@/hooks/useClickOutsideWithExclusions';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
+import { useResponsivePosition } from '@/hooks/useResponsivePosition';
 import { cn } from '@/lib/cn';
 import { createComponentContext } from '@/lib/createComponentContext';
 import { BiX } from 'react-icons/bi';
@@ -42,12 +43,24 @@ export interface PopoverProps {
 export interface PopoverTriggerProps extends ComponentPropsWithoutRef<'button'> {}
 
 export interface PopoverContentProps extends ComponentPropsWithoutRef<'div'> {
-  /** Position relative to trigger */
+  /** Which side of the trigger to position the popover. Defaults to 'bottom'. */
   side?: PopoverSide;
-  /** Alignment relative to trigger */
+  /** How to align the popover along the trigger's edge. Defaults to 'center'. */
   align?: PopoverAlign;
   /** Show arrow pointing to trigger (not implemented yet) */
   showArrow?: boolean;
+  /** 
+   * When enabled, automatically repositions the popover to stay within the viewport.
+   * If the preferred `side` would cause the popover to overflow, it flips to the opposite side.
+   * If the preferred `align` would cause overflow, it adjusts alignment accordingly.
+   * Useful for popovers near screen edges. Defaults to false.
+   */
+  responsive?: boolean;
+  /** 
+   * Minimum distance (in pixels) to maintain from viewport edges when `responsive` is enabled.
+   * Defaults to 8.
+   */
+  viewportPadding?: number;
 }
 
 export interface PopoverTitleProps extends ComponentPropsWithoutRef<'h3'> {}
@@ -138,9 +151,37 @@ PopoverTrigger.displayName = 'Popover.Trigger';
 // Popover Content Component
 const PopoverContent = memo(
   forwardRef<HTMLDivElement, PopoverContentProps>(
-    ({ side = 'bottom', align = 'center', className, children, onMouseEnter, onMouseLeave, ...props }, ref) => {
-      const { isOpen, setIsOpen, contentId, titleId, descriptionId, contentRef } = usePopoverContext();
+    ({ 
+      side: preferredSide = 'bottom', 
+      align: preferredAlign = 'center', 
+      responsive = false,
+      viewportPadding = 8,
+      className, 
+      children, 
+      onMouseEnter, 
+      onMouseLeave, 
+      ...props 
+    }, ref) => {
+      const { isOpen, setIsOpen, contentId, titleId, descriptionId, triggerRef, contentRef } = usePopoverContext();
       const mergedRef = useMergedRefs(ref, contentRef);
+
+      // Use responsive positioning if enabled
+      // Pass isOpen so the hook knows when to calculate position
+      const { side: responsiveSide, align: responsiveAlign } = useResponsivePosition(
+        triggerRef,
+        contentRef,
+        {
+          preferredSide,
+          preferredAlign,
+          viewportPadding,
+          enabled: responsive,
+          isOpen,
+        }
+      );
+
+      // Use responsive values if enabled, otherwise use provided values
+      const side = responsive ? responsiveSide : preferredSide;
+      const align = responsive ? responsiveAlign : preferredAlign;
 
       const popoverStyle = useMemo(
         () => ({
