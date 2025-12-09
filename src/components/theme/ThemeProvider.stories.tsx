@@ -3,7 +3,7 @@ import { ThemeProvider, useTheme, type Theme } from './ThemeProvider';
 import { Button } from '../forms/Button';
 import { Stack } from '../layout/Stack';
 import { Box } from '../layout/Box';
-import { Text } from '../typography/Text';
+import { Text } from '../../typography/Text';
 import { Card } from '../data-display/Card';
 import { Icon } from '../utility/Icon';
 import { BiSun, BiMoon, BiDesktop } from 'react-icons/bi';

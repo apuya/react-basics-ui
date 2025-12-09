@@ -15,8 +15,8 @@ import {
   BiHeart,
   BiStar,
 } from 'react-icons/bi';
-import { Text } from '../typography/Text';
-import { Heading } from '../typography/Heading';
+import { Text } from '../../typography/Text';
+import { Heading } from '../../typography/Heading';
 import { Button } from '../forms/Button';
 import { Box } from '../layout/Box';
 import { Flex } from '../layout/Flex';

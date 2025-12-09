@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Drawer } from './Drawer';
 import { Button } from '../forms/Button/Button';
-import { Text } from '../typography/Text/Text';
+import { Text } from '../../typography/Text/Text';
 import { Stack } from '../layout/Stack/Stack';
 
 const meta: Meta<typeof Drawer> = {

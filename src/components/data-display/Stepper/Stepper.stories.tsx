@@ -9,8 +9,8 @@ import {
   BiFile,
 } from 'react-icons/bi';
 import { Button } from '../forms/Button';
-import { Heading } from '../typography/Heading';
-import { Text } from '../typography/Text';
+import { Heading } from '../../typography/Heading';
+import { Text } from '../../typography/Text';
 import { Box } from '../layout/Box';
 import { Flex } from '../layout/Flex';
 import { Stepper } from './Stepper';

@@ -7,7 +7,7 @@ import { Button } from '../forms/Button';
 import { Avatar } from '../data-display/Avatar';
 import { Input } from '../forms/Input';
 import { Select } from '../forms/Select';
-import { Heading } from '../typography/Heading';
+import { Heading } from '../../typography/Heading';
 
 // Consistent icon size for navbar - 20px
 const ICON_CLASS = 'w-5 h-5 shrink-0';
