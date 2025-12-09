@@ -12,11 +12,11 @@ import {
   STEP_ORIENTATION,
   STEPPER_BASE_CLASSES,
   STEPPER_ORIENTATION,
-  // Inline style tokens
-  CONNECTOR_VERTICAL_STYLE,
-  CONTENT_HORIZONTAL_STYLE,
-  CONTENT_VERTICAL_STYLE,
-  DESCRIPTION_STYLE,
+  // Tailwind layout classes
+  CONNECTOR_VERTICAL_CLASSES,
+  CONTENT_HORIZONTAL_CLASSES,
+  CONTENT_VERTICAL_CLASSES,
+  DESCRIPTION_CLASSES,
 } from './Stepper.styles';
 import { StepIndicator } from './StepIndicator';
 import type { StepperOrientation, StepperSize, StepStatus } from './Stepper.types';
@@ -279,8 +279,7 @@ const StepComponent = memo(
       // Content block (label + description)
       const content = (label || description) && (
         <div
-          className={STEP_CONTENT_ORIENTATION[orientation]}
-          style={isVertical ? CONTENT_VERTICAL_STYLE : CONTENT_HORIZONTAL_STYLE}
+          className={cn(STEP_CONTENT_ORIENTATION[orientation], isVertical ? CONTENT_VERTICAL_CLASSES : CONTENT_HORIZONTAL_CLASSES)}
         >
           {label && (
             <Text
@@ -294,7 +293,7 @@ const StepComponent = memo(
             </Text>
           )}
           {description && (
-            <Text as="div" size="caption" color="tertiary" style={DESCRIPTION_STYLE}>
+            <Text as="div" size="caption" color="tertiary" className={DESCRIPTION_CLASSES}>
               {description}
             </Text>
           )}
@@ -304,8 +303,7 @@ const StepComponent = memo(
       // Connector element
       const connector = hasConnector && (
         <div
-          className={connectorClasses}
-          style={isVertical ? CONNECTOR_VERTICAL_STYLE : undefined}
+          className={cn(connectorClasses, isVertical && CONNECTOR_VERTICAL_CLASSES)}
           aria-hidden="true"
         />
       );

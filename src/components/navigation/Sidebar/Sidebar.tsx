@@ -98,9 +98,8 @@ export const SidebarRoot = memo(
       [variant, className]
     );
 
-    const paddingStyle = useMemo(
+    const widthStyle = useMemo(
       () => ({
-        padding: 'var(--component-sidebar-padding)',
         width: formattedWidth,
         ...style,
       }),
@@ -121,7 +120,7 @@ export const SidebarRoot = memo(
         <aside
           ref={ref}
           className={sidebarClasses}
-          style={paddingStyle}
+          style={widthStyle}
           data-variant={variant}
           data-position={position}
           {...props}
@@ -141,19 +140,11 @@ SidebarRoot.displayName = 'Sidebar';
  */
 const SidebarContent = memo(
   forwardRef<HTMLDivElement, SidebarContentProps>(function SidebarContent(
-    { className, style, children, ...props },
+    { className, children, ...props },
     ref
   ) {
-    const paddingStyle = useMemo(
-      () => ({
-        paddingBlock: 'var(--component-sidebar-content-padding-block)',
-        ...style,
-      }),
-      [style]
-    );
-
     return (
-      <div ref={ref} className={cn(CONTENT_CLASSES, className)} style={paddingStyle} {...props}>
+      <div ref={ref} className={cn(CONTENT_CLASSES, className)} {...props}>
         {children}
       </div>
     );
@@ -168,24 +159,13 @@ SidebarContent.displayName = 'Sidebar.Content';
  */
 const SidebarFooter = memo(
   forwardRef<HTMLDivElement, SidebarFooterProps>(function SidebarFooter(
-    { className, style, children, ...props },
+    { className, children, ...props },
     ref
   ) {
-    const paddingStyle = useMemo(
-      () => ({
-        paddingInline: 'var(--component-sidebar-footer-padding-inline)',
-        paddingBlock: 'var(--component-sidebar-footer-padding-block)',
-        gap: 'var(--component-sidebar-footer-gap)',
-        ...style,
-      }),
-      [style]
-    );
-
     return (
       <div
         ref={ref}
         className={cn(FOOTER_CLASSES, className)}
-        style={paddingStyle}
         {...props}
       >
         {children}
@@ -201,19 +181,11 @@ SidebarFooter.displayName = 'Sidebar.Footer';
  */
 const SidebarSection = memo(
   forwardRef<HTMLDivElement, SidebarSectionProps>(function SidebarSection(
-    { className, style, children, ...props },
+    { className, children, ...props },
     ref
   ) {
-    const spacingStyle = useMemo(
-      () => ({
-        marginBottom: 'var(--component-sidebar-section-gap)',
-        ...style,
-      }),
-      [style]
-    );
-
     return (
-      <div ref={ref} className={cn(SECTION_CLASSES, className)} style={spacingStyle} {...props}>
+      <div ref={ref} className={cn(SECTION_CLASSES, className)} {...props}>
         {children}
       </div>
     );

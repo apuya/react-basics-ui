@@ -62,11 +62,4 @@ export const BODY_CLASSES = 'text-sm font-normal leading-snug';
  * Close button classes
  */
 export const CLOSE_BUTTON_CLASSES =
-  'shrink-0 inline-flex items-center justify-center rounded-sm opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-1';
-
-/**
- * Close button size style
- */
-export const CLOSE_BUTTON_SIZE_STYLE = {
-  fontSize: 'var(--component-toast-icon-size)',
-} as const;
+  'shrink-0 inline-flex items-center justify-center rounded-sm opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-1 text-xl';

@@ -2,6 +2,11 @@ import { forwardRef, memo, useCallback, useMemo, type ComponentPropsWithoutRef }
 import { cn } from '@/lib/cn';
 import { Checkbox } from '@/components/forms/Checkbox';
 import { Input } from '@/components/forms/Input';
+import {
+  TABLE_CELL_STYLE,
+  TABLE_CELL_CHECKBOX_STYLE,
+  TABLE_CELL_INPUT_STYLE,
+} from './Table.styles';
 
 // ============================================================================
 // Types
@@ -39,43 +44,31 @@ export interface TableCellProps extends ComponentPropsWithoutRef<'td'> {
 // Styles
 // ============================================================================
 
-/** Base classes - vertical alignment stretches to row height */
+/** Base classes - vertical alignment only, layout via inline styles */
 const BASE_CLASSES = 'align-middle';
 
-/** Variant-specific classes */
+/** Variant-specific classes - colors and typography only */
 const VARIANT_CLASSES = {
   default: 'text-[color:var(--component-table-cell-text)]',
-  text: 'text-[color:var(--component-table-cell-text)] text-[length:var(--component-table-cell-font-size-md)]',
-  checkbox: '',
-  numeric: 'text-[color:var(--component-table-cell-text)] text-[length:var(--component-table-cell-font-size-md)] text-right tabular-nums',
+  text: 'text-[color:var(--component-table-cell-text)] text-base',
+  checkbox: 'align-middle',
+  numeric: 'text-[color:var(--component-table-cell-text)] text-base text-right tabular-nums',
   badge: '',
   input: '',
   comparison: '',
 } as const;
 
-/** Inline style - padding, min dimensions */
-const BASE_STYLE = {
-  paddingBlock: 'var(--component-table-cell-padding-block)',
-  paddingInline: 'var(--component-table-cell-padding-inline)',
-  minHeight: 'var(--component-table-cell-min-height)',
-  minWidth: 'var(--component-table-cell-min-width)',
-} as const;
-
-/** Checkbox cell style - hugs content, lineHeight: 0 removes extra space */
-const CHECKBOX_CELL_STYLE = {
-  padding: 'var(--component-table-cell-checkbox-padding)',
-  minHeight: 'var(--component-table-cell-checkbox-min-height)',
-  minWidth: 'var(--component-table-cell-checkbox-min-width)',
-  lineHeight: 0,
-  verticalAlign: 'middle' as const,
-} as const;
-
-/** Input cell style - same as base but no min-width constraint */
-const INPUT_CELL_STYLE = {
-  paddingBlock: 'var(--component-table-cell-padding-block)',
-  paddingInline: 'var(--component-table-cell-padding-inline)',
-  minHeight: 'var(--component-table-cell-min-height)',
-} as const;
+/** Get cell style based on variant */
+const getCellStyle = (variant: TableCellVariant) => {
+  switch (variant) {
+    case 'checkbox':
+      return TABLE_CELL_CHECKBOX_STYLE;
+    case 'input':
+      return TABLE_CELL_INPUT_STYLE;
+    default:
+      return TABLE_CELL_STYLE;
+  }
+};
 
 // ============================================================================
 // Component
@@ -113,6 +106,7 @@ export const TableCell = memo(
       inputAriaLabel = 'Edit cell value',
       comparisonPrimary,
       comparisonSecondary,
+      style,
       ...props
     }, ref) => {
       const cellClasses = useMemo(
@@ -120,11 +114,10 @@ export const TableCell = memo(
         [variant, className]
       );
 
-      const cellStyle = useMemo(() => {
-        if (variant === 'checkbox') return CHECKBOX_CELL_STYLE;
-        if (variant === 'input') return INPUT_CELL_STYLE;
-        return BASE_STYLE;
-      }, [variant]);
+      const cellStyle = useMemo(
+        () => ({ ...getCellStyle(variant), ...style }),
+        [variant, style]
+      );
 
       const handleCheckboxChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChange?.(e.target.checked),
@@ -210,10 +203,10 @@ export const TableCell = memo(
             {...props}
           >
             <div className="flex flex-col gap-0.5">
-              <span className="text-[length:var(--component-table-cell-font-size-md)] font-[number:var(--component-text-font-weight-regular)] text-[color:var(--component-text-color-primary)]">
+              <span className="text-base font-normal text-[color:var(--component-text-color-primary)]">
                 {comparisonPrimary}
               </span>
-              <span className="text-[length:var(--component-text-font-size-caption)] font-[number:var(--component-text-font-weight-regular)] text-[color:var(--component-text-color-secondary)]">
+              <span className="text-xs font-normal text-[color:var(--component-text-color-secondary)]">
                 {comparisonSecondary}
               </span>
             </div>

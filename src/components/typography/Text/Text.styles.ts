@@ -12,24 +12,24 @@ export const COLOR_STYLES = {
 } as const;
 
 export const SIZE_STYLES = {
-  caption: 'text-[length:var(--component-text-font-size-caption)]',
-  small: 'text-[length:var(--component-text-font-size-small)]',
-  body: 'text-[length:var(--component-text-font-size-body)]',
-  subtitle: 'text-[length:var(--component-text-font-size-subtitle)]',
+  caption: 'text-xs',
+  small: 'text-sm',
+  body: 'text-base',
+  subtitle: 'text-lg',
 } as const;
 
 export const WEIGHT_STYLES = {
-  light: 'font-[number:var(--component-text-font-weight-light)]',
-  regular: 'font-[number:var(--component-text-font-weight-regular)]',
-  medium: 'font-[number:var(--component-text-font-weight-medium)]',
-  semibold: 'font-[number:var(--component-text-font-weight-semibold)]',
-  bold: 'font-[number:var(--component-text-font-weight-bold)]',
+  light: 'font-light',
+  regular: 'font-normal',
+  medium: 'font-medium',
+  semibold: 'font-semibold',
+  bold: 'font-bold',
 } as const;
 
 export const LINE_HEIGHT_STYLES = {
-  tight: 'leading-[var(--component-text-line-height-tight)]',
-  normal: 'leading-[var(--component-text-line-height-normal)]',
-  relaxed: 'leading-[var(--component-text-line-height-relaxed)]',
+  tight: 'leading-tight',
+  normal: 'leading-normal',
+  relaxed: 'leading-relaxed',
 } as const;
 
 export const ALIGN_STYLES = {

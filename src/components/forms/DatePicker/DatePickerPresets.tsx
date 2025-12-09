@@ -3,13 +3,9 @@ import { forwardRef, memo, useCallback, useMemo, Fragment } from 'react';
 import type { DatePickerPresetsProps, PresetDateRange } from './DatePicker.types';
 import {
   PRESETS_BASE_CLASSES,
-  PRESETS_BASE_STYLE,
   PRESETS_STATIC_CLASSES,
-  PRESETS_STATIC_STYLE,
   PRESETS_DIVIDER_CLASSES,
-  PRESETS_DIVIDER_STYLE,
   PRESETS_ITEM_CLASSES,
-  PRESETS_ITEM_STYLE,
   PRESETS_ITEM_ACTIVE_CLASSES,
 } from './DatePicker.styles';
 
@@ -271,18 +267,13 @@ export const DatePickerPresets = memo(
         [isPositioned, className]
       );
 
-      const presetsStyle = useMemo(
-        () => (isPositioned ? PRESETS_BASE_STYLE : PRESETS_STATIC_STYLE),
-        [isPositioned]
-      );
-
       return (
-        <div ref={ref} className={presetsClasses} style={presetsStyle} {...props}>
+        <div ref={ref} className={presetsClasses} {...props}>
           {presets.map((preset, index) => (
             <Fragment key={preset.label}>
               {/* Add divider before items that start a new category */}
               {preset.dividerBefore && index > 0 && (
-                <div className={PRESETS_DIVIDER_CLASSES} style={PRESETS_DIVIDER_STYLE} role="separator" />
+                <div className={PRESETS_DIVIDER_CLASSES} role="separator" />
               )}
               <button
                 type="button"
@@ -290,7 +281,6 @@ export const DatePickerPresets = memo(
                   PRESETS_ITEM_CLASSES,
                   selectedPreset === preset.label && PRESETS_ITEM_ACTIVE_CLASSES
                 )}
-                style={PRESETS_ITEM_STYLE}
                 onClick={() => handlePresetClick(preset)}
               >
                 {preset.label}

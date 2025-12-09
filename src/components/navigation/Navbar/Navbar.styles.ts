@@ -20,20 +20,20 @@ export const BORDERED_CLASSES =
 // =============================================================================
 
 export const CONTENT_CLASSES =
-  'mx-auto flex items-center justify-between';
+  'mx-auto flex items-center justify-between h-16 max-w-screen-2xl gap-6 px-4';
 
 // =============================================================================
 // BRAND STYLES
 // =============================================================================
 
 export const BRAND_CLASSES =
-  'flex items-center font-semibold text-[color:var(--component-navbar-brand-color)]';
+  'flex items-center gap-2 text-xl font-semibold text-[color:var(--component-navbar-brand-color)]';
 
 // =============================================================================
 // SECTION STYLES
 // =============================================================================
 
-export const SECTION_CLASSES = 'flex items-center';
+export const SECTION_CLASSES = 'flex items-center gap-4';
 
 // =============================================================================
 // INTERACTIVE ELEMENT STYLES (for items within navbar)

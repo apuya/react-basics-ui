@@ -51,38 +51,26 @@ export const ICON_COLOR_STYLES = {
 export type AlertVariant = keyof typeof VARIANT_STYLES;
 
 /**
- * Title content styles using design tokens
+ * Title content styles using Tailwind classes
  */
-export const TITLE_STYLES = {
-  fontSize: 'var(--component-alert-title-size)',
-  lineHeight: 'var(--component-alert-title-line-height)',
-} as const;
+export const TITLE_CLASSES = 'text-base leading-normal font-semibold';
 
 /**
- * Body content styles using design tokens
+ * Body content styles using Tailwind classes
  */
-export const BODY_STYLES = {
-  fontSize: 'var(--component-alert-body-size)',
-  lineHeight: 'var(--component-alert-body-line-height)',
-} as const;
+export const BODY_CLASSES = 'text-sm leading-normal font-normal';
 
 /**
- * Container layout styles using design tokens
+ * Container layout styles using Tailwind classes
  */
-export const CONTAINER_STYLES = {
-  paddingBlock: 'var(--component-alert-padding-block)',
-  paddingInline: 'var(--component-alert-padding-inline)',
-  gap: 'var(--component-alert-gap)',
-} as const;
+export const CONTAINER_CLASSES = 'p-4 gap-3';
 
 /**
- * Icon size style using design tokens
+ * Icon size style using Tailwind classes
  */
-export const ICON_SIZE_STYLE = {
-  fontSize: 'var(--component-alert-icon-size)',
-} as const;
+export const ICON_SIZE_CLASSES = 'text-xl';
 
 /**
- * Content gap style for spacing between title and body
+ * Content gap for spacing between title and body
  */
-export const CONTENT_GAP = 'var(--component-alert-content-gap)';
+export const CONTENT_GAP_CLASSES = 'mt-1';

@@ -18,16 +18,12 @@ import { cn } from '@/lib/cn';
 import { BiX } from 'react-icons/bi';
 import {
   BODY_CLASSES,
-  BODY_STYLE,
   CLOSE_BUTTON_CLASSES,
-  CLOSE_BUTTON_ICON_STYLE,
-  CLOSE_BUTTON_POSITION_STYLE,
+  CLOSE_BUTTON_ICON_CLASSES,
   DRAWER_BASE_CLASSES,
   DRAWER_VISIBLE_CLASS,
   FOOTER_CLASSES,
-  FOOTER_STYLE,
   HEADER_CLASSES,
-  HEADER_STYLE,
   OVERLAY_CLASSES,
   OVERLAY_VISIBLE_CLASS,
   PLACEMENT_STYLES,
@@ -72,11 +68,10 @@ export interface DrawerTitleProps extends ComponentPropsWithoutRef<'h2'> {}
  */
 const DrawerHeader = memo(
   forwardRef<HTMLDivElement, DrawerHeaderProps>(
-    ({ className, children, style, ...props }, ref) => (
+    ({ className, children, ...props }, ref) => (
       <div
         ref={ref}
         className={cn(HEADER_CLASSES, className)}
-        style={{ ...HEADER_STYLE, ...style }}
         {...props}
       >
         {children}
@@ -91,11 +86,10 @@ DrawerHeader.displayName = 'Drawer.Header';
  */
 const DrawerBody = memo(
   forwardRef<HTMLDivElement, DrawerBodyProps>(
-    ({ className, children, style, ...props }, ref) => (
+    ({ className, children, ...props }, ref) => (
       <div
         ref={ref}
         className={cn(BODY_CLASSES, className)}
-        style={{ ...BODY_STYLE, ...style }}
         {...props}
       >
         {children}
@@ -110,11 +104,10 @@ DrawerBody.displayName = 'Drawer.Body';
  */
 const DrawerFooter = memo(
   forwardRef<HTMLDivElement, DrawerFooterProps>(
-    ({ className, children, style, ...props }, ref) => (
+    ({ className, children, ...props }, ref) => (
       <div
         ref={ref}
         className={cn(FOOTER_CLASSES, className)}
-        style={{ ...FOOTER_STYLE, ...style }}
         {...props}
       >
         {children}
@@ -240,10 +233,9 @@ const DrawerRoot = memo(
                 type="button"
                 aria-label="Close drawer"
                 className={CLOSE_BUTTON_CLASSES}
-                style={CLOSE_BUTTON_POSITION_STYLE}
                 onClick={onClose}
               >
-                <BiX style={CLOSE_BUTTON_ICON_STYLE} />
+                <BiX className={CLOSE_BUTTON_ICON_CLASSES} />
               </button>
             )}
             {children}

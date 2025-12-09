@@ -1,6 +1,6 @@
-import { forwardRef, memo, useCallback, useMemo, type ComponentPropsWithoutRef, type CSSProperties } from 'react';
+import { forwardRef, memo, useCallback, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
-import { TABLE_FOOTER_BASE_CLASSES } from './Table.styles';
+import { TABLE_FOOTER_BASE_CLASSES, TABLE_FOOTER_STYLE } from './Table.styles';
 import { useTableContext } from './TableContext';
 import { Button } from '@/components/forms/Button';
 import { Icon } from '@/components/utility/Icon';
@@ -29,54 +29,35 @@ export interface TableFooterProps extends ComponentPropsWithoutRef<'tfoot'> {
   onPageChange?: (page: number) => void;
 }
 
-// Inline style for default footer cell - fixed height, no padding
-const DEFAULT_CELL_STYLE: CSSProperties = {
-  height: 'var(--component-table-footer-min-height)',
-  width: '100%',
-};
+// Classes for default footer cell - (sizing via inline styles)
+const DEFAULT_CELL_CLASSES = 'w-full';
 
-// Inline style for navigation footer cell - fixed height with horizontal padding only
-const NAVIGATION_CELL_STYLE: CSSProperties = {
-  height: 'var(--component-table-footer-min-height)',
-  paddingInline: 'var(--component-table-footer-padding-inline)',
-  width: '100%',
-};
+// Inline style for default cell
+const DEFAULT_CELL_STYLE = { height: '48px' } as const;
 
-// Inline style for pagination footer cell - flexible height with padding
-const PAGINATION_CELL_STYLE: CSSProperties = {
-  paddingBlock: 'var(--component-table-footer-padding-block)',
-  paddingInline: 'var(--component-table-footer-padding-inline)',
-  width: '100%',
-};
+// Classes for navigation footer cell - (sizing/padding via inline styles)
+const NAVIGATION_CELL_CLASSES = 'w-full';
 
-// Inline style for navigation container
-const NAVIGATION_CONTAINER_STYLE: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  width: '100%',
-};
+// Inline style for navigation cell
+const NAVIGATION_CELL_STYLE = { height: '48px', paddingInline: '16px' } as const;
 
-// Inline style for arrow buttons group
-const ARROWS_STYLE: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 'var(--component-table-footer-gap)',
-};
+// Classes for pagination footer cell - (sizing/padding via inline styles)
+const PAGINATION_CELL_CLASSES = 'w-full';
 
-// Inline style for page info - centered with flex-1
-const PAGE_INFO_STYLE: CSSProperties = {
-  flex: 1,
-  textAlign: 'center',
-};
+// Inline style for pagination cell
+const PAGINATION_CELL_STYLE = { paddingBlock: '12px', paddingInline: '16px' } as const;
 
-// Inline style for pagination container - centered column layout
-const PAGINATION_CONTAINER_STYLE: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: 'var(--component-table-footer-gap)',
-  width: '100%',
-};
+// Classes for navigation container
+const NAVIGATION_CONTAINER_CLASSES = 'flex items-center w-full';
+
+// Classes for arrow buttons group
+const ARROWS_CLASSES = 'flex items-center gap-2';
+
+// Classes for page info - centered with flex-1
+const PAGE_INFO_CLASSES = 'flex-1 text-center';
+
+// Classes for pagination container - centered column layout
+const PAGINATION_CONTAINER_CLASSES = 'flex flex-col items-center gap-2 w-full';
 
 export const TableFooter = memo(
   forwardRef<HTMLTableSectionElement, TableFooterProps>(
@@ -138,7 +119,7 @@ export const TableFooter = memo(
         return (
           <tfoot ref={ref} className={footerClasses} data-variant={variant} data-size={size} {...props}>
             <tr>
-              <td colSpan={colSpan} style={DEFAULT_CELL_STYLE} />
+              <td colSpan={colSpan} className={DEFAULT_CELL_CLASSES} style={DEFAULT_CELL_STYLE} />
             </tr>
           </tfoot>
         );
@@ -149,8 +130,8 @@ export const TableFooter = memo(
         return (
           <tfoot ref={ref} className={footerClasses} data-variant={variant} data-size={size} {...props}>
             <tr>
-              <td colSpan={colSpan} style={PAGINATION_CELL_STYLE}>
-                <div style={PAGINATION_CONTAINER_STYLE}>
+              <td colSpan={colSpan} className={PAGINATION_CELL_CLASSES} style={PAGINATION_CELL_STYLE}>
+                <div className={PAGINATION_CONTAINER_CLASSES}>
                   <Pagination
                     totalPages={totalPages}
                     page={currentPage}
@@ -182,9 +163,9 @@ export const TableFooter = memo(
       return (
         <tfoot ref={ref} className={footerClasses} data-variant={variant} data-size={size} {...props}>
           <tr>
-            <td colSpan={colSpan} style={NAVIGATION_CELL_STYLE}>
-              <div style={NAVIGATION_CONTAINER_STYLE}>
-                <div style={ARROWS_STYLE}>
+            <td colSpan={colSpan} className={NAVIGATION_CELL_CLASSES} style={NAVIGATION_CELL_STYLE}>
+              <div className={NAVIGATION_CONTAINER_CLASSES}>
+                <div className={ARROWS_CLASSES}>
                   <Button
                     size="small"
                     variant="tabs"
@@ -205,7 +186,7 @@ export const TableFooter = memo(
                   </Button>
                 </div>
                 {pageInfo && (
-                  <div style={PAGE_INFO_STYLE}>
+                  <div className={PAGE_INFO_CLASSES}>
                     <Text size="small" color="secondary">
                       Showing {pageInfo.startItem} to {pageInfo.endItem} of {pageInfo.total}
                     </Text>

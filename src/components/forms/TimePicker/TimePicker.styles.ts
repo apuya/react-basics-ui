@@ -8,9 +8,9 @@ export const TRIGGER_BASE_CLASSES =
   'w-full flex items-center appearance-none rounded-md border bg-[color:var(--component-timepicker-bg-default)] text-[color:var(--component-timepicker-text-default)] transition-colors duration-200 focus:outline-none focus-visible:ring-focus focus-visible:ring-offset-focus focus-visible:ring-ring-focus disabled:cursor-not-allowed disabled:bg-[color:var(--component-timepicker-bg-disabled)] disabled:text-[color:var(--component-timepicker-text-disabled)] disabled:opacity-disabled';
 
 export const TRIGGER_SIZE_STYLES = {
-  small: 'h-8 px-3 text-sm',
-  default: 'h-10 px-3 text-sm',
-  large: 'h-12 px-4 text-base',
+  small: 'h-8 px-3 gap-2 text-sm',
+  default: 'h-10 px-3 gap-2 text-sm',
+  large: 'h-12 px-4 gap-3 text-base',
 } as const;
 
 export const TRIGGER_STATE_STYLES = {
@@ -27,7 +27,7 @@ export const TRIGGER_STATE_STYLES = {
 // ============================================================================
 
 export const MENU_BASE_CLASSES =
-  'absolute bg-[color:var(--component-dropdown-bg)] border border-[color:var(--component-dropdown-border)] rounded-lg shadow-lg z-50 w-full overflow-hidden opacity-0 pointer-events-none transition-opacity duration-200';
+  'absolute mt-1 bg-[color:var(--component-dropdown-bg)] border border-[color:var(--component-dropdown-border)] rounded-lg shadow-lg z-50 w-full overflow-hidden opacity-0 pointer-events-none transition-opacity duration-200';
 
 export const MENU_VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 
@@ -58,7 +58,7 @@ export const PLACEHOLDER_CLASSES = 'text-[color:var(--component-timepicker-text-
 // ============================================================================
 
 export const OPTION_BASE_CLASSES =
-  'w-full flex items-center justify-between px-3 py-2 text-sm font-normal transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-disabled';
+  'w-full flex items-center justify-between h-10 px-3 py-2 gap-2 text-sm font-normal transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-disabled';
 
 export const OPTION_STATE_STYLES = {
   default:
@@ -66,6 +66,6 @@ export const OPTION_STATE_STYLES = {
   hover:
     'bg-[color:var(--component-dropdown-item-bg-hover)] text-[color:var(--component-dropdown-text)]',
   selected:
-    'bg-[color:var(--component-dropdown-item-bg-selected)] text-[color:var(--component-dropdown-item-text-selected)] font-[number:var(--component-dropdown-item-font-weight-selected)]',
+    'bg-[color:var(--component-dropdown-item-bg-selected)] text-[color:var(--component-dropdown-item-text-selected)] font-medium',
 } as const;
 

@@ -13,7 +13,7 @@
 export type DropdownItemVariant = 'default' | 'danger' | 'warning' | 'success' | 'info';
 
 export const BASE_CLASSES =
-  'absolute bg-dropdown border border-solid border-dropdown-border rounded-dropdown shadow-dropdown z-dropdown min-w-48 max-w-80 opacity-0 pointer-events-none transition-opacity duration-dropdown';
+  'absolute bg-[color:var(--component-dropdown-bg)] border border-solid border-[color:var(--component-dropdown-border)] rounded-lg shadow-lg z-50 min-w-48 max-w-80 opacity-0 pointer-events-none transition-opacity duration-200';
 
 export const VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 

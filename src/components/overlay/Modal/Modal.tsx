@@ -76,15 +76,6 @@ const ModalRoot = memo(
       [size]
     );
 
-    const dialogStyle = useMemo(
-      () => ({
-        marginInline: size === 'full' ? '0' : 'var(--component-modal-margin-inline)',
-        padding: 'var(--component-modal-padding-block) var(--component-modal-padding-inline)',
-        gap: 'var(--component-modal-gap-default)',
-      }),
-      [size]
-    );
-
     const contextValue = useMemo(() => ({ onClose }), [onClose]);
 
     return (
@@ -99,7 +90,6 @@ const ModalRoot = memo(
         overlayVisibleClassName={OVERLAY_VISIBLE_CLASS}
         dialogClassName={dialogClasses}
         dialogVisibleClassName={MODAL_VISIBLE_CLASS}
-        dialogStyle={dialogStyle}
         ariaLabel="modal"
         closeButtonAriaLabel="Close modal"
         contextValue={contextValue}

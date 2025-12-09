@@ -23,9 +23,6 @@ export interface RadioProps extends Omit<ComponentPropsWithoutRef<'input'>, 'typ
   wrapperClassName?: string;
 }
 
-// Static style for wrapper gap
-const WRAPPER_STYLE = { gap: 'var(--component-radio-gap)' } as const;
-
 export const Radio = memo(
   forwardRef<HTMLInputElement, RadioProps>(function Radio(
     { size = 'default', label, disabled, className, wrapperClassName, id, ...rest },
@@ -55,7 +52,6 @@ export const Radio = memo(
     return (
       <label
         className={wrapperClasses}
-        style={WRAPPER_STYLE}
         data-disabled={disabled || undefined}
       >
         <input

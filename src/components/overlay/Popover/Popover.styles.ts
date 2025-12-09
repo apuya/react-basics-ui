@@ -1,7 +1,7 @@
 import type { PopoverSide, PopoverAlign } from './Popover';
 
 export const BASE_CLASSES =
-  'absolute flex flex-col gap-2 bg-[color:var(--component-popover-bg)] text-[color:var(--component-popover-text)] border border-[color:var(--component-popover-border)] rounded-lg shadow-lg z-50 min-w-48 max-w-80 opacity-0 pointer-events-none transition-opacity duration-200';
+  'absolute flex flex-col gap-2 py-3 px-4 bg-[color:var(--component-popover-bg)] text-[color:var(--component-popover-text)] border border-[color:var(--component-popover-border)] rounded-lg shadow-lg z-50 min-w-48 max-w-80 opacity-0 pointer-events-none transition-opacity duration-200';
 
 export const VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 

@@ -5,13 +5,9 @@ import { DatePickerCell } from './DatePickerCell';
 import { CalendarHeader } from './CalendarHeader';
 import {
   CALENDAR_BASE_CLASSES,
-  CALENDAR_BASE_STYLE,
   CALENDAR_GRID_CLASSES,
-  CALENDAR_GRID_STYLE,
   CALENDAR_WEEKDAY_HEADER_CLASSES,
-  CALENDAR_WEEKDAY_HEADER_STYLE,
   DUAL_CALENDAR_CLASSES,
-  DUAL_CALENDAR_STYLE,
 } from './DatePicker.styles';
 
 const DEFAULT_DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -235,7 +231,7 @@ const SingleCalendarGrid = memo(
       );
 
       return (
-        <div ref={ref} className={calendarClasses} style={CALENDAR_BASE_STYLE} {...props}>
+        <div ref={ref} className={calendarClasses} {...props}>
           {/* Header */}
           <CalendarHeader
             month={displayMonth}
@@ -251,7 +247,7 @@ const SingleCalendarGrid = memo(
           />
 
           {/* Weekday Labels */}
-          <div className={CALENDAR_WEEKDAY_HEADER_CLASSES} style={CALENDAR_WEEKDAY_HEADER_STYLE}>
+          <div className={CALENDAR_WEEKDAY_HEADER_CLASSES}>
             {reorderedDayLabels.map((label) => (
               <DatePickerCell
                 key={label}
@@ -262,7 +258,7 @@ const SingleCalendarGrid = memo(
           </div>
 
           {/* Calendar Grid */}
-          <div className={CALENDAR_GRID_CLASSES} style={CALENDAR_GRID_STYLE} role="grid">
+          <div className={CALENDAR_GRID_CLASSES} role="grid">
             {calendarDays.map(({ date, isOutsideMonth }) => (
               <DatePickerCell
                 key={date.toISOString()}
@@ -353,7 +349,7 @@ export const Calendar = memo(
         const containerClasses = cn(DUAL_CALENDAR_CLASSES, className);
         
         return (
-          <div ref={ref} className={containerClasses} style={DUAL_CALENDAR_STYLE} {...props}>
+          <div ref={ref} className={containerClasses} {...props}>
             {/* Left Calendar - Leading navigation only */}
             <SingleCalendarGrid
               selectedRange={selectedRange}

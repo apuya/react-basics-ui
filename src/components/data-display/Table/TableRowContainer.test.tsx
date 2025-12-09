@@ -3,15 +3,16 @@ import { describe, it, expect, vi } from 'vitest';
 import { createRef } from 'react';
 import { TableRowContainer } from './TableRowContainer';
 import { Table } from './Table';
+import { TableContext, type TableVariant } from './TableContext';
 
-// Helper to render TableRowContainer within Table context
-const renderWithTable = (ui: React.ReactElement, variant: 'default' | 'striped' | 'bordered' = 'default') => {
+// Helper to render TableRowContainer within Table context (minimal - just context, no full table structure)
+const renderWithTable = (ui: React.ReactElement, variant: TableVariant = 'default') => {
   return render(
-    <Table variant={variant}>
-      <Table.Body>
-        {ui}
-      </Table.Body>
-    </Table>
+    <TableContext.Provider value={{ size: 'md', variant }}>
+      <table>
+        <tbody>{ui}</tbody>
+      </table>
+    </TableContext.Provider>
   );
 };
 

@@ -65,24 +65,15 @@ export const STEP_CONTENT_ORIENTATION = {
 export const STEP_LABEL_BASE_CLASSES = 'transition-colors duration-200';
 
 // =============================================================================
-// INLINE STYLE TOKENS
+// LAYOUT CLASSES - Tailwind scales
 // =============================================================================
 
 // Connector spacing - vertical only (horizontal uses flex wrapper)
-export const CONNECTOR_VERTICAL_STYLE = {
-  marginBlock: 'var(--component-stepper-connector-gap)',
-} as const;
+export const CONNECTOR_VERTICAL_CLASSES = 'my-1';
 
-// Content spacing - applied via inline styles
-export const CONTENT_HORIZONTAL_STYLE = {
-  marginTop: 'var(--component-stepper-content-gap)',
-} as const;
-
-export const CONTENT_VERTICAL_STYLE = {
-  marginLeft: 'var(--component-stepper-content-gap-vertical)',
-} as const;
+// Content spacing - Tailwind classes
+export const CONTENT_HORIZONTAL_CLASSES = 'mt-2';
+export const CONTENT_VERTICAL_CLASSES = 'ml-3';
 
 // Description spacing
-export const DESCRIPTION_STYLE = {
-  marginTop: 'var(--component-stepper-description-gap)',
-} as const;
+export const DESCRIPTION_CLASSES = 'mt-1';

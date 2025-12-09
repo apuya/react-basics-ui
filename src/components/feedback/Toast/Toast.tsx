@@ -5,7 +5,6 @@ import {
   BASE_CLASSES,
   BODY_CLASSES,
   CLOSE_BUTTON_CLASSES,
-  CLOSE_BUTTON_SIZE_STYLE,
   CONTAINER_CLASSES,
   CONTENT_CLASSES,
   ICON_COLOR_STYLES,
@@ -134,7 +133,6 @@ export const Toast = memo(
             type="button"
             onClick={handleClose}
             className={cn('shrink-0', CLOSE_BUTTON_CLASSES, ICON_COLOR_STYLES[variant])}
-            style={CLOSE_BUTTON_SIZE_STYLE}
             aria-label="Close notification"
           >
             <BiX />

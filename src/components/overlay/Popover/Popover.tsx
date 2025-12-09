@@ -183,14 +183,6 @@ const PopoverContent = memo(
       const side = responsive ? responsiveSide : preferredSide;
       const align = responsive ? responsiveAlign : preferredAlign;
 
-      const popoverStyle = useMemo(
-        () => ({
-          paddingInline: 'var(--component-popover-padding-inline)',
-          paddingBlock: 'var(--component-popover-padding-block)',
-        }),
-        []
-      );
-
       const popoverClasses = useMemo(
         () => cn(
           BASE_CLASSES,
@@ -231,7 +223,6 @@ const PopoverContent = memo(
           aria-labelledby={titleId}
           aria-describedby={descriptionId}
           className={popoverClasses}
-          style={popoverStyle}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           {...props}
@@ -295,14 +286,6 @@ const PopoverClose = memo(
         [setIsOpen, onClick]
       );
 
-      const iconStyle = useMemo(
-        () => ({
-          width: 'var(--component-popover-close-size, 1rem)',
-          height: 'var(--component-popover-close-size, 1rem)',
-        }),
-        []
-      );
-
       return (
         <button
           ref={ref}
@@ -312,7 +295,7 @@ const PopoverClose = memo(
           onClick={handleClick}
           {...props}
         >
-          {children || <BiX style={iconStyle} />}
+          {children || <BiX className="size-4" />}
         </button>
       );
     }

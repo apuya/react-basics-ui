@@ -7,12 +7,12 @@ export const COLOR_STYLES = {
 } as const;
 
 export const LEVEL_STYLES = {
-  h1: 'text-[length:var(--component-heading-font-size-h1)] font-[number:var(--component-heading-font-weight-h1)] leading-[var(--component-heading-line-height-h1)]',
-  h2: 'text-[length:var(--component-heading-font-size-h2)] font-[number:var(--component-heading-font-weight-h2)] leading-[var(--component-heading-line-height-h2)]',
-  h3: 'text-[length:var(--component-heading-font-size-h3)] font-[number:var(--component-heading-font-weight-h3)] leading-[var(--component-heading-line-height-h3)]',
-  h4: 'text-[length:var(--component-heading-font-size-h4)] font-[number:var(--component-heading-font-weight-h4)] leading-[var(--component-heading-line-height-h4)]',
-  h5: 'text-[length:var(--component-heading-font-size-h5)] font-[number:var(--component-heading-font-weight-h5)] leading-[var(--component-heading-line-height-h5)]',
-  h6: 'text-[length:var(--component-heading-font-size-h6)] font-[number:var(--component-heading-font-weight-h6)] leading-[var(--component-heading-line-height-h6)]',
+  h1: 'text-5xl font-bold leading-tight',
+  h2: 'text-4xl font-semibold leading-tight',
+  h3: 'text-3xl font-semibold leading-snug',
+  h4: 'text-2xl font-semibold leading-snug',
+  h5: 'text-xl font-medium leading-normal',
+  h6: 'text-lg font-medium leading-normal',
 } as const;
 
 export const ALIGN_STYLES = {

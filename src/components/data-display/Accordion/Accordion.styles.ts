@@ -3,17 +3,17 @@ export const ACCORDION_ITEM_BASE_CLASSES =
 
 export const ACCORDION_ITEM_VARIANT_STYLES = {
   default: '',
-  bordered: 'first:rounded-t-lg last:rounded-b-lg',
-  separated: 'border border-[color:var(--component-accordion-border)] rounded-lg',
+  bordered: 'first:rounded-t last:rounded-b',
+  separated: 'border border-[color:var(--component-accordion-border)] rounded mb-2 last:mb-0',
 } as const;
 
 export const ACCORDION_TRIGGER_BASE_CLASSES =
-  'flex w-full items-center justify-between bg-[color:var(--component-accordion-trigger-bg-default)] text-left text-sm font-medium text-[color:var(--component-accordion-trigger-text-default)] transition-all duration-200 hover:bg-[color:var(--component-accordion-trigger-bg-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
+  'flex w-full items-center justify-between p-4 bg-[color:var(--component-accordion-trigger-bg-default)] text-left text-sm font-medium text-[color:var(--component-accordion-trigger-text-default)] transition-all duration-200 hover:bg-[color:var(--component-accordion-trigger-bg-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-focus focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
 
 export const ACCORDION_TRIGGER_VARIANT_STYLES = {
   default: '',
-  bordered: 'first:rounded-t-lg',
-  separated: 'rounded-t-lg',
+  bordered: 'first:rounded-t',
+  separated: 'rounded-t',
 } as const;
 
 export const ACCORDION_ICON_BASE_CLASSES =
@@ -25,6 +25,4 @@ export const ACCORDION_CONTENT_BASE_CLASSES =
   'overflow-hidden text-sm text-[color:var(--component-accordion-content-text)] transition-all duration-200 data-[state=closed]:grid-rows-[0fr] data-[state=open]:grid-rows-[1fr]';
 
 export const ACCORDION_CONTENT_INNER_CLASSES =
-  'overflow-hidden';
-
-export const ACCORDION_CONTENT_PADDING_CLASSES = '';
+  'overflow-hidden pb-4 px-4';

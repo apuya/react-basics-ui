@@ -53,44 +53,18 @@ export const SIZE_STYLES: Record<DrawerPlacement, Record<DrawerSize, string>> = 
 
 // Close button styles - uses tabs variant pattern
 export const CLOSE_BUTTON_CLASSES =
-  'absolute inline-flex items-center justify-center p-1 rounded bg-[color:var(--component-button-bg-tabs-default)] border border-[color:var(--component-button-border-tabs-default)] text-[color:var(--component-button-text-tabs-default)] hover:bg-[color:var(--component-button-bg-tabs-hover)] hover:border-[color:var(--component-button-border-tabs-hover)] hover:text-[color:var(--component-button-text-tabs-hover)] active:bg-[color:var(--component-button-bg-tabs-active)] active:border-[color:var(--component-button-border-tabs-active)] active:text-[color:var(--component-button-text-tabs-active)] transition-colors z-10';
+  'absolute top-4 right-6 inline-flex items-center justify-center p-1 rounded bg-[color:var(--component-button-bg-tabs-default)] border border-[color:var(--component-button-border-tabs-default)] text-[color:var(--component-button-text-tabs-default)] hover:bg-[color:var(--component-button-bg-tabs-hover)] hover:border-[color:var(--component-button-border-tabs-hover)] hover:text-[color:var(--component-button-text-tabs-hover)] active:bg-[color:var(--component-button-bg-tabs-active)] active:border-[color:var(--component-button-border-tabs-active)] active:text-[color:var(--component-button-text-tabs-active)] transition-colors z-10';
 
-export const CLOSE_BUTTON_POSITION_STYLE = {
-  top: 'var(--component-drawer-header-padding-block)',
-  right: 'var(--component-drawer-header-padding-inline)',
-} as const;
+export const CLOSE_BUTTON_ICON_CLASSES = 'size-5';
 
-export const CLOSE_BUTTON_ICON_STYLE = {
-  width: 'var(--component-drawer-close-button-size)',
-  height: 'var(--component-drawer-close-button-size)',
-} as const;
+// Header styles - Tailwind classes for layout
+export const HEADER_CLASSES = 'flex items-center justify-between shrink-0 py-4 px-6 gap-2';
 
-// Header styles - inline for proper token usage
-export const HEADER_CLASSES = 'flex items-center justify-between shrink-0';
+// Body styles - Tailwind classes for layout
+export const BODY_CLASSES = 'flex-1 overflow-y-auto flex flex-col py-6 px-6 gap-4';
 
-export const HEADER_STYLE = {
-  paddingBlock: 'var(--component-drawer-header-padding-block)',
-  paddingInline: 'var(--component-drawer-header-padding-inline)',
-  gap: 'var(--component-drawer-header-gap)',
-} as const;
-
-// Body styles - inline for proper token usage
-export const BODY_CLASSES = 'flex-1 overflow-y-auto flex flex-col';
-
-export const BODY_STYLE = {
-  paddingBlock: 'var(--component-drawer-body-padding-block)',
-  paddingInline: 'var(--component-drawer-body-padding-inline)',
-  gap: 'var(--component-drawer-body-gap)',
-} as const;
-
-// Footer styles - inline for proper token usage
-export const FOOTER_CLASSES = 'flex items-center justify-end shrink-0';
-
-export const FOOTER_STYLE = {
-  paddingBlock: 'var(--component-drawer-footer-padding-block)',
-  paddingInline: 'var(--component-drawer-footer-padding-inline)',
-  gap: 'var(--component-drawer-footer-gap)',
-} as const;
+// Footer styles - Tailwind classes for layout
+export const FOOTER_CLASSES = 'flex items-center justify-end shrink-0 py-4 px-6 gap-2';
 
 // Title styles - inline for proper token usage
 export const TITLE_CLASSES = 'm-0 text-lg font-semibold';

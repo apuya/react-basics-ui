@@ -9,22 +9,8 @@ import {
 } from './timePickerUtils';
 import { MENU_BASE_CLASSES, MENU_VISIBLE_CLASS } from './TimePicker.styles';
 
-// Static styles
-const MENU_STYLE = {
-  top: '100%',
-  marginTop: 'var(--component-timepicker-menu-gap)',
-} as const;
-
-const COLUMN_STYLE = {
-  paddingBlock: 'var(--component-dropdown-padding-block)',
-  paddingInline: 'var(--component-dropdown-padding-inline)',
-  maxHeight: 'var(--component-timepicker-menu-max-height)',
-} as const;
-
-const OPTION_STYLE = {
-  minHeight: 'var(--component-dropdown-item-height)',
-  paddingBlock: 'var(--component-dropdown-item-padding-block)',
-} as const;
+// Static classes
+const COLUMN_CLASSES = 'py-1 px-1 max-h-60';
 
 // ============================================================================
 // TimePickerMenu Component
@@ -128,11 +114,10 @@ export const TimePickerMenu = memo(
         aria-labelledby={labelId}
         aria-multiselectable="false"
         className={menuClasses}
-        style={MENU_STYLE}
       >
         <div className="grid grid-cols-3">
           {/* Hour Column */}
-          <div ref={hourColumnRef} className="overflow-y-auto scrollbar-hidden" style={COLUMN_STYLE}>
+          <div ref={hourColumnRef} className={cn('overflow-y-auto scrollbar-hidden', COLUMN_CLASSES)}>
             {hourOptions.map((hour) => (
               <ColumnOption
                 key={hour}
@@ -145,7 +130,7 @@ export const TimePickerMenu = memo(
           </div>
 
           {/* Minute Column */}
-          <div ref={minuteColumnRef} className="overflow-y-auto scrollbar-hidden" style={COLUMN_STYLE}>
+          <div ref={minuteColumnRef} className={cn('overflow-y-auto scrollbar-hidden', COLUMN_CLASSES)}>
             {minuteOptions.map((minute) => (
               <ColumnOption
                 key={minute}
@@ -158,7 +143,7 @@ export const TimePickerMenu = memo(
           </div>
 
           {/* Meridiem Column */}
-          <div className="overflow-y-auto scrollbar-hidden" style={COLUMN_STYLE}>
+          <div className={cn('overflow-y-auto scrollbar-hidden', COLUMN_CLASSES)}>
             {meridiemOptions.map((meridiem) => (
               <ColumnOption
                 key={meridiem}
@@ -174,11 +159,7 @@ export const TimePickerMenu = memo(
         {/* Confirmation Footer */}
         {showConfirmation && (
           <div
-            className="flex border-t border-[color:var(--component-dropdown-border)] bg-[color:var(--component-dropdown-bg)]"
-            style={{
-              padding: 'var(--component-dropdown-padding-block)',
-              gap: 'var(--component-dropdown-gap)',
-            }}
+            className="flex p-2 gap-2 border-t border-[color:var(--component-dropdown-border)] bg-[color:var(--component-dropdown-bg)]"
           >
             <Button variant="ghost" size="small" onClick={handleCancel} className="flex-1">
               {cancelLabel}
@@ -206,9 +187,9 @@ interface ColumnOptionProps {
   onClick: (value: never) => void;
 }
 
-const COLUMN_OPTION_BASE = 'flex items-center justify-center w-full cursor-pointer transition-colors text-[length:var(--component-dropdown-item-font-size)] font-[number:var(--component-dropdown-item-font-weight)]';
+const COLUMN_OPTION_BASE = 'flex items-center justify-center w-full min-h-10 py-2 cursor-pointer transition-colors text-sm font-normal';
 const COLUMN_OPTION_DEFAULT = 'bg-[color:var(--component-dropdown-item-bg-default)] text-[color:var(--component-dropdown-item-text-default)] hover:bg-[color:var(--component-dropdown-item-bg-hover)] hover:text-[color:var(--component-dropdown-item-text-hover)]';
-const COLUMN_OPTION_SELECTED = 'bg-[color:var(--component-dropdown-item-bg-selected)] text-[color:var(--component-dropdown-item-text-active)] font-[number:var(--semantic-text-weight-medium)]';
+const COLUMN_OPTION_SELECTED = 'bg-[color:var(--component-dropdown-item-bg-selected)] text-[color:var(--component-dropdown-item-text-active)] font-medium';
 
 const ColumnOption = memo(function ColumnOption({
   value,
@@ -224,7 +205,6 @@ const ColumnOption = memo(function ColumnOption({
       role="option"
       aria-selected={isSelected}
       className={cn(COLUMN_OPTION_BASE, isSelected ? COLUMN_OPTION_SELECTED : COLUMN_OPTION_DEFAULT)}
-      style={OPTION_STYLE}
       onClick={handleClick}
       data-value={value}
       data-selected={isSelected || undefined}

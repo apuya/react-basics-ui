@@ -66,23 +66,12 @@ export const AccordionItem = memo(
       [variant, disabled, className]
     );
 
-    // Apply inline spacing for separated variant to ensure JIT compilation
-    const inlineStyle = useMemo(
-      () => ({
-        ...style,
-        ...(variant === 'separated' && {
-          marginBottom: 'var(--component-accordion-gap)',
-        }),
-      }),
-      [style, variant]
-    );
-
     return (
       <AccordionItemContext.Provider value={contextValue}>
         <div
           ref={mergedRef}
           className={itemClasses}
-          style={inlineStyle}
+          style={style}
           data-value={value}
           data-open={isOpen || undefined}
           data-disabled={disabled || undefined}

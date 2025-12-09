@@ -21,22 +21,11 @@ export const VARIANT_CLASSES: Record<SkeletonVariant, string> = {
  */
 export const ANIMATION_CLASSES: Record<SkeletonAnimation, string> = {
   pulse: 'animate-pulse',
-  wave: 'before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent',
+  wave: 'before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:animate-shimmer',
   none: '',
 } as const;
 
 /**
- * Wave animation style using design tokens
+ * Container classes for text variant with multiple lines
  */
-export const WAVE_ANIMATION_STYLE: React.CSSProperties = {
-  // Wave animation uses CSS animation with token duration
-};
-
-/**
- * Container style for text variant with multiple lines
- */
-export const TEXT_CONTAINER_STYLE: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 'var(--component-skeleton-text-gap)',
-} as const;
+export const TEXT_CONTAINER_CLASSES = 'flex flex-col gap-2';

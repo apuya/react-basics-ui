@@ -21,5 +21,11 @@ export const RESIZE_STYLES = {
   both: 'resize',
 } as const;
 
+export const SIZE_LAYOUT_STYLES = {
+  small: 'px-3 py-2 min-h-20',
+  default: 'px-3 py-2 min-h-24',
+  large: 'px-3 py-2 min-h-32',
+} as const;
+
 export const CHAR_COUNT_ERROR_CLASSES =
   'text-[color:var(--component-textarea-helper-error)]';

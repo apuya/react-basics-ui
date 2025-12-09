@@ -29,15 +29,6 @@ export const AccordionContent = memo(
       [className]
     );
 
-    const contentStyle = useMemo(
-      () => ({
-        paddingBottom: 'var(--component-accordion-content-padding-block)',
-        paddingTop: '0',
-        paddingInline: 'var(--component-accordion-content-padding-inline)',
-      }),
-      []
-    );
-
     return (
       <div
         ref={mergedRef}
@@ -50,7 +41,7 @@ export const AccordionContent = memo(
         {...props}
       >
         <div className={ACCORDION_CONTENT_INNER_CLASSES}>
-          <div style={contentStyle}>{children}</div>
+          {children}
         </div>
       </div>
     );

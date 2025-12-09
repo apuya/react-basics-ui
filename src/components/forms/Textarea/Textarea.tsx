@@ -14,6 +14,7 @@ import {
   BASE_CLASSES,
   CHAR_COUNT_ERROR_CLASSES,
   RESIZE_STYLES,
+  SIZE_LAYOUT_STYLES,
   SIZE_STYLES,
   STATE_STYLES,
 } from './Textarea.styles';
@@ -133,12 +134,7 @@ export const Textarea = memo(
           ref={ref}
           id={textareaId}
           disabled={disabled}
-          className={textareaClasses}
-          style={{
-            paddingInline: 'var(--component-textarea-padding-inline)',
-            paddingBlock: 'var(--component-textarea-padding-block)',
-            minHeight: `var(--component-textarea-min-height-${size})`,
-          }}
+          className={cn(textareaClasses, SIZE_LAYOUT_STYLES[size])}
           maxLength={maxLength}
           value={value}
           defaultValue={defaultValue}

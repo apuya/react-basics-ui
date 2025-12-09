@@ -21,7 +21,7 @@ export const TRIGGER_STATE_STYLES = {
 
 // Menu styles
 export const MENU_BASE_CLASSES =
-  'absolute bg-[color:var(--component-dropdown-bg)] border border-[color:var(--component-dropdown-border)] rounded-lg shadow-lg z-50 w-full opacity-0 pointer-events-none transition-opacity duration-200';
+  'absolute mt-1 py-1 px-1 bg-[color:var(--component-dropdown-bg)] border border-[color:var(--component-dropdown-border)] rounded-lg shadow-lg z-50 w-full opacity-0 pointer-events-none transition-opacity duration-200';
 
 export const MENU_VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 
@@ -29,7 +29,7 @@ export const MENU_WRAPPER_CLASSES = 'flex flex-col';
 
 // Option styles
 export const OPTION_BASE_CLASSES =
-  'flex items-center px-3 py-2 text-sm font-normal leading-normal rounded cursor-pointer transition-colors outline-none';
+  'flex items-center gap-2 px-3 py-2 text-sm font-normal leading-normal rounded cursor-pointer transition-colors outline-none';
 
 export const OPTION_STATE_STYLES = {
   default: 'bg-[color:var(--component-dropdown-item-bg-default)] text-[color:var(--component-dropdown-item-text-default)]',

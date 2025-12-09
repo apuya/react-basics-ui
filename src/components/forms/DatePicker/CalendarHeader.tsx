@@ -4,12 +4,9 @@ import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import type { CalendarHeaderProps } from './DatePicker.types';
 import {
   HEADER_BASE_CLASSES,
-  HEADER_BASE_STYLE,
-  HEADER_TITLE_STYLE,
+  HEADER_TITLE_CLASSES,
   HEADER_TITLE_WRAPPER_CLASSES,
-  HEADER_TITLE_WRAPPER_STYLE,
   HEADER_SELECT_CLASSES,
-  HEADER_SELECT_STYLE,
 } from './DatePicker.styles';
 import { Button } from '@/components/forms/Button';
 
@@ -95,19 +92,11 @@ export const CalendarHeader = memo(
         [className]
       );
 
-      const iconStyle = useMemo(
-        () => ({
-          width: 'var(--component-datepicker-header-icon-size)',
-          height: 'var(--component-datepicker-header-icon-size)',
-        }),
-        []
-      );
-
       const showLeading = !hideNavigation && (navigationPosition === 'both' || navigationPosition === 'leading');
       const showTrailing = !hideNavigation && (navigationPosition === 'both' || navigationPosition === 'trailing');
 
       return (
-        <div ref={ref} className={headerClasses} style={HEADER_BASE_STYLE} {...props}>
+        <div ref={ref} className={headerClasses} {...props}>
           {/* Previous Month Button */}
           {showLeading && (
             <Button
@@ -118,19 +107,18 @@ export const CalendarHeader = memo(
               aria-label="Previous month"
               className="!p-1"
             >
-              <BiChevronLeft style={iconStyle} />
+              <BiChevronLeft className="size-5" />
             </Button>
           )}
 
           {/* Month/Year Display */}
-          <div className={HEADER_TITLE_WRAPPER_CLASSES} style={HEADER_TITLE_WRAPPER_STYLE}>
+          <div className={HEADER_TITLE_WRAPPER_CLASSES}>
             {showDropdowns ? (
               <>
                 <select
                   value={month}
                   onChange={handleMonthChange}
                   className={HEADER_SELECT_CLASSES}
-                  style={HEADER_SELECT_STYLE}
                   aria-label="Select month"
                 >
                   {monthLabels.map((label, idx) => (
@@ -143,7 +131,6 @@ export const CalendarHeader = memo(
                   value={year}
                   onChange={handleYearChange}
                   className={HEADER_SELECT_CLASSES}
-                  style={HEADER_SELECT_STYLE}
                   aria-label="Select year"
                 >
                   {yearRange.map((y) => (
@@ -154,7 +141,7 @@ export const CalendarHeader = memo(
                 </select>
               </>
             ) : (
-              <span style={HEADER_TITLE_STYLE}>
+              <span className={HEADER_TITLE_CLASSES}>
                 {monthLabels[month]} {year}
               </span>
             )}
@@ -170,7 +157,7 @@ export const CalendarHeader = memo(
               aria-label="Next month"
               className="!p-1"
             >
-              <BiChevronRight style={iconStyle} />
+              <BiChevronRight className="size-5" />
             </Button>
           )}
         </div>

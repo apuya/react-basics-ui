@@ -2,7 +2,7 @@
 // BASE STYLES
 // =============================================================================
 
-export const BASE_CLASSES = 'flex flex-col';
+export const BASE_CLASSES = 'flex flex-col gap-0';
 
 // =============================================================================
 // VARIANT STYLES
@@ -22,7 +22,7 @@ export const VARIANT_STYLES: Record<ListVariant, string> = {
 // =============================================================================
 
 export const ITEM_CLASSES =
-  'flex items-center text-[color:var(--component-list-text-primary)]';
+  'flex items-center px-4 py-3 gap-3 text-[color:var(--component-list-text-primary)]';
 
 export const ITEM_INTERACTIVE_CLASSES =
   '[&>li]:hover:bg-[color:var(--component-list-bg-hover)] [&>li]:active:bg-[color:var(--component-list-bg-active)] [&>li]:cursor-pointer [&>li]:transition-colors';

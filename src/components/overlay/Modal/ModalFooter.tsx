@@ -5,14 +5,10 @@ import { FOOTER_CLASSES } from './Modal.styles';
 export interface ModalFooterProps extends ComponentPropsWithoutRef<'div'> {}
 
 export const ModalFooter = memo(
-  forwardRef<HTMLDivElement, ModalFooterProps>(({ className, children, style, ...props }, ref) => (
+  forwardRef<HTMLDivElement, ModalFooterProps>(({ className, children, ...props }, ref) => (
     <div
       ref={ref}
       className={cn(FOOTER_CLASSES, className)}
-      style={{
-        gap: 'var(--component-modal-gap-compact)',
-        ...style,
-      }}
       {...props}
     >
       {children}

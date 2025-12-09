@@ -4,7 +4,6 @@ import {
   useMemo,
   useCallback,
   type ComponentPropsWithoutRef,
-  type CSSProperties,
 } from 'react';
 import { cn } from '@/lib/cn';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
@@ -105,15 +104,6 @@ export const AutocompleteInput = memo(
         return '';
       }, [query, multiple, selectedValue, options]);
 
-      const inputStyle = useMemo<CSSProperties>(
-        () => ({
-          height: `var(--component-input-height-${size})`,
-          paddingInline: 'var(--component-autocomplete-input-padding-inline)',
-          ...style,
-        }),
-        [size, style]
-      );
-
       return (
         <input
           ref={mergedRef}
@@ -134,7 +124,7 @@ export const AutocompleteInput = memo(
           placeholder={placeholder}
           disabled={disabled}
           className={inputClasses}
-          style={inputStyle}
+          style={style}
           data-size={size}
           data-error={error || undefined}
           data-open={isOpen}

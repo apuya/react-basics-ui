@@ -21,15 +21,19 @@ import {
   LEADING_CLASSES,
   SKELETON_DOT_CLASSES,
   SKELETON_LINE_CLASSES,
-  // Inline style tokens
-  ITEM_STYLE,
-  ITEM_LAST_STYLE,
-  TITLE_STYLE,
-  TIMESTAMP_STYLE,
-  LEADING_STYLE,
-  DOT_CONTAINER_WIDTH,
-  ICON_WRAPPER_STYLES,
-  SKELETON_DOT_SIZE,
+  // Spacing classes (migrated from inline styles)
+  ITEM_SPACING_CLASSES,
+  ITEM_LAST_SPACING_CLASSES,
+  TITLE_SPACING_CLASSES,
+  TIMESTAMP_SPACING_CLASSES,
+  LEADING_SPACING_CLASSES,
+  SKELETON_TIMESTAMP_CLASSES,
+  SKELETON_TITLE_CLASSES,
+  // Tailwind class-based sizing
+  DOT_CONTAINER_WIDTH_CLASSES,
+  ICON_WRAPPER_CLASSES,
+  SKELETON_DOT_SIZE_CLASSES,
+  // Inline styles for dynamic positioning only
   SKELETON_TIMESTAMP_STYLE,
   SKELETON_TITLE_STYLE,
   SKELETON_DESCRIPTION_STYLE,
@@ -151,7 +155,7 @@ export const TimelineItem = memo(
         return cn(DOT_BASE_CLASSES, sizeClass, DOT_VARIANT_STYLES[variant]);
       }, [hasIconOrDot, size, variant]);
 
-      const iconWrapperStyle = hasIconOrDot ? ICON_WRAPPER_STYLES[size] : undefined;
+      const iconWrapperClasses = hasIconOrDot ? ICON_WRAPPER_CLASSES[size] : undefined;
 
       const isRightAligned = position === 'right' || isAlternateRight;
 
@@ -167,7 +171,7 @@ export const TimelineItem = memo(
         return cn(CONTENT_BASE_CLASSES, position === 'right' ? 'text-right' : '');
       }, [position, isAlternateRight]);
 
-      const itemStyle = isLast ? ITEM_LAST_STYLE : ITEM_STYLE;
+      const itemSpacingClasses = isLast ? ITEM_LAST_SPACING_CLASSES : ITEM_SPACING_CLASSES;
 
       const connectorStyle = useMemo(() => {
         if (hasIconOrDot) {
@@ -176,7 +180,7 @@ export const TimelineItem = memo(
         return isRightAligned ? CONNECTOR_DOT_RIGHT_STYLES[size] : CONNECTOR_DOT_LEFT_STYLES[size];
       }, [hasIconOrDot, isRightAligned, size]);
 
-      const dotContainerStyle = DOT_CONTAINER_WIDTH[size];
+      const dotContainerClasses = DOT_CONTAINER_WIDTH_CLASSES[size];
 
       // Determine if status should be shown
       const hasStatus = statusTitle || statusDescription || statusIcon || statusIconElement;
@@ -191,14 +195,13 @@ export const TimelineItem = memo(
           <div
             ref={ref}
             role="listitem"
-            className={cn(ITEM_BASE_CLASSES, ITEM_POSITION_STYLES[position], className)}
-            style={isLast ? ITEM_LAST_STYLE : ITEM_STYLE}
+            className={cn(ITEM_BASE_CLASSES, ITEM_POSITION_STYLES[position], isLast ? ITEM_LAST_SPACING_CLASSES : ITEM_SPACING_CLASSES, className)}
             data-loading="true"
             aria-busy="true"
             {...props}
           >
-            <div className={DOT_CONTAINER_CLASSES} style={dotContainerStyle} aria-hidden="true">
-              <div className={SKELETON_DOT_CLASSES} style={SKELETON_DOT_SIZE[size]} />
+            <div className={cn(DOT_CONTAINER_CLASSES, dotContainerClasses)} aria-hidden="true">
+              <div className={cn(SKELETON_DOT_CLASSES, SKELETON_DOT_SIZE_CLASSES[size])} />
             </div>
 
             {!isLast && (
@@ -210,8 +213,8 @@ export const TimelineItem = memo(
             )}
 
             <div className={CONTENT_BASE_CLASSES}>
-              <div className={SKELETON_LINE_CLASSES} style={SKELETON_TIMESTAMP_STYLE} />
-              <div className={SKELETON_LINE_CLASSES} style={SKELETON_TITLE_STYLE} />
+              <div className={cn(SKELETON_LINE_CLASSES, SKELETON_TIMESTAMP_CLASSES)} style={SKELETON_TIMESTAMP_STYLE} />
+              <div className={cn(SKELETON_LINE_CLASSES, SKELETON_TITLE_CLASSES)} style={SKELETON_TITLE_STYLE} />
               <div className={SKELETON_LINE_CLASSES} style={SKELETON_DESCRIPTION_STYLE} />
             </div>
           </div>
@@ -222,17 +225,16 @@ export const TimelineItem = memo(
         <div
           ref={ref}
           role="listitem"
-          className={itemClasses}
-          style={itemStyle}
+          className={cn(itemClasses, itemSpacingClasses)}
           data-variant={variant}
           data-last={isLast || undefined}
           data-disabled={disabled || undefined}
           {...props}
         >
           {/* Dot Container */}
-          <div className={DOT_CONTAINER_CLASSES} style={dotContainerStyle} aria-hidden="true">
+          <div className={cn(DOT_CONTAINER_CLASSES, dotContainerClasses)} aria-hidden="true">
             <div className={dotClasses}>
-              {hasIconOrDot && <span style={iconWrapperStyle}>{dot ?? icon}</span>}
+              {hasIconOrDot && <span className={iconWrapperClasses}>{dot ?? icon}</span>}
             </div>
           </div>
 
@@ -243,17 +245,17 @@ export const TimelineItem = memo(
           <div className={contentClasses}>
             {/* Timestamp */}
             {timestamp && (
-              <Text as="div" size="small" color="tertiary" style={TIMESTAMP_STYLE}>
+              <Text as="div" size="small" color="tertiary" className={TIMESTAMP_SPACING_CLASSES}>
                 {timestamp}
               </Text>
             )}
 
             {/* Header: Leading + Title */}
             {(title || leading) && (
-              <div className={CONTENT_HEADER_CLASSES} style={TITLE_STYLE}>
+              <div className={cn(CONTENT_HEADER_CLASSES, TITLE_SPACING_CLASSES)}>
                 <div className={HEADER_CONTENT_WRAPPER_CLASSES}>
                   {leading && (
-                    <div className={LEADING_CLASSES} style={LEADING_STYLE}>
+                    <div className={cn(LEADING_CLASSES, LEADING_SPACING_CLASSES)}>
                       {leading}
                     </div>
                   )}

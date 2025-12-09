@@ -24,9 +24,6 @@ export interface SwitchProps extends Omit<ComponentPropsWithoutRef<'input'>, 'ty
   wrapperClassName?: string;
 }
 
-// Static style for wrapper gap
-const WRAPPER_STYLE = { gap: 'var(--component-switch-gap)' } as const;
-
 export const Switch = memo(
   forwardRef<HTMLInputElement, SwitchProps>(function Switch(
     { size = 'default', label, disabled, className, wrapperClassName, id, ...rest },
@@ -56,7 +53,6 @@ export const Switch = memo(
     return (
       <label
         className={wrapperClasses}
-        style={WRAPPER_STYLE}
         data-disabled={disabled || undefined}
       >
         <input

@@ -3,11 +3,11 @@ export const BASE_CLASSES =
 
 export const SIZE_STYLES = {
   small:
-    'min-h-5 gap-1 text-xs font-medium leading-none',
+    'min-h-5 gap-1 text-xs font-medium leading-none px-1.5 py-0.5',
   default:
-    'min-h-6 gap-1.5 text-sm font-medium leading-none',
+    'min-h-6 gap-1.5 text-sm font-medium leading-none px-2 py-0.5',
   large:
-    'h-7 min-h-7 gap-2 text-sm font-medium leading-none flex-shrink-0',
+    'h-7 min-h-7 gap-2 text-sm font-medium leading-none flex-shrink-0 px-3 py-1',
 } as const;
 
 // =============================================================================
@@ -180,34 +180,11 @@ export const COLOR_STYLES_BY_VARIANT = {
 // Legacy export for backwards compatibility
 export const VARIANT_STYLES = SUBTLE_COLOR_STYLES;
 
-export const PADDING_TOKENS = {
-  small: {
-    paddingInline: 'var(--component-badge-padding-inline-small)',
-    paddingBlock: 'var(--component-badge-padding-block-small)',
-  },
-  default: {
-    paddingInline: 'var(--component-badge-padding-inline-default)',
-    paddingBlock: 'var(--component-badge-padding-block-default)',
-  },
-  large: {
-    paddingInline: 'var(--component-badge-padding-inline-large)',
-    paddingBlock: 'var(--component-badge-padding-block-large)',
-  },
-} as const;
-
-export const ICON_SIZE_TOKENS = {
-  small: {
-    height: 'var(--component-badge-icon-size-small)',
-    width: 'var(--component-badge-icon-size-small)',
-  },
-  default: {
-    height: 'var(--component-badge-icon-size-default)',
-    width: 'var(--component-badge-icon-size-default)',
-  },
-  large: {
-    height: 'var(--component-badge-icon-size-large)',
-    width: 'var(--component-badge-icon-size-large)',
-  },
+// Icon size classes using Tailwind scales
+export const ICON_SIZE_CLASSES = {
+  small: 'size-3',   // 12px
+  default: 'size-4', // 16px
+  large: 'size-4',   // 16px
 } as const;
 
 // Derive types from style objects

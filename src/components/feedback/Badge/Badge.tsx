@@ -24,8 +24,7 @@ import {
   SIZE_STYLES,
   COLOR_STYLES_BY_VARIANT,
   STYLE_VARIANT_CLASSES,
-  PADDING_TOKENS,
-  ICON_SIZE_TOKENS,
+  ICON_SIZE_CLASSES,
   type BadgeColor,
   type BadgeSize,
   type BadgeStyleVariant,
@@ -53,7 +52,7 @@ export interface BadgeProps extends ComponentPropsWithoutRef<"span"> {
 const ICON_WRAPPER_CLASSES = "inline-flex shrink-0 items-center justify-center [&>svg]:h-full [&>svg]:w-full";
 
 const IconWrapper = memo(({ icon, size }: { icon: ReactNode; size: BadgeSize }) => (
-  <span className={ICON_WRAPPER_CLASSES} style={ICON_SIZE_TOKENS[size]} aria-hidden="true">
+  <span className={cn(ICON_WRAPPER_CLASSES, ICON_SIZE_CLASSES[size])} aria-hidden="true">
     {icon}
   </span>
 ));
@@ -136,12 +135,6 @@ export const Badge = memo(
         data-style-variant={styleVariant}
         data-dismissible={dismissible || undefined}
         data-disabled={disabled || undefined}
-        style={{
-          ...PADDING_TOKENS[size],
-          ...(dismissible && {
-            transition: 'opacity var(--component-badge-transition-duration)',
-          }),
-        }}
         {...props}
       >
         {leadingIcon && <IconWrapper icon={leadingIcon} size={size} />}

@@ -3,7 +3,6 @@ import { Icon } from '@/components/utility/Icon';
 import {
   forwardRef,
   memo,
-  useMemo,
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from 'react';
@@ -39,24 +38,13 @@ export interface SidebarSectionHeaderProps extends Omit<ComponentPropsWithoutRef
  */
 export const SidebarSectionHeader = memo(
   forwardRef<HTMLDivElement, SidebarSectionHeaderProps>(function SidebarSectionHeader(
-    { icon, className, style, children, ...props },
+    { icon, className, children, ...props },
     ref
   ) {
-    const paddingStyle = useMemo(
-      () => ({
-        paddingInline: 'var(--component-sidebar-section-header-padding-inline)',
-        paddingBlock: 'var(--component-sidebar-section-header-padding-block)',
-        gap: 'var(--component-sidebar-section-header-gap)',
-        ...style,
-      }),
-      [style]
-    );
-
     return (
       <div
         ref={ref}
         className={cn(SECTION_HEADER_CLASSES, 'flex items-center', className)}
-        style={paddingStyle}
         {...props}
       >
         {icon && (
@@ -99,21 +87,9 @@ export interface SidebarItemProps extends ComponentPropsWithoutRef<'button'> {
  */
 export const SidebarItem = memo(
   forwardRef<HTMLButtonElement, SidebarItemProps>(function SidebarItem(
-    { active = false, icon, className, style, children, ...props },
+    { active = false, icon, className, children, ...props },
     ref
   ) {
-    const paddingStyle = useMemo(
-      () => ({
-        paddingInline: 'var(--component-sidebar-item-padding-inline)',
-        paddingBlock: 'var(--component-sidebar-item-padding-block)',
-        gap: 'var(--component-sidebar-item-gap)',
-        minHeight: 'var(--component-sidebar-item-min-height)',
-        borderRadius: 'var(--component-sidebar-item-radius)',
-        ...style,
-      }),
-      [style]
-    );
-
     return (
       <button
         ref={ref}
@@ -123,7 +99,6 @@ export const SidebarItem = memo(
           active && ITEM_ACTIVE_CLASS,
           className
         )}
-        style={paddingStyle}
         data-active={active || undefined}
         {...props}
       >

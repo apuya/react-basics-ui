@@ -7,7 +7,6 @@ import {
   useRef,
   type ReactNode,
   type ComponentPropsWithoutRef,
-  type CSSProperties,
 } from 'react';
 import { BiCheck } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
@@ -91,16 +90,6 @@ export const AutocompleteOption = memo(
         [isDisabled, isSelected, isHighlighted, isHovered, className]
       );
 
-      const optionStyle = useMemo<CSSProperties>(
-        () => ({
-          paddingBlock: 'var(--component-autocomplete-option-padding-block)',
-          paddingInline: 'var(--component-autocomplete-option-padding-inline)',
-          gap: 'var(--component-autocomplete-option-gap)',
-          ...style,
-        }),
-        [style]
-      );
-
       return (
         <div
           ref={mergedRef}
@@ -115,7 +104,7 @@ export const AutocompleteOption = memo(
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           className={optionClasses}
-          style={optionStyle}
+          style={style}
           {...props}
         >
           {children || option.label}

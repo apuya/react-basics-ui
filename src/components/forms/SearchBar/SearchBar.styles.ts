@@ -38,4 +38,4 @@ export const SHORTCUT_BADGE_CLASSES =
 
 export const LEADING_ICON_CONTAINER_CLASSES = 'absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-[color:var(--component-searchbar-text-placeholder)]';
 
-export const TRAILING_CONTAINER_CLASSES = 'absolute right-[length:var(--component-searchbar-padding-inline)] top-1/2 -translate-y-1/2 flex items-center gap-2';
+export const TRAILING_CONTAINER_CLASSES = 'absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2';

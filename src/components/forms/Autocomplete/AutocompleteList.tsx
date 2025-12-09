@@ -4,7 +4,6 @@ import {
   useMemo,
   type ReactNode,
   type ComponentPropsWithoutRef,
-  type CSSProperties,
 } from 'react';
 import { cn } from '@/lib/cn';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
@@ -35,22 +34,13 @@ export const AutocompleteList = memo(
         [isOpen, className]
       );
 
-      const listStyle = useMemo<CSSProperties>(
-        () => ({
-          paddingBlock: 'var(--component-autocomplete-padding-block)',
-          paddingInline: 'var(--component-autocomplete-padding-inline)',
-          ...style,
-        }),
-        [style]
-      );
-
       return (
         <div
           ref={mergedRef}
           id={listId}
           role="listbox"
           className={listClasses}
-          style={listStyle}
+          style={style}
           data-open={isOpen}
           {...props}
         >

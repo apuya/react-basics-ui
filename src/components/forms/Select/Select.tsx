@@ -256,16 +256,6 @@ const SelectMenu = memo(
       const { isOpen, setIsOpen, menuId, labelId } = useSelectContext();
       const menuRef = useRef<HTMLDivElement>(null!);
 
-      const menuStyle = useMemo(
-        () => ({
-          paddingInline: 'var(--component-dropdown-padding-inline)',
-          paddingBlock: 'var(--component-dropdown-padding-block)',
-          top: '100%',
-          marginTop: 'var(--component-select-menu-gap)',
-        }),
-        []
-      );
-
       const menuClasses = useMemo(
         () => cn(
           MENU_BASE_CLASSES,
@@ -332,7 +322,6 @@ const SelectMenu = memo(
           role="listbox"
           aria-labelledby={labelId}
           className={menuClasses}
-          style={menuStyle}
           {...props}
         >
           <div className={MENU_WRAPPER_CLASSES}>
@@ -418,7 +407,7 @@ const SelectOption = memo(
           {isSelected && (
             <Icon
               icon={BiCheck}
-              className="shrink-0 w-[length:var(--component-select-icon-check-size)] h-[length:var(--component-select-icon-check-size)]"
+              className="shrink-0 size-4"
               aria-hidden
             />
           )}

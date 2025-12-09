@@ -10,12 +10,12 @@ import { BiX } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
 import {
   BASE_CLASSES,
-  BODY_STYLES,
-  CONTAINER_STYLES,
-  CONTENT_GAP,
+  BODY_CLASSES,
+  CONTAINER_CLASSES,
+  CONTENT_GAP_CLASSES,
   ICON_COLOR_STYLES,
-  ICON_SIZE_STYLE,
-  TITLE_STYLES,
+  ICON_SIZE_CLASSES,
+  TITLE_CLASSES,
   type AlertVariant,
   VARIANT_ICONS,
   VARIANT_STYLES,
@@ -74,7 +74,7 @@ export const Alert = memo(
     ref
   ) {
     const alertClasses = useMemo(
-      () => cn(BASE_CLASSES, VARIANT_STYLES[variant], className),
+      () => cn(BASE_CLASSES, CONTAINER_CLASSES, VARIANT_STYLES[variant], className),
       [variant, className]
     );
 
@@ -90,15 +90,13 @@ export const Alert = memo(
         ref={ref}
         role="alert"
         className={alertClasses}
-        style={CONTAINER_STYLES}
         data-variant={variant}
         {...rest}
       >
         {/* Icon */}
         {showIcon && (
           <span
-            className={cn('flex-shrink-0', ICON_COLOR_STYLES[variant])}
-            style={ICON_SIZE_STYLE}
+            className={cn('flex-shrink-0', ICON_SIZE_CLASSES, ICON_COLOR_STYLES[variant])}
             aria-hidden="true"
           >
             <IconComponent />
@@ -109,32 +107,17 @@ export const Alert = memo(
         {hasContent && (
           <div className="flex-1 min-w-0">
             {title && (
-              <div
-                className="font-[var(--component-alert-title-weight)]"
-                style={TITLE_STYLES}
-              >
+              <div className={TITLE_CLASSES}>
                 {title}
               </div>
             )}
             {description && (
-              <div
-                className="font-[var(--component-alert-body-weight)]"
-                style={{
-                  ...BODY_STYLES,
-                  marginTop: title ? CONTENT_GAP : '0',
-                }}
-              >
+              <div className={cn(BODY_CLASSES, title && CONTENT_GAP_CLASSES)}>
                 {description}
               </div>
             )}
             {children && !description && (
-              <div
-                className="font-[var(--component-alert-body-weight)]"
-                style={{
-                  ...BODY_STYLES,
-                  marginTop: title ? CONTENT_GAP : '0',
-                }}
-              >
+              <div className={cn(BODY_CLASSES, title && CONTENT_GAP_CLASSES)}>
                 {children}
               </div>
             )}
@@ -148,9 +131,9 @@ export const Alert = memo(
             onClick={handleClose}
             className={cn(
               'flex-shrink-0 inline-flex items-center justify-center rounded-sm opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-1',
+              ICON_SIZE_CLASSES,
               ICON_COLOR_STYLES[variant]
             )}
-            style={ICON_SIZE_STYLE}
             aria-label="Close alert"
           >
             <BiX />

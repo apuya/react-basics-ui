@@ -7,17 +7,11 @@ export interface ListItemProps extends ComponentPropsWithoutRef<'li'> {
 }
 
 export const ListItem = memo(
-  forwardRef<HTMLLIElement, ListItemProps>(({ className, style, children, ...props }, ref) => {
+  forwardRef<HTMLLIElement, ListItemProps>(({ className, children, ...props }, ref) => {
     return (
       <li
         ref={ref}
         className={cn(ITEM_CLASSES, className)}
-        style={{
-          paddingInline: 'var(--component-list-item-padding-inline)',
-          paddingBlock: 'var(--component-list-item-padding-block)',
-          gap: 'var(--component-list-item-gap)',
-          ...style,
-        }}
         {...props}
       >
         {children}

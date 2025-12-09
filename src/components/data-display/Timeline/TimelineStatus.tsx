@@ -10,7 +10,7 @@ import {
   STATUS_VARIANT_STYLES,
   STATUS_ICON_CLASSES,
   STATUS_CONTENT_CLASSES,
-  STATUS_STYLE,
+  STATUS_LAYOUT_CLASSES,
   ICON_SIZE_MAP,
   TEXT_SIZE_MAP,
 } from './TimelineStatus.styles';
@@ -96,6 +96,7 @@ export const TimelineStatus = memo(
         () =>
           cn(
             STATUS_BASE_CLASSES,
+            STATUS_LAYOUT_CLASSES,
             STATUS_VARIANT_STYLES[variant],
             isInteractive && STATUS_INTERACTIVE_CLASSES,
             disabled && STATUS_DISABLED_CLASSES,
@@ -163,7 +164,6 @@ export const TimelineStatus = memo(
             ref={ref as React.Ref<HTMLButtonElement>}
             type="button"
             className={statusClasses}
-            style={STATUS_STYLE}
             onClick={handleClick}
             disabled={disabled}
             data-variant={variant}
@@ -178,7 +178,6 @@ export const TimelineStatus = memo(
         <div
           ref={ref as React.Ref<HTMLDivElement>}
           className={statusClasses}
-          style={STATUS_STYLE}
           data-variant={variant}
           data-size={size}
         >

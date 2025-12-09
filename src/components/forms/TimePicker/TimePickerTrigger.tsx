@@ -57,15 +57,6 @@ export const TimePickerTrigger = memo(
       [size, isOpen, error]
     );
 
-    const triggerStyle = useMemo(
-      () => ({
-        height: `var(--component-input-height-${size})`,
-        paddingInline: 'var(--component-timepicker-trigger-padding-inline)',
-        gap: 'var(--component-timepicker-trigger-gap)',
-      }),
-      [size]
-    );
-
     return (
       <button
         ref={ref}
@@ -81,7 +72,6 @@ export const TimePickerTrigger = memo(
         aria-required={required || undefined}
         disabled={disabled}
         className={triggerClasses}
-        style={triggerStyle}
         onClick={handleClick}
         data-size={size}
         data-error={error || undefined}

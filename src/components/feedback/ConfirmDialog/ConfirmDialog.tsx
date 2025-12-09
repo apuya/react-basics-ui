@@ -142,8 +142,7 @@ export const ConfirmDialog = memo(
         <Flex
           ref={ref}
           align="start"
-          className="w-full"
-          style={{ gap: 'var(--component-confirm-dialog-gap)' }}
+          className="w-full gap-4"
           data-variant={variant}
           data-loading={isLoading || undefined}
         >
@@ -174,7 +173,7 @@ export const ConfirmDialog = memo(
         </Box>
 
         {/* Footer with buttons */}
-        <Flex align="center" justify="end" style={{ gap: 'var(--component-confirm-dialog-gap)' }}>
+        <Flex align="center" justify="end" className="gap-4">
           <Button
             variant="secondary"
             onClick={handleCancel}

@@ -1,10 +1,10 @@
 export const SIZE_STYLES = {
-  xs: 'w-[length:var(--component-icon-size-xs)] h-[length:var(--component-icon-size-xs)]',
-  sm: 'w-[length:var(--component-icon-size-sm)] h-[length:var(--component-icon-size-sm)]',
-  md: 'w-[length:var(--component-icon-size-md)] h-[length:var(--component-icon-size-md)]',
-  lg: 'w-[length:var(--component-icon-size-lg)] h-[length:var(--component-icon-size-lg)]',
-  xl: 'w-[length:var(--component-icon-size-xl)] h-[length:var(--component-icon-size-xl)]',
-  '2xl': 'w-[length:var(--component-icon-size-2xl)] h-[length:var(--component-icon-size-2xl)]',
+  xs: 'size-3',     // 12px
+  sm: 'size-4',     // 16px
+  md: 'size-5',     // 20px
+  lg: 'size-6',     // 24px
+  xl: 'size-8',     // 32px
+  '2xl': 'size-10', // 40px
 } as const;
 
 export const COLOR_STYLES = {

@@ -70,14 +70,6 @@ export const AccordionTrigger = memo(
         [isOpen]
       );
 
-      const triggerStyle = useMemo(
-        () => ({
-          paddingBlock: 'var(--component-accordion-padding-block)',
-          paddingInline: 'var(--component-accordion-padding-inline)',
-        }),
-        []
-      );
-
       return (
         <button
           ref={triggerRef}
@@ -89,7 +81,6 @@ export const AccordionTrigger = memo(
           onKeyDown={handleKeyDown}
           disabled={disabled}
           className={triggerClasses}
-          style={triggerStyle}
           data-open={isOpen || undefined}
           data-disabled={disabled || undefined}
           {...props}

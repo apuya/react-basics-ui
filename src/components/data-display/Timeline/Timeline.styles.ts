@@ -95,95 +95,80 @@ export const SKELETON_LINE_CLASSES = 'h-4 rounded bg-[color:var(--component-time
 // INLINE STYLE TOKENS
 // =============================================================================
 
-// Item spacing tokens
-export const ITEM_STYLE = {
-  gap: 'var(--component-timeline-item-gap)',
-  paddingBottom: 'var(--component-timeline-item-padding-bottom)',
+// Item spacing - use Tailwind classes for simple spacing
+export const ITEM_SPACING_CLASSES = 'gap-3 pb-4';
+export const ITEM_LAST_SPACING_CLASSES = 'gap-3 pb-0';
+
+export const TITLE_SPACING_CLASSES = 'mb-1';
+
+export const TIMESTAMP_SPACING_CLASSES = 'mb-2';
+
+export const LEADING_SPACING_CLASSES = 'mr-2';
+
+// Dot container width - Tailwind classes matching icon container sizes
+export const DOT_CONTAINER_WIDTH_CLASSES: Record<TimelineSize, string> = {
+  sm: 'w-5',   // 20px - matches icon container
+  md: 'w-6',   // 24px
+  lg: 'w-8',   // 32px
 } as const;
 
-export const ITEM_LAST_STYLE = {
-  gap: 'var(--component-timeline-item-gap)',
-  paddingBottom: 0,
+// Icon wrapper classes - Tailwind sizing
+export const ICON_WRAPPER_CLASSES: Record<TimelineSize, string> = {
+  sm: 'flex items-center justify-center size-3', // 12px icon
+  md: 'flex items-center justify-center size-3.5', // 14px icon
+  lg: 'flex items-center justify-center size-4', // 16px icon
 } as const;
 
-export const TITLE_STYLE = {
-  marginBottom: 'var(--component-timeline-title-margin-bottom)',
+// Skeleton dot classes - Tailwind sizing
+export const SKELETON_DOT_SIZE_CLASSES: Record<TimelineSize, string> = {
+  sm: 'size-2',   // 8px
+  md: 'size-3',   // 12px
+  lg: 'size-4',   // 16px
 } as const;
 
-export const TIMESTAMP_STYLE = {
-  marginBottom: 'var(--component-timeline-timestamp-margin-bottom)',
-} as const;
-
-export const LEADING_STYLE = {
-  marginRight: 'var(--component-timeline-leading-gap)',
-} as const;
-
-// Dot container width - always use icon container size for consistent connector alignment
-export const DOT_CONTAINER_WIDTH: Record<TimelineSize, React.CSSProperties> = {
-  sm: { width: 'var(--component-timeline-dot-icon-container-size-sm)' },
-  md: { width: 'var(--component-timeline-dot-icon-container-size-md)' },
-  lg: { width: 'var(--component-timeline-dot-icon-container-size-lg)' },
-} as const;
-
-// Icon wrapper styles for dot content
-const ICON_WRAPPER_BASE: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-};
-
-export const ICON_WRAPPER_STYLES: Record<TimelineSize, React.CSSProperties> = {
-  sm: { ...ICON_WRAPPER_BASE, width: 'var(--component-timeline-dot-icon-size-sm)', height: 'var(--component-timeline-dot-icon-size-sm)' },
-  md: { ...ICON_WRAPPER_BASE, width: 'var(--component-timeline-dot-icon-size-md)', height: 'var(--component-timeline-dot-icon-size-md)' },
-  lg: { ...ICON_WRAPPER_BASE, width: 'var(--component-timeline-dot-icon-size-lg)', height: 'var(--component-timeline-dot-icon-size-lg)' },
-} as const;
-
-// Skeleton dot sizes
-export const SKELETON_DOT_SIZE: Record<TimelineSize, React.CSSProperties> = {
-  sm: { width: 'var(--component-timeline-dot-size-sm)', height: 'var(--component-timeline-dot-size-sm)' },
-  md: { width: 'var(--component-timeline-dot-size-md)', height: 'var(--component-timeline-dot-size-md)' },
-  lg: { width: 'var(--component-timeline-dot-size-lg)', height: 'var(--component-timeline-dot-size-lg)' },
-} as const;
-
-// Skeleton line width styles
-export const SKELETON_TIMESTAMP_STYLE = { width: '30%', marginBottom: 'var(--component-timeline-timestamp-margin-bottom)' } as const;
-export const SKELETON_TITLE_STYLE = { width: '60%', marginBottom: 'var(--component-timeline-title-margin-bottom)' } as const;
+// Skeleton line width styles - width as style, margin as classes
+export const SKELETON_TIMESTAMP_STYLE = { width: '30%' } as const;
+export const SKELETON_TIMESTAMP_CLASSES = 'mb-2';
+export const SKELETON_TITLE_STYLE = { width: '60%' } as const;
+export const SKELETON_TITLE_CLASSES = 'mb-1';
 export const SKELETON_DESCRIPTION_STYLE = { width: '80%' } as const;
 
-// Connector positioning styles
+// Connector positioning styles - using Tailwind pixel values
+// These need inline styles because they use calc() with size-dependent values
+// Dot sizes: sm=8px, md=12px, lg=16px | Icon container sizes: sm=20px, md=24px, lg=32px
 const createConnectorDotStyles = (side: 'left' | 'right'): Record<TimelineSize, React.CSSProperties> => ({
   sm: {
-    top: 'var(--component-timeline-dot-size-sm)',
+    top: '8px',  // size-2 = 8px
     bottom: 0,
-    [side]: 'calc(var(--component-timeline-dot-icon-container-size-sm) / 2)',
+    [side]: '10px', // (20px icon container) / 2 = 10px
   },
   md: {
-    top: 'var(--component-timeline-dot-size-md)',
+    top: '12px', // size-3 = 12px
     bottom: 0,
-    [side]: 'calc(var(--component-timeline-dot-icon-container-size-md) / 2)',
+    [side]: '12px', // (24px icon container) / 2 = 12px
   },
   lg: {
-    top: 'var(--component-timeline-dot-size-lg)',
+    top: '16px', // size-4 = 16px
     bottom: 0,
-    [side]: 'calc(var(--component-timeline-dot-icon-container-size-lg) / 2)',
+    [side]: '16px', // (32px icon container) / 2 = 16px
   },
 });
 
 const createConnectorIconStyles = (side: 'left' | 'right'): Record<TimelineSize, React.CSSProperties> => ({
   sm: {
-    top: 'var(--component-timeline-dot-icon-container-size-sm)',
+    top: '20px',  // size-5 = 20px (icon container)
     bottom: 0,
-    [side]: 'calc(var(--component-timeline-dot-icon-container-size-sm) / 2)',
+    [side]: '10px', // (20px icon container) / 2 = 10px
   },
   md: {
-    top: 'var(--component-timeline-dot-icon-container-size-md)',
+    top: '24px', // size-6 = 24px (icon container)
     bottom: 0,
-    [side]: 'calc(var(--component-timeline-dot-icon-container-size-md) / 2)',
+    [side]: '12px', // (24px icon container) / 2 = 12px
   },
   lg: {
-    top: 'var(--component-timeline-dot-icon-container-size-lg)',
+    top: '32px', // size-8 = 32px (icon container)
     bottom: 0,
-    [side]: 'calc(var(--component-timeline-dot-icon-container-size-lg) / 2)',
+    [side]: '16px', // (32px icon container) / 2 = 16px
   },
 });
 

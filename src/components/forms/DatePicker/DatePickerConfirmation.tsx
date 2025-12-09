@@ -7,19 +7,13 @@ import { Icon } from '../../utility/Icon';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import {
   CONFIRMATION_BASE_CLASSES,
-  CONFIRMATION_BASE_STYLE,
   CONFIRMATION_STACKED_CLASSES,
-  CONFIRMATION_STACKED_STYLE,
   CONFIRMATION_DATE_INPUTS_CLASSES,
-  CONFIRMATION_DATE_INPUTS_STYLE,
   CONFIRMATION_DATE_INPUTS_STACKED_CLASSES,
-  CONFIRMATION_DATE_INPUTS_STACKED_STYLE,
   CONFIRMATION_DATE_INPUT_CLASSES,
   CONFIRMATION_DATE_INPUT_STACKED_CLASSES,
   CONFIRMATION_BUTTONS_CLASSES,
-  CONFIRMATION_BUTTONS_STYLE,
   CONFIRMATION_BUTTONS_STACKED_CLASSES,
-  CONFIRMATION_BUTTONS_STACKED_STYLE,
 } from './DatePicker.styles';
 
 /**
@@ -81,22 +75,18 @@ export const DatePickerConfirmation = memo(
 
     // Choose classes based on stacked prop
     const containerClasses = stacked ? CONFIRMATION_STACKED_CLASSES : CONFIRMATION_BASE_CLASSES;
-    const containerStyle = stacked ? CONFIRMATION_STACKED_STYLE : CONFIRMATION_BASE_STYLE;
     const inputsClasses = stacked ? CONFIRMATION_DATE_INPUTS_STACKED_CLASSES : CONFIRMATION_DATE_INPUTS_CLASSES;
-    const inputsStyle = stacked ? CONFIRMATION_DATE_INPUTS_STACKED_STYLE : CONFIRMATION_DATE_INPUTS_STYLE;
     const inputWrapperClass = stacked ? CONFIRMATION_DATE_INPUT_STACKED_CLASSES : CONFIRMATION_DATE_INPUT_CLASSES;
     const buttonsClasses = stacked ? CONFIRMATION_BUTTONS_STACKED_CLASSES : CONFIRMATION_BUTTONS_CLASSES;
-    const buttonsStyle = stacked ? CONFIRMATION_BUTTONS_STACKED_STYLE : CONFIRMATION_BUTTONS_STYLE;
 
     return (
       <div
         ref={ref}
         className={cn(containerClasses, className)}
-        style={containerStyle}
         {...rest}
       >
         {/* Date Range Inputs */}
-        <div className={inputsClasses} style={inputsStyle}>
+        <div className={inputsClasses}>
           <Input
             type="text"
             size="small"
@@ -121,7 +111,7 @@ export const DatePickerConfirmation = memo(
         </div>
 
         {/* Action Buttons */}
-        <div className={buttonsClasses} style={buttonsStyle}>
+        <div className={buttonsClasses}>
           <Button
             variant="ghost"
             size="small"

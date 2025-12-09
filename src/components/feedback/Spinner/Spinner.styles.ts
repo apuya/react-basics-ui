@@ -3,7 +3,7 @@ import type { SpinnerSize, SpinnerColor } from './Spinner';
 /**
  * Base classes for the Spinner component
  */
-export const BASE_CLASSES = 'inline-block rounded-full';
+export const BASE_CLASSES = 'inline-block rounded-full animate-spin';
 
 /**
  * Size-specific classes using Tailwind scales
@@ -17,29 +17,10 @@ export const SIZE_CLASSES: Record<SpinnerSize, string> = {
 } as const;
 
 /**
- * Color-specific styles using design tokens (applied via inline styles)
+ * Color-specific classes using design tokens
  */
-export const COLOR_STYLES: Record<SpinnerColor, React.CSSProperties> = {
-  default: {
-    borderColor: 'var(--component-spinner-track-default)',
-    borderTopColor: 'var(--component-spinner-color-default)',
-  },
-  inverse: {
-    borderColor: 'var(--component-spinner-track-inverse)',
-    borderTopColor: 'var(--component-spinner-color-inverse)',
-  },
-  inherit: {
-    borderColor: 'color-mix(in srgb, currentColor 30%, transparent)',
-    borderTopColor: 'currentColor',
-  },
-} as const;
-
-/**
- * Animation styles using design tokens
- */
-export const ANIMATION_STYLE: React.CSSProperties = {
-  animationName: 'spin',
-  animationDuration: 'var(--component-spinner-duration)',
-  animationTimingFunction: 'linear',
-  animationIterationCount: 'infinite',
+export const COLOR_CLASSES: Record<SpinnerColor, string> = {
+  default: 'border-[color:var(--component-spinner-track-default)] border-t-[color:var(--component-spinner-color-default)]',
+  inverse: 'border-[color:var(--component-spinner-track-inverse)] border-t-[color:var(--component-spinner-color-inverse)]',
+  inherit: 'border-current/30 border-t-current',
 } as const;

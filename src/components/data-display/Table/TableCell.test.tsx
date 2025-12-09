@@ -4,17 +4,18 @@ import { describe, it, expect, vi } from 'vitest';
 import { createRef } from 'react';
 import { TableCell } from './TableCell';
 import { Table } from './Table';
+import { TableContext } from './TableContext';
 
-// Helper to render TableCell within Table context
+// Helper to render TableCell within Table context (minimal - just context, no full table structure)
 const renderWithTable = (ui: React.ReactElement) => {
   return render(
-    <Table>
-      <Table.Body>
-        <Table.Row>
-          {ui}
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    <TableContext.Provider value={{ size: 'md', variant: 'default' }}>
+      <table>
+        <tbody>
+          <tr>{ui}</tr>
+        </tbody>
+      </table>
+    </TableContext.Provider>
   );
 };
 
@@ -111,12 +112,12 @@ describe('TableCell', () => {
 
     it('applies text variant font size class', () => {
       renderWithTable(<TableCell variant="text" data-testid="cell">Content</TableCell>);
-      expect(screen.getByTestId('cell')).toHaveClass('text-[length:var(--component-table-cell-font-size-md)]');
+      expect(screen.getByTestId('cell')).toHaveClass('text-base');
     });
 
     it('default variant does not have font size class', () => {
       renderWithTable(<TableCell data-testid="cell">Content</TableCell>);
-      expect(screen.getByTestId('cell')).not.toHaveClass('text-[length:var(--component-table-cell-font-size-md)]');
+      expect(screen.getByTestId('cell')).not.toHaveClass('text-base');
     });
 
     it('renders checkbox variant when specified', () => {
@@ -171,7 +172,7 @@ describe('TableCell', () => {
 
     it('numeric variant has font size class', () => {
       renderWithTable(<TableCell variant="numeric" data-testid="cell">1,234.56</TableCell>);
-      expect(screen.getByTestId('cell')).toHaveClass('text-[length:var(--component-table-cell-font-size-md)]');
+      expect(screen.getByTestId('cell')).toHaveClass('text-base');
     });
 
     it('renders badge variant when specified', () => {

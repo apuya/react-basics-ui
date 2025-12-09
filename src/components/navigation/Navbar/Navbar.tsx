@@ -60,25 +60,13 @@ NavbarRoot.displayName = 'Navbar';
 
 export interface NavbarContentProps extends ComponentPropsWithoutRef<'div'> {}
 
-const CONTENT_STYLE = {
-  height: 'var(--component-navbar-height)',
-  maxWidth: 'var(--component-navbar-max-width)',
-  gap: 'var(--component-navbar-gap)',
-  paddingInline: 'var(--component-navbar-padding-x)',
-} as const;
-
 export const NavbarContent = memo(
   forwardRef<HTMLDivElement, NavbarContentProps>(function NavbarContent(
-    { children, className, style, ...props },
+    { children, className, ...props },
     ref
   ) {
-    const contentStyle = useMemo(
-      () => ({ ...CONTENT_STYLE, ...style }),
-      [style]
-    );
-
     return (
-      <div ref={ref} className={cn(CONTENT_CLASSES, className)} style={contentStyle} {...props}>
+      <div ref={ref} className={cn(CONTENT_CLASSES, className)} {...props}>
         {children}
       </div>
     );
@@ -93,23 +81,13 @@ NavbarContent.displayName = 'Navbar.Content';
 
 export interface NavbarBrandProps extends ComponentPropsWithoutRef<'div'> {}
 
-const BRAND_STYLE = {
-  gap: 'var(--component-navbar-brand-gap)',
-  fontSize: 'var(--component-navbar-brand-size)',
-} as const;
-
 export const NavbarBrand = memo(
   forwardRef<HTMLDivElement, NavbarBrandProps>(function NavbarBrand(
-    { children, className, style, ...props },
+    { children, className, ...props },
     ref
   ) {
-    const brandStyle = useMemo(
-      () => ({ ...BRAND_STYLE, ...style }),
-      [style]
-    );
-
     return (
-      <div ref={ref} className={cn(BRAND_CLASSES, className)} style={brandStyle} {...props}>
+      <div ref={ref} className={cn(BRAND_CLASSES, className)} {...props}>
         {children}
       </div>
     );
@@ -124,22 +102,13 @@ NavbarBrand.displayName = 'Navbar.Brand';
 
 export interface NavbarSectionProps extends ComponentPropsWithoutRef<'div'> {}
 
-const SECTION_STYLE = {
-  gap: 'var(--component-navbar-section-gap)',
-} as const;
-
 export const NavbarSection = memo(
   forwardRef<HTMLDivElement, NavbarSectionProps>(function NavbarSection(
-    { children, className, style, ...props },
+    { children, className, ...props },
     ref
   ) {
-    const sectionStyle = useMemo(
-      () => ({ ...SECTION_STYLE, ...style }),
-      [style]
-    );
-
     return (
-      <div ref={ref} className={cn(SECTION_CLASSES, className)} style={sectionStyle} {...props}>
+      <div ref={ref} className={cn(SECTION_CLASSES, className)} {...props}>
         {children}
       </div>
     );

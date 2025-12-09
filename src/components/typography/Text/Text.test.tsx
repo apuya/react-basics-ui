@@ -42,25 +42,25 @@ describe('Text', () => {
     it('should apply caption size styles', () => {
       render(<Text size="caption">Caption Text</Text>);
       const element = screen.getByText('Caption Text');
-      expect(element).toHaveClass('text-[length:var(--component-text-font-size-caption)]');
+      expect(element).toHaveClass('text-xs');
     });
 
     it('should apply small size styles', () => {
       render(<Text size="small">Small Text</Text>);
       const element = screen.getByText('Small Text');
-      expect(element).toHaveClass('text-[length:var(--component-text-font-size-small)]');
+      expect(element).toHaveClass('text-sm');
     });
 
     it('should apply body size styles by default', () => {
       render(<Text>Body Text</Text>);
       const element = screen.getByText('Body Text');
-      expect(element).toHaveClass('text-[length:var(--component-text-font-size-body)]');
+      expect(element).toHaveClass('text-base');
     });
 
     it('should apply subtitle size styles', () => {
       render(<Text size="subtitle">Subtitle Text</Text>);
       const element = screen.getByText('Subtitle Text');
-      expect(element).toHaveClass('text-[length:var(--component-text-font-size-subtitle)]');
+      expect(element).toHaveClass('text-lg');
     });
   });
 
@@ -68,31 +68,31 @@ describe('Text', () => {
     it('should apply regular weight by default', () => {
       render(<Text>Regular Text</Text>);
       const element = screen.getByText('Regular Text');
-      expect(element).toHaveClass('font-[number:var(--component-text-font-weight-regular)]');
+      expect(element).toHaveClass('font-normal');
     });
 
     it('should apply light weight', () => {
       render(<Text weight="light">Light Text</Text>);
       const element = screen.getByText('Light Text');
-      expect(element).toHaveClass('font-[number:var(--component-text-font-weight-light)]');
+      expect(element).toHaveClass('font-light');
     });
 
     it('should apply medium weight', () => {
       render(<Text weight="medium">Medium Text</Text>);
       const element = screen.getByText('Medium Text');
-      expect(element).toHaveClass('font-[number:var(--component-text-font-weight-medium)]');
+      expect(element).toHaveClass('font-medium');
     });
 
     it('should apply semibold weight', () => {
       render(<Text weight="semibold">Semibold Text</Text>);
       const element = screen.getByText('Semibold Text');
-      expect(element).toHaveClass('font-[number:var(--component-text-font-weight-semibold)]');
+      expect(element).toHaveClass('font-semibold');
     });
 
     it('should apply bold weight', () => {
       render(<Text weight="bold">Bold Text</Text>);
       const element = screen.getByText('Bold Text');
-      expect(element).toHaveClass('font-[number:var(--component-text-font-weight-bold)]');
+      expect(element).toHaveClass('font-bold');
     });
   });
 
@@ -138,19 +138,19 @@ describe('Text', () => {
     it('should apply normal line height by default', () => {
       render(<Text>Normal Line Height</Text>);
       const element = screen.getByText('Normal Line Height');
-      expect(element).toHaveClass('leading-[var(--component-text-line-height-normal)]');
+      expect(element).toHaveClass('leading-normal');
     });
 
     it('should apply tight line height', () => {
       render(<Text lineHeight="tight">Tight Line Height</Text>);
       const element = screen.getByText('Tight Line Height');
-      expect(element).toHaveClass('leading-[var(--component-text-line-height-tight)]');
+      expect(element).toHaveClass('leading-tight');
     });
 
     it('should apply relaxed line height', () => {
       render(<Text lineHeight="relaxed">Relaxed Line Height</Text>);
       const element = screen.getByText('Relaxed Line Height');
-      expect(element).toHaveClass('leading-[var(--component-text-line-height-relaxed)]');
+      expect(element).toHaveClass('leading-relaxed');
     });
   });
 
@@ -215,7 +215,7 @@ describe('Text', () => {
       render(<Text className="custom-class">Custom Class</Text>);
       const element = screen.getByText('Custom Class');
       expect(element).toHaveClass('custom-class');
-      expect(element).toHaveClass('text-[length:var(--component-text-font-size-body)]');
+      expect(element).toHaveClass('text-base');
     });
 
     it('should allow Tailwind class override', () => {
@@ -292,10 +292,10 @@ describe('Text', () => {
         </Text>
       );
       const element = screen.getByText('Combined Props');
-      expect(element).toHaveClass('text-[length:var(--component-text-font-size-subtitle)]');
-      expect(element).toHaveClass('font-[number:var(--component-text-font-weight-bold)]');
+      expect(element).toHaveClass('text-lg');
+      expect(element).toHaveClass('font-bold');
       expect(element).toHaveClass('text-[color:var(--component-text-color-error)]');
-      expect(element).toHaveClass('leading-[var(--component-text-line-height-tight)]');
+      expect(element).toHaveClass('leading-tight');
       expect(element).toHaveClass('text-center');
       expect(element).toHaveClass('font-[family-name:var(--component-text-font-family-mono)]');
       expect(element).toHaveClass('truncate');

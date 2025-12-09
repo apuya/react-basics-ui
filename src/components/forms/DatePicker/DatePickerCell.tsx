@@ -4,7 +4,8 @@ import type { DatePickerCellProps } from './DatePicker.types';
 import {
   CELL_BASE_CLASSES,
   CELL_STATE_STYLES,
-  CELL_COMBINED_STYLES,
+  CELL_STATE_RADIUS_CLASSES,
+  CELL_HEADER_CLASSES,
 } from './DatePicker.styles';
 
 /**
@@ -45,13 +46,15 @@ export const DatePickerCell = memo(
 
         // Add state-specific styles
         if (isHeader) {
-          states.push(CELL_STATE_STYLES.header);
+          states.push(CELL_STATE_STYLES.header, CELL_HEADER_CLASSES);
         } else if (disabled || state === 'disabled') {
-          states.push(CELL_STATE_STYLES.disabled);
+          states.push(CELL_STATE_STYLES.disabled, CELL_STATE_RADIUS_CLASSES.disabled);
         } else if (isOutsideMonth || state === 'outside-month') {
-          states.push(CELL_STATE_STYLES['outside-month']);
+          states.push(CELL_STATE_STYLES['outside-month'], CELL_STATE_RADIUS_CLASSES['outside-month']);
         } else {
-          states.push(CELL_STATE_STYLES[state] || CELL_STATE_STYLES.default);
+          const stateKey = state as keyof typeof CELL_STATE_STYLES;
+          states.push(CELL_STATE_STYLES[stateKey] || CELL_STATE_STYLES.default);
+          states.push(CELL_STATE_RADIUS_CLASSES[stateKey] || CELL_STATE_RADIUS_CLASSES.default);
         }
 
         // Today indicator (can combine with other states)
@@ -61,12 +64,6 @@ export const DatePickerCell = memo(
 
         return cn(...states, className);
       }, [state, isOutsideMonth, isToday, disabled, isHeader, className]);
-
-      // Get pre-computed style for state
-      const cellStyle = useMemo(() => {
-        const styleKey = isHeader ? 'header' : (state as keyof typeof CELL_COMBINED_STYLES);
-        return CELL_COMBINED_STYLES[styleKey] || CELL_COMBINED_STYLES.default;
-      }, [state, isHeader]);
 
       const handleClick = useCallback(
         (e: MouseEvent<HTMLButtonElement>) => {
@@ -93,7 +90,6 @@ export const DatePickerCell = memo(
           <div
             ref={ref as React.Ref<HTMLDivElement>}
             className={cellClasses}
-            style={cellStyle}
             role="columnheader"
             aria-label={label}
             {...(divProps as React.HTMLAttributes<HTMLDivElement>)}
@@ -111,7 +107,6 @@ export const DatePickerCell = memo(
           ref={ref as React.Ref<HTMLButtonElement>}
           type="button"
           className={cellClasses}
-          style={cellStyle}
           onClick={handleClick}
           onMouseEnter={handleMouseEnter}
           disabled={disabled || state === 'disabled'}

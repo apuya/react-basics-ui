@@ -29,10 +29,7 @@ const ListRoot = memo(
           ref={ref}
           data-variant={variant}
           className={listClasses}
-          style={{
-            gap: 'var(--component-list-gap)',
-            ...style,
-          }}
+          style={style}
           {...props}
         >
           {children}

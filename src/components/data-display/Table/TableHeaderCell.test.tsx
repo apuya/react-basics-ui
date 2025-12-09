@@ -3,15 +3,18 @@ import { describe, it, expect, vi } from 'vitest';
 import { createRef } from 'react';
 import { TableHeaderCell } from './TableHeaderCell';
 import { Table } from './Table';
+import { TableContext } from './TableContext';
 
-// Helper to render TableHeaderCell within Table context
+// Helper to render TableHeaderCell within Table context (minimal - just context, no full table structure)
 const renderWithTable = (ui: React.ReactElement) => {
   return render(
-    <Table>
-      <Table.HeaderContainer>
-        <Table.Row>{ui}</Table.Row>
-      </Table.HeaderContainer>
-    </Table>
+    <TableContext.Provider value={{ size: 'md', variant: 'default' }}>
+      <table>
+        <thead>
+          <tr>{ui}</tr>
+        </thead>
+      </table>
+    </TableContext.Provider>
   );
 };
 

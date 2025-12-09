@@ -34,16 +34,6 @@ export const TimePickerOption = memo(
       }
     }, [disabled, optionValue, setValue]);
 
-    const optionStyle = useMemo(
-      () => ({
-        height: 'var(--component-dropdown-item-height)',
-        paddingInline: 'var(--component-dropdown-item-padding-inline)',
-        paddingBlock: 'var(--component-dropdown-item-padding-block)',
-        gap: 'var(--component-dropdown-item-gap)',
-      }),
-      []
-    );
-
     const optionClasses = useMemo(
       () => cn(
         OPTION_BASE_CLASSES,
@@ -61,7 +51,6 @@ export const TimePickerOption = memo(
         role="option"
         aria-selected={isSelected}
         className={optionClasses}
-        style={optionStyle}
         onClick={handleClick}
         data-selected={isSelected || undefined}
         {...props}
@@ -70,7 +59,7 @@ export const TimePickerOption = memo(
         {isSelected && (
           <Icon
             icon={BiCheck}
-            className="shrink-0 w-[length:var(--component-select-icon-check-size)] h-[length:var(--component-select-icon-check-size)]"
+            className="shrink-0 size-4"
             aria-hidden
           />
         )}

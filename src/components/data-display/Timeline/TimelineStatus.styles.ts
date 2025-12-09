@@ -30,16 +30,8 @@ export const STATUS_ICON_CLASSES = 'shrink-0 text-[color:var(--status-icon-color
 // Status content container
 export const STATUS_CONTENT_CLASSES = 'flex-1 min-w-0 text-left';
 
-// =============================================================================
-// INLINE STYLE TOKENS
-// =============================================================================
-
-export const STATUS_STYLE = {
-  marginTop: 'var(--component-timeline-status-margin-top)',
-  padding: 'var(--component-timeline-status-padding)',
-  borderRadius: 'var(--component-timeline-status-border-radius)',
-  gap: 'var(--component-timeline-status-gap)',
-} as const;
+// Status layout classes - Tailwind scales
+export const STATUS_LAYOUT_CLASSES = 'mt-4 py-2 px-4 rounded gap-2';
 
 // Icon size mapping based on status size
 export const ICON_SIZE_MAP: Record<TimelineStatusSize, IconSize> = {

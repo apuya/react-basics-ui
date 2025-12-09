@@ -1,5 +1,5 @@
 import { forwardRef, memo, type ReactNode } from 'react';
-import { VISUALLY_HIDDEN_STYLE } from './VisuallyHidden.styles';
+import { VISUALLY_HIDDEN_CLASSES } from './VisuallyHidden.styles';
 
 export interface VisuallyHiddenProps {
   /** Content to hide visually but keep accessible */
@@ -15,7 +15,7 @@ export interface VisuallyHiddenProps {
 export const VisuallyHidden = memo(
   forwardRef<HTMLSpanElement | HTMLDivElement, VisuallyHiddenProps>(
     ({ children, as: Component = 'span' }, ref) => (
-      <Component ref={ref as React.RefObject<HTMLSpanElement & HTMLDivElement>} style={VISUALLY_HIDDEN_STYLE}>
+      <Component ref={ref as React.RefObject<HTMLSpanElement & HTMLDivElement>} className={VISUALLY_HIDDEN_CLASSES}>
         {children}
       </Component>
     )

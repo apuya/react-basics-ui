@@ -1,7 +1,7 @@
 import type { TooltipPosition } from './Tooltip';
 
 export const TOOLTIP_CLASSES =
-  'z-50 bg-[color:var(--component-tooltip-bg)] text-[color:var(--component-tooltip-text)] text-xs font-medium leading-normal rounded-md border border-[color:var(--component-tooltip-border)] shadow-md whitespace-nowrap pointer-events-none opacity-0 transition-opacity duration-200';
+  'z-50 py-1 px-2 bg-[color:var(--component-tooltip-bg)] text-[color:var(--component-tooltip-text)] text-xs font-medium leading-normal rounded-md border border-[color:var(--component-tooltip-border)] shadow-md whitespace-nowrap pointer-events-none opacity-0 transition-opacity duration-200';
 
 export const WRAPPER_CLASSES = 'relative inline-block';
 

@@ -129,10 +129,10 @@ describe('Skeleton', () => {
       expect(lastLine).toHaveStyle({ width: '80%' });
     });
 
-    it('applies token-based gap for multiple text lines', () => {
+    it('applies Tailwind gap class for multiple text lines', () => {
       const { container } = render(<Skeleton variant="text" count={3} />);
       const wrapper = container.firstChild as HTMLElement;
-      expect(wrapper).toHaveStyle({ gap: 'var(--component-skeleton-text-gap)' });
+      expect(wrapper).toHaveClass('gap-2');
     });
   });
 

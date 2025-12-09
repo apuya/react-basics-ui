@@ -60,17 +60,9 @@ interface TreeContextValue {
 const { Context: TreeContext, useContext: useTreeContext } =
   createComponentContext<TreeContextValue>('Tree');
 
-// Inline style constants
-const NODE_CONTENT_STYLE = {
-  paddingInline: 'var(--component-tree-node-padding-inline)',
-  paddingBlock: 'var(--component-tree-node-padding-block)',
-  gap: 'var(--component-tree-node-gap)',
-} as const;
-
-const CHILDREN_CONTAINER_STYLE = {
-  marginLeft: 'var(--component-tree-indent)',
-  marginTop: 'var(--component-tree-node-padding-block)',
-} as const;
+// Layout class constants
+const NODE_CONTENT_LAYOUT_CLASSES = 'px-2 py-1 gap-2';
+const CHILDREN_CONTAINER_LAYOUT_CLASSES = 'ml-4 mt-1';
 
 // Main Tree Component
 const TreeRoot = memo(
@@ -278,7 +270,7 @@ const TreeNodeComponent = memo(
           {...props}
         >
           {showLines && hasChildren && <span className={INDENT_LINE_CLASSES} aria-hidden="true" />}
-          <div className={contentClasses} style={NODE_CONTENT_STYLE} onClick={handleClick}>
+          <div className={cn(contentClasses, NODE_CONTENT_LAYOUT_CLASSES)} onClick={handleClick}>
             {hasChildren ? (
               <button
                 type="button"
@@ -298,7 +290,7 @@ const TreeNodeComponent = memo(
           </div>
 
           {hasChildren && expanded && (
-            <div role="group" className={CHILDREN_CONTAINER_CLASSES} style={CHILDREN_CONTAINER_STYLE}>
+            <div role="group" className={cn(CHILDREN_CONTAINER_CLASSES, CHILDREN_CONTAINER_LAYOUT_CLASSES)}>
               {children}
             </div>
           )}

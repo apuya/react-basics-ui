@@ -90,7 +90,6 @@ export const Tooltip = memo(
           position: 'fixed' as const,
           top: coords?.top ?? 0,
           left: coords?.left ?? 0,
-          padding: 'var(--component-tooltip-padding-block) var(--component-tooltip-padding-inline)',
         }),
         [coords]
       );

@@ -27,10 +27,7 @@ const CardRoot = memo(
           ref={ref}
           data-variant={variant}
           className={cardClasses}
-          style={{
-            gap: 'var(--component-card-gap)',
-            ...style,
-          }}
+          style={style}
           {...props}
         >
           {children}

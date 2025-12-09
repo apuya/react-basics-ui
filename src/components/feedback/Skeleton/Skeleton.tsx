@@ -3,7 +3,7 @@ import { cn } from '@/lib/cn';
 import {
   ANIMATION_CLASSES,
   BASE_CLASSES,
-  TEXT_CONTAINER_STYLE,
+  TEXT_CONTAINER_CLASSES,
   VARIANT_CLASSES,
   type SkeletonAnimation,
   type SkeletonVariant,
@@ -93,7 +93,7 @@ export const Skeleton = memo(
     // For text variant with count > 1, render multiple lines
     if (variant === 'text' && count > 1) {
       return (
-        <div style={TEXT_CONTAINER_STYLE} {...rest}>
+        <div className={TEXT_CONTAINER_CLASSES} {...rest}>
           {Array.from({ length: count }).map((_, index) => (
             <div
               key={index}

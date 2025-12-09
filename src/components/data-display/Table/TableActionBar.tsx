@@ -1,7 +1,7 @@
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef, type ReactNode, type CSSProperties } from 'react';
+import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { useTableContext } from './TableContext';
-import { TABLE_ACTION_BAR_HEADER_CLASSES, TABLE_ACTION_BAR_BASE_CLASSES } from './Table.styles';
+import { TABLE_ACTION_BAR_HEADER_CLASSES, TABLE_ACTION_BAR_BASE_CLASSES, TABLE_ACTION_BAR_STYLE } from './Table.styles';
 import { SearchBar, type SearchBarProps } from '@/components/forms/SearchBar';
 import { Button } from '@/components/forms/Button';
 import { Dropdown } from '@/components/navigation/Dropdown';
@@ -32,18 +32,14 @@ export interface TableActionBarProps extends ComponentPropsWithoutRef<'th'> {
   secondaryAction?: TableActionBarActionButton;
 }
 
-// Inline styles for flex container with gap
-const FLEX_CONTAINER_STYLE: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 'var(--component-table-action-bar-gap)',
-  width: '100%',
-};
+// Flex container classes with gap
+const FLEX_CONTAINER_CLASSES = 'flex items-center w-full';
 
-// Inline style for default variant - fixed height, no padding
-const DEFAULT_CELL_STYLE: CSSProperties = {
-  height: 'var(--component-table-action-bar-min-height)',
-};
+// Height class for default variant - fixed height, no padding
+const DEFAULT_CELL_CLASSES = '';
+
+// Style for default variant
+const DEFAULT_CELL_STYLE = { height: '48px' } as const;
 
 export const TableActionBar = memo(
   forwardRef<HTMLTableCellElement, TableActionBarProps>(({ 
@@ -68,28 +64,19 @@ export const TableActionBar = memo(
 
     // Default variant - early return for performance (no padding, fixed height)
     if (variant === 'default') {
-      const defaultCellStyle: CSSProperties = style 
-        ? { ...DEFAULT_CELL_STYLE, ...style }
-        : DEFAULT_CELL_STYLE;
-      
       return (
-        <th ref={ref} className={headerClasses} style={defaultCellStyle} data-variant={variant} data-size={size} {...props} />
+        <th ref={ref} className={cn(headerClasses, DEFAULT_CELL_CLASSES, className)} style={DEFAULT_CELL_STYLE} data-variant={variant} data-size={size} {...props} />
       );
     }
 
-    // Cell style with padding - only computed for non-default variants
-    const cellStyle: CSSProperties = {
-      minHeight: 'var(--component-table-action-bar-min-height)',
-      paddingBlock: 'var(--component-table-action-bar-padding-block)',
-      paddingInline: 'var(--component-table-action-bar-padding-inline)',
-      ...style,
-    };
+    // Cell classes for non-default variants (layout only - spacing via inline styles)
+    const cellClasses = 'w-full';
 
     // Search variant
     if (variant === 'search') {
       return (
-        <th ref={ref} className={headerClasses} style={cellStyle} data-variant={variant} data-size={size} {...props}>
-          <div style={FLEX_CONTAINER_STYLE}>
+        <th ref={ref} className={cn(headerClasses, cellClasses)} style={{ ...TABLE_ACTION_BAR_STYLE, ...style }} data-variant={variant} data-size={size} {...props}>
+          <div className={FLEX_CONTAINER_CLASSES} style={{ gap: '12px' }}>
             <SearchBar
               size="small"
               {...searchProps}
@@ -115,14 +102,14 @@ export const TableActionBar = memo(
     }
 
     // Actions variant
-    const actionsContainerStyle: CSSProperties = {
-      ...FLEX_CONTAINER_STYLE,
-      justifyContent: align === 'left' ? 'flex-start' : 'flex-end',
-    };
+    const actionsContainerClasses = cn(
+      FLEX_CONTAINER_CLASSES,
+      align === 'left' ? 'justify-start' : 'justify-end'
+    );
 
     return (
-      <th ref={ref} className={headerClasses} style={cellStyle} data-variant={variant} data-align={align} data-size={size} {...props}>
-        <div style={actionsContainerStyle}>
+      <th ref={ref} className={cn(headerClasses, cellClasses)} style={{ ...TABLE_ACTION_BAR_STYLE, ...style }} data-variant={variant} data-align={align} data-size={size} {...props}>
+        <div className={actionsContainerClasses} style={{ gap: '12px' }}>
           {secondaryAction && (
             <Button
               size="small"

@@ -102,10 +102,11 @@ describe('Spinner', () => {
       expect(spinner).toHaveAttribute('data-color', 'inherit');
     });
 
-    it('applies token-based color styles for default', () => {
+    it('applies color classes for default variant', () => {
       const { container } = render(<Spinner color="default" />);
       const spinner = container.firstChild as HTMLElement;
-      expect(spinner).toHaveStyle({ borderTopColor: 'var(--component-spinner-color-default)' });
+      // Color is now applied via Tailwind classes with CSS variables
+      expect(spinner.className).toMatch(/border-\[color:var\(--component-spinner/);
     });
   });
 
@@ -116,10 +117,10 @@ describe('Spinner', () => {
       expect(spinner).toHaveClass('rounded-full');
     });
 
-    it('applies token-based animation duration', () => {
+    it('uses Tailwind animate-spin class', () => {
       const { container } = render(<Spinner />);
       const spinner = container.firstChild as HTMLElement;
-      expect(spinner).toHaveStyle({ animationDuration: 'var(--component-spinner-duration)' });
+      expect(spinner).toHaveClass('animate-spin');
     });
   });
 

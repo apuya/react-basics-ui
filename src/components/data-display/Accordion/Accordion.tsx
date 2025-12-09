@@ -121,7 +121,7 @@ const AccordionRoot = ({
     () =>
       cn(
         'w-full',
-        variant === 'bordered' && 'border border-[color:var(--component-accordion-border)] rounded-[length:var(--component-accordion-radius)]',
+        variant === 'bordered' && 'border border-[color:var(--component-accordion-border)] rounded',
         className
       ),
     [variant, className]

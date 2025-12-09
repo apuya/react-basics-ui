@@ -18,6 +18,7 @@ import {
   TABLE_BASE_CLASSES,
   TABLE_WRAPPER_CLASSES,
   TABLE_WRAPPER_STICKY_CLASS,
+  TABLE_WRAPPER_STYLE,
 } from './Table.styles';
 
 export type { TableSize, TableVariant } from './TableContext';
@@ -56,7 +57,7 @@ const TableRoot = memo(
       );
 
       return (
-        <div className={wrapperClasses}>
+        <div className={wrapperClasses} style={TABLE_WRAPPER_STYLE}>
           <TableContext.Provider value={contextValue}>
             <table
               ref={ref}
