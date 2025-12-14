@@ -1,0 +1,6 @@
+{
+    "chat.agent.maxRequests": 100,
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "css.lint.unknownAtRules": "ignore"
+}

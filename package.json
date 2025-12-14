@@ -1,7 +1,7 @@
 {
   "name": "react-basics-ui",
-  "version": "0.1.0",
-  "description": "A React component library built with TypeScript and Tailwind CSS",
+  "version": "1.0.0",
+  "description": "A focused React component library with essential UI primitives built with TypeScript and Tailwind CSS",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -15,6 +15,26 @@
       "require": {
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
+      }
+    },
+    "./advanced": {
+      "import": {
+        "types": "./dist/advanced.d.ts",
+        "default": "./dist/advanced.js"
+      },
+      "require": {
+        "types": "./dist/advanced.d.cts",
+        "default": "./dist/advanced.cjs"
+      }
+    },
+    "./experimental": {
+      "import": {
+        "types": "./dist/experimental.d.ts",
+        "default": "./dist/experimental.js"
+      },
+      "require": {
+        "types": "./dist/experimental.d.cts",
+        "default": "./dist/experimental.cjs"
       }
     },
     "./styles.css": "./dist/index.css"
@@ -47,7 +67,11 @@
     "components",
     "ui",
     "library",
-    "tailwind"
+    "tailwind",
+    "primitives",
+    "basic",
+    "foundational",
+    "typescript"
   ],
   "author": "",
   "license": "MIT",
@@ -57,6 +81,7 @@
     "@storybook/addon-docs": "^10.0.8",
     "@storybook/addon-vitest": "^10.0.8",
     "@storybook/react-vite": "^10.0.8",
+    "@tailwindcss/postcss": "^4.1.17",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -69,6 +94,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-storybook": "^10.0.8",
     "husky": "^9.1.7",
     "jsdom": "^27.2.0",
     "lint-staged": "^16.2.7",
@@ -83,5 +109,10 @@
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "react-icons": "^5.5.0",
+    "tailwind-merge": "^3.4.0"
   }
 }

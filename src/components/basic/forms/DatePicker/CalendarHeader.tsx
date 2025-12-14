@@ -1,0 +1,190 @@
+import { cn } from '@/lib/cn';
+import { forwardRef, memo, useCallback, useMemo } from 'react';
+import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
+import type { CalendarHeaderProps } from './DatePicker.types';
+
+/** Static icon styles - defined outside component to avoid recreation */
+const HEADER_NAV_ICON_STYLE: React.CSSProperties = {
+  width: 'var(--component-datepicker-header-icon-size)',
+  height: 'var(--component-datepicker-header-icon-size)',
+};
+import {
+  HEADER_BASE_CLASSES,
+  HEADER_BASE_STYLE,
+  HEADER_TITLE_STYLE,
+  HEADER_TITLE_WRAPPER_CLASSES,
+  HEADER_TITLE_WRAPPER_STYLE,
+  HEADER_SELECT_CLASSES,
+  HEADER_SELECT_STYLE,
+} from './DatePicker.styles';
+import { Button } from '@/components/basic/forms/Button';
+
+const DEFAULT_MONTH_LABELS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+/**
+ * DatePicker.CalendarHeader - Navigation header for the calendar grid.
+ *
+ * Displays month/year with optional dropdown selectors and prev/next navigation.
+ * Composes the Button component for navigation buttons.
+ *
+ * @example
+ * ```tsx
+ * <DatePicker.CalendarHeader
+ *   month={currentMonth}
+ *   year={currentYear}
+ *   onPrevMonth={goToPrev}
+ *   onNextMonth={goToNext}
+ *   showDropdowns={true}
+ * />
+ * ```
+ */
+export const CalendarHeader = memo(
+  forwardRef<HTMLDivElement, CalendarHeaderProps>(
+    (
+      {
+        month,
+        year,
+        onPrevMonth,
+        onNextMonth,
+        onMonthSelect,
+        onYearSelect,
+        showDropdowns = false,
+        minDate,
+        maxDate,
+        hideNavigation = false,
+        navigationPosition = 'both',
+        className,
+        ...props
+      },
+      ref
+    ) => {
+      const monthLabels = DEFAULT_MONTH_LABELS;
+
+      // Generate year range for dropdown
+      const yearRange = useMemo(() => {
+        const currentYear = new Date().getFullYear();
+        const minYear = minDate?.getFullYear() ?? currentYear - 100;
+        const maxYear = maxDate?.getFullYear() ?? currentYear + 10;
+        const years: number[] = [];
+        for (let y = minYear; y <= maxYear; y++) {
+          years.push(y);
+        }
+        return years;
+      }, [minDate, maxDate]);
+
+      // Check if navigation should be disabled
+      const isPrevDisabled = useMemo(() => {
+        if (!minDate) return false;
+        const prevMonth = month === 0 ? 11 : month - 1;
+        const prevYear = month === 0 ? year - 1 : year;
+        return prevYear < minDate.getFullYear() || 
+          (prevYear === minDate.getFullYear() && prevMonth < minDate.getMonth());
+      }, [month, year, minDate]);
+
+      const isNextDisabled = useMemo(() => {
+        if (!maxDate) return false;
+        const nextMonth = month === 11 ? 0 : month + 1;
+        const nextYear = month === 11 ? year + 1 : year;
+        return nextYear > maxDate.getFullYear() || 
+          (nextYear === maxDate.getFullYear() && nextMonth > maxDate.getMonth());
+      }, [month, year, maxDate]);
+
+      const handleMonthChange = useCallback(
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
+          onMonthSelect?.(parseInt(e.target.value, 10));
+        },
+        [onMonthSelect]
+      );
+
+      const handleYearChange = useCallback(
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
+          onYearSelect?.(parseInt(e.target.value, 10));
+        },
+        [onYearSelect]
+      );
+
+      const headerClasses = useMemo(
+        () => cn(HEADER_BASE_CLASSES, className),
+        [className]
+      );
+
+      const showLeading = !hideNavigation && (navigationPosition === 'both' || navigationPosition === 'leading');
+      const showTrailing = !hideNavigation && (navigationPosition === 'both' || navigationPosition === 'trailing');
+
+      return (
+        <div ref={ref} className={headerClasses} style={HEADER_BASE_STYLE} {...props}>
+          {/* Previous Month Button */}
+          {showLeading && (
+            <Button
+              variant="tabs"
+              size="small"
+              onClick={onPrevMonth}
+              disabled={isPrevDisabled}
+              aria-label="Previous month"
+              className="!p-1"
+            >
+              <BiChevronLeft style={HEADER_NAV_ICON_STYLE} />
+            </Button>
+          )}
+
+          {/* Month/Year Display */}
+          <div className={HEADER_TITLE_WRAPPER_CLASSES} style={HEADER_TITLE_WRAPPER_STYLE}>
+            {showDropdowns ? (
+              <>
+                <select
+                  value={month}
+                  onChange={handleMonthChange}
+                  className={HEADER_SELECT_CLASSES}
+                  style={HEADER_SELECT_STYLE}
+                  aria-label="Select month"
+                >
+                  {monthLabels.map((label, idx) => (
+                    <option key={label} value={idx}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={year}
+                  onChange={handleYearChange}
+                  className={HEADER_SELECT_CLASSES}
+                  style={HEADER_SELECT_STYLE}
+                  aria-label="Select year"
+                >
+                  {yearRange.map((y) => (
+                    <option key={y} value={y}>
+                      {y}
+                    </option>
+                  ))}
+                </select>
+              </>
+            ) : (
+              <span style={HEADER_TITLE_STYLE}>
+                {monthLabels[month]} {year}
+              </span>
+            )}
+          </div>
+
+          {/* Next Month Button */}
+          {showTrailing && (
+            <Button
+              variant="tabs"
+              size="small"
+              onClick={onNextMonth}
+              disabled={isNextDisabled}
+              aria-label="Next month"
+              className="!p-1"
+            >
+              <BiChevronRight style={HEADER_NAV_ICON_STYLE} />
+            </Button>
+          )}
+        </div>
+      );
+    }
+  )
+);
+
+CalendarHeader.displayName = 'DatePicker.CalendarHeader';
