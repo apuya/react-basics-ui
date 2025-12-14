@@ -5,6 +5,8 @@ export interface FormGroupContextValue {
   error: boolean;
   /** Whether the form group is disabled */
   disabled: boolean;
+  /** Whether the form group is required */
+  required: boolean;
   /** ID for the error message element (for aria-describedby) */
   errorId: string;
   /** Orientation of the form group */

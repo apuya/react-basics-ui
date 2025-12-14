@@ -4,7 +4,7 @@ import { VisuallyHidden } from './VisuallyHidden';
 import { Icon } from '@/components/utility/Icon';
 import { Button } from '@/components/forms/Button';
 import { Input } from '@/components/forms/Input';
-import { Label } from '@/components/forms/Label';
+import { Label } from '@/components/typography/Label';
 import { Text } from '@/components/typography/Text';
 import { Stack } from '@/components/layout/Stack';
 import { Flex } from '@/components/layout/Flex';

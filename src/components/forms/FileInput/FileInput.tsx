@@ -15,6 +15,7 @@ import {
 import { BiCloudUpload } from 'react-icons/bi';
 import { Icon } from '@/components/utility/Icon/Icon';
 import { Text } from '@/components/typography/Text/Text';
+import { Label } from '@/components/typography/Label';
 import { FileItem, formatFileSize } from './FileItem';
 import {
   BASE_CLASSES,
@@ -23,10 +24,6 @@ import {
   DROPZONE_DRAG_ACTIVE_CLASSES,
   DROPZONE_ERROR_CLASSES,
   FILE_LIST_CLASSES,
-  HELPER_CLASSES,
-  HELPER_ERROR_CLASSES,
-  LABEL_CLASSES,
-  LABEL_ERROR_CLASSES,
   RESPONSIVE_HELPER_TEXT_CLASSES,
   RESPONSIVE_ICON_CLASSES,
   RESPONSIVE_TEXT_CLASSES,
@@ -269,15 +266,15 @@ export const FileInput = memo(
     return (
       <div className={cn(CONTAINER_CLASSES, wrapperClassName)}>
         {label && (
-          <Text 
-            as="label" 
+          <Label 
             htmlFor={inputId} 
             size="body" 
             weight="medium"
-            className={error ? LABEL_ERROR_CLASSES : LABEL_CLASSES}
+            color={error ? 'error' : 'primary'}
+            className="block mb-[length:var(--component-input-gap-compact)]"
           >
             {label}
-          </Text>
+          </Label>
         )}
 
         <div
@@ -343,7 +340,8 @@ export const FileInput = memo(
           <Text 
             as="p" 
             size="small"
-            className={error ? HELPER_ERROR_CLASSES : HELPER_CLASSES}
+            color={error ? 'error' : 'secondary'}
+            className="mt-[length:var(--component-input-gap-compact)]"
           >
             {helperText}
           </Text>

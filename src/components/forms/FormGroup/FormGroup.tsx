@@ -1,10 +1,13 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useId, type ComponentPropsWithoutRef } from 'react';
-import { BASE_CLASSES } from './FormGroup.styles';
-import { FormGroupContext, type FormGroupContextValue } from './FormGroupContext';
-import { FormGroupLegend } from './FormGroupLegend';
-import { FormGroupDescription } from './FormGroupDescription';
-import { FormGroupErrorMessage } from './FormGroupErrorMessage';
+import { forwardRef, memo, useId, useMemo, type ComponentPropsWithoutRef } from 'react';
+import { FormGroupContext, useFormGroupContext, type FormGroupContextValue } from './FormGroupContext';
+import { FormGroupLegend, FormGroupDescription, FormGroupErrorMessage } from './FormGroupText';
+
+// =============================================================================
+// Styles
+// =============================================================================
+
+const BASE_CLASSES = 'flex flex-col border-0 p-0 m-0 gap-[length:var(--component-formgroup-gap)]';
 
 // =============================================================================
 // Types
@@ -19,6 +22,8 @@ export interface FormGroupProps extends ComponentPropsWithoutRef<'fieldset'> {
   error?: boolean;
   /** Sets data-disabled attribute (shared with sub-components via context) */
   disabled?: boolean;
+  /** Whether the form group is required (shared with sub-components via context) */
+  required?: boolean;
   /** ID for the error message element (for aria-describedby). Auto-generated if not provided. */
   errorId?: string;
 }
@@ -51,6 +56,7 @@ const FormGroupRoot = memo(
       orientation = 'vertical',
       error = false,
       disabled = false,
+      required = false,
       errorId: errorIdProp,
       className,
       children,
@@ -61,12 +67,10 @@ const FormGroupRoot = memo(
     const generatedErrorId = useId();
     const errorId = errorIdProp ?? `${generatedErrorId}-error`;
 
-    const contextValue: FormGroupContextValue = {
-      error,
-      disabled,
-      errorId,
-      orientation,
-    };
+    const contextValue = useMemo<FormGroupContextValue>(
+      () => ({ error, disabled, required, errorId, orientation }),
+      [error, disabled, required, errorId, orientation]
+    );
 
     return (
       <FormGroupContext.Provider value={contextValue}>
@@ -76,7 +80,9 @@ const FormGroupRoot = memo(
           data-orientation={orientation}
           data-error={error || undefined}
           data-disabled={disabled || undefined}
+          data-required={required || undefined}
           aria-invalid={error || undefined}
+          aria-required={required || undefined}
           aria-describedby={error ? errorId : undefined}
           disabled={disabled}
           {...rest}
@@ -91,6 +97,43 @@ const FormGroupRoot = memo(
 FormGroupRoot.displayName = 'FormGroup';
 
 // =============================================================================
+// FormGroup.Options
+// =============================================================================
+
+const ORIENTATION_CLASSES = {
+  vertical: 'flex flex-col gap-[length:var(--component-formgroup-gap)]',
+  horizontal: 'flex flex-row flex-wrap gap-[length:var(--component-formgroup-gap-horizontal)]',
+} as const;
+
+export interface FormGroupOptionsProps extends ComponentPropsWithoutRef<'div'> {}
+
+/**
+ * FormGroup.Options - Container for form controls that applies orientation layout.
+ * Wraps radio/checkbox inputs and applies horizontal or vertical layout based on context.
+ */
+const FormGroupOptions = memo(
+  forwardRef<HTMLDivElement, FormGroupOptionsProps>(function FormGroupOptions(
+    { className, children, ...rest },
+    ref
+  ) {
+    const { orientation } = useFormGroupContext();
+
+    return (
+      <div
+        ref={ref}
+        className={cn(ORIENTATION_CLASSES[orientation], className)}
+        role="group"
+        {...rest}
+      >
+        {children}
+      </div>
+    );
+  })
+);
+
+FormGroupOptions.displayName = 'FormGroup.Options';
+
+// =============================================================================
 // Compound Component Export
 // =============================================================================
 
@@ -99,10 +142,13 @@ FormGroupRoot.displayName = 'FormGroup';
  *
  * @example
  * ```tsx
- * <FormGroup error>
+ * <FormGroup orientation="horizontal">
  *   <FormGroup.Legend>Settings</FormGroup.Legend>
  *   <FormGroup.Description>Customize your preferences</FormGroup.Description>
- *   <Checkbox>Option 1</Checkbox>
+ *   <FormGroup.Options>
+ *     <Checkbox>Option 1</Checkbox>
+ *     <Checkbox>Option 2</Checkbox>
+ *   </FormGroup.Options>
  *   <FormGroup.ErrorMessage>Error text</FormGroup.ErrorMessage>
  * </FormGroup>
  * ```
@@ -110,5 +156,6 @@ FormGroupRoot.displayName = 'FormGroup';
 export const FormGroup = Object.assign(FormGroupRoot, {
   Legend: FormGroupLegend,
   Description: FormGroupDescription,
+  Options: FormGroupOptions,
   ErrorMessage: FormGroupErrorMessage,
 });

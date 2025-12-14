@@ -1,10 +1,13 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useId, type ComponentPropsWithoutRef } from 'react';
-import { BASE_CLASSES } from './FormField.styles';
+import { forwardRef, memo, useId, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { FormFieldContext, type FormFieldContextValue } from './FormFieldContext';
-import { FormFieldLabel } from './FormFieldLabel';
-import { FormFieldHelperText } from './FormFieldHelperText';
-import { FormFieldErrorMessage } from './FormFieldErrorMessage';
+import { FormFieldLabel, FormFieldHelperText, FormFieldErrorMessage } from './FormFieldText';
+
+// =============================================================================
+// Styles
+// =============================================================================
+
+const BASE_CLASSES = 'flex flex-col gap-[length:var(--component-formfield-gap)]';
 
 // =============================================================================
 // Types
@@ -64,12 +67,10 @@ const FormFieldRoot = memo(
     const generatedHelperId = useId();
     const helperId = helperIdProp ?? `${generatedHelperId}-helper`;
 
-    const contextValue: FormFieldContextValue = {
-      error,
-      disabled,
-      required,
-      helperId,
-    };
+    const contextValue = useMemo<FormFieldContextValue>(
+      () => ({ error, disabled, required, helperId }),
+      [error, disabled, required, helperId]
+    );
 
     return (
       <FormFieldContext.Provider value={contextValue}>

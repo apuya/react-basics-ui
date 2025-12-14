@@ -4,7 +4,7 @@ import { Modal } from './Modal';
 import type { ModalSize } from './Modal.types';
 import { Button } from '@/components/actions/Button';
 import { Input } from '@/components/forms/Input';
-import { Label } from '@/components/forms/Label';
+import { Label } from '@/components/typography/Label';
 import { Checkbox } from '@/components/forms/Checkbox';
 import { Text } from '@/components/typography/Text';
 import { Heading } from '@/components/typography/Heading';

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { FormGroup } from './FormGroup';
 import { Radio } from '@/components/forms/Radio';
 import { Checkbox } from '@/components/forms/Checkbox';
@@ -12,25 +13,73 @@ const meta: Meta<typeof FormGroup> = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'FormGroup is a compound component that uses a semantic fieldset element to group related form controls together. It provides accessible labeling via Legend sub-component and supports both vertical and horizontal layouts.',
+        component: `
+FormGroup is a compound component that wraps **related form controls** in a semantic \`<fieldset>\` element.
+
+## When to Use
+- Radio button groups (single selection)
+- Checkbox groups (multiple selection)
+- Any set of inputs that share a common label/question
+
+## Sub-Components
+| Component | Purpose |
+|-----------|---------|
+| \`FormGroup.Legend\` | Accessible group label (renders as \`<legend>\`) |
+| \`FormGroup.Description\` | Additional context (always visible) |
+| \`FormGroup.Options\` | **Container for inputs** — applies orientation layout |
+| \`FormGroup.ErrorMessage\` | Validation error (shown when error) |
+
+## Context Sharing
+Props passed to FormGroup are automatically shared with sub-components:
+- \`error\` → Shows ErrorMessage, sets \`aria-invalid\`
+- \`required\` → Shows asterisk (*) on Legend, sets \`aria-required\`
+- \`disabled\` → Dims Legend, disables all children
+- \`orientation\` → Controls \`FormGroup.Options\` layout direction
+
+## Usage
+\`\`\`tsx
+<FormGroup orientation="horizontal" required>
+  <FormGroup.Legend>Size</FormGroup.Legend>
+  <FormGroup.Options>
+    <Radio name="size" label="S" />
+    <Radio name="size" label="M" />
+    <Radio name="size" label="L" />
+  </FormGroup.Options>
+</FormGroup>
+\`\`\`
+
+## vs FormField
+Use **FormGroup** for related inputs (radio/checkbox groups). Use **FormField** for single inputs with their own label.
+        `,
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
     orientation: {
-      control: 'select',
+      control: 'radio',
       options: ['vertical', 'horizontal'],
-      description: 'Layout direction for child elements',
+      description: 'Layout direction for child elements.',
+      table: { defaultValue: { summary: 'vertical' } },
     },
     error: {
       control: 'boolean',
-      description: 'Enables error state styling',
+      description: 'Enables error state. Shows ErrorMessage.',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    required: {
+      control: 'boolean',
+      description: 'Shows required indicator (*) on Legend.',
+      table: { defaultValue: { summary: 'false' } },
     },
     disabled: {
       control: 'boolean',
-      description: 'Disables the entire form group',
+      description: 'Disables fieldset and dims Legend.',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    errorId: {
+      control: 'text',
+      description: 'Custom ID for error message. Auto-generated if not provided.',
     },
   },
 };
@@ -38,268 +87,309 @@ const meta: Meta<typeof FormGroup> = {
 export default meta;
 type Story = StoryObj<typeof FormGroup>;
 
-export const Default: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Basic FormGroup with Legend sub-component and vertically stacked checkboxes.',
-      },
-    },
+// =============================================================================
+// Playground (for argTypes controls)
+// =============================================================================
+
+export const Playground: Story = {
+  args: {
+    orientation: 'vertical',
+    error: false,
+    required: false,
+    disabled: false,
   },
-  render: () => (
-    <FormGroup>
-      <FormGroup.Legend>Select your preferences</FormGroup.Legend>
-      <Checkbox label="Option 1" />
-      <Checkbox label="Option 2" />
-      <Checkbox label="Option 3" />
+  render: (args) => (
+    <FormGroup {...args}>
+      <FormGroup.Legend>Notification Preferences</FormGroup.Legend>
+      <FormGroup.Description>Choose how you want to be notified</FormGroup.Description>
+      <FormGroup.Options>
+        <Checkbox label="Email" disabled={args.disabled} />
+        <Checkbox label="SMS" disabled={args.disabled} />
+        <Checkbox label="Push notifications" disabled={args.disabled} />
+      </FormGroup.Options>
+      <FormGroup.ErrorMessage>Please select at least one option</FormGroup.ErrorMessage>
     </FormGroup>
   ),
 };
 
-export const WithDescription: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Add a Description sub-component to provide additional context about the group of options.',
-      },
-    },
-  },
-  render: () => (
-    <FormGroup>
-      <FormGroup.Legend>Notification Settings</FormGroup.Legend>
-      <FormGroup.Description>
-        Choose how you want to be notified about updates
-      </FormGroup.Description>
-      <Checkbox label="Email notifications" />
-      <Checkbox label="SMS notifications" />
-      <Checkbox label="Push notifications" />
-    </FormGroup>
-  ),
-};
+// =============================================================================
+// Use Cases: Radio Groups
+// =============================================================================
 
+/**
+ * Single-selection radio group for mutually exclusive options.
+ */
 export const RadioGroup: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Use FormGroup to create accessible radio button groups where only one option can be selected.',
-      },
-    },
-  },
   render: () => (
     <FormGroup>
-      <FormGroup.Legend>Select payment method</FormGroup.Legend>
-      <Radio name="payment" label="Credit Card" />
-      <Radio name="payment" label="PayPal" />
-      <Radio name="payment" label="Bank Transfer" />
+      <FormGroup.Legend>Payment Method</FormGroup.Legend>
+      <FormGroup.Options>
+        <Radio name="payment" label="Credit Card" />
+        <Radio name="payment" label="PayPal" />
+        <Radio name="payment" label="Bank Transfer" />
+      </FormGroup.Options>
     </FormGroup>
   ),
 };
 
-export const CheckboxGroup: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Use FormGroup for multiple selection scenarios where users can choose several options.',
-      },
-    },
-  },
+/**
+ * Required radio group with validation.
+ */
+export const RequiredRadioGroup: Story = {
   render: () => (
-    <FormGroup>
-      <FormGroup.Legend>Select interests</FormGroup.Legend>
-      <FormGroup.Description>Choose all that apply</FormGroup.Description>
-      <Checkbox label="Technology" />
-      <Checkbox label="Design" />
-      <Checkbox label="Business" />
-      <Checkbox label="Marketing" />
+    <FormGroup required error>
+      <FormGroup.Legend>Subscription Plan</FormGroup.Legend>
+      <FormGroup.Description>Select your preferred plan</FormGroup.Description>
+      <FormGroup.Options>
+        <Radio name="plan" label="Free - $0/month" />
+        <Radio name="plan" label="Pro - $9/month" />
+        <Radio name="plan" label="Enterprise - Contact us" />
+      </FormGroup.Options>
+      <FormGroup.ErrorMessage>Please select a plan to continue</FormGroup.ErrorMessage>
     </FormGroup>
   ),
 };
 
-export const Horizontal: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Horizontal orientation displays options in a row. Best for small sets of options with short labels.',
-      },
-    },
-  },
+/**
+ * Horizontal radio group for compact layouts.
+ */
+export const HorizontalRadioGroup: Story = {
   render: () => (
     <FormGroup orientation="horizontal">
-      <FormGroup.Legend>Choose size</FormGroup.Legend>
-      <Radio name="size" label="Small" />
-      <Radio name="size" label="Medium" />
-      <Radio name="size" label="Large" />
+      <FormGroup.Legend>Size</FormGroup.Legend>
+      <FormGroup.Options>
+        <Radio name="size" label="S" />
+        <Radio name="size" label="M" />
+        <Radio name="size" label="L" />
+        <Radio name="size" label="XL" />
+      </FormGroup.Options>
     </FormGroup>
   ),
 };
 
-export const VerticalCheckboxes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Vertical orientation (default) stacks options vertically for better readability with longer labels.',
-      },
-    },
-  },
+// =============================================================================
+// Use Cases: Checkbox Groups
+// =============================================================================
+
+/**
+ * Multi-selection checkbox group.
+ */
+export const CheckboxGroup: Story = {
   render: () => (
-    <FormGroup orientation="vertical">
-      <FormGroup.Legend>Privacy Settings</FormGroup.Legend>
-      <Checkbox label="Allow personalized recommendations" />
-      <Checkbox label="Share usage data for product improvement" />
-      <Checkbox label="Receive promotional emails" />
+    <FormGroup>
+      <FormGroup.Legend>Interests</FormGroup.Legend>
+      <FormGroup.Description>Select all that apply</FormGroup.Description>
+      <FormGroup.Options>
+        <Checkbox label="Technology" />
+        <Checkbox label="Design" />
+        <Checkbox label="Business" />
+        <Checkbox label="Marketing" />
+      </FormGroup.Options>
     </FormGroup>
   ),
 };
 
-export const WithError: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Error state for validation when a required selection is not made or is invalid.',
-      },
-    },
-  },
+/**
+ * Terms acceptance with required validation.
+ */
+export const TermsAcceptance: Story = {
   render: () => (
-    <FormGroup error>
-      <FormGroup.Legend>Accept terms</FormGroup.Legend>
-      <Checkbox label="I accept the terms and conditions" />
+    <FormGroup required error>
+      <FormGroup.Legend>Terms & Conditions</FormGroup.Legend>
+      <FormGroup.Options>
+        <Checkbox label="I accept the terms of service" />
+        <Checkbox label="I agree to receive marketing emails" />
+      </FormGroup.Options>
       <FormGroup.ErrorMessage>You must accept the terms to continue</FormGroup.ErrorMessage>
     </FormGroup>
   ),
 };
 
-export const ErrorWithDescription: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Error message is displayed in addition to the description, not as a replacement.',
-      },
-    },
-  },
-  render: () => (
-    <FormGroup error>
-      <FormGroup.Legend>Select at least one option</FormGroup.Legend>
-      <FormGroup.Description>Choose your preferred contact methods</FormGroup.Description>
-      <Checkbox label="Email" />
-      <Checkbox label="Phone" />
-      <Checkbox label="Mail" />
-      <FormGroup.ErrorMessage>Please select at least one contact method</FormGroup.ErrorMessage>
-    </FormGroup>
-  ),
-};
-
-export const LongDescription: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Description can be longer text that provides detailed context for the form group.',
-      },
-    },
-  },
+/**
+ * Privacy settings with detailed description.
+ */
+export const PrivacySettings: Story = {
   render: () => (
     <FormGroup>
       <FormGroup.Legend>Data Sharing Preferences</FormGroup.Legend>
       <FormGroup.Description>
-        We respect your privacy. Select which types of data you are comfortable sharing with our
-        partners. You can change these settings at any time from your account preferences.
+        We respect your privacy. Select which types of data you're comfortable sharing.
+        You can change these settings at any time.
       </FormGroup.Description>
-      <Checkbox label="Basic profile information" />
-      <Checkbox label="Usage analytics" />
-      <Checkbox label="Marketing preferences" />
+      <FormGroup.Options>
+        <Checkbox label="Basic profile information" />
+        <Checkbox label="Usage analytics" />
+        <Checkbox label="Marketing preferences" />
+      </FormGroup.Options>
     </FormGroup>
   ),
 };
 
-export const NestedFormFields: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'FormGroup can contain FormField components for complex form sections with multiple labeled inputs.',
-      },
-    },
-  },
+// =============================================================================
+// Use Cases: Nested FormFields
+// =============================================================================
+
+/**
+ * Address form section with multiple labeled inputs.
+ */
+export const AddressSection: Story = {
   render: () => (
     <FormGroup>
       <FormGroup.Legend>Shipping Address</FormGroup.Legend>
       <FormGroup.Description>Enter your delivery address</FormGroup.Description>
-      <FormField>
-        <FormField.Label htmlFor="street">Street Address</FormField.Label>
-        <Input id="street" placeholder="123 Main St" />
-      </FormField>
-      <FormField>
-        <FormField.Label htmlFor="city">City</FormField.Label>
-        <Input id="city" placeholder="New York" />
-      </FormField>
-      <FormField>
-        <FormField.Label htmlFor="zip">Zip Code</FormField.Label>
-        <Input id="zip" placeholder="10001" />
-      </FormField>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <FormField required>
+          <FormField.Label htmlFor="street">Street Address</FormField.Label>
+          <Input id="street" placeholder="123 Main St" />
+        </FormField>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <FormField required>
+            <FormField.Label htmlFor="city">City</FormField.Label>
+            <Input id="city" placeholder="New York" />
+          </FormField>
+          <FormField required>
+            <FormField.Label htmlFor="zip">Zip Code</FormField.Label>
+            <Input id="zip" placeholder="10001" />
+          </FormField>
+        </div>
+      </div>
     </FormGroup>
   ),
 };
 
-export const MixedChildren: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'FormGroup can contain a mix of different form control types when semantically appropriate.',
-      },
-    },
+// =============================================================================
+// Interactive Examples
+// =============================================================================
+
+/**
+ * Live validation demonstrating dynamic error state.
+ */
+export const LiveValidation: Story = {
+  render: function LiveValidationExample() {
+    const [selected, setSelected] = useState<string[]>([]);
+    const [touched, setTouched] = useState(false);
+
+    const hasError = touched && selected.length === 0;
+
+    const handleChange = (value: string, checked: boolean) => {
+      setTouched(true);
+      setSelected((prev) =>
+        checked ? [...prev, value] : prev.filter((v) => v !== value)
+      );
+    };
+
+    return (
+      <FormGroup required error={hasError}>
+        <FormGroup.Legend>Contact Methods</FormGroup.Legend>
+        <FormGroup.Description>Select at least one way to reach you</FormGroup.Description>
+        <FormGroup.Options>
+          <Checkbox
+            label="Email"
+            checked={selected.includes('email')}
+            onChange={(e) => handleChange('email', e.target.checked)}
+          />
+          <Checkbox
+            label="Phone"
+            checked={selected.includes('phone')}
+            onChange={(e) => handleChange('phone', e.target.checked)}
+          />
+          <Checkbox
+            label="Mail"
+            checked={selected.includes('mail')}
+            onChange={(e) => handleChange('mail', e.target.checked)}
+          />
+        </FormGroup.Options>
+        <FormGroup.ErrorMessage>Please select at least one contact method</FormGroup.ErrorMessage>
+      </FormGroup>
+    );
   },
+};
+
+// =============================================================================
+// States Overview
+// =============================================================================
+
+/**
+ * All FormGroup states for visual comparison.
+ */
+export const AllStates: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   render: () => (
-    <FormGroup>
-      <FormGroup.Legend>Account Preferences</FormGroup.Legend>
-      <Checkbox label="Enable two-factor authentication" />
-      <Checkbox label="Show online status" />
-      <FormField>
-        <FormField.Label htmlFor="display-name">Display Name</FormField.Label>
-        <Input id="display-name" placeholder="Your public name" />
-      </FormField>
-    </FormGroup>
+    <>
+      <FormGroup>
+        <FormGroup.Legend>Default</FormGroup.Legend>
+        <FormGroup.Options>
+          <Checkbox label="Option A" />
+          <Checkbox label="Option B" />
+        </FormGroup.Options>
+      </FormGroup>
+
+      <FormGroup required>
+        <FormGroup.Legend>Required</FormGroup.Legend>
+        <FormGroup.Description>Shows asterisk on legend</FormGroup.Description>
+        <FormGroup.Options>
+          <Checkbox label="Option A" />
+          <Checkbox label="Option B" />
+        </FormGroup.Options>
+      </FormGroup>
+
+      <FormGroup error>
+        <FormGroup.Legend>Error</FormGroup.Legend>
+        <FormGroup.Options>
+          <Checkbox label="Option A" />
+          <Checkbox label="Option B" />
+        </FormGroup.Options>
+        <FormGroup.ErrorMessage>Validation error message</FormGroup.ErrorMessage>
+      </FormGroup>
+
+      <FormGroup error required>
+        <FormGroup.Legend>Required + Error</FormGroup.Legend>
+        <FormGroup.Options>
+          <Checkbox label="Option A" />
+          <Checkbox label="Option B" />
+        </FormGroup.Options>
+        <FormGroup.ErrorMessage>This required group has an error</FormGroup.ErrorMessage>
+      </FormGroup>
+
+      <FormGroup disabled>
+        <FormGroup.Legend>Disabled</FormGroup.Legend>
+        <FormGroup.Options>
+          <Checkbox label="Option A" disabled />
+          <Checkbox label="Option B" disabled />
+        </FormGroup.Options>
+      </FormGroup>
+    </>
   ),
 };
 
-export const AllOrientations: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Comparison of vertical and horizontal orientations side by side.',
-      },
-    },
-  },
+/**
+ * Orientation comparison side by side.
+ */
+export const OrientationComparison: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '48px' }}>
       <FormGroup orientation="vertical">
-        <FormGroup.Legend>Vertical (Default)</FormGroup.Legend>
-        <Radio name="v-size" label="Small" />
-        <Radio name="v-size" label="Medium" />
-        <Radio name="v-size" label="Large" />
+        <FormGroup.Legend>Vertical</FormGroup.Legend>
+        <FormGroup.Options>
+          <Radio name="v" label="Option A" />
+          <Radio name="v" label="Option B" />
+          <Radio name="v" label="Option C" />
+        </FormGroup.Options>
       </FormGroup>
       <FormGroup orientation="horizontal">
         <FormGroup.Legend>Horizontal</FormGroup.Legend>
-        <Radio name="h-size" label="Small" />
-        <Radio name="h-size" label="Medium" />
-        <Radio name="h-size" label="Large" />
+        <FormGroup.Options>
+          <Radio name="h" label="Option A" />
+          <Radio name="h" label="Option B" />
+          <Radio name="h" label="Option C" />
+        </FormGroup.Options>
       </FormGroup>
     </div>
-  ),
-};
-
-export const RequiredGroup: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Indicate that at least one selection is required within the group.',
-      },
-    },
-  },
-  render: () => (
-    <FormGroup>
-      <FormGroup.Legend>Subscription Type *</FormGroup.Legend>
-      <FormGroup.Description>Please select your preferred plan</FormGroup.Description>
-      <Radio name="plan" label="Free" />
-      <Radio name="plan" label="Pro - $9/month" />
-      <Radio name="plan" label="Enterprise - Contact us" />
-    </FormGroup>
   ),
 };

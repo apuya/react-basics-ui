@@ -8,7 +8,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 export type TextSize = 'caption' | 'small' | 'body' | 'subtitle';
 
 /** Available text weight variants */
-export type TextWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold';
+export type TextWeight = 'light' | 'normal' | 'medium' | 'semibold' | 'bold';
 
 /** Available text color variants */
 export type TextColor =
@@ -33,7 +33,7 @@ export type TextAlign = 'left' | 'center' | 'right';
 export type TextFontFamily = 'body' | 'mono';
 
 /** Available HTML elements for Text component */
-export type TextElement = 'span' | 'p' | 'label' | 'div' | 'strong' | 'em' | 'small';
+export type TextElement = 'span' | 'p' | 'label' | 'div' | 'strong' | 'em' | 'small' | 'legend';
 
 // =============================================================================
 // Props
@@ -55,7 +55,7 @@ export interface TextProps extends Omit<ComponentPropsWithoutRef<'span'>, 'ref'>
   size?: TextSize;
   /**
    * The font weight variant.
-   * @default 'regular'
+   * @default 'normal'
    */
   weight?: TextWeight;
   /**

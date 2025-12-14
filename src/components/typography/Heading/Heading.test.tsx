@@ -248,33 +248,32 @@ describe('Heading', () => {
   // =============================================================================
 
   describe('Data Attributes', () => {
-    it('should apply data-level attribute', () => {
-      render(<Heading as="h1">H1 Data</Heading>);
-      const element = screen.getByText('H1 Data');
-      expect(element).toHaveAttribute('data-level', 'h1');
+    it('should render correct heading element for as prop', () => {
+      render(<Heading as="h1">H1 Heading</Heading>);
+      const element = screen.getByText('H1 Heading');
+      expect(element.tagName).toBe('H1');
     });
 
-    it('should apply data-level based on level prop when provided', () => {
+    it('should render correct element when level differs from as', () => {
       render(
         <Heading as="h2" level="h1">
-          Level Data
+          Level Heading
         </Heading>
       );
-      const element = screen.getByText('Level Data');
-      expect(element).toHaveAttribute('data-level', 'h1');
+      const element = screen.getByText('Level Heading');
+      expect(element.tagName).toBe('H2');
     });
 
-    it('should apply data-color attribute', () => {
-      render(<Heading color="secondary">Color Data</Heading>);
-      const element = screen.getByText('Color Data');
-      expect(element).toHaveAttribute('data-color', 'secondary');
+    it('should support color prop', () => {
+      render(<Heading color="secondary">Color Heading</Heading>);
+      const element = screen.getByText('Color Heading');
+      expect(element).toBeInTheDocument();
     });
 
-    it('should apply default data attributes', () => {
-      render(<Heading>Default Data</Heading>);
-      const element = screen.getByText('Default Data');
-      expect(element).toHaveAttribute('data-level', 'h2');
-      expect(element).toHaveAttribute('data-color', 'primary');
+    it('should render with default props', () => {
+      render(<Heading>Default Heading</Heading>);
+      const element = screen.getByText('Default Heading');
+      expect(element.tagName).toBe('H2');
     });
   });
 

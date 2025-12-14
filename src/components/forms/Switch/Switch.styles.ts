@@ -30,6 +30,3 @@ export const SIZE_THUMB_CHECKED_STYLES = {
   default: 'peer-checked:[&>span]:translate-x-[calc(var(--component-switch-width-default)-var(--component-switch-thumb-size-default)-var(--component-switch-thumb-travel-offset))]',
   large: 'peer-checked:[&>span]:translate-x-[calc(var(--component-switch-width-large)-var(--component-switch-thumb-size-large)-var(--component-switch-thumb-travel-offset))]',
 } as const;
-
-export const LABEL_CLASSES =
-  'text-[length:var(--component-switch-label-size)] font-[number:var(--component-switch-label-weight)] text-[color:var(--component-switch-label-color)]';

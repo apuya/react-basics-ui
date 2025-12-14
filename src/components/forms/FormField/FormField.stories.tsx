@@ -13,22 +13,28 @@ const meta: Meta<typeof FormField> = {
     docs: {
       description: {
         component: `
-FormField is a compound component that provides consistent layout and state management for form controls.
+FormField is a compound component for **single form controls** with label, helper text, and error messaging.
 
-## Features
-- **Automatic State Sharing**: Error, disabled, and required states are shared via context
-- **Compound Components**: FormField.Label, FormField.HelperText, FormField.ErrorMessage
-- **Accessibility**: Auto-generated IDs for aria-describedby linking
-- **Flexible**: Use with any form control component
+## When to Use
+- Single input fields (text, email, password, select, textarea)
+- Fields that need their own label and validation message
+- Any form control that requires \`<label>\` semantics
 
-## Usage
-\`\`\`tsx
-<FormField error required>
-  <FormField.Label htmlFor="email">Email</FormField.Label>
-  <Input id="email" aria-describedby={helperId} />
-  <FormField.ErrorMessage>Email is required</FormField.ErrorMessage>
-</FormField>
-\`\`\`
+## Sub-Components
+| Component | Purpose |
+|-----------|---------|
+| \`FormField.Label\` | Accessible label with required indicator |
+| \`FormField.HelperText\` | Guidance text (hidden when error) |
+| \`FormField.ErrorMessage\` | Error text (shown when error) |
+
+## Context Sharing
+Props passed to FormField are automatically shared with sub-components:
+- \`error\` → Label color, shows ErrorMessage instead of HelperText
+- \`required\` → Shows asterisk (*) on Label
+- \`disabled\` → Dims Label text
+
+## vs FormGroup
+Use **FormField** for single inputs. Use **FormGroup** (fieldset) for related inputs like radio/checkbox groups.
         `,
       },
     },
@@ -37,182 +43,260 @@ FormField is a compound component that provides consistent layout and state mana
   argTypes: {
     error: {
       control: 'boolean',
-      description: 'Error state (shared with sub-components)',
+      description: 'Enables error state. Shows ErrorMessage, hides HelperText.',
+      table: { defaultValue: { summary: 'false' } },
     },
     required: {
       control: 'boolean',
-      description: 'Required state (shared with sub-components)',
+      description: 'Shows required indicator (*) on Label.',
+      table: { defaultValue: { summary: 'false' } },
     },
     disabled: {
       control: 'boolean',
-      description: 'Disabled state (shared with sub-components)',
+      description: 'Dims Label text color.',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    helperId: {
+      control: 'text',
+      description: 'Custom ID for helper/error text. Auto-generated if not provided.',
     },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ width: '320px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
 type Story = StoryObj<typeof FormField>;
 
 // =============================================================================
-// Basic Usage
+// Playground (for argTypes controls)
 // =============================================================================
 
-export const Basic: Story = {
-  render: () => (
-    <div style={{ width: '320px' }}>
-      <FormField>
-        <FormField.Label htmlFor="email">Email</FormField.Label>
-        <Input id="email" placeholder="Enter your email" />
-        <FormField.HelperText>We'll never share your email</FormField.HelperText>
-      </FormField>
-    </div>
+export const Playground: Story = {
+  args: {
+    error: false,
+    required: false,
+    disabled: false,
+  },
+  render: (args) => (
+    <FormField {...args}>
+      <FormField.Label htmlFor="playground">Email Address</FormField.Label>
+      <Input
+        id="playground"
+        type="email"
+        placeholder="you@example.com"
+        error={args.error}
+        disabled={args.disabled}
+      />
+      <FormField.HelperText>We'll never share your email</FormField.HelperText>
+      <FormField.ErrorMessage>Please enter a valid email</FormField.ErrorMessage>
+    </FormField>
   ),
 };
 
-export const Required: Story = {
+// =============================================================================
+// Use Cases
+// =============================================================================
+
+/**
+ * Standard text input with helper text providing guidance.
+ */
+export const TextInput: Story = {
   render: () => (
-    <div style={{ width: '320px' }}>
-      <FormField required>
-        <FormField.Label htmlFor="username">Username</FormField.Label>
-        <Input id="username" placeholder="Enter username" />
-        <FormField.HelperText>Username must be unique</FormField.HelperText>
-      </FormField>
-    </div>
+    <FormField>
+      <FormField.Label htmlFor="username">Username</FormField.Label>
+      <Input id="username" placeholder="Enter username" />
+      <FormField.HelperText>3-20 characters, letters and numbers only</FormField.HelperText>
+    </FormField>
   ),
 };
 
+/**
+ * Email field with required indicator and validation.
+ */
+export const RequiredField: Story = {
+  render: () => (
+    <FormField required>
+      <FormField.Label htmlFor="email">Email</FormField.Label>
+      <Input id="email" type="email" placeholder="you@example.com" />
+      <FormField.HelperText>Required for account recovery</FormField.HelperText>
+    </FormField>
+  ),
+};
+
+/**
+ * Password field with validation error.
+ */
 export const WithError: Story = {
   render: () => (
-    <div style={{ width: '320px' }}>
-      <FormField error>
-        <FormField.Label htmlFor="email-error">Email</FormField.Label>
-        <Input id="email-error" error placeholder="Enter your email" />
-        <FormField.ErrorMessage>Please enter a valid email address</FormField.ErrorMessage>
-      </FormField>
-    </div>
+    <FormField error required>
+      <FormField.Label htmlFor="password">Password</FormField.Label>
+      <Input id="password" type="password" error />
+      <FormField.ErrorMessage>Password must be at least 8 characters</FormField.ErrorMessage>
+    </FormField>
   ),
 };
 
-export const RequiredWithError: Story = {
+/**
+ * Disabled field with dimmed label.
+ */
+export const Disabled: Story = {
   render: () => (
-    <div style={{ width: '320px' }}>
-      <FormField error required>
-        <FormField.Label htmlFor="password">Password</FormField.Label>
-        <Input id="password" type="password" error />
-        <FormField.ErrorMessage>Password is required</FormField.ErrorMessage>
-      </FormField>
-    </div>
+    <FormField disabled>
+      <FormField.Label htmlFor="readonly">Account ID</FormField.Label>
+      <Input id="readonly" value="USR-12345" disabled />
+      <FormField.HelperText>Contact support to change this</FormField.HelperText>
+    </FormField>
   ),
 };
 
-// =============================================================================
-// With Different Controls
-// =============================================================================
-
+/**
+ * Select dropdown for choosing from predefined options.
+ */
 export const WithSelect: Story = {
   render: () => (
-    <div style={{ width: '320px' }}>
-      <FormField>
-        <FormField.Label htmlFor="country">Country</FormField.Label>
-        <Select id="country">
-          <option value="">Select a country</option>
-          <option value="us">United States</option>
-          <option value="uk">United Kingdom</option>
-          <option value="ca">Canada</option>
-        </Select>
-        <FormField.HelperText>Select your country of residence</FormField.HelperText>
-      </FormField>
-    </div>
+    <FormField required>
+      <FormField.Label htmlFor="country">Country</FormField.Label>
+      <Select id="country">
+        <option value="">Select a country</option>
+        <option value="us">United States</option>
+        <option value="uk">United Kingdom</option>
+        <option value="ca">Canada</option>
+        <option value="au">Australia</option>
+      </Select>
+      <FormField.HelperText>Used for shipping calculations</FormField.HelperText>
+    </FormField>
   ),
 };
 
+/**
+ * Textarea for multi-line content with character guidance.
+ */
 export const WithTextarea: Story = {
   render: () => (
-    <div style={{ width: '320px' }}>
-      <FormField required>
-        <FormField.Label htmlFor="bio">Bio</FormField.Label>
-        <Textarea id="bio" placeholder="Tell us about yourself" rows={4} />
-        <FormField.HelperText>Maximum 500 characters</FormField.HelperText>
-      </FormField>
-    </div>
+    <FormField>
+      <FormField.Label htmlFor="bio">Bio</FormField.Label>
+      <Textarea id="bio" placeholder="Tell us about yourself..." rows={4} />
+      <FormField.HelperText>Maximum 500 characters</FormField.HelperText>
+    </FormField>
   ),
 };
 
 // =============================================================================
-// Interactive Example
+// Interactive Examples
 // =============================================================================
 
-export const InteractiveValidation: Story = {
-  render: () => {
-    const [email, setEmail] = useState('');
-    const [error, setError] = useState(false);
+/**
+ * Real-time email validation demonstrating dynamic error/helper text switching.
+ */
+export const LiveValidation: Story = {
+  render: function LiveValidationExample() {
+    const [value, setValue] = useState('');
+    const [touched, setTouched] = useState(false);
 
-    const validateEmail = (value: string) => {
-      const isValid = value.includes('@') && value.includes('.');
-      setError(!isValid && value.length > 0);
-    };
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    const showError = touched && value.length > 0 && !isValid;
 
     return (
-      <div style={{ width: '320px' }}>
-        <FormField error={error} required>
-          <FormField.Label htmlFor="email-interactive">Email</FormField.Label>
-          <Input
-            id="email-interactive"
-            type="email"
-            value={email}
-            error={error}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              validateEmail(e.target.value);
-            }}
-            placeholder="Enter your email"
-          />
-          {error ? (
-            <FormField.ErrorMessage>Please enter a valid email address</FormField.ErrorMessage>
-          ) : (
-            <FormField.HelperText>We'll never share your email</FormField.HelperText>
-          )}
-        </FormField>
-      </div>
+      <FormField error={showError} required>
+        <FormField.Label htmlFor="live-email">Email</FormField.Label>
+        <Input
+          id="live-email"
+          type="email"
+          value={value}
+          error={showError}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={() => setTouched(true)}
+          placeholder="you@example.com"
+        />
+        <FormField.HelperText>We'll send a confirmation email</FormField.HelperText>
+        <FormField.ErrorMessage>Please enter a valid email address</FormField.ErrorMessage>
+      </FormField>
     );
   },
 };
 
-// =============================================================================
-// All States Overview
-// =============================================================================
-
-export const AllStates: Story = {
+/**
+ * Form section with multiple fields demonstrating consistent spacing.
+ */
+export const MultipleFields: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ width: '320px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '320px' }}>
-      <FormField>
-        <FormField.Label htmlFor="state-default">Default</FormField.Label>
-        <Input id="state-default" placeholder="Default state" />
+    <>
+      <FormField required>
+        <FormField.Label htmlFor="first-name">First Name</FormField.Label>
+        <Input id="first-name" placeholder="John" />
       </FormField>
-
+      <FormField required>
+        <FormField.Label htmlFor="last-name">Last Name</FormField.Label>
+        <Input id="last-name" placeholder="Doe" />
+      </FormField>
       <FormField>
-        <FormField.Label htmlFor="state-helper">With Helper</FormField.Label>
-        <Input id="state-helper" placeholder="With helper text" />
-        <FormField.HelperText>Helper text here</FormField.HelperText>
+        <FormField.Label htmlFor="phone">Phone (optional)</FormField.Label>
+        <Input id="phone" type="tel" placeholder="+1 (555) 000-0000" />
+        <FormField.HelperText>For delivery updates only</FormField.HelperText>
+      </FormField>
+    </>
+  ),
+};
+
+// =============================================================================
+// States Overview
+// =============================================================================
+
+/**
+ * All FormField states for visual comparison.
+ */
+export const AllStates: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ width: '320px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: () => (
+    <>
+      <FormField>
+        <FormField.Label htmlFor="s-default">Default</FormField.Label>
+        <Input id="s-default" placeholder="Default state" />
+        <FormField.HelperText>Helper text</FormField.HelperText>
       </FormField>
 
       <FormField required>
-        <FormField.Label htmlFor="state-required">Required</FormField.Label>
-        <Input id="state-required" placeholder="Required field" />
+        <FormField.Label htmlFor="s-required">Required</FormField.Label>
+        <Input id="s-required" placeholder="Required field" />
         <FormField.HelperText>This field is required</FormField.HelperText>
       </FormField>
 
       <FormField error>
-        <FormField.Label htmlFor="state-error">Error</FormField.Label>
-        <Input id="state-error" error placeholder="Error state" />
-        <FormField.ErrorMessage>This field has an error</FormField.ErrorMessage>
+        <FormField.Label htmlFor="s-error">Error</FormField.Label>
+        <Input id="s-error" error placeholder="Invalid input" />
+        <FormField.ErrorMessage>Validation error message</FormField.ErrorMessage>
+      </FormField>
+
+      <FormField error required>
+        <FormField.Label htmlFor="s-both">Required + Error</FormField.Label>
+        <Input id="s-both" error placeholder="Required with error" />
+        <FormField.ErrorMessage>This required field has an error</FormField.ErrorMessage>
       </FormField>
 
       <FormField disabled>
-        <FormField.Label htmlFor="state-disabled">Disabled</FormField.Label>
-        <Input id="state-disabled" disabled placeholder="Disabled state" />
+        <FormField.Label htmlFor="s-disabled">Disabled</FormField.Label>
+        <Input id="s-disabled" disabled value="Locked value" />
         <FormField.HelperText>This field is disabled</FormField.HelperText>
       </FormField>
-    </div>
+    </>
   ),
 };

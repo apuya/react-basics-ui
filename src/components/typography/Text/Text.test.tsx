@@ -65,9 +65,9 @@ describe('Text', () => {
   });
 
   describe('Weight Variants', () => {
-    it('should apply regular weight by default', () => {
-      render(<Text>Regular Text</Text>);
-      const element = screen.getByText('Regular Text');
+    it('should apply normal weight by default', () => {
+      render(<Text>Normal Text</Text>);
+      const element = screen.getByText('Normal Text');
       expect(element).toHaveClass('font-[number:var(--component-text-font-weight-regular)]');
     });
 

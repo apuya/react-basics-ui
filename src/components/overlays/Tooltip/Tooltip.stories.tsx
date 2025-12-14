@@ -4,7 +4,7 @@ import { Tooltip } from './Tooltip';
 import type { TooltipPosition } from './Tooltip.types';
 import { Button } from '@/components/actions/Button';
 import { Input } from '@/components/forms/Input';
-import { Label } from '@/components/forms/Label';
+import { Label } from '@/components/typography/Label';
 import { Text } from '@/components/typography/Text';
 import { Icon } from '@/components/utility/Icon';
 import { Stack } from '@/components/layout/Stack';

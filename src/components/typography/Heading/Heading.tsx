@@ -1,28 +1,15 @@
-import { cn } from '@/lib/cn';
-import { forwardRef, memo, useMemo, type ElementType } from 'react';
+import { forwardRef, memo } from 'react';
 import type { HeadingProps } from './Heading.types';
-import {
-  ALIGN_STYLES,
-  COLOR_STYLES,
-  FONT_FAMILY_STYLES,
-  LEVEL_STYLES,
-} from './Heading.styles';
-
-// Re-export types from types file
-export type {
-  HeadingProps,
-  HeadingLevel,
-  HeadingColor,
-  HeadingAlign,
-  HeadingFontFamily,
-} from './Heading.types';
+import { BaseText } from '../BaseText';
 
 /**
- * A semantic heading component with configurable levels and styling.
+ * Semantic heading component with configurable levels.
+ * A thin wrapper around BaseText with heading-appropriate defaults.
  *
  * @example
  * ```tsx
  * <Heading as="h1" color="primary">Page Title</Heading>
+ * <Heading level="h3" as="h2">Visually h3, semantically h2</Heading>
  * ```
  */
 export const Heading = memo(
@@ -31,41 +18,24 @@ export const Heading = memo(
       as,
       level,
       color = 'primary',
-      align,
       fontFamily = 'heading',
-      truncate = false,
-      children,
-      className,
-      ...rest
+      ...props
     },
     ref
   ) {
-    const semanticLevel = level || as || 'h2';
-    const Component = (as || level || 'h2') as ElementType;
-
-    const headingClasses = useMemo(
-      () =>
-        cn(
-          LEVEL_STYLES[semanticLevel],
-          COLOR_STYLES[color],
-          FONT_FAMILY_STYLES[fontFamily],
-          align && ALIGN_STYLES[align],
-          truncate && 'truncate',
-          className
-        ),
-      [semanticLevel, color, fontFamily, align, truncate, className]
-    );
+    const element = as || level || 'h2';
+    const visualLevel = level || as || 'h2';
 
     return (
-      <Component
+      <BaseText
         ref={ref}
-        className={headingClasses}
-        data-level={semanticLevel}
-        data-color={color}
-        {...rest}
-      >
-        {children}
-      </Component>
+        as={element}
+        variant="heading"
+        size={visualLevel}
+        color={color}
+        fontFamily={fontFamily}
+        {...props}
+      />
     );
   })
 );

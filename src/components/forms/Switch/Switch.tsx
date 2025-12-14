@@ -2,9 +2,9 @@ import { cn } from '@/lib/cn';
 import { generateFormId } from '@/lib/generateFormId';
 import { useControlledState } from '@/hooks/useControlledState';
 import { forwardRef, memo, useCallback, useMemo, type ComponentPropsWithoutRef } from 'react';
+import { Text } from '@/components/typography/Text';
 import {
   INPUT_CLASSES,
-  LABEL_CLASSES,
   SIZE_THUMB_CHECKED_STYLES,
   SIZE_THUMB_STYLES,
   SIZE_TRACK_STYLES,
@@ -106,7 +106,7 @@ export const Switch = memo(
         <span className={trackClasses} aria-hidden="true">
           <span className={thumbClasses} />
         </span>
-        {label && <span className={LABEL_CLASSES}>{label}</span>}
+        {label && <Text size="small" weight="medium">{label}</Text>}
       </label>
     );
   })

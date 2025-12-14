@@ -21,22 +21,7 @@ export const DROPZONE_CLASSES =
 export const DROPZONE_DRAG_ACTIVE_CLASSES =
   'border-[color:var(--component-fileinput-border-focus)] bg-[color:var(--component-fileinput-bg-drag-active)]';
 
-export const DROPZONE_ERROR_CLASSES =
-  'border-[color:var(--component-fileinput-border-error)] hover:border-[color:var(--component-fileinput-border-error)]';
-
-export const LABEL_CLASSES =
-  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)] text-[color:var(--component-input-label-default)] mb-[length:var(--component-input-gap-compact)]';
-
-export const LABEL_ERROR_CLASSES =
-  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)] text-[color:var(--component-input-label-error)] mb-[length:var(--component-input-gap-compact)]';
-
-export const HELPER_CLASSES =
-  'mt-[length:var(--component-input-gap-compact)] text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)] text-[color:var(--component-input-helper-default)]';
-
-export const HELPER_ERROR_CLASSES =
-  'mt-[length:var(--component-input-gap-compact)] text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)] text-[color:var(--component-input-helper-error)]';
-
-export const UPLOAD_ICON_CLASSES =
+export const DROPZONE_ERROR_CLASSES =\n  'border-[color:var(--component-fileinput-border-error)] hover:border-[color:var(--component-fileinput-border-error)]';\n\nexport const UPLOAD_ICON_CLASSES =
   'text-[color:var(--component-fileinput-icon-default)]';
 
 export const UPLOAD_TEXT_CLASSES =
