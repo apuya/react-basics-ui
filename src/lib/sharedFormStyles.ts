@@ -14,15 +14,3 @@ export const HELPER_CLASSES =
 
 export const HELPER_ERROR_CLASSES =
   'mt-[length:var(--component-input-gap-compact)] text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)] text-[color:var(--component-input-helper-error)]';
-
-/**
- * Get label classes based on error state
- */
-export const getLabelClasses = (hasError: boolean): string =>
-  hasError ? LABEL_ERROR_CLASSES : LABEL_CLASSES;
-
-/**
- * Get helper text classes based on error state
- */
-export const getHelperClasses = (hasError: boolean): string =>
-  hasError ? HELPER_ERROR_CLASSES : HELPER_CLASSES;

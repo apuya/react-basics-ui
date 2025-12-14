@@ -13,8 +13,8 @@ import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { cn } from '@/lib/cn';
-import { Portal } from '@/components/basic/utility/Portal';
-import { Button } from '@/components/basic/forms/Button';
+import { Portal } from '@/components/utility/Portal';
+import { Button } from '@/components/actions/Button';
 import { BiX } from 'react-icons/bi';
 
 export interface BaseOverlayDialogProps {
