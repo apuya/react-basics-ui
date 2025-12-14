@@ -81,8 +81,3 @@ export const CONTAINER_STYLES = {
 export const ICON_SIZE_STYLE = {
   fontSize: 'var(--component-alert-icon-size)',
 } as const;
-
-/**
- * Content gap style for spacing between title and body
- */
-export const CONTENT_GAP = 'var(--component-alert-content-gap)';

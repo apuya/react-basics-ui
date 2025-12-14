@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BiInfoCircle, BiEdit, BiTrash, BiShare } from 'react-icons/bi';
 import { Tooltip } from './Tooltip';
+import type { TooltipPosition } from './Tooltip.types';
 import { Button } from '../../forms/Button';
 import { Input } from '../../forms/Input';
 import { Label } from '../../forms/Label';
@@ -9,7 +10,13 @@ import { Icon } from '../../utility/Icon';
 import { Stack } from '../../layout/Stack';
 import { Grid } from '../../layout/Grid';
 
-const meta = {
+// =============================================================================
+// Storybook Meta Configuration
+// =============================================================================
+
+const TOOLTIP_POSITIONS: TooltipPosition[] = ['top', 'bottom', 'left', 'right'];
+
+const meta: Meta<typeof Tooltip> = {
   title: 'Overlay/Tooltip',
   component: Tooltip,
   parameters: {
@@ -17,20 +24,32 @@ const meta = {
     docs: {
       description: {
         component:
-          'A tooltip component that displays contextual information on hover or focus. Supports four positioning options and automatically handles visibility states with smooth transitions.',
+          'A tooltip component that displays contextual information on hover or focus. Supports four positioning options and automatically handles visibility states with smooth transitions. Tooltips are accessible by default with proper ARIA attributes.',
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
+    content: {
+      control: 'text',
+      description: 'Content to display in the tooltip',
+    },
     position: {
       control: 'select',
-      options: ['top', 'bottom', 'left', 'right'],
+      options: TOOLTIP_POSITIONS,
       description: 'Position of the tooltip relative to the trigger',
     },
     offset: {
       control: 'number',
-      description: 'Offset from the trigger element in pixels',
+      description: 'Offset from the trigger element in pixels (default: 8)',
+    },
+    id: {
+      control: 'text',
+      description: 'Custom ID for the tooltip (auto-generated if not provided)',
+    },
+    className: {
+      control: 'text',
+      description: 'Additional CSS classes for the tooltip',
     },
   },
   decorators: [
@@ -40,19 +59,43 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof Tooltip>;
+};
 
 export default meta;
 type Story = StoryObj<typeof Tooltip>;
 
+// =============================================================================
+// Default Story
+// =============================================================================
+
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Default tooltip configuration. Hover or focus the button to see the tooltip appear above the trigger element.',
+      },
+    },
+  },
   args: {
     content: 'This is a tooltip',
     children: <Button>Hover me</Button>,
   },
 };
 
+// =============================================================================
+// Position Variants
+// =============================================================================
+
 export const AllPositions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Comparison of all four tooltip positions. Use the position that best fits the available space in your layout.',
+      },
+    },
+  },
   render: () => (
     <Grid cols={2} gap="xl">
       <Tooltip content="Top tooltip" position="top">
@@ -69,16 +112,21 @@ export const AllPositions: Story = {
       </Tooltip>
     </Grid>
   ),
+};
+
+// =============================================================================
+// Trigger Element Examples
+// =============================================================================
+
+export const OnIcon: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Comparison of all four tooltip positions.',
+        story:
+          'Tooltips attached to information icons. Common pattern for providing additional context without cluttering the UI.',
       },
     },
   },
-};
-
-export const OnIcon: Story = {
   render: () => (
     <Stack direction="horizontal" spacing="lg">
       <Tooltip content="Additional information">
@@ -89,16 +137,17 @@ export const OnIcon: Story = {
       </Tooltip>
     </Stack>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tooltips attached to information icons.',
-      },
-    },
-  },
 };
 
 export const OnText: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tooltip attached to text with dotted underline styling. Use this pattern for inline definitions or term explanations.',
+      },
+    },
+  },
   args: {
     content: 'This is a helpful explanation',
     children: (
@@ -107,30 +156,36 @@ export const OnText: Story = {
       </Text>
     ),
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tooltip attached to text with dotted underline styling.',
-      },
-    },
-  },
 };
 
 export const OnDisabledButton: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tooltip explaining why a button is disabled. Essential for accessibility - users need to understand why actions are unavailable.',
+      },
+    },
+  },
   args: {
     content: 'This feature is currently unavailable',
     children: <Button disabled>Disabled</Button>,
   },
+};
+
+// =============================================================================
+// Form Integration
+// =============================================================================
+
+export const FormFieldHelp: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Tooltip explaining why a button is disabled.',
+        story:
+          'Tooltip used to provide help text for a form field. Place info icons next to labels for additional context.',
       },
     },
   },
-};
-
-export const FormFieldHelp: Story = {
   render: () => (
     <Stack spacing="sm">
       <Label className="flex items-center gap-2">
@@ -142,16 +197,17 @@ export const FormFieldHelp: Story = {
       <Input type="email" placeholder="you@example.com" />
     </Stack>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tooltip used to provide help text for a form field.',
-      },
-    },
-  },
 };
 
 export const InlineHelp: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tooltip providing inline contextual help within a paragraph. Use for technical terms or concepts that need explanation.',
+      },
+    },
+  },
   render: () => (
     <Text size="small" className="max-w-md">
       This feature uses advanced{' '}
@@ -163,16 +219,21 @@ export const InlineHelp: Story = {
       to improve accuracy and performance over time.
     </Text>
   ),
+};
+
+// =============================================================================
+// Action Buttons
+// =============================================================================
+
+export const ActionButtons: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Tooltip providing inline contextual help within a paragraph.',
+        story:
+          'Tooltips on icon-only action buttons to describe their function. Essential for accessibility when buttons have no visible text.',
       },
     },
   },
-};
-
-export const ActionButtons: Story = {
   render: () => (
     <Stack direction="horizontal" spacing="sm">
       <Tooltip content="Edit item" position="bottom">
@@ -192,16 +253,21 @@ export const ActionButtons: Story = {
       </Tooltip>
     </Stack>
   ),
+};
+
+// =============================================================================
+// Advanced Features
+// =============================================================================
+
+export const ComplexContent: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Tooltips on icon-only action buttons to describe their function.',
+        story:
+          'Tooltip with complex JSX content including formatting. Use for rich tooltip content with emphasis or structure.',
       },
     },
   },
-};
-
-export const ComplexContent: Story = {
   args: {
     content: (
       <div>
@@ -210,16 +276,17 @@ export const ComplexContent: Story = {
     ),
     children: <Button>Tips</Button>,
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tooltip with complex JSX content including formatting.',
-      },
-    },
-  },
 };
 
 export const CustomOffset: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Custom offset distance from the trigger element. Increase offset when triggers have visual effects that extend beyond their bounds.',
+      },
+    },
+  },
   render: () => (
     <Stack direction="horizontal" spacing="lg">
       <Tooltip content="Default offset (8px)" position="top">
@@ -230,11 +297,4 @@ export const CustomOffset: Story = {
       </Tooltip>
     </Stack>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Custom offset distance from the trigger element.',
-      },
-    },
-  },
 };

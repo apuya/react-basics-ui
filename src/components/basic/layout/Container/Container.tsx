@@ -1,20 +1,11 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, useMemo } from 'react';
 import { BASE_CLASSES, PADDING_STYLES, SIZE_STYLES } from './Container.styles';
+import type { ContainerProps } from './Container.types';
 
-export type ContainerSize = keyof typeof SIZE_STYLES;
-export type ContainerPadding = keyof typeof PADDING_STYLES;
-
-export interface ContainerProps extends ComponentPropsWithoutRef<'div'> {
-  /** Maximum width of the container */
-  size?: ContainerSize;
-  /** Horizontal padding of the container */
-  padding?: ContainerPadding;
-  /** Whether to center the container */
-  centered?: boolean;
-  /** Children elements */
-  children?: React.ReactNode;
-}
+// =============================================================================
+// Container Component
+// =============================================================================
 
 /**
  * A responsive container component that centers content and constrains width.

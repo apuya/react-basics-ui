@@ -1,4 +1,4 @@
-export const WRAPPER_BASE_CLASSES = 'inline-flex items-center';
+export const WRAPPER_BASE_CLASSES = 'inline-flex items-center gap-[length:var(--component-radio-gap)]';
 
 export const WRAPPER_STATE_STYLES = {
   enabled: 'cursor-pointer',

@@ -8,7 +8,7 @@ import { Heading } from '../../typography/Heading/Heading';
 import { Text } from '../../typography/Text/Text';
 import { Icon } from '../../utility/Icon/Icon';
 import { List } from './List';
-import type { ListVariant } from './List.styles';
+import type { ListVariant } from './List.types';
 
 const meta = {
   title: 'Basic/Data Display/List',

@@ -3,7 +3,6 @@ import {
   type ReactNode,
   forwardRef,
   memo,
-  useCallback,
   useMemo,
 } from 'react';
 import { BiX } from 'react-icons/bi';
@@ -12,7 +11,6 @@ import {
   BASE_CLASSES,
   BODY_STYLES,
   CONTAINER_STYLES,
-  CONTENT_GAP,
   ICON_COLOR_STYLES,
   ICON_SIZE_STYLE,
   TITLE_STYLES,
@@ -37,10 +35,14 @@ export interface AlertProps
    */
   description?: ReactNode;
   /**
-   * Whether to show the variant icon
-   * @default true
+   * Optional icon to display at the start of the alert
+   * Pass `null` to hide the default variant icon
    */
-  showIcon?: boolean;
+  leadingIcon?: ReactNode;
+  /**
+   * Optional icon to display at the end of the alert (before close button)
+   */
+  trailingIcon?: ReactNode;
   /**
    * Optional callback when the alert is dismissed
    * If provided, a close button will be rendered
@@ -65,7 +67,8 @@ export const Alert = memo(
       variant = 'info',
       title,
       description,
-      showIcon = true,
+      leadingIcon,
+      trailingIcon,
       onClose,
       className,
       children,
@@ -78,12 +81,30 @@ export const Alert = memo(
       [variant, className]
     );
 
-    const handleClose = useCallback(() => {
-      onClose?.();
-    }, [onClose]);
+    const DefaultIcon = VARIANT_ICONS[variant];
+    
+    // Determine which leading icon to render
+    // undefined = show default variant icon
+    // null = hide icon
+    // ReactNode = show custom icon
+    const resolvedLeadingIcon = useMemo(() => {
+      if (leadingIcon === null) return null;
+      if (leadingIcon !== undefined) return leadingIcon;
+      return <DefaultIcon />;
+    }, [leadingIcon, DefaultIcon]);
 
-    const IconComponent = VARIANT_ICONS[variant];
-    const hasContent = title || description || children;
+    // Use description if provided, otherwise fall back to children
+    const bodyContent = description || children;
+    const bodyStyles = useMemo(
+      () => ({ ...BODY_STYLES, marginTop: title ? 'var(--component-alert-content-gap)' : '0' }),
+      [title]
+    );
+
+    // Shared icon wrapper classes
+    const iconClasses = useMemo(
+      () => cn('flex-shrink-0', ICON_COLOR_STYLES[variant]),
+      [variant]
+    );
 
     return (
       <div
@@ -94,19 +115,15 @@ export const Alert = memo(
         data-variant={variant}
         {...rest}
       >
-        {/* Icon */}
-        {showIcon && (
-          <span
-            className={cn('flex-shrink-0', ICON_COLOR_STYLES[variant])}
-            style={ICON_SIZE_STYLE}
-            aria-hidden="true"
-          >
-            <IconComponent />
+        {/* Leading Icon */}
+        {resolvedLeadingIcon && (
+          <span className={iconClasses} style={ICON_SIZE_STYLE} aria-hidden="true">
+            {resolvedLeadingIcon}
           </span>
         )}
 
         {/* Content */}
-        {hasContent && (
+        {(title || bodyContent) && (
           <div className="flex-1 min-w-0">
             {title && (
               <div
@@ -116,36 +133,29 @@ export const Alert = memo(
                 {title}
               </div>
             )}
-            {description && (
+            {bodyContent && (
               <div
                 className="font-[var(--component-alert-body-weight)]"
-                style={{
-                  ...BODY_STYLES,
-                  marginTop: title ? CONTENT_GAP : '0',
-                }}
+                style={bodyStyles}
               >
-                {description}
-              </div>
-            )}
-            {children && !description && (
-              <div
-                className="font-[var(--component-alert-body-weight)]"
-                style={{
-                  ...BODY_STYLES,
-                  marginTop: title ? CONTENT_GAP : '0',
-                }}
-              >
-                {children}
+                {bodyContent}
               </div>
             )}
           </div>
+        )}
+
+        {/* Trailing Icon */}
+        {trailingIcon && (
+          <span className={iconClasses} style={ICON_SIZE_STYLE} aria-hidden="true">
+            {trailingIcon}
+          </span>
         )}
 
         {/* Close button */}
         {onClose && (
           <button
             type="button"
-            onClick={handleClose}
+            onClick={onClose}
             className={cn(
               'flex-shrink-0 inline-flex items-center justify-center rounded-sm opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-1',
               ICON_COLOR_STYLES[variant]

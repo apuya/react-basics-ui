@@ -3,7 +3,6 @@ import { Label } from './Label';
 import { Input } from '../Input/Input';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Stack } from '../../layout/Stack';
-import { Heading } from '../../typography/Heading';
 
 const meta: Meta<typeof Label> = {
   title: 'Forms/Label',

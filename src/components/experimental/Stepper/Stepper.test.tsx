@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { createRef } from 'react';
-import { Stepper, Step, StepIndicator } from './Stepper';
+import { Stepper } from './Stepper';
 import { BiUser, BiLock } from 'react-icons/bi';
 
 describe('Stepper', () => {
@@ -285,19 +285,6 @@ describe('Stepper', () => {
     });
   });
 
-  describe('Step Export', () => {
-    it('exports Step separately', () => {
-      render(
-        <Stepper>
-          <Step label="Using Step" data-testid="step" />
-        </Stepper>
-      );
-
-      expect(screen.getByTestId('step')).toBeInTheDocument();
-      expect(screen.getByText('Using Step')).toBeInTheDocument();
-    });
-  });
-
   describe('displayName', () => {
     it('has correct displayName for Stepper', () => {
       expect(Stepper.displayName).toBe('Stepper');
@@ -414,26 +401,26 @@ describe('Stepper', () => {
 
   describe('StepIndicator Subcomponent', () => {
     it('renders as standalone component', () => {
-      render(<StepIndicator status="active" stepNumber={1} data-testid="indicator" />);
+      render(<Stepper.Indicator status="active" stepNumber={1} data-testid="indicator" />);
 
       expect(screen.getByTestId('indicator')).toBeInTheDocument();
       expect(screen.getByText('1')).toBeInTheDocument();
     });
 
     it('renders with correct status data attribute', () => {
-      render(<StepIndicator status="completed" stepNumber={1} data-testid="indicator" />);
+      render(<Stepper.Indicator status="completed" stepNumber={1} data-testid="indicator" />);
 
       expect(screen.getByTestId('indicator')).toHaveAttribute('data-status', 'completed');
     });
 
     it('renders with correct size data attribute', () => {
-      render(<StepIndicator status="active" size="lg" stepNumber={1} data-testid="indicator" />);
+      render(<Stepper.Indicator status="active" size="lg" stepNumber={1} data-testid="indicator" />);
 
       expect(screen.getByTestId('indicator')).toHaveAttribute('data-size', 'lg');
     });
 
     it('renders checkmark for completed status without icon', () => {
-      render(<StepIndicator status="completed" stepNumber={1} data-testid="indicator" />);
+      render(<Stepper.Indicator status="completed" stepNumber={1} data-testid="indicator" />);
 
       // Should have checkmark icon, not number
       expect(screen.queryByText('1')).not.toBeInTheDocument();
@@ -441,7 +428,7 @@ describe('Stepper', () => {
 
     it('renders custom icon when provided', () => {
       render(
-        <StepIndicator status="active" icon={<BiUser data-testid="custom-icon" />} data-testid="indicator" />
+        <Stepper.Indicator status="active" icon={<BiUser data-testid="custom-icon" />} data-testid="indicator" />
       );
 
       expect(screen.getByTestId('custom-icon')).toBeInTheDocument();
@@ -455,7 +442,7 @@ describe('Stepper', () => {
     });
 
     it('has correct displayName', () => {
-      expect(StepIndicator.displayName).toBe('Stepper.Indicator');
+      expect(Stepper.Indicator.displayName).toBe('Stepper.Indicator');
     });
   });
 });

@@ -1,13 +1,22 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef, type ElementType, type ReactNode } from 'react';
-import { BASE_CLASSES, VARIANT_STYLES, ITEM_INTERACTIVE_CLASSES, type ListVariant } from './List.styles';
+import { createComponentContext } from '@/lib/createComponentContext';
+import { forwardRef, memo, useMemo, type ElementType } from 'react';
+import { BASE_CLASSES, VARIANT_STYLES, GAP_STYLE } from './List.styles';
+import type { ListProps, ListContextValue } from './List.types';
 import { ListItem } from './ListItem';
 
-export interface ListProps extends ComponentPropsWithoutRef<'ul'> {
-  variant?: ListVariant;
-  ordered?: boolean;
-  children?: ReactNode;
-}
+// =============================================================================
+// CONTEXT
+// =============================================================================
+
+const { Context: ListContext, useContext: useListContext } =
+  createComponentContext<ListContextValue>('List');
+
+export { useListContext };
+
+// =============================================================================
+// COMPONENT
+// =============================================================================
 
 const ListRoot = memo(
   forwardRef<HTMLUListElement | HTMLOListElement, ListProps>(
@@ -15,28 +24,27 @@ const ListRoot = memo(
       const Component = (ordered ? 'ol' : 'ul') as ElementType;
 
       const listClasses = useMemo(
-        () => cn(
-          BASE_CLASSES,
-          VARIANT_STYLES[variant],
-          variant === 'interactive' && ITEM_INTERACTIVE_CLASSES,
-          className
-        ),
+        () => cn(BASE_CLASSES, VARIANT_STYLES[variant], className),
         [variant, className]
       );
 
+      const contextValue = useMemo<ListContextValue>(() => ({ variant }), [variant]);
+
       return (
-        <Component
-          ref={ref}
-          data-variant={variant}
-          className={listClasses}
-          style={{
-            gap: 'var(--component-list-gap)',
-            ...style,
-          }}
-          {...props}
-        >
-          {children}
-        </Component>
+        <ListContext.Provider value={contextValue}>
+          <Component
+            ref={ref}
+            data-variant={variant}
+            className={listClasses}
+            style={{
+              ...GAP_STYLE,
+              ...style,
+            }}
+            {...props}
+          >
+            {children}
+          </Component>
+        </ListContext.Provider>
       );
     }
   )

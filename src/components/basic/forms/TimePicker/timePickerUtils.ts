@@ -61,11 +61,9 @@ export const formatTimeDisplay = (time: string): string => {
 };
 
 /**
- * Generate hour options (1-12)
+ * Hour options for 12-hour format (12, 1-11)
  */
-export const generateHourOptions = (): number[] => {
-  return [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-};
+export const HOUR_OPTIONS = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const;
 
 /**
  * Generate minute options based on step

@@ -1,4 +1,4 @@
-import { type ComponentPropsWithoutRef, forwardRef, memo, useCallback, useMemo } from 'react';
+import { type ComponentPropsWithoutRef, forwardRef, memo } from 'react';
 import { BiCheckCircle, BiErrorCircle, BiInfoCircle, BiXCircle, BiX } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
 import {
@@ -76,17 +76,15 @@ export const Toast = memo(
     },
     ref
   ) {
-    const toastClasses = useMemo(
-      () => cn(BASE_CLASSES, VARIANT_STYLES[variant], className),
-      [variant, className]
-    );
-
-    const handleClose = useCallback(() => {
-      onClose?.();
-    }, [onClose]);
-
+    const toastClasses = cn(BASE_CLASSES, VARIANT_STYLES[variant], className);
     const IconComponent = VARIANT_ICONS[variant];
     const hasContent = title || description || children;
+
+    // Shared style for description/children with conditional top margin
+    const contentBodyStyle = {
+      ...BODY_STYLES,
+      marginTop: title ? 'var(--semantic-space-tight)' : '0',
+    };
 
     return (
       <div
@@ -113,26 +111,8 @@ export const Toast = memo(
         {hasContent && (
           <div className={CONTENT_CLASSES}>
             {title && <div style={TITLE_STYLES}>{title}</div>}
-            {description && (
-              <div
-                style={{
-                  ...BODY_STYLES,
-                  marginTop: title ? 'var(--semantic-space-tight)' : '0',
-                }}
-              >
-                {description}
-              </div>
-            )}
-            {children && !description && (
-              <div
-                style={{
-                  ...BODY_STYLES,
-                  marginTop: title ? 'var(--semantic-space-tight)' : '0',
-                }}
-              >
-                {children}
-              </div>
-            )}
+            {description && <div style={contentBodyStyle}>{description}</div>}
+            {children && !description && <div style={contentBodyStyle}>{children}</div>}
           </div>
         )}
 
@@ -140,7 +120,7 @@ export const Toast = memo(
         {onClose && (
           <button
             type="button"
-            onClick={handleClose}
+            onClick={onClose}
             className={cn('shrink-0', CLOSE_BUTTON_CLASSES, ICON_COLOR_STYLES[variant])}
             style={CLOSE_BUTTON_SIZE_STYLE}
             aria-label="Close notification"

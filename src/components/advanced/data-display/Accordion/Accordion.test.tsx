@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Accordion } from './Accordion';
 
@@ -571,40 +571,6 @@ describe('Accordion', () => {
 
       expect(trigger).toHaveAttribute('data-open', 'true');
       expect(content).toHaveAttribute('data-open', 'true');
-    });
-  });
-
-  describe('Sub-components', () => {
-    it('renders Accordion.Title with heading element', () => {
-      render(
-        <Accordion type="single" defaultValue="item-1">
-          <Accordion.Item value="item-1">
-            <Accordion.Trigger>Item 1</Accordion.Trigger>
-            <Accordion.Content>
-              <Accordion.Title level="h3">Section Title</Accordion.Title>
-            </Accordion.Content>
-          </Accordion.Item>
-        </Accordion>
-      );
-
-      const title = screen.getByText('Section Title');
-      expect(title.tagName).toBe('H3');
-    });
-
-    it('renders Accordion.Description with paragraph element', () => {
-      render(
-        <Accordion type="single" defaultValue="item-1">
-          <Accordion.Item value="item-1">
-            <Accordion.Trigger>Item 1</Accordion.Trigger>
-            <Accordion.Content>
-              <Accordion.Description>Description text</Accordion.Description>
-            </Accordion.Content>
-          </Accordion.Item>
-        </Accordion>
-      );
-
-      const desc = screen.getByText('Description text');
-      expect(desc.tagName).toBe('P');
     });
   });
 

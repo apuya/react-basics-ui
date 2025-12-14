@@ -20,8 +20,23 @@ export const ICON_SIZE_STYLES = {
   large: 'w-[length:var(--component-input-icon-size-large)] h-[length:var(--component-input-icon-size-large)]',
 } as const;
 
+/** Shared classes for icon wrapper positioning */
+export const ICON_WRAPPER_BASE_CLASSES = 'absolute top-1/2 -translate-y-1/2';
+
+/** Static styles for leading icon positioning */
+export const LEADING_ICON_STYLE = {
+  left: 'var(--component-input-padding-inline)',
+  color: 'var(--component-input-text-placeholder)',
+} as const;
+
+/** Static styles for trailing icon positioning */
+export const TRAILING_ICON_STYLE = {
+  right: 'var(--component-input-padding-inline)',
+  color: 'var(--component-input-text-placeholder)',
+} as const;
+
 /** Suffix style for unit labels (e.g., kg, cm, $) */
-export const SUFFIX_STYLE: React.CSSProperties = {
+export const SUFFIX_STYLE = {
   color: 'var(--component-input-suffix-color)',
   fontSize: 'var(--component-input-suffix-font-size)',
   fontWeight: 'var(--component-input-suffix-font-weight)',

@@ -5,4 +5,4 @@ export type {
   DividerVariant,
   DividerSpacing,
   DividerLabelPosition,
-} from './Divider';
+} from './Divider.types';

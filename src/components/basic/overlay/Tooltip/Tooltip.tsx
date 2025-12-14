@@ -1,4 +1,8 @@
-import { forwardRef, memo, useState, useMemo, useRef, useEffect, useId } from 'react';
+/**
+ * Tooltip - Displays contextual information on hover or focus.
+ * Renders in a portal for proper z-index handling and positioning.
+ */
+import { forwardRef, memo, useState, useMemo, useRef, useEffect, useId, useCallback } from 'react';
 import { Portal } from '@/components/basic/utility/Portal';
 import { cn } from '@/lib/cn';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
@@ -7,39 +11,13 @@ import {
   TOOLTIP_CLASSES,
   WRAPPER_CLASSES,
   VISIBLE_CLASS,
+  TOOLTIP_OFFSET,
+  TOOLTIP_POSITION_STYLE,
+  TOOLTIP_PADDING_STYLE,
   calculatePosition,
 } from './Tooltip.styles';
+import type { TooltipProps } from './Tooltip.types';
 
-export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
-
-export interface TooltipProps {
-  /** Content to display in the tooltip */
-  content: React.ReactNode;
-  /** Position of the tooltip relative to the trigger */
-  position?: TooltipPosition;
-  /** The trigger element */
-  children: React.ReactNode;
-  /** Additional class names for the tooltip */
-  className?: string;
-  /** Offset from the trigger element in pixels */
-  offset?: number;
-  /** Custom ID for the tooltip (auto-generated if not provided) */
-  id?: string;
-}
-
-const TOOLTIP_OFFSET = 8;
-
-/**
- * Tooltip component that displays contextual information on hover or focus.
- * Renders in a portal for proper z-index handling.
- *
- * @example
- * ```tsx
- * <Tooltip content="Helpful information">
- *   <Button>Hover me</Button>
- * </Tooltip>
- * ```
- */
 export const Tooltip = memo(
   forwardRef<HTMLDivElement, TooltipProps>(
     ({ content, position = 'top', children, className, offset = TOOLTIP_OFFSET, id: customId }, ref) => {
@@ -87,16 +65,16 @@ export const Tooltip = memo(
 
       const tooltipStyle = useMemo(
         () => ({
-          position: 'fixed' as const,
+          ...TOOLTIP_POSITION_STYLE,
+          ...TOOLTIP_PADDING_STYLE,
           top: coords?.top ?? 0,
           left: coords?.left ?? 0,
-          padding: 'var(--component-tooltip-padding-block) var(--component-tooltip-padding-inline)',
         }),
         [coords]
       );
 
-      const show = () => setIsVisible(true);
-      const hide = () => setIsVisible(false);
+      const show = useCallback(() => setIsVisible(true), []);
+      const hide = useCallback(() => setIsVisible(false), []);
 
       return (
         <>

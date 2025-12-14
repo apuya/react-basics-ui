@@ -1,3 +1,6 @@
+import type React from 'react';
+import type { ListVariant } from './List.types';
+
 // =============================================================================
 // BASE STYLES
 // =============================================================================
@@ -25,10 +28,20 @@ export const ITEM_CLASSES =
   'flex items-center text-[color:var(--component-list-text-primary)]';
 
 export const ITEM_INTERACTIVE_CLASSES =
-  '[&>li]:hover:bg-[color:var(--component-list-bg-hover)] [&>li]:active:bg-[color:var(--component-list-bg-active)] [&>li]:cursor-pointer [&>li]:transition-colors';
+  'hover:bg-[color:var(--component-list-bg-hover)] active:bg-[color:var(--component-list-bg-active)] cursor-pointer transition-colors';
 
 // =============================================================================
-// TYPES
+// STATIC STYLE OBJECTS
 // =============================================================================
 
-export type ListVariant = 'default' | 'divided' | 'bordered' | 'interactive';
+/** Static gap style for list container - uses CSS custom properties */
+export const GAP_STYLE: React.CSSProperties = {
+  gap: 'var(--component-list-gap)',
+};
+
+/** Static padding style for list items */
+export const ITEM_PADDING_STYLE: React.CSSProperties = {
+  paddingInline: 'var(--component-list-item-padding-inline)',
+  paddingBlock: 'var(--component-list-item-padding-block)',
+  gap: 'var(--component-list-item-gap)',
+};

@@ -21,18 +21,16 @@ const ICON_SIZE_MAP = { small: 'sm', default: 'md', large: 'lg' } as const;
 export interface TimePickerTriggerProps {
   /** Placeholder text when no value is selected */
   placeholder?: string;
-  /** ID for helper text element (for aria-describedby) */
-  helperId?: string;
   /** Whether the field is required */
   required?: boolean;
 }
 
 export const TimePickerTrigger = memo(
   forwardRef<HTMLButtonElement, TimePickerTriggerProps>(function TimePickerTrigger(
-    { placeholder = 'Select time', helperId, required },
+    { placeholder = 'Select time', required },
     ref
   ) {
-    const { isOpen, setIsOpen, value, disabled, error, size, triggerId, menuId, labelId } =
+    const { isOpen, setIsOpen, value, disabled, error, size, triggerId, menuId } =
       useTimePickerContext();
 
     const displayValue = value ? formatTimeDisplay(value) : '';
@@ -75,8 +73,6 @@ export const TimePickerTrigger = memo(
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-controls={isOpen ? menuId : undefined}
-        aria-labelledby={labelId}
-        aria-describedby={helperId}
         aria-invalid={error || undefined}
         aria-required={required || undefined}
         disabled={disabled}

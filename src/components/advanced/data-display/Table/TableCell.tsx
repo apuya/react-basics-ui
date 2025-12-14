@@ -1,7 +1,29 @@
+/**
+ * @file TableCell.tsx
+ * @description Table data cell (td) component with multiple variants.
+ *
+ * Supports text, numeric, checkbox, badge, input, and comparison layouts.
+ * All cells are transparent and inherit background from their parent row.
+ *
+ * @example
+ * ```tsx
+ * <Table.Cell variant="numeric">1,234.56</Table.Cell>
+ * <Table.Cell variant="checkbox" checked={selected} onCheckboxChange={setSelected} />
+ * ```
+ */
+
 import { forwardRef, memo, useCallback, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
 import { Checkbox } from '@/components/basic/forms/Checkbox';
 import { Input } from '@/components/basic/forms/Input';
+import { useTableContext } from './TableContext';
+import {
+  TABLE_CELL_BASE_CLASSES,
+  TABLE_CELL_VARIANT_CLASSES,
+  TABLE_CELL_STYLE,
+  TABLE_CELL_CHECKBOX_STYLE,
+  TABLE_CELL_INPUT_STYLE,
+} from './Table.styles';
 
 // ============================================================================
 // Types
@@ -35,67 +57,12 @@ export interface TableCellProps extends ComponentPropsWithoutRef<'td'> {
   comparisonSecondary?: string;
 }
 
-// ============================================================================
-// Styles
-// ============================================================================
-
-/** Base classes - vertical alignment stretches to row height */
-const BASE_CLASSES = 'align-middle';
-
-/** Variant-specific classes */
-const VARIANT_CLASSES = {
-  default: 'text-[color:var(--component-table-cell-text)]',
-  text: 'text-[color:var(--component-table-cell-text)] text-[length:var(--component-table-cell-font-size-md)]',
-  checkbox: '',
-  numeric: 'text-[color:var(--component-table-cell-text)] text-[length:var(--component-table-cell-font-size-md)] text-right tabular-nums',
-  badge: '',
-  input: '',
-  comparison: '',
-} as const;
-
-/** Inline style - padding, min dimensions */
-const BASE_STYLE = {
-  paddingBlock: 'var(--component-table-cell-padding-block)',
-  paddingInline: 'var(--component-table-cell-padding-inline)',
-  minHeight: 'var(--component-table-cell-min-height)',
-  minWidth: 'var(--component-table-cell-min-width)',
-} as const;
-
-/** Checkbox cell style - hugs content, lineHeight: 0 removes extra space */
-const CHECKBOX_CELL_STYLE = {
-  padding: 'var(--component-table-cell-checkbox-padding)',
-  minHeight: 'var(--component-table-cell-checkbox-min-height)',
-  minWidth: 'var(--component-table-cell-checkbox-min-width)',
-  lineHeight: 0,
-  verticalAlign: 'middle' as const,
-} as const;
-
-/** Input cell style - same as base but no min-width constraint */
-const INPUT_CELL_STYLE = {
-  paddingBlock: 'var(--component-table-cell-padding-block)',
-  paddingInline: 'var(--component-table-cell-padding-inline)',
-  minHeight: 'var(--component-table-cell-min-height)',
-} as const;
-
-// ============================================================================
-// Component
-// ============================================================================
-
 /**
- * TableCell - A simple, transparent table data cell.
- * 
+ * TableCell - A table data cell with multiple variants.
+ *
  * - Transparent background (inherits from row/table)
- * - Hugs content height, or stretches to match row height (whichever is greater)
+ * - Hugs content height, or stretches to match row height
  * - Responsive via CSS tokens
- * 
- * Variants:
- * - `default` - For any content (components, badges, buttons, etc.)
- * - `text` - For simple text content with consistent typography
- * - `checkbox` - For row selection checkbox
- * - `numeric` - For right-aligned numeric values with tabular numbers
- * - `badge` - For displaying one or more badges with flex-wrap
- * - `input` - For inline editing with a small input and optional suffix
- * - `comparison` - For two-line value display (primary + secondary/comparison value)
  */
 export const TableCell = memo(
   forwardRef<HTMLTableCellElement, TableCellProps>(
@@ -115,15 +82,17 @@ export const TableCell = memo(
       comparisonSecondary,
       ...props
     }, ref) => {
+      const { size } = useTableContext();
+
       const cellClasses = useMemo(
-        () => cn(BASE_CLASSES, VARIANT_CLASSES[variant], className),
+        () => cn(TABLE_CELL_BASE_CLASSES, TABLE_CELL_VARIANT_CLASSES[variant], className),
         [variant, className]
       );
 
       const cellStyle = useMemo(() => {
-        if (variant === 'checkbox') return CHECKBOX_CELL_STYLE;
-        if (variant === 'input') return INPUT_CELL_STYLE;
-        return BASE_STYLE;
+        if (variant === 'checkbox') return TABLE_CELL_CHECKBOX_STYLE;
+        if (variant === 'input') return TABLE_CELL_INPUT_STYLE;
+        return TABLE_CELL_STYLE;
       }, [variant]);
 
       const handleCheckboxChange = useCallback(
@@ -144,6 +113,7 @@ export const TableCell = memo(
             className={cellClasses}
             style={cellStyle}
             data-variant={variant}
+            data-size={size}
             {...props}
           >
             <Checkbox
@@ -164,6 +134,7 @@ export const TableCell = memo(
             className={cellClasses}
             style={cellStyle}
             data-variant={variant}
+            data-size={size}
             {...props}
           >
             <div className="flex items-center gap-1 flex-wrap">
@@ -181,6 +152,7 @@ export const TableCell = memo(
             className={cellClasses}
             style={cellStyle}
             data-variant={variant}
+            data-size={size}
             {...props}
           >
             <Input
@@ -207,6 +179,7 @@ export const TableCell = memo(
             className={cellClasses}
             style={cellStyle}
             data-variant={variant}
+            data-size={size}
             {...props}
           >
             <div className="flex flex-col gap-0.5">
@@ -227,6 +200,7 @@ export const TableCell = memo(
           className={cellClasses}
           style={cellStyle}
           data-variant={variant}
+          data-size={size}
           {...props}
         >
           {children}

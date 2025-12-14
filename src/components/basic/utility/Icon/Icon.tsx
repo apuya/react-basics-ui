@@ -1,19 +1,11 @@
-import { type IconType } from 'react-icons';
+/**
+ * Icon - Wrapper for react-icons with consistent sizing, colors, and accessibility.
+ * Decorative by default (aria-hidden), meaningful when aria-label provided.
+ */
 import { cn } from '@/lib/cn';
 import { forwardRef, memo } from 'react';
 import { COLOR_STYLES, SIZE_STYLES } from './Icon.styles';
-
-export type IconSize = keyof typeof SIZE_STYLES;
-export type IconColor = keyof typeof COLOR_STYLES;
-
-export interface IconProps {
-  icon: IconType;
-  size?: IconSize;
-  color?: IconColor;
-  className?: string;
-  'aria-label'?: string;
-  'aria-hidden'?: boolean;
-}
+import type { IconProps } from './Icon.types';
 
 export const Icon = memo(
   forwardRef<HTMLSpanElement, IconProps>(function Icon(

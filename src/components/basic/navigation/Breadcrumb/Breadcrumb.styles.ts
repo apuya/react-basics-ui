@@ -1,22 +1,45 @@
 // =============================================================================
-// BASE STYLES
+// Breadcrumb Styles
 // =============================================================================
 
+// -----------------------------------------------------------------------------
+// Container Styles
+// -----------------------------------------------------------------------------
+
+/** Nav wrapper - full width container */
 export const BREADCRUMB_CLASSES = 'w-full';
 
+/** Ordered list - horizontal flex layout for items */
 export const BREADCRUMB_LIST_CLASSES = 'flex items-center';
 
+// -----------------------------------------------------------------------------
+// Item Styles
+// -----------------------------------------------------------------------------
+
+/** List item wrapper with inline-flex for proper alignment */
 export const BREADCRUMB_ITEM_CLASSES = 'inline-flex items-center';
 
+// -----------------------------------------------------------------------------
+// Link Styles
+// -----------------------------------------------------------------------------
+
+/** Interactive link with hover, focus, and transition states */
 export const BREADCRUMB_LINK_CLASSES =
   'text-[color:var(--component-breadcrumb-text-default)] hover:text-[color:var(--component-breadcrumb-text-hover)] hover:underline transition-colors focus-visible:outline-none focus-visible:ring-[length:var(--component-breadcrumb-focus-ring-width)] focus-visible:ring-offset-[length:var(--component-breadcrumb-focus-ring-offset)] focus-visible:ring-[color:var(--component-breadcrumb-focus-ring-color)] focus-visible:rounded-[var(--component-breadcrumb-focus-radius)]';
 
+/** Current page link - non-interactive with distinct color */
 export const BREADCRUMB_LINK_CURRENT_CLASSES =
   'text-[color:var(--component-breadcrumb-text-current)] cursor-default';
 
+// -----------------------------------------------------------------------------
+// Separator & Ellipsis Styles
+// -----------------------------------------------------------------------------
+
+/** Separator between breadcrumb items */
 export const BREADCRUMB_SEPARATOR_CLASSES =
   'inline-flex items-center justify-center select-none text-[color:var(--component-breadcrumb-separator-color)]';
 
+/** Ellipsis indicator for collapsed items */
 export const BREADCRUMB_ELLIPSIS_CLASSES =
   'text-[color:var(--component-breadcrumb-separator-color)]';
 

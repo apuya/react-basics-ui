@@ -8,44 +8,29 @@ import {
   SPACING_STYLES,
   WRAP_STYLES,
 } from './Stack.styles';
+import type { HStackProps, StackProps, VStackProps } from './Stack.types';
 
-export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Direction of the stack */
-  direction?: keyof typeof DIRECTION_STYLES;
-  /** Spacing between items */
-  spacing?: keyof typeof SPACING_STYLES | number | string;
-  /** Align items */
-  align?: keyof typeof ALIGN_STYLES;
-  /** Justify content */
-  justify?: keyof typeof JUSTIFY_STYLES;
-  /** Wrap behavior */
-  wrap?: keyof typeof WRAP_STYLES;
-  /** Display as inline-flex instead of flex */
-  inline?: boolean;
-  /** Divider element to place between items */
-  divider?: React.ReactNode;
-  /** Children elements */
-  children?: React.ReactNode;
-}
+// =============================================================================
+// Stack Component
+// =============================================================================
 
 export const Stack = memo(
-  React.forwardRef<HTMLDivElement, StackProps>(
-    (
-      {
-        direction = 'vertical',
-        spacing,
-        align,
-        justify,
-        wrap,
-        inline = false,
-        divider,
-        className,
-        style,
-        children,
-        ...props
-      },
-      ref
-    ) => {
+  React.forwardRef<HTMLDivElement, StackProps>(function Stack(
+    {
+      direction = 'vertical',
+      spacing,
+      align,
+      justify,
+      wrap,
+      inline = false,
+      divider,
+      className,
+      style,
+      children,
+      ...props
+    },
+    ref
+  ) {
       const spacingStyle = useMemo(() => {
         if (!spacing) return undefined;
 
@@ -106,7 +91,9 @@ export const Stack = memo(
             ...style,
           }}
           data-direction={direction}
-          data-spacing={typeof spacing === 'string' && spacing in SPACING_STYLES ? spacing : undefined}
+          data-spacing={
+            typeof spacing === 'string' && spacing in SPACING_STYLES ? spacing : undefined
+          }
           {...props}
         >
           {childrenWithDividers}
@@ -118,22 +105,30 @@ export const Stack = memo(
 
 Stack.displayName = 'Stack';
 
-// HStack - Horizontal Stack (shorthand for Stack with direction="horizontal")
-export interface HStackProps extends Omit<StackProps, 'direction'> {}
+// =============================================================================
+// HStack Component
+// =============================================================================
 
+/**
+ * Horizontal stack - shorthand for Stack with direction="horizontal".
+ */
 export const HStack = memo(
-  React.forwardRef<HTMLDivElement, HStackProps>((props, ref) => {
+  React.forwardRef<HTMLDivElement, HStackProps>(function HStack(props, ref) {
     return <Stack ref={ref} direction="horizontal" {...props} />;
   })
 );
 
 HStack.displayName = 'HStack';
 
-// VStack - Vertical Stack (shorthand for Stack with direction="vertical")
-export interface VStackProps extends Omit<StackProps, 'direction'> {}
+// =============================================================================
+// VStack Component
+// =============================================================================
 
+/**
+ * Vertical stack - shorthand for Stack with direction="vertical".
+ */
 export const VStack = memo(
-  React.forwardRef<HTMLDivElement, VStackProps>((props, ref) => {
+  React.forwardRef<HTMLDivElement, VStackProps>(function VStack(props, ref) {
     return <Stack ref={ref} direction="vertical" {...props} />;
   })
 );

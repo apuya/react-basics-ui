@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 import { createRef } from 'react';
 import { SearchBar } from './SearchBar';
+import { Icon } from '@/components/basic/utility/Icon';
+import { BiSearch, BiX } from 'react-icons/bi';
 
 describe('SearchBar', () => {
   describe('Rendering', () => {
@@ -23,9 +25,19 @@ describe('SearchBar', () => {
       expect(screen.getByDisplayValue('test query')).toBeInTheDocument();
     });
 
-    it('renders with custom leading icon', () => {
-      render(<SearchBar leadingIcon={<span data-testid="custom-icon">🔍</span>} />);
-      expect(screen.getByTestId('custom-icon')).toBeInTheDocument();
+    it('renders with leading icon', () => {
+      render(<SearchBar leadingIcon={<Icon icon={BiSearch} data-testid="search-icon" />} />);
+      expect(screen.getByTestId('search-icon')).toBeInTheDocument();
+    });
+
+    it('renders with trailing icon', () => {
+      render(<SearchBar trailingIcon={<Icon icon={BiX} data-testid="clear-icon" />} />);
+      expect(screen.getByTestId('clear-icon')).toBeInTheDocument();
+    });
+
+    it('renders without leading icon when not provided', () => {
+      const { container } = render(<SearchBar />);
+      expect(container.querySelector('[aria-hidden="true"]')).not.toBeInTheDocument();
     });
 
     it('renders wrapper with custom className', () => {
@@ -41,57 +53,67 @@ describe('SearchBar', () => {
 
   describe('Size Variants', () => {
     it('renders small size', () => {
-      render(<SearchBar size="small" />);
-      expect(screen.getByRole('searchbox')).toHaveAttribute('data-size', 'small');
+      const { container } = render(<SearchBar size="small" />);
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute('data-size', 'small');
     });
 
     it('renders default size', () => {
-      render(<SearchBar size="default" />);
-      expect(screen.getByRole('searchbox')).toHaveAttribute('data-size', 'default');
+      const { container } = render(<SearchBar size="default" />);
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute('data-size', 'default');
     });
 
     it('renders large size', () => {
-      render(<SearchBar size="large" />);
-      expect(screen.getByRole('searchbox')).toHaveAttribute('data-size', 'large');
+      const { container } = render(<SearchBar size="large" />);
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute('data-size', 'large');
     });
 
     it('defaults to default size when not specified', () => {
-      render(<SearchBar />);
-      expect(screen.getByRole('searchbox')).toHaveAttribute('data-size', 'default');
+      const { container } = render(<SearchBar />);
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute('data-size', 'default');
     });
   });
 
   describe('Visual Variants', () => {
     it('renders outline variant by default', () => {
-      render(<SearchBar />);
-      expect(screen.getByRole('searchbox')).toHaveAttribute('data-variant', 'outline');
+      const { container } = render(<SearchBar />);
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute('data-variant', 'outline');
     });
 
     it('renders outline variant', () => {
-      render(<SearchBar variant="outline" />);
-      expect(screen.getByRole('searchbox')).toHaveAttribute('data-variant', 'outline');
+      const { container } = render(<SearchBar variant="outline" />);
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute('data-variant', 'outline');
     });
 
     it('renders filled variant', () => {
-      render(<SearchBar variant="filled" />);
-      expect(screen.getByRole('searchbox')).toHaveAttribute('data-variant', 'filled');
+      const { container } = render(<SearchBar variant="filled" />);
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute('data-variant', 'filled');
     });
 
     it('renders ghost variant', () => {
-      render(<SearchBar variant="ghost" />);
-      expect(screen.getByRole('searchbox')).toHaveAttribute('data-variant', 'ghost');
+      const { container } = render(<SearchBar variant="ghost" />);
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute('data-variant', 'ghost');
     });
   });
 
   describe('Error State', () => {
     it('sets data-error attribute when error is true', () => {
-      render(<SearchBar error />);
-      expect(screen.getByRole('searchbox')).toHaveAttribute('data-error', 'true');
+      const { container } = render(<SearchBar error />);
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute('data-error', 'true');
     });
 
     it('does not have data-error when error is false', () => {
-      render(<SearchBar error={false} />);
-      expect(screen.getByRole('searchbox')).not.toHaveAttribute('data-error');
+      const { container } = render(<SearchBar error={false} />);
+      const wrapper = container.firstChild;
+      expect(wrapper).not.toHaveAttribute('data-error');
     });
 
     it('sets aria-invalid when error is true', () => {
@@ -105,142 +127,75 @@ describe('SearchBar', () => {
     });
   });
 
-  describe('Loading State', () => {
-    it('shows spinner when loading', () => {
-      render(<SearchBar isLoading />);
-      expect(screen.getByRole('status')).toBeInTheDocument();
-    });
-
-    it('sets data-loading attribute when loading', () => {
-      render(<SearchBar isLoading />);
-      expect(screen.getByRole('searchbox')).toHaveAttribute('data-loading', 'true');
-    });
-
-    it('does not have data-loading when not loading', () => {
-      render(<SearchBar isLoading={false} />);
-      expect(screen.getByRole('searchbox')).not.toHaveAttribute('data-loading');
-    });
-
-    it('hides clear button when loading', () => {
-      render(<SearchBar isLoading value="test" onChange={() => {}} showClearButton />);
-      expect(screen.queryByLabelText('Clear search')).not.toBeInTheDocument();
-    });
-
-    it('hides shortcut badge when loading', () => {
-      render(<SearchBar isLoading showShortcut shortcutText="⌘K" />);
-      expect(screen.queryByText('⌘K')).not.toBeInTheDocument();
-    });
-  });
-
   describe('Disabled State', () => {
     it('disables input when disabled', () => {
       render(<SearchBar disabled />);
       expect(screen.getByRole('searchbox')).toBeDisabled();
     });
 
-    it('disables search button when disabled', () => {
-      render(<SearchBar disabled showSearchButton value="test" onChange={() => {}} />);
-      expect(screen.getByRole('button', { name: 'Search' })).toBeDisabled();
+    it('sets data-disabled attribute when disabled', () => {
+      const { container } = render(<SearchBar disabled />);
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute('data-disabled', 'true');
+    });
+
+    it('does not have data-disabled when not disabled', () => {
+      const { container } = render(<SearchBar disabled={false} />);
+      const wrapper = container.firstChild;
+      expect(wrapper).not.toHaveAttribute('data-disabled');
     });
   });
 
-  describe('Clear Button', () => {
-    it('shows clear button when showClearButton is true and has value', () => {
-      render(<SearchBar showClearButton value="test" onChange={() => {}} />);
-      expect(screen.getByLabelText('Clear search')).toBeInTheDocument();
+  describe('Props Slots', () => {
+    it('positions leading icon correctly', () => {
+      render(
+        <SearchBar leadingIcon={<span data-testid="leading">icon</span>} />
+      );
+      const icon = screen.getByTestId('leading').parentElement;
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
     });
 
-    it('hides clear button when value is empty', () => {
-      render(<SearchBar showClearButton value="" onChange={() => {}} />);
-      expect(screen.queryByLabelText('Clear search')).not.toBeInTheDocument();
+    it('positions trailing icon correctly', () => {
+      render(
+        <SearchBar trailingIcon={<span data-testid="trailing">icon</span>} />
+      );
+      const icon = screen.getByTestId('trailing').parentElement;
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
     });
 
-    it('hides clear button when showClearButton is false', () => {
-      render(<SearchBar showClearButton={false} value="test" onChange={() => {}} />);
-      expect(screen.queryByLabelText('Clear search')).not.toBeInTheDocument();
+    it('renders both leading and trailing icons', () => {
+      render(
+        <SearchBar
+          leadingIcon={<span data-testid="leading">search</span>}
+          trailingIcon={<span data-testid="trailing">clear</span>}
+        />
+      );
+      expect(screen.getByTestId('leading')).toBeInTheDocument();
+      expect(screen.getByTestId('trailing')).toBeInTheDocument();
     });
 
-    it('calls onClear when clear button is clicked', async () => {
-      const user = userEvent.setup();
-      const onClear = vi.fn();
-      render(<SearchBar value="test" onChange={() => {}} onClear={onClear} showClearButton />);
-      
-      await user.click(screen.getByLabelText('Clear search'));
-      expect(onClear).toHaveBeenCalledTimes(1);
+    it('accepts any ReactNode as leading icon', () => {
+      render(
+        <SearchBar
+          leadingIcon={
+            <div data-testid="custom-element">
+              <span>Custom</span>
+            </div>
+          }
+        />
+      );
+      expect(screen.getByTestId('custom-element')).toBeInTheDocument();
     });
 
-    it('calls onChange with empty value when clear button is clicked', async () => {
-      const user = userEvent.setup();
-      const onChange = vi.fn();
-      render(<SearchBar value="test" onChange={onChange} showClearButton />);
-      
-      await user.click(screen.getByLabelText('Clear search'));
-      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({
-        target: expect.objectContaining({ value: '' }),
-      }));
-    });
-
-    it('has negative tabIndex for clear button', () => {
-      render(<SearchBar showClearButton value="test" onChange={() => {}} />);
-      expect(screen.getByLabelText('Clear search')).toHaveAttribute('tabIndex', '-1');
-    });
-  });
-
-  describe('Search Button', () => {
-    it('shows search button when showSearchButton is true', () => {
-      render(<SearchBar showSearchButton value="test" onChange={() => {}} />);
-      expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
-    });
-
-    it('hides search button when showSearchButton is false', () => {
-      render(<SearchBar showSearchButton={false} />);
-      expect(screen.queryByRole('button', { name: 'Search' })).not.toBeInTheDocument();
-    });
-
-    it('disables search button when value is empty', () => {
-      render(<SearchBar showSearchButton value="" onChange={() => {}} />);
-      expect(screen.getByRole('button', { name: 'Search' })).toBeDisabled();
-    });
-
-    it('enables search button when value is present', () => {
-      render(<SearchBar showSearchButton value="test" onChange={() => {}} />);
-      expect(screen.getByRole('button', { name: 'Search' })).not.toBeDisabled();
-    });
-
-    it('calls onSearch when search button is clicked', async () => {
-      const user = userEvent.setup();
-      const onSearch = vi.fn();
-      render(<SearchBar showSearchButton value="test query" onChange={() => {}} onSearch={onSearch} />);
-      
-      await user.click(screen.getByRole('button', { name: 'Search' }));
-      expect(onSearch).toHaveBeenCalledWith('test query');
-    });
-  });
-
-  describe('Shortcut Badge', () => {
-    it('shows shortcut badge when showShortcut is true and no value', () => {
-      render(<SearchBar showShortcut shortcutText="⌘K" />);
-      expect(screen.getByText('⌘K')).toBeInTheDocument();
-    });
-
-    it('uses default shortcut text when not specified', () => {
-      render(<SearchBar showShortcut />);
-      expect(screen.getByText('⌘K')).toBeInTheDocument();
-    });
-
-    it('renders custom shortcut text', () => {
-      render(<SearchBar showShortcut shortcutText="Ctrl+K" />);
-      expect(screen.getByText('Ctrl+K')).toBeInTheDocument();
-    });
-
-    it('hides shortcut badge when has value', () => {
-      render(<SearchBar showShortcut value="test" onChange={() => {}} />);
-      expect(screen.queryByText('⌘K')).not.toBeInTheDocument();
-    });
-
-    it('has aria-hidden on shortcut badge', () => {
-      render(<SearchBar showShortcut />);
-      expect(screen.getByText('⌘K')).toHaveAttribute('aria-hidden', 'true');
+    it('accepts any ReactNode as trailing icon', () => {
+      render(
+        <SearchBar
+          trailingIcon={
+            <button data-testid="custom-button">Clear</button>
+          }
+        />
+      );
+      expect(screen.getByTestId('custom-button')).toBeInTheDocument();
     });
   });
 
@@ -267,6 +222,16 @@ describe('SearchBar', () => {
       await user.keyboard('{Enter}');
       
       expect(onSearch).not.toHaveBeenCalled();
+    });
+
+    it('does not call onSearch when onSearch is not provided', async () => {
+      const user = userEvent.setup();
+      render(<SearchBar value="test" onChange={() => {}} />);
+      
+      const input = screen.getByRole('searchbox');
+      await user.click(input);
+      // Should not throw
+      await user.keyboard('{Enter}');
     });
 
     it('calls original onKeyDown handler', async () => {
@@ -326,15 +291,15 @@ describe('SearchBar', () => {
       expect(screen.getByRole('searchbox')).toHaveAttribute('aria-label', 'Search');
     });
 
-    it('has aria-label for clear button', () => {
-      render(<SearchBar showClearButton value="test" onChange={() => {}} />);
-      expect(screen.getByLabelText('Clear search')).toBeInTheDocument();
-    });
-
-    it('has aria-label for search button', () => {
-      render(<SearchBar showSearchButton value="test" onChange={() => {}} />);
-      // Both input and button have aria-label="Search", so we query by role
-      expect(screen.getByRole('button', { name: 'Search' })).toHaveAttribute('aria-label', 'Search');
+    it('icon containers have aria-hidden', () => {
+      render(
+        <SearchBar
+          leadingIcon={<span>🔍</span>}
+          trailingIcon={<span>✕</span>}
+        />
+      );
+      const icons = document.querySelectorAll('[aria-hidden="true"]');
+      expect(icons.length).toBe(2);
     });
 
     it('is focusable', () => {
@@ -402,23 +367,31 @@ describe('SearchBar', () => {
     });
   });
 
-  describe('Combined States', () => {
-    it('shows spinner but not clear button when loading with value', () => {
-      render(<SearchBar isLoading value="test" onChange={() => {}} showClearButton />);
-      expect(screen.getByRole('status')).toBeInTheDocument();
-      expect(screen.queryByLabelText('Clear search')).not.toBeInTheDocument();
+  describe('Layout & Styling', () => {
+    it('adjusts padding when leadingIcon is provided', () => {
+      const { rerender } = render(<SearchBar />);
+      const inputWithout = screen.getByRole('searchbox');
+      const styleWithout = window.getComputedStyle(inputWithout);
+      
+      rerender(<SearchBar leadingIcon={<span>icon</span>} />);
+      const inputWith = screen.getByRole('searchbox');
+      const styleWith = window.getComputedStyle(inputWith);
+      
+      // paddingLeft should be different
+      expect(styleWith.paddingLeft).not.toBe(styleWithout.paddingLeft);
     });
 
-    it('shows search button and spinner simultaneously', () => {
-      render(<SearchBar isLoading showSearchButton value="test" onChange={() => {}} />);
-      expect(screen.getByRole('status')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
-    });
-
-    it('shows clear button but not shortcut when has value', () => {
-      render(<SearchBar showClearButton showShortcut value="test" onChange={() => {}} />);
-      expect(screen.getByLabelText('Clear search')).toBeInTheDocument();
-      expect(screen.queryByText('⌘K')).not.toBeInTheDocument();
+    it('adjusts padding when trailingIcon is provided', () => {
+      const { rerender } = render(<SearchBar />);
+      const inputWithout = screen.getByRole('searchbox');
+      const styleWithout = window.getComputedStyle(inputWithout);
+      
+      rerender(<SearchBar trailingIcon={<span>icon</span>} />);
+      const inputWith = screen.getByRole('searchbox');
+      const styleWith = window.getComputedStyle(inputWith);
+      
+      // paddingRight should be different
+      expect(styleWith.paddingRight).not.toBe(styleWithout.paddingRight);
     });
   });
 });

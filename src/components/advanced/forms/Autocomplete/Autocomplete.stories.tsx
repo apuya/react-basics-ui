@@ -386,13 +386,15 @@ export const CustomOptionContent: Story = {
           <Autocomplete.List>
             {users.map((user) => (
               <Autocomplete.Option key={user.value} value={user.value}>
-                <Stack direction="horizontal" gap="sm" align="center">
-                  <Avatar size="sm" name={user.label} />
-                  <Stack gap="none">
-                    <Text size="sm" weight="medium">
+                <Stack direction="horizontal" spacing="sm" align="center">
+                  <Avatar size="sm">
+                    <Avatar.Fallback>{user.label.split(' ').map((n: string) => n[0]).join('')}</Avatar.Fallback>
+                  </Avatar>
+                  <Stack spacing="none">
+                    <Text size="small" weight="medium">
                       {user.label}
                     </Text>
-                    <Text size="xs" color="tertiary">
+                    <Text size="caption" color="tertiary">
                       @{user.value}
                     </Text>
                   </Stack>

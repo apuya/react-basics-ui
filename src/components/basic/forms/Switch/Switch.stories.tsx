@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Switch } from './Switch';
 import { Stack } from '../../layout/Stack';
 import { Flex } from '../../layout/Flex';
@@ -105,3 +106,53 @@ export const SettingsWithDescriptions: Story = {
   ),
 };
 
+// ============================================================================
+// Interactive Examples
+// ============================================================================
+
+export const Controlled: Story = {
+  render: () => {
+    const ControlledExample = () => {
+      const [isEnabled, setIsEnabled] = useState(false);
+
+      return (
+        <Stack spacing="sm">
+          <Switch
+            label="Enable feature"
+            checked={isEnabled}
+            onCheckedChange={setIsEnabled}
+          />
+          <Text size="small" color="secondary">
+            Status: <strong>{isEnabled ? 'Enabled' : 'Disabled'}</strong>
+          </Text>
+        </Stack>
+      );
+    };
+
+    return <ControlledExample />;
+  },
+};
+
+export const WithCallback: Story = {
+  render: () => {
+    const CallbackExample = () => {
+      const [lastChanged, setLastChanged] = useState<string>('Never');
+
+      return (
+        <Stack spacing="sm">
+          <Switch
+            label="Track changes"
+            onCheckedChange={(checked) => {
+              setLastChanged(new Date().toLocaleTimeString());
+            }}
+          />
+          <Text size="small" color="secondary">
+            Last changed: {lastChanged}
+          </Text>
+        </Stack>
+      );
+    };
+
+    return <CallbackExample />;
+  },
+};

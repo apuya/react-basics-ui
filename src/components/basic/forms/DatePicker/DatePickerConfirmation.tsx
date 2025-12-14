@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useCallback } from 'react';
+import { forwardRef, memo } from 'react';
 import type { DatePickerConfirmationProps } from './DatePicker.types';
 import { Button } from '../Button';
 import { Input } from '../Input';
@@ -23,18 +23,22 @@ import {
 } from './DatePicker.styles';
 
 /**
- * DatePickerConfirmation - Footer component with date range inputs and action buttons
- * 
+ * DatePicker.Confirmation - Footer with date inputs and action buttons for range selection.
+ *
+ * Displays editable start/end date inputs and Cancel/Apply buttons.
+ * Supports `stacked` layout for narrow containers (single-range variant).
+ *
  * @example
  * ```tsx
- * <DatePickerConfirmation
- *   startDateValue="Nov 1, 2025"
- *   endDateValue="Nov 15, 2025"
- *   onStartDateChange={(value) => console.log('Start:', value)}
- *   onEndDateChange={(value) => console.log('End:', value)}
- *   onCancel={() => console.log('Cancelled')}
- *   onApply={() => console.log('Applied')}
- * />
+ * <DatePicker.Content>
+ *   <DatePicker.Calendar variant="dual" />
+ *   <DatePicker.Confirmation
+ *     startDateValue={formatDate(range.start)}
+ *     endDateValue={formatDate(range.end)}
+ *     onCancel={handleCancel}
+ *     onApply={handleApply}
+ *   />
+ * </DatePicker.Content>
  * ```
  */
 export const DatePickerConfirmation = memo(
@@ -57,28 +61,6 @@ export const DatePickerConfirmation = memo(
     },
     ref
   ) {
-    const handleStartDateChange = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        onStartDateChange?.(e.target.value);
-      },
-      [onStartDateChange]
-    );
-
-    const handleEndDateChange = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        onEndDateChange?.(e.target.value);
-      },
-      [onEndDateChange]
-    );
-
-    const handleCancel = useCallback(() => {
-      onCancel?.();
-    }, [onCancel]);
-
-    const handleApply = useCallback(() => {
-      onApply?.();
-    }, [onApply]);
-
     // Choose classes based on stacked prop
     const containerClasses = stacked ? CONFIRMATION_STACKED_CLASSES : CONFIRMATION_BASE_CLASSES;
     const containerStyle = stacked ? CONFIRMATION_STACKED_STYLE : CONFIRMATION_BASE_STYLE;
@@ -101,7 +83,7 @@ export const DatePickerConfirmation = memo(
             type="text"
             size="small"
             value={startDateValue}
-            onChange={handleStartDateChange}
+            onChange={(e) => onStartDateChange?.(e.target.value)}
             placeholder={startDatePlaceholder}
             aria-label={startDatePlaceholder}
             wrapperClassName={inputWrapperClass}
@@ -113,7 +95,7 @@ export const DatePickerConfirmation = memo(
             type="text"
             size="small"
             value={endDateValue}
-            onChange={handleEndDateChange}
+            onChange={(e) => onEndDateChange?.(e.target.value)}
             placeholder={endDatePlaceholder}
             aria-label={endDatePlaceholder}
             wrapperClassName={inputWrapperClass}
@@ -125,7 +107,7 @@ export const DatePickerConfirmation = memo(
           <Button
             variant="ghost"
             size="small"
-            onClick={handleCancel}
+            onClick={onCancel}
             className={stacked ? 'flex-1' : undefined}
           >
             {cancelText}
@@ -133,7 +115,7 @@ export const DatePickerConfirmation = memo(
           <Button
             variant="primary"
             size="small"
-            onClick={handleApply}
+            onClick={onApply}
             disabled={applyDisabled}
             className={stacked ? 'flex-1' : undefined}
           >
@@ -145,4 +127,4 @@ export const DatePickerConfirmation = memo(
   })
 );
 
-DatePickerConfirmation.displayName = 'DatePickerConfirmation';
+DatePickerConfirmation.displayName = 'DatePicker.Confirmation';

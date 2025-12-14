@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Breadcrumb, BreadcrumbRoot, BreadcrumbItem, BreadcrumbLink, BreadcrumbEllipsis } from './Breadcrumb';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbEllipsis } from './Breadcrumb';
 
 describe('Breadcrumb', () => {
   describe('Rendering', () => {
@@ -447,8 +447,8 @@ describe('Breadcrumb', () => {
       expect(Breadcrumb.Ellipsis).toBeDefined();
     });
 
-    it('exports individual components for named imports', () => {
-      expect(BreadcrumbRoot).toBeDefined();
+    it('exports individual sub-components for named imports', () => {
+      expect(Breadcrumb).toBeDefined();
       expect(BreadcrumbItem).toBeDefined();
       expect(BreadcrumbLink).toBeDefined();
       expect(BreadcrumbEllipsis).toBeDefined();

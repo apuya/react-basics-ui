@@ -1,5 +1,4 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
-import { generateFormId } from '@/lib/generateFormId';
+import { type ComponentPropsWithoutRef, memo, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useControlledState } from '@/hooks/useControlledState';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
@@ -8,8 +7,6 @@ import { TimePickerContext, type TimePickerContextValue } from './TimePickerCont
 import { TimePickerTrigger } from './TimePickerTrigger';
 import { TimePickerMenu } from './TimePickerMenu';
 import { TimePickerOption } from './TimePickerOption';
-import { TimePickerLabel } from './TimePickerLabel';
-import { TimePickerHelper } from './TimePickerHelper';
 import {
   parseTimeToComponents,
   componentsToTimeString,
@@ -21,7 +18,7 @@ import { type TimePickerSize } from './TimePicker.styles';
 // Main TimePicker Component
 // ============================================================================
 
-export interface TimePickerProps {
+export interface TimePickerProps extends Omit<ComponentPropsWithoutRef<'div'>, 'children' | 'onChange'> {
   /** Selected time value in HH:MM format (24-hour) */
   value?: string;
   /** Default time value */
@@ -34,34 +31,8 @@ export interface TimePickerProps {
   error?: boolean;
   /** Size variant */
   size?: TimePickerSize;
-  /** Label text */
-  label?: string;
-  /** Helper text shown below the picker */
-  helperText?: string;
-  /** Placeholder text */
-  placeholder?: string;
-  /** Additional class name for wrapper */
-  className?: string;
-  /** ID for the component */
-  id?: string;
-  /** Minimum time (HH:MM) */
-  min?: string;
-  /** Maximum time (HH:MM) */
-  max?: string;
-  /** Step in seconds (default: 1800 = 30 minutes) */
-  step?: number;
-  /** Whether the field is required */
-  required?: boolean;
-  /** Show confirmation footer with Cancel/Save buttons */
-  showConfirmation?: boolean;
-  /** Label for cancel button (when showConfirmation is true) */
-  cancelLabel?: string;
-  /** Label for save button (when showConfirmation is true) */
-  saveLabel?: string;
-  /** Callback when cancel is clicked (when showConfirmation is true) */
-  onCancel?: () => void;
-  /** Callback when save is clicked (when showConfirmation is true) */
-  onSave?: () => void;
+  /** Children components (Trigger, Menu) - use FormField for Label/Helper */
+  children: React.ReactNode;
 }
 
 const TimePickerRoot = memo(function TimePickerRoot({
@@ -71,20 +42,10 @@ const TimePickerRoot = memo(function TimePickerRoot({
   disabled = false,
   error = false,
   size = 'default',
-  label,
-  helperText,
-  placeholder = 'Select time',
   className,
   id,
-  min,
-  max,
-  step = 1800,
-  required = false,
-  showConfirmation = false,
-  cancelLabel,
-  saveLabel,
-  onCancel,
-  onSave,
+  children,
+  ...rest
 }: TimePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null!);
@@ -143,11 +104,10 @@ const TimePickerRoot = memo(function TimePickerRoot({
   useClickOutside(wrapperRef, () => setIsOpen(false));
   useEscapeKey(() => setIsOpen(false), isOpen);
 
-  const baseId = id || generateFormId('timepicker', label);
+  const reactId = useId();
+  const baseId = id || reactId;
   const triggerId = `${baseId}-trigger`;
   const menuId = `${baseId}-menu`;
-  const labelId = label ? `${baseId}-label` : undefined;
-  const helperId = helperText ? `${baseId}-helper` : undefined;
 
   const contextValue = useMemo<TimePickerContextValue>(
     () => ({
@@ -164,12 +124,8 @@ const TimePickerRoot = memo(function TimePickerRoot({
       disabled,
       error,
       size,
-      step,
-      min,
-      max,
       triggerId,
       menuId,
-      labelId,
     }),
     [
       isOpen,
@@ -181,12 +137,8 @@ const TimePickerRoot = memo(function TimePickerRoot({
       disabled,
       error,
       size,
-      step,
-      min,
-      max,
       triggerId,
       menuId,
-      labelId,
     ]
   );
 
@@ -199,19 +151,9 @@ const TimePickerRoot = memo(function TimePickerRoot({
         data-error={error || undefined}
         data-disabled={disabled || undefined}
         data-open={isOpen}
+        {...rest}
       >
-        {label && <TimePickerLabel required={required}>{label}</TimePickerLabel>}
-
-        <TimePickerTrigger placeholder={placeholder} helperId={helperId} required={required} />
-        <TimePickerMenu
-          showConfirmation={showConfirmation}
-          cancelLabel={cancelLabel}
-          saveLabel={saveLabel}
-          onCancel={onCancel}
-          onSave={onSave}
-        />
-
-        {helperText && <TimePickerHelper id={helperId}>{helperText}</TimePickerHelper>}
+        {children}
       </div>
     </TimePickerContext.Provider>
   );
@@ -227,8 +169,6 @@ export const TimePicker = Object.assign(TimePickerRoot, {
   Trigger: TimePickerTrigger,
   Menu: TimePickerMenu,
   Option: TimePickerOption,
-  Label: TimePickerLabel,
-  Helper: TimePickerHelper,
 });
 
 export type { TimePickerSize };

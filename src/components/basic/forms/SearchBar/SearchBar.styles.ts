@@ -24,18 +24,12 @@ export const ICON_SIZE_STYLES = {
   large: 'w-[length:var(--component-searchbar-icon-size-large)] h-[length:var(--component-searchbar-icon-size-large)]',
 } as const;
 
-export const CLEAR_BUTTON_BASE_CLASSES =
-  'inline-flex items-center justify-center rounded-[length:var(--component-searchbar-clear-button-radius)] bg-transparent text-[color:var(--component-searchbar-clear-button-text)] hover:bg-[color:var(--component-searchbar-clear-button-bg-hover)] hover:text-[color:var(--component-searchbar-clear-button-text-hover)] transition-colors duration-[var(--component-searchbar-transition-duration)] focus:outline-none focus-visible:ring-[length:var(--component-searchbar-focus-ring-width)] focus-visible:ring-[color:var(--component-searchbar-focus-ring-color)]';
+export const ICON_WRAPPER_BASE_CLASSES = 'absolute top-1/2 -translate-y-1/2 flex items-center justify-center text-[color:var(--component-searchbar-text-placeholder)] pointer-events-none';
 
-export const CLEAR_BUTTON_SIZE_STYLES = {
-  small: 'w-[length:var(--component-searchbar-clear-button-size-small)] h-[length:var(--component-searchbar-clear-button-size-small)]',
-  default: 'w-[length:var(--component-searchbar-clear-button-size-default)] h-[length:var(--component-searchbar-clear-button-size-default)]',
-  large: 'w-[length:var(--component-searchbar-clear-button-size-large)] h-[length:var(--component-searchbar-clear-button-size-large)]',
+export const LEADING_ICON_STYLE = {
+  left: 'var(--component-searchbar-padding-inline)',
 } as const;
 
-export const SHORTCUT_BADGE_CLASSES =
-  'inline-flex items-center justify-center px-[length:var(--component-searchbar-shortcut-padding-x)] min-w-[length:var(--component-searchbar-shortcut-min-width)] h-[length:var(--component-searchbar-shortcut-height)] rounded-[length:var(--component-searchbar-shortcut-radius)] bg-[color:var(--component-searchbar-shortcut-bg)] text-[color:var(--component-searchbar-shortcut-text)] text-[length:var(--component-searchbar-shortcut-font-size)] font-medium border border-[color:var(--component-searchbar-shortcut-border)]';
-
-export const LEADING_ICON_CONTAINER_CLASSES = 'absolute left-[length:var(--component-searchbar-padding-inline)] top-1/2 -translate-y-1/2 flex items-center justify-center text-[color:var(--component-searchbar-text-placeholder)]';
-
-export const TRAILING_CONTAINER_CLASSES = 'absolute right-[length:var(--component-searchbar-padding-inline)] top-1/2 -translate-y-1/2 flex items-center gap-2';
+export const TRAILING_ICON_STYLE = {
+  right: 'var(--component-searchbar-padding-inline)',
+} as const;

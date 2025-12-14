@@ -110,24 +110,24 @@ describe('Badge', () => {
   });
 
   // =============================================================================
-  // ICONS
+  // VISUALS (leadingVisual / trailingVisual)
   // =============================================================================
   
-  it('renders leading icon', () => {
-    render(<Badge leadingIcon={<span data-testid="lead-icon">★</span>}>Badge</Badge>);
+  it('renders leading visual', () => {
+    render(<Badge leadingVisual={<span data-testid="lead-icon">★</span>}>Badge</Badge>);
     expect(screen.getByTestId('lead-icon')).toBeInTheDocument();
   });
 
-  it('renders trailing icon', () => {
-    render(<Badge trailingIcon={<span data-testid="trail-icon">→</span>}>Badge</Badge>);
+  it('renders trailing visual', () => {
+    render(<Badge trailingVisual={<span data-testid="trail-icon">→</span>}>Badge</Badge>);
     expect(screen.getByTestId('trail-icon')).toBeInTheDocument();
   });
 
-  it('renders both icons', () => {
+  it('renders both visuals', () => {
     render(
       <Badge 
-        leadingIcon={<span data-testid="lead-icon">★</span>}
-        trailingIcon={<span data-testid="trail-icon">→</span>}
+        leadingVisual={<span data-testid="lead-icon">★</span>}
+        trailingVisual={<span data-testid="trail-icon">→</span>}
       >
         Badge
       </Badge>
@@ -136,9 +136,23 @@ describe('Badge', () => {
     expect(screen.getByTestId('trail-icon')).toBeInTheDocument();
   });
 
-  it('renders icon-only badge without children', () => {
-    render(<Badge leadingIcon={<span data-testid="icon">★</span>} />);
+  it('renders visual-only badge without children', () => {
+    render(<Badge leadingVisual={<span data-testid="icon">★</span>} />);
     expect(screen.getByTestId('icon')).toBeInTheDocument();
+  });
+
+  // =============================================================================
+  // BACKWARDS COMPATIBILITY (deprecated props)
+  // =============================================================================
+
+  it('supports deprecated leadingIcon prop', () => {
+    render(<Badge leadingIcon={<span data-testid="lead-icon">★</span>}>Badge</Badge>);
+    expect(screen.getByTestId('lead-icon')).toBeInTheDocument();
+  });
+
+  it('supports deprecated trailingIcon prop', () => {
+    render(<Badge trailingIcon={<span data-testid="trail-icon">→</span>}>Badge</Badge>);
+    expect(screen.getByTestId('trail-icon')).toBeInTheDocument();
   });
 
   // =============================================================================
@@ -229,23 +243,23 @@ describe('Badge', () => {
     expect(badge).toHaveAttribute('aria-label', 'Dismissible Label - click to dismiss');
   });
 
-  it('icons have aria-hidden', () => {
-    render(<Badge leadingIcon={<span>★</span>}>Icon Badge</Badge>);
-    const iconWrapper = screen.getByText('★').parentElement;
-    expect(iconWrapper).toHaveAttribute('aria-hidden', 'true');
+  it('visuals have aria-hidden', () => {
+    render(<Badge leadingVisual={<span>★</span>}>Badge</Badge>);
+    const visualWrapper = screen.getByText('★').parentElement;
+    expect(visualWrapper).toHaveAttribute('aria-hidden', 'true');
   });
 
   // =============================================================================
   // EDGE CASES
   // =============================================================================
   
-  it('replaces trailing icon with dismiss icon when dismissible', () => {
+  it('replaces trailing visual with dismiss icon when dismissible', () => {
     render(
-      <Badge dismissible trailingIcon={<span data-testid="custom-trail">→</span>}>
+      <Badge dismissible trailingVisual={<span data-testid="custom-trail">→</span>}>
         Badge
       </Badge>
     );
-    // Custom trailing icon should not be rendered when dismissible
+    // Custom trailing visual should not be rendered when dismissible
     expect(screen.queryByTestId('custom-trail')).not.toBeInTheDocument();
   });
 

@@ -1,5 +1,8 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useCallback, useEffect } from 'react';
+import { forwardRef, memo, useCallback } from 'react';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
+import { useClickOutsideWithExclusions } from '@/hooks/useClickOutsideWithExclusions';
+import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { useDatePickerContext } from './DatePickerContext';
 import {
   CONTENT_BASE_CLASSES,
@@ -11,15 +14,18 @@ import {
 import type { DatePickerContentProps } from './DatePicker.types';
 
 /**
- * DatePickerContent - Popover container for the date picker
- * 
+ * DatePicker.Content - Popover container for the date picker calendar and controls.
+ *
+ * Handles positioning, click-outside detection, and escape key closing.
+ * Uses `useClickOutsideWithExclusions` and `useEscapeKey` hooks for behavior.
+ *
  * @example
  * ```tsx
  * <DatePicker>
- *   <DatePickerTrigger placeholder="Select date" />
- *   <DatePickerContent side="bottom" align="start">
- *     <Calendar />
- *   </DatePickerContent>
+ *   <DatePicker.Trigger placeholder="Select date" />
+ *   <DatePicker.Content side="bottom" align="start">
+ *     <DatePicker.Calendar />
+ *   </DatePicker.Content>
  * </DatePicker>
  * ```
  */
@@ -44,73 +50,34 @@ export const DatePickerContent = memo(
       triggerId,
     } = useDatePickerContext();
 
-    // Merge refs
-    const setRef = useCallback(
-      (node: HTMLDivElement | null) => {
-        if (typeof ref === 'function') {
-          ref(node);
-        } else if (ref) {
-          ref.current = node;
-        }
-        if (contentRef) {
-          (contentRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-        }
-      },
-      [ref, contentRef]
+    const mergedRef = useMergedRefs(ref, contentRef);
+
+    // Close on click outside (excluding trigger)
+    useClickOutsideWithExclusions(
+      contentRef as React.RefObject<HTMLDivElement>,
+      () => setIsOpen(false),
+      [triggerRef as React.RefObject<HTMLElement>]
     );
 
-    // Handle click outside
-    useEffect(() => {
-      if (!isOpen) return;
+    // Close on escape and return focus to trigger
+    const handleEscape = useCallback(() => {
+      setIsOpen(false);
+      triggerRef?.current?.focus();
+    }, [setIsOpen, triggerRef]);
 
-      const handleClickOutside = (event: MouseEvent) => {
-        const target = event.target as Node;
-        const content = contentRef?.current;
-        const trigger = triggerRef?.current;
-
-        if (
-          content &&
-          !content.contains(target) &&
-          trigger &&
-          !trigger.contains(target)
-        ) {
-          setIsOpen(false);
-        }
-      };
-
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isOpen, setIsOpen, contentRef, triggerRef]);
-
-    // Handle escape key
-    useEffect(() => {
-      if (!isOpen) return;
-
-      const handleEscape = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-          setIsOpen(false);
-          triggerRef?.current?.focus();
-        }
-      };
-
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
-    }, [isOpen, setIsOpen, triggerRef]);
-
-    const positionClasses = CONTENT_POSITION_STYLES[side][align];
-    const layoutClasses = CONTENT_LAYOUT_CLASSES[variant];
+    useEscapeKey(handleEscape, isOpen);
 
     return (
       <div
-        ref={setRef}
+        ref={mergedRef}
         id={contentId}
         role="dialog"
         aria-modal="true"
         aria-labelledby={triggerId}
         className={cn(
           CONTENT_BASE_CLASSES,
-          layoutClasses,
-          positionClasses,
+          CONTENT_LAYOUT_CLASSES[variant],
+          CONTENT_POSITION_STYLES[side][align],
           isOpen && CONTENT_VISIBLE_CLASS,
           className
         )}
@@ -123,4 +90,4 @@ export const DatePickerContent = memo(
   })
 );
 
-DatePickerContent.displayName = 'DatePickerContent';
+DatePickerContent.displayName = 'DatePicker.Content';

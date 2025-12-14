@@ -2,6 +2,12 @@ import { cn } from '@/lib/cn';
 import { forwardRef, memo, useCallback, useMemo } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import type { CalendarHeaderProps } from './DatePicker.types';
+
+/** Static icon styles - defined outside component to avoid recreation */
+const HEADER_NAV_ICON_STYLE: React.CSSProperties = {
+  width: 'var(--component-datepicker-header-icon-size)',
+  height: 'var(--component-datepicker-header-icon-size)',
+};
 import {
   HEADER_BASE_CLASSES,
   HEADER_BASE_STYLE,
@@ -19,11 +25,21 @@ const DEFAULT_MONTH_LABELS = [
 ];
 
 /**
- * CalendarHeader - Navigation header for the calendar
- * 
- * Displays:
- * - Previous/Next month navigation buttons
- * - Current month and year (optionally as dropdowns)
+ * DatePicker.CalendarHeader - Navigation header for the calendar grid.
+ *
+ * Displays month/year with optional dropdown selectors and prev/next navigation.
+ * Composes the Button component for navigation buttons.
+ *
+ * @example
+ * ```tsx
+ * <DatePicker.CalendarHeader
+ *   month={currentMonth}
+ *   year={currentYear}
+ *   onPrevMonth={goToPrev}
+ *   onNextMonth={goToNext}
+ *   showDropdowns={true}
+ * />
+ * ```
  */
 export const CalendarHeader = memo(
   forwardRef<HTMLDivElement, CalendarHeaderProps>(
@@ -95,14 +111,6 @@ export const CalendarHeader = memo(
         [className]
       );
 
-      const iconStyle = useMemo(
-        () => ({
-          width: 'var(--component-datepicker-header-icon-size)',
-          height: 'var(--component-datepicker-header-icon-size)',
-        }),
-        []
-      );
-
       const showLeading = !hideNavigation && (navigationPosition === 'both' || navigationPosition === 'leading');
       const showTrailing = !hideNavigation && (navigationPosition === 'both' || navigationPosition === 'trailing');
 
@@ -118,7 +126,7 @@ export const CalendarHeader = memo(
               aria-label="Previous month"
               className="!p-1"
             >
-              <BiChevronLeft style={iconStyle} />
+              <BiChevronLeft style={HEADER_NAV_ICON_STYLE} />
             </Button>
           )}
 
@@ -170,7 +178,7 @@ export const CalendarHeader = memo(
               aria-label="Next month"
               className="!p-1"
             >
-              <BiChevronRight style={iconStyle} />
+              <BiChevronRight style={HEADER_NAV_ICON_STYLE} />
             </Button>
           )}
         </div>

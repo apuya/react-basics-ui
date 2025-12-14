@@ -86,7 +86,7 @@ export interface TimelineItemProps extends Omit<React.ComponentPropsWithoutRef<'
   /** Visual variant for the status area */
   statusVariant?: TimelineStatusVariant;
   /** Click handler for status area */
-  onStatusClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onStatusClick?: (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
   /** URL to navigate to from status area */
   statusHref?: string;
   /** Whether the item is in loading/skeleton state */
@@ -130,35 +130,66 @@ export const TimelineItem = memo(
       const variant: TimelineVariant = variantProp;
       const itemIndex = context?.itemIndex ?? 0;
 
-      // For alternate position, determine if item is on left or right
-      const isAlternateLeft = position === 'alternate' && itemIndex % 2 === 0;
-      const isAlternateRight = position === 'alternate' && itemIndex % 2 === 1;
+      // Memoize computed boolean values
+      // For alternate positioning: even indices (0, 2, 4...) render on left, odd indices (1, 3, 5...) on right
+      const isAlternateLeft = useMemo(
+        () => position === 'alternate' && itemIndex % 2 === 0,
+        [position, itemIndex]
+      );
+      
+      const isAlternateRight = useMemo(
+        () => position === 'alternate' && itemIndex % 2 === 1,
+        [position, itemIndex]
+      );
 
+      // Determine if item content should be right-aligned (affects text and connector placement)
+      const isRightAligned = useMemo(
+        () => position === 'right' || isAlternateRight,
+        [position, isAlternateRight]
+      );
+
+      // Check if item has custom icon or dot element (affects sizing and styling)
+      const hasIconOrDot = useMemo(() => !!(icon || dot), [icon, dot]);
+
+      // Check if status area should be rendered
+      const hasStatus = useMemo(
+        () => !!(statusTitle || statusDescription || statusIcon || statusIconElement),
+        [statusTitle, statusDescription, statusIcon, statusIconElement]
+      );
+
+      // Memoize class strings to prevent recalculation on every render
+      const baseClasses = useMemo(
+        () => cn(ITEM_BASE_CLASSES, disabled && ITEM_DISABLED_CLASSES),
+        [disabled]
+      );
+
+      // Build item classes based on position (alternate uses dynamic flex-row/flex-row-reverse)
       const itemClasses = useMemo(() => {
-        const baseClasses = cn(ITEM_BASE_CLASSES, disabled && ITEM_DISABLED_CLASSES);
-
         if (position === 'alternate') {
           return cn(baseClasses, isAlternateLeft ? 'flex-row' : 'flex-row-reverse', className);
         }
         return cn(baseClasses, ITEM_POSITION_STYLES[position], className);
-      }, [position, isAlternateLeft, disabled, className]);
+      }, [position, isAlternateLeft, baseClasses, className]);
 
-      // Check if item has icon or custom dot
-      const hasIconOrDot = icon || dot;
+      const sizeClass = useMemo(
+        () => hasIconOrDot ? DOT_ICON_CONTAINER_SIZE_STYLES[size] : DOT_SIZE_STYLES[size],
+        [hasIconOrDot, size]
+      );
 
-      const dotClasses = useMemo(() => {
-        const sizeClass = hasIconOrDot ? DOT_ICON_CONTAINER_SIZE_STYLES[size] : DOT_SIZE_STYLES[size];
-        return cn(DOT_BASE_CLASSES, sizeClass, DOT_VARIANT_STYLES[variant]);
-      }, [hasIconOrDot, size, variant]);
+      const dotClasses = useMemo(
+        () => cn(DOT_BASE_CLASSES, sizeClass, DOT_VARIANT_STYLES[variant]),
+        [sizeClass, variant]
+      );
 
-      const iconWrapperStyle = hasIconOrDot ? ICON_WRAPPER_STYLES[size] : undefined;
+      const alignmentClass = useMemo(
+        () => isRightAligned ? CONNECTOR_RIGHT_CLASSES : CONNECTOR_LEFT_CLASSES,
+        [isRightAligned]
+      );
 
-      const isRightAligned = position === 'right' || isAlternateRight;
-
-      const connectorClasses = useMemo(() => {
-        const alignmentClass = isRightAligned ? CONNECTOR_RIGHT_CLASSES : CONNECTOR_LEFT_CLASSES;
-        return cn(CONNECTOR_CLASSES, alignmentClass, CONNECTOR_VARIANT_STYLES[variant]);
-      }, [isRightAligned, variant]);
+      const connectorClasses = useMemo(
+        () => cn(CONNECTOR_CLASSES, alignmentClass, CONNECTOR_VARIANT_STYLES[variant]),
+        [alignmentClass, variant]
+      );
 
       const contentClasses = useMemo(() => {
         if (position === 'alternate') {
@@ -167,8 +198,15 @@ export const TimelineItem = memo(
         return cn(CONTENT_BASE_CLASSES, position === 'right' ? 'text-right' : '');
       }, [position, isAlternateRight]);
 
-      const itemStyle = isLast ? ITEM_LAST_STYLE : ITEM_STYLE;
+      // Memoize style objects to prevent recreation
+      const itemStyle = useMemo(() => isLast ? ITEM_LAST_STYLE : ITEM_STYLE, [isLast]);
 
+      const iconWrapperStyle = useMemo(
+        () => hasIconOrDot ? ICON_WRAPPER_STYLES[size] : undefined,
+        [hasIconOrDot, size]
+      );
+
+      // Connector positioning varies based on whether item has icon (larger) or just dot (smaller)
       const connectorStyle = useMemo(() => {
         if (hasIconOrDot) {
           return isRightAligned ? CONNECTOR_ICON_RIGHT_STYLES[size] : CONNECTOR_ICON_LEFT_STYLES[size];
@@ -176,29 +214,42 @@ export const TimelineItem = memo(
         return isRightAligned ? CONNECTOR_DOT_RIGHT_STYLES[size] : CONNECTOR_DOT_LEFT_STYLES[size];
       }, [hasIconOrDot, isRightAligned, size]);
 
-      const dotContainerStyle = DOT_CONTAINER_WIDTH[size];
+      const dotContainerStyle = useMemo(() => DOT_CONTAINER_WIDTH[size], [size]);
 
-      // Determine if status should be shown
-      const hasStatus = statusTitle || statusDescription || statusIcon || statusIconElement;
+      // Memoize skeleton-specific values
+      const skeletonAlignmentClass = useMemo(
+        () => position === 'right' ? CONNECTOR_RIGHT_CLASSES : CONNECTOR_LEFT_CLASSES,
+        [position]
+      );
+
+      const skeletonConnectorStyle = useMemo(
+        () => position === 'right' ? CONNECTOR_DOT_RIGHT_STYLES[size] : CONNECTOR_DOT_LEFT_STYLES[size],
+        [position, size]
+      );
+
+      const skeletonDotSize = useMemo(() => SKELETON_DOT_SIZE[size], [size]);
+
+      // Memoize skeleton item classes
+      const skeletonItemClasses = useMemo(
+        () => cn(ITEM_BASE_CLASSES, ITEM_POSITION_STYLES[position], className),
+        [position, className]
+      );
 
       // Render loading skeleton
       if (loading) {
-        const skeletonAlignmentClass = position === 'right' ? CONNECTOR_RIGHT_CLASSES : CONNECTOR_LEFT_CLASSES;
-        const skeletonConnectorStyle =
-          position === 'right' ? CONNECTOR_DOT_RIGHT_STYLES[size] : CONNECTOR_DOT_LEFT_STYLES[size];
 
         return (
           <div
             ref={ref}
             role="listitem"
-            className={cn(ITEM_BASE_CLASSES, ITEM_POSITION_STYLES[position], className)}
-            style={isLast ? ITEM_LAST_STYLE : ITEM_STYLE}
+            className={skeletonItemClasses}
+            style={itemStyle}
             data-loading="true"
             aria-busy="true"
             {...props}
           >
             <div className={DOT_CONTAINER_CLASSES} style={dotContainerStyle} aria-hidden="true">
-              <div className={SKELETON_DOT_CLASSES} style={SKELETON_DOT_SIZE[size]} />
+              <div className={SKELETON_DOT_CLASSES} style={skeletonDotSize} />
             </div>
 
             {!isLast && (
@@ -225,6 +276,8 @@ export const TimelineItem = memo(
           className={itemClasses}
           style={itemStyle}
           data-variant={variant}
+          data-position={isAlternateRight ? 'right' : isAlternateLeft ? 'left' : position}
+          data-has-icon={hasIconOrDot || undefined}
           data-last={isLast || undefined}
           data-disabled={disabled || undefined}
           {...props}

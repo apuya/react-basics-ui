@@ -1,20 +1,17 @@
-import { cn } from '@/lib/cn';
-import { forwardRef, memo, useCallback, useMemo } from 'react';
-import { Icon } from '../../utility/Icon';
+import { forwardRef, memo, useCallback } from 'react';
 import { HiOutlineCalendar } from 'react-icons/hi';
+import { Button } from '../Button';
+import { Icon } from '../../utility/Icon';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { useDatePickerContext } from './DatePickerContext';
 import {
-  TRIGGER_BASE_CLASSES,
-  TRIGGER_BASE_STYLE,
-  TRIGGER_SIZE_CLASSES,
-  TRIGGER_SIZE_STYLES,
-  TRIGGER_STATE_STYLES,
-  TRIGGER_DISABLED_STYLE,
-  TRIGGER_ICON_CLASSES,
   TRIGGER_PLACEHOLDER_CLASSES,
   TRIGGER_VALUE_CLASSES,
+  TRIGGER_ERROR_CLASSES,
 } from './DatePicker.styles';
 import type { DatePickerTriggerProps, DateRange } from './DatePicker.types';
+import type { ButtonSize } from '../Button';
+import { cn } from '@/lib/cn';
 
 /**
  * Default date formatter
@@ -38,13 +35,19 @@ const defaultFormatRange = (range: DateRange): string => {
 };
 
 /**
- * DatePickerTrigger - Button that opens the date picker
- * 
+ * DatePicker.Trigger - Button that opens the date picker popover.
+ *
+ * Composes the Button component with `variant="tertiary"` for consistent styling.
+ * Displays the selected date/range or placeholder text with a calendar icon.
+ *
  * @example
  * ```tsx
  * <DatePicker>
- *   <DatePickerTrigger placeholder="Select date" />
- *   <DatePickerContent>...</DatePickerContent>
+ *   <DatePicker.Trigger
+ *     placeholder="Select date"
+ *     formatDate={(date) => date.toLocaleDateString()}
+ *   />
+ *   <DatePicker.Content>...</DatePicker.Content>
  * </DatePicker>
  * ```
  */
@@ -74,20 +77,7 @@ export const DatePickerTrigger = memo(
       triggerId,
     } = useDatePickerContext();
 
-    // Merge refs
-    const setRef = useCallback(
-      (node: HTMLButtonElement | null) => {
-        if (typeof ref === 'function') {
-          ref(node);
-        } else if (ref) {
-          ref.current = node;
-        }
-        if (triggerRef) {
-          (triggerRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
-        }
-      },
-      [ref, triggerRef]
-    );
+    const mergedRef = useMergedRefs(ref, triggerRef);
 
     const handleClick = useCallback(
       (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -114,49 +104,28 @@ export const DatePickerTrigger = memo(
 
     const hasValue = displayValue !== null;
 
-    // Determine state
-    const stateKey = disabled ? 'disabled' : error ? 'error' : 'default';
-
-    // Combine inline styles
-    const triggerStyle = useMemo(() => ({
-      ...TRIGGER_BASE_STYLE,
-      ...TRIGGER_SIZE_STYLES[size as keyof typeof TRIGGER_SIZE_STYLES],
-      ...(disabled ? TRIGGER_DISABLED_STYLE : {}),
-    }), [size, disabled]);
-
     return (
-      <button
-        ref={setRef}
+      <Button
+        ref={mergedRef}
         id={triggerId}
-        type="button"
+        variant="tertiary"
+        size={size as ButtonSize}
+        disabled={disabled}
         role="combobox"
         aria-expanded={isOpen}
         aria-haspopup="dialog"
         aria-controls={isOpen ? contentId : undefined}
-        aria-disabled={disabled}
-        disabled={disabled}
         onClick={handleClick}
-        className={cn(
-          TRIGGER_BASE_CLASSES,
-          TRIGGER_SIZE_CLASSES[size as keyof typeof TRIGGER_SIZE_CLASSES],
-          TRIGGER_STATE_STYLES[stateKey],
-          className
-        )}
-        style={triggerStyle}
+        leadingVisual={<Icon icon={HiOutlineCalendar} size="sm" />}
+        className={cn(error && TRIGGER_ERROR_CLASSES, className)}
         {...rest}
       >
-        <Icon 
-          icon={HiOutlineCalendar} 
-          size="sm" 
-          className={TRIGGER_ICON_CLASSES}
-          aria-hidden 
-        />
         <span className={hasValue ? TRIGGER_VALUE_CLASSES : TRIGGER_PLACEHOLDER_CLASSES}>
           {hasValue ? displayValue : placeholder}
         </span>
-      </button>
+      </Button>
     );
   })
 );
 
-DatePickerTrigger.displayName = 'DatePickerTrigger';
+DatePickerTrigger.displayName = 'DatePicker.Trigger';

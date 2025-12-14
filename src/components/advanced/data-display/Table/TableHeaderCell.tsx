@@ -1,9 +1,29 @@
+/**
+ * @file TableHeaderCell.tsx
+ * @description Table header cell (th) component with multiple variants.
+ *
+ * Supports column headers with sorting, row headers for data tables,
+ * checkbox selection, and specialized layouts (stacked, comparison).
+ *
+ * @example
+ * ```tsx
+ * <Table.HeaderCell sortable sortDirection="asc" onSort={handleSort}>
+ *   Column Name
+ * </Table.HeaderCell>
+ * ```
+ */
+
 import { forwardRef, memo, useCallback, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { BiChevronUp, BiChevronDown } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
 import {
   TABLE_HEADER_CELL_BASE_CLASSES,
+  TABLE_HEADER_CELL_STYLE,
+  TABLE_HEADER_CELL_CHECKBOX_STYLE,
+  TABLE_HEADER_CELL_FLEXIBLE_STYLE,
+  TABLE_HEADER_CELL_SORTABLE_ALIGN_STYLES,
   TABLE_HEADER_SORT_BUTTON_CLASSES,
+  TABLE_HEADER_SORT_BUTTON_STYLE,
   TABLE_HEADER_SORT_ICON_CONTAINER_CLASSES,
 } from './Table.styles';
 import { Checkbox } from '@/components/basic/forms/Checkbox';
@@ -51,76 +71,24 @@ export interface TableHeaderCellProps extends ComponentPropsWithoutRef<'th'> {
   comparisonLabel?: string;
 }
 
-// ============================================================================
-// Static Styles (defined outside component to avoid recreation)
-// ============================================================================
-
-/** Base cell style - padding, min-width, vertical alignment */
-const BASE_CELL_STYLE = {
-  paddingBlock: 'var(--component-table-header-cell-padding-block)',
-  paddingInline: 'var(--component-table-header-cell-padding-inline)',
-  minWidth: 'var(--component-table-header-cell-min-width)',
-  verticalAlign: 'middle' as const,
-} as const;
-
-/** Checkbox cell style - no min-width to hug content, lineHeight: 0 removes extra space */
-const CHECKBOX_CELL_STYLE = {
-  padding: 'var(--component-table-header-checkbox-padding)',
-  verticalAlign: 'middle' as const,
-  lineHeight: 0,
-} as const;
-
-/** Cell style without min-width - for stacked, textWithBadge, comparison variants */
-const FLEXIBLE_CELL_STYLE = {
-  paddingBlock: 'var(--component-table-header-cell-padding-block)',
-  paddingInline: 'var(--component-table-header-cell-padding-inline)',
-  verticalAlign: 'middle' as const,
-} as const;
-
-/** Sort button padding style */
-const SORT_BUTTON_STYLE = {
-  paddingInline: 'var(--component-table-header-sort-padding-inline)',
-  paddingBlock: 'var(--component-table-header-sort-padding-block)',
-} as const;
-
-/** Sortable cell style - uses 8px inline padding to match sort button */
-const SORTABLE_CELL_STYLE = {
-  paddingBlock: 'var(--component-table-header-cell-padding-block)',
-  paddingInline: 'var(--component-table-header-cell-sortable-padding-inline)',
-  minWidth: 'var(--component-table-header-cell-min-width)',
-  verticalAlign: 'middle' as const,
-} as const;
-
-/** Sortable cell alignment styles (memoization-friendly lookup) */
-const SORTABLE_CELL_ALIGN_STYLES = {
-  left: { ...SORTABLE_CELL_STYLE, width: '100%', textAlign: 'left' as const },
-  right: { ...SORTABLE_CELL_STYLE, width: '100%', textAlign: 'right' as const },
-} as const;
-
 /** aria-sort value mapping */
 const ARIA_SORT_MAP = {
   asc: 'ascending',
   desc: 'descending',
 } as const;
 
-// ============================================================================
-// Sub-components
-// ============================================================================
-
 /** Sort icon component for sortable headers */
-const SortIcon = memo(({ direction, activeDirection }: { direction: 'asc' | 'desc'; activeDirection: 'asc' | 'desc' | null }) => (
-  <Icon
-    icon={direction === 'asc' ? BiChevronUp : BiChevronDown}
-    size="xs"
-    color={activeDirection === direction ? 'primary' : 'secondary'}
-    aria-hidden
-  />
-));
+const SortIcon = memo(
+  ({ direction, activeDirection }: { direction: 'asc' | 'desc'; activeDirection: 'asc' | 'desc' | null }) => (
+    <Icon
+      icon={direction === 'asc' ? BiChevronUp : BiChevronDown}
+      size="xs"
+      color={activeDirection === direction ? 'primary' : 'secondary'}
+      aria-hidden
+    />
+  )
+);
 SortIcon.displayName = 'SortIcon';
-
-// ============================================================================
-// Main Component
-// ============================================================================
 
 export const TableHeaderCell = memo(
   forwardRef<HTMLTableCellElement, TableHeaderCellProps>(({
@@ -174,7 +142,7 @@ export const TableHeaderCell = memo(
           ref={ref}
           scope={scope}
           className={cellClasses}
-          style={CHECKBOX_CELL_STYLE}
+          style={TABLE_HEADER_CELL_CHECKBOX_STYLE}
           data-variant="checkbox"
           data-size={size}
           {...props}
@@ -199,7 +167,7 @@ export const TableHeaderCell = memo(
           ref={ref}
           scope={scope}
           className={cellClasses}
-          style={SORTABLE_CELL_ALIGN_STYLES[align]}
+          style={TABLE_HEADER_CELL_SORTABLE_ALIGN_STYLES[align]}
           aria-sort={ariaSortValue}
           data-variant="sortable"
           data-align={align}
@@ -210,7 +178,7 @@ export const TableHeaderCell = memo(
           <button
             type="button"
             className={TABLE_HEADER_SORT_BUTTON_CLASSES}
-            style={SORT_BUTTON_STYLE}
+            style={TABLE_HEADER_SORT_BUTTON_STYLE}
             onClick={onSort}
             aria-label={sortAriaLabel}
           >
@@ -233,7 +201,7 @@ export const TableHeaderCell = memo(
           ref={ref}
           scope={scope}
           className={cellClasses}
-          style={FLEXIBLE_CELL_STYLE}
+          style={TABLE_HEADER_CELL_FLEXIBLE_STYLE}
           data-variant="stacked"
           data-size={size}
           {...props}
@@ -262,7 +230,7 @@ export const TableHeaderCell = memo(
           ref={ref}
           scope={scope}
           className={cn(cellClasses, 'text-[length:var(--component-table-cell-font-size-md)] font-normal text-[color:var(--component-table-cell-text)]')}
-          style={FLEXIBLE_CELL_STYLE}
+          style={TABLE_HEADER_CELL_FLEXIBLE_STYLE}
           data-variant="textWithBadge"
           data-size={size}
           {...props}
@@ -282,7 +250,7 @@ export const TableHeaderCell = memo(
           ref={ref}
           scope={scope}
           className={cellClasses}
-          style={FLEXIBLE_CELL_STYLE}
+          style={TABLE_HEADER_CELL_FLEXIBLE_STYLE}
           data-variant="comparison"
           data-size={size}
           {...props}
@@ -307,7 +275,7 @@ export const TableHeaderCell = memo(
         ref={ref}
         scope={scope}
         className={cellClasses}
-        style={BASE_CELL_STYLE}
+        style={TABLE_HEADER_CELL_STYLE}
         data-variant="default"
         data-size={size}
         {...props}

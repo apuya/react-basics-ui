@@ -42,7 +42,7 @@ export interface TimelineStatusProps {
   /** Size of the status area */
   size?: TimelineStatusSize;
   /** Click handler - makes the status interactive */
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
   /** URL to navigate to - makes the status interactive */
   href?: string;
   /** Whether the status is disabled */
@@ -73,7 +73,7 @@ export interface TimelineStatusProps {
  * ```
  */
 export const TimelineStatus = memo(
-  React.forwardRef<HTMLButtonElement | HTMLDivElement, TimelineStatusProps>(
+  React.forwardRef<HTMLButtonElement | HTMLAnchorElement | HTMLDivElement, TimelineStatusProps>(
     (
       {
         icon,
@@ -89,7 +89,10 @@ export const TimelineStatus = memo(
       },
       ref
     ) => {
-      const isInteractive = !disabled && (!!onClick || !!href);
+      const isInteractive = useMemo(
+        () => !disabled && (!!onClick || !!href),
+        [disabled, onClick, href]
+      );
 
       // Build class names
       const statusClasses = useMemo(
@@ -104,17 +107,13 @@ export const TimelineStatus = memo(
         [variant, isInteractive, disabled, className]
       );
 
-      // Handle click
+      // Handle click for button variant
       const handleClick = useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
           if (disabled) return;
-
-          if (href) {
-            window.location.href = href;
-          }
           onClick?.(e);
         },
-        [href, onClick, disabled]
+        [onClick, disabled]
       );
 
       // Render icon - prefer iconElement, then icon prop with Icon component
@@ -135,28 +134,49 @@ export const TimelineStatus = memo(
         return null;
       }, [iconElement, icon, size]);
 
-      // Common content structure
-      const content = (
-        <>
-          {iconContent}
-          {(title || description) && (
-            <div className={STATUS_CONTENT_CLASSES}>
-              {title && (
-                <Text as="div" size={TEXT_SIZE_MAP[size]} weight="semibold" color="primary">
-                  {title}
-                </Text>
-              )}
-              {description && (
-                <Text as="div" size={TEXT_SIZE_MAP[size]} weight="regular" color="secondary">
-                  {description}
-                </Text>
-              )}
-            </div>
-          )}
-        </>
+      // Common content structure - memoized to prevent recreation on every render
+      const content = useMemo(
+        () => (
+          <>
+            {iconContent}
+            {(title || description) && (
+              <div className={STATUS_CONTENT_CLASSES}>
+                {title && (
+                  <Text as="div" size={TEXT_SIZE_MAP[size]} weight="semibold" color="primary">
+                    {title}
+                  </Text>
+                )}
+                {description && (
+                  <Text as="div" size={TEXT_SIZE_MAP[size]} weight="regular" color="secondary">
+                    {description}
+                  </Text>
+                )}
+              </div>
+            )}
+          </>
+        ),
+        [iconContent, title, description, size]
       );
 
-      // Render as button when interactive, div otherwise
+      // Render as anchor when href is provided (better for SPA routing and link behavior)
+      if (href && !disabled) {
+        return (
+          <a
+            ref={ref as React.Ref<HTMLAnchorElement>}
+            href={href}
+            className={statusClasses}
+            style={STATUS_STYLE}
+            onClick={onClick}
+            data-variant={variant}
+            data-size={size}
+            data-interactive="true"
+          >
+            {content}
+          </a>
+        );
+      }
+
+      // Render as button when interactive (onClick only)
       if (isInteractive) {
         return (
           <button
@@ -168,12 +188,14 @@ export const TimelineStatus = memo(
             disabled={disabled}
             data-variant={variant}
             data-size={size}
+            data-interactive="true"
           >
             {content}
           </button>
         );
       }
 
+      // Render as div when not interactive
       return (
         <div
           ref={ref as React.Ref<HTMLDivElement>}
@@ -181,6 +203,7 @@ export const TimelineStatus = memo(
           style={STATUS_STYLE}
           data-variant={variant}
           data-size={size}
+          data-disabled={disabled || undefined}
         >
           {content}
         </div>

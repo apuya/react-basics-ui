@@ -11,57 +11,31 @@ import {
   JUSTIFY_STYLES,
   ROWS_STYLES,
 } from './Grid.styles';
+import type { GridProps } from './Grid.types';
 
-export type GridCols = keyof typeof COLS_STYLES;
-export type GridRows = keyof typeof ROWS_STYLES;
-export type GridGap = keyof typeof GAP_STYLES;
-export type GridAlign = keyof typeof ALIGN_STYLES;
-export type GridJustify = keyof typeof JUSTIFY_STYLES;
-export type GridFlow = keyof typeof FLOW_STYLES;
-
-export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Number of columns */
-  cols?: GridCols;
-  /** Number of rows */
-  rows?: GridRows;
-  /** Gap between items (both horizontal and vertical) */
-  gap?: GridGap | number | string;
-  /** Horizontal gap between items */
-  gapX?: keyof typeof GAP_X_STYLES | number | string;
-  /** Vertical gap between items */
-  gapY?: keyof typeof GAP_Y_STYLES | number | string;
-  /** Align items */
-  align?: GridAlign;
-  /** Justify items */
-  justify?: GridJustify;
-  /** Grid auto flow */
-  flow?: GridFlow;
-  /** Display as inline-grid instead of grid */
-  inline?: boolean;
-  /** Children elements */
-  children?: React.ReactNode;
-}
+// =============================================================================
+// Grid Component
+// =============================================================================
 
 export const Grid = memo(
-  React.forwardRef<HTMLDivElement, GridProps>(
-    (
-      {
-        cols,
-        rows,
-        gap,
-        gapX,
-        gapY,
-        align,
-        justify,
-        flow,
-        inline = false,
-        className,
-        style,
-        children,
-        ...props
-      },
-      ref
-    ) => {
+  React.forwardRef<HTMLDivElement, GridProps>(function Grid(
+    {
+      cols,
+      rows,
+      gap,
+      gapX,
+      gapY,
+      align,
+      justify,
+      flow,
+      inline = false,
+      className,
+      style,
+      children,
+      ...props
+    },
+    ref
+  ) {
       const gapStyles = useMemo(() => {
         const styles: React.CSSProperties = {};
 

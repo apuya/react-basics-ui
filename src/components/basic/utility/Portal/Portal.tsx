@@ -1,32 +1,11 @@
-import { memo, useEffect, useRef, useState, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-
-export interface PortalProps {
-  children: ReactNode;
-  containerId?: string;
-}
-
 /**
- * Portal component for rendering children into a DOM node outside the parent component hierarchy.
- *
- * Uses React's createPortal to render content at the document root level, breaking out of
- * CSS constraints like overflow: hidden or z-index stacking contexts.
- *
- * Automatically creates the target container if it doesn't exist and cleans up on unmount.
- *
- * @example
- * ```tsx
- * // Basic usage
- * <Portal>
- *   <div>This renders at document.body</div>
- * </Portal>
- *
- * // Custom container
- * <Portal containerId="modal-root">
- *   <Modal />
- * </Portal>
- * ```
+ * Portal - Renders children into a DOM node outside the parent hierarchy.
+ * Uses React's createPortal to break out of CSS constraints like overflow or z-index.
  */
+import { memo, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import type { PortalProps } from './Portal.types';
+
 export const Portal = memo(({ children, containerId = 'portal-root' }: PortalProps) => {
   const [container, setContainer] = useState<HTMLElement | null>(null);
   const createdByUs = useRef(false);

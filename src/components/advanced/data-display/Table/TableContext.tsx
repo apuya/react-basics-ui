@@ -1,3 +1,11 @@
+/**
+ * @file TableContext.tsx
+ * @description Context provider for sharing Table state with sub-components.
+ *
+ * Provides size and variant values to all nested table components,
+ * enabling consistent styling and behavior across the table.
+ */
+
 import { createComponentContext } from '@/lib/createComponentContext';
 
 export type TableSize = 'sm' | 'md' | 'lg';

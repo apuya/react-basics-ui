@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Modal } from './Modal';
+import type { ModalSize } from './Modal.types';
 import { Button } from '../../forms/Button';
 import { Input } from '../../forms/Input';
 import { Label } from '../../forms/Label';
@@ -10,6 +11,12 @@ import { Heading } from '../../typography/Heading';
 import { Stack } from '../../layout/Stack';
 import { Flex } from '../../layout/Flex';
 import { List } from '../../data-display/List';
+
+// =============================================================================
+// Storybook Meta Configuration
+// =============================================================================
+
+const MODAL_SIZES: ModalSize[] = ['sm', 'md', 'lg', 'xl', 'full'];
 
 const meta: Meta<typeof Modal> = {
   title: 'Overlay/Modal',
@@ -32,7 +39,7 @@ const meta: Meta<typeof Modal> = {
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg', 'xl', 'full'],
+      options: MODAL_SIZES,
       description: 'Modal size preset',
       table: { defaultValue: { summary: 'md' } },
     },
@@ -56,6 +63,10 @@ const meta: Meta<typeof Modal> = {
 
 export default meta;
 type Story = StoryObj<typeof Modal>;
+
+// =============================================================================
+// Helper Component
+// =============================================================================
 
 // Helper component to reduce story boilerplate
 const ModalDemo = ({
@@ -81,6 +92,10 @@ const ModalDemo = ({
   );
 };
 
+// =============================================================================
+// Default Story
+// =============================================================================
+
 // Default Example
 export const Default: Story = {
   render: () => (
@@ -105,6 +120,10 @@ export const Default: Story = {
   ),
 };
 
+// =============================================================================
+// Size Variants
+// =============================================================================
+
 // All Sizes
 export const Sizes: Story = {
   parameters: {
@@ -115,17 +134,16 @@ export const Sizes: Story = {
     },
   },
   render: () => {
-    const [openSize, setOpenSize] = useState<string | null>(null);
-    const sizes = ['sm', 'md', 'lg', 'xl', 'full'] as const;
+    const [openSize, setOpenSize] = useState<ModalSize | null>(null);
 
     return (
       <Flex gap="sm" wrap="wrap">
-        {sizes.map((size) => (
+        {MODAL_SIZES.map((size) => (
           <Button key={size} size="small" onClick={() => setOpenSize(size)}>
             {size.toUpperCase()}
           </Button>
         ))}
-        {sizes.map((size) => (
+        {MODAL_SIZES.map((size) => (
           <Modal
             key={size}
             isOpen={openSize === size}
@@ -151,6 +169,10 @@ export const Sizes: Story = {
     );
   },
 };
+
+// =============================================================================
+// Common Use Cases
+// =============================================================================
 
 // Common Use Cases
 export const WithForm: Story = {
@@ -244,7 +266,7 @@ export const ScrollableContent: Story = {
               {['Introduction', 'User Agreement', 'Privacy Policy', 'Data Collection', 'Cookie Policy'].map(
                 (section, i) => (
                   <Stack key={section} spacing="xs">
-                    <Heading size="small">
+                    <Heading level="h6">
                       {i + 1}. {section}
                     </Heading>
                     <Text>
@@ -338,6 +360,10 @@ export const MultiStepWizard: Story = {
     );
   },
 };
+
+// =============================================================================
+// Behavior Options
+// =============================================================================
 
 // Behavior Options
 export const BehaviorOptions: Story = {

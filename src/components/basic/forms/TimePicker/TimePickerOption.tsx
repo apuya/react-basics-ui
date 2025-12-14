@@ -17,6 +17,14 @@ export interface TimePickerOptionProps extends Omit<ComponentPropsWithoutRef<'bu
   label?: string;
 }
 
+// Static style object (no dependencies)
+const OPTION_STYLE = {
+  height: 'var(--component-dropdown-item-height)',
+  paddingInline: 'var(--component-dropdown-item-padding-inline)',
+  paddingBlock: 'var(--component-dropdown-item-padding-block)',
+  gap: 'var(--component-dropdown-item-gap)',
+} as const;
+
 export const TimePickerOption = memo(
   forwardRef<HTMLButtonElement, TimePickerOptionProps>(function TimePickerOption(
     { value: optionValue, label, className, ...props },
@@ -33,16 +41,6 @@ export const TimePickerOption = memo(
         setValue(optionValue);
       }
     }, [disabled, optionValue, setValue]);
-
-    const optionStyle = useMemo(
-      () => ({
-        height: 'var(--component-dropdown-item-height)',
-        paddingInline: 'var(--component-dropdown-item-padding-inline)',
-        paddingBlock: 'var(--component-dropdown-item-padding-block)',
-        gap: 'var(--component-dropdown-item-gap)',
-      }),
-      []
-    );
 
     const optionClasses = useMemo(
       () => cn(
@@ -61,7 +59,7 @@ export const TimePickerOption = memo(
         role="option"
         aria-selected={isSelected}
         className={optionClasses}
-        style={optionStyle}
+        style={OPTION_STYLE}
         onClick={handleClick}
         data-selected={isSelected || undefined}
         {...props}

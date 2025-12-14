@@ -6,10 +6,12 @@ import {
   useState,
   type ReactNode,
   type CSSProperties,
+  type Ref,
 } from 'react';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { cn } from '@/lib/cn';
 import { Portal } from '@/components/basic/utility/Portal';
 import { Button } from '@/components/basic/forms/Button';
@@ -110,6 +112,21 @@ export interface BaseOverlayDialogProps {
    * Data attribute for size (for testing/styling)
    */
   dataSize?: string;
+
+  /**
+   * Data attribute for placement (for testing/styling)
+   */
+  dataPlacement?: string;
+
+  /**
+   * Data attribute for open state (for testing/styling)
+   */
+  dataOpen?: boolean;
+
+  /**
+   * Forwarded ref to dialog element
+   */
+  forwardedRef?: Ref<HTMLDivElement>;
 }
 
 /**
@@ -135,10 +152,14 @@ export const BaseOverlayDialog = ({
   ContextProvider,
   dialogPosition = 'inside',
   dataSize,
+  dataPlacement,
+  dataOpen,
+  forwardedRef,
 }: BaseOverlayDialogProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const mergedDialogRef = useMergedRefs(forwardedRef, dialogRef);
 
   // Hooks
   useBodyScrollLock(isOpen && preventBodyScroll);
@@ -181,7 +202,7 @@ export const BaseOverlayDialog = ({
     <Button
       variant="tabs"
       size="small"
-      leadingIcon={<BiX />}
+      leadingVisual={<BiX />}
       aria-label={closeButtonAriaLabel || `Close ${ariaLabel}`}
       className="absolute top-[length:var(--component-modal-close-button-offset)] right-[length:var(--component-modal-close-button-offset)]"
       onClick={onClose}
@@ -190,7 +211,7 @@ export const BaseOverlayDialog = ({
 
   const dialogContent = (
     <div
-      ref={dialogRef}
+      ref={mergedDialogRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby={`${ariaLabel}-title`}
@@ -198,6 +219,8 @@ export const BaseOverlayDialog = ({
       style={dialogStyle}
       tabIndex={-1}
       data-size={dataSize}
+      data-placement={dataPlacement}
+      data-open={dataOpen || undefined}
     >
       {ContextProvider && contextValue ? (
         <ContextProvider value={contextValue}>

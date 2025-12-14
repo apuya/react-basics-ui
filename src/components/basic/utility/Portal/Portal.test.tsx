@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, afterEach, beforeEach } from 'vitest';
+import { describe, expect, it, afterEach } from 'vitest';
 import { Portal } from './Portal';
 
 describe('Portal', () => {
@@ -400,7 +400,7 @@ describe('Portal', () => {
   describe('Return Value', () => {
     it('returns null when container not ready', () => {
       // This is testing the initial render before useEffect runs
-      const { container } = render(
+      render(
         <Portal>
           <div>Content</div>
         </Portal>

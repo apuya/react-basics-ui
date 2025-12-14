@@ -1,12 +1,12 @@
 // =============================================================================
-// BASE STYLES
+// Base Styles - Core layout for all avatars
 // =============================================================================
 
 export const BASE_CLASSES =
   'relative inline-flex items-center justify-center overflow-hidden flex-shrink-0';
 
 // =============================================================================
-// SHAPE VARIANTS
+// Shape Variants - Circular (default) or square corners
 // =============================================================================
 
 export const SHAPE_STYLES = {
@@ -15,7 +15,7 @@ export const SHAPE_STYLES = {
 } as const;
 
 // =============================================================================
-// SIZE VARIANTS
+// Size Variants - xs through 2xl for different contexts
 // =============================================================================
 
 export const SIZE_STYLES = {
@@ -28,13 +28,13 @@ export const SIZE_STYLES = {
 } as const;
 
 // =============================================================================
-// IMAGE STYLES
+// Image Styles - Absolute positioned cover image
 // =============================================================================
 
 export const IMAGE_CLASSES = 'absolute inset-0 h-full w-full object-cover';
 
 // =============================================================================
-// FALLBACK STYLES
+// Fallback Styles - Initials or icon when image unavailable
 // =============================================================================
 
 export const FALLBACK_CLASSES =
@@ -48,10 +48,3 @@ export const FALLBACK_TEXT_SIZE = {
   xl: 'text-[length:var(--component-avatar-text-size-xl)] font-[number:var(--component-avatar-text-weight)]',
   '2xl': 'text-[length:var(--component-avatar-text-size-2xl)] font-[number:var(--component-avatar-text-weight)]',
 } as const;
-
-// =============================================================================
-// TYPES
-// =============================================================================
-
-export type AvatarShape = keyof typeof SHAPE_STYLES;
-export type AvatarSize = keyof typeof SIZE_STYLES;

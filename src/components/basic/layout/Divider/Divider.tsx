@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { forwardRef, memo } from 'react';
 import {
   BASE_CLASSES,
   LABEL_CLASSES,
@@ -9,19 +9,11 @@ import {
   SPACING_STYLES_VERTICAL,
   VARIANT_STYLES,
 } from './Divider.styles';
+import type { DividerProps } from './Divider.types';
 
-export type DividerOrientation = 'horizontal' | 'vertical';
-export type DividerVariant = 'solid' | 'dashed' | 'dotted';
-export type DividerSpacing = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type DividerLabelPosition = 'left' | 'center' | 'right';
-
-export interface DividerProps extends ComponentPropsWithoutRef<'hr'> {
-  orientation?: DividerOrientation;
-  variant?: DividerVariant;
-  spacing?: DividerSpacing;
-  label?: ReactNode;
-  labelPosition?: DividerLabelPosition;
-}
+// =============================================================================
+// Divider Component
+// =============================================================================
 
 export const Divider = memo(
   forwardRef<HTMLHRElement, DividerProps>(function Divider(

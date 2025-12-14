@@ -6,4 +6,4 @@ export type {
   FlexJustify,
   FlexWrap,
   FlexGap,
-} from './Flex';
+} from './Flex.types';

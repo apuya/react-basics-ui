@@ -1,15 +1,11 @@
+/**
+ * Avatar.Image - Displays user image with automatic error handling.
+ * When image fails to load, component unmounts to reveal Avatar.Fallback.
+ */
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useState, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, useState } from 'react';
 import { IMAGE_CLASSES } from './Avatar.styles';
-
-export interface AvatarImageProps extends Omit<ComponentPropsWithoutRef<'img'>, 'onError'> {
-  /** Image source URL */
-  src: string;
-  /** Alternative text for accessibility */
-  alt: string;
-  /** Callback when image fails to load */
-  onLoadError?: (event: React.SyntheticEvent<HTMLImageElement, Event>) => void;
-}
+import type { AvatarImageProps } from './Avatar.types';
 
 export const AvatarImage = memo(
   forwardRef<HTMLImageElement, AvatarImageProps>(

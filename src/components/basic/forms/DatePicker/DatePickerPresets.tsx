@@ -14,7 +14,10 @@ import {
 } from './DatePicker.styles';
 
 /**
- * Generate dynamic quarter presets for the last N quarters
+ * Generates dynamic quarter presets for the last N quarters.
+ *
+ * @param count - Number of quarters to generate (default: 8)
+ * @returns Array of PresetDateRange objects for each quarter
  */
 export function generateQuarterPresets(count: number = 8): PresetDateRange[] {
   const presets: PresetDateRange[] = [];
@@ -54,7 +57,10 @@ export function generateQuarterPresets(count: number = 8): PresetDateRange[] {
 }
 
 /**
- * Default preset date ranges
+ * Default preset date ranges for quick selection.
+ *
+ * Includes: Today, Yesterday, This Week, Last 7 Days, Last 14 Days,
+ * This Month, Last Month, Last 30 Days, Last 90 Days, This Year, Last Year.
  */
 export const DEFAULT_PRESETS: PresetDateRange[] = [
   // Quick picks
@@ -238,10 +244,21 @@ export const DEFAULT_PRESETS: PresetDateRange[] = [
 ];
 
 /**
- * DatePickerPresets - List of preset date range options
- * 
- * Displays a vertical list of preset date ranges that users
- * can click to quickly select common date ranges.
+ * DatePicker.Presets - Sidebar with preset date range quick-select options.
+ *
+ * Displays a scrollable list of preset date ranges (Today, Last 7 Days, etc.)
+ * with keyboard navigation support. Includes quarterly presets generated dynamically.
+ *
+ * @example
+ * ```tsx
+ * <DatePicker.Content>
+ *   <DatePicker.Presets
+ *     presets={DEFAULT_PRESETS}
+ *     onPresetSelect={(range) => setRange(range)}
+ *   />
+ *   <DatePicker.Calendar variant="dual" />
+ * </DatePicker.Content>
+ * ```
  */
 export const DatePickerPresets = memo(
   forwardRef<HTMLDivElement, DatePickerPresetsProps>(

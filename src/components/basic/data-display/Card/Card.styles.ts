@@ -1,3 +1,6 @@
+import type React from 'react';
+import type { CardVariant } from './Card.types';
+
 // =============================================================================
 // BASE STYLES
 // =============================================================================
@@ -27,14 +30,31 @@ export const CONTENT_CLASSES = 'flex-1';
 
 export const FOOTER_CLASSES = 'flex items-center';
 
-export const TITLE_CLASSES =
-  'text-[length:var(--component-card-title-size)] font-[number:var(--component-card-title-weight)] text-[color:var(--component-card-text)]';
-
-export const DESCRIPTION_CLASSES =
-  'text-[length:var(--component-card-description-size)] font-[number:var(--component-card-description-weight)] text-[color:var(--component-card-description-color)]';
-
 // =============================================================================
-// TYPES
+// STATIC STYLE OBJECTS
 // =============================================================================
 
-import type { CardVariant } from './Card';
+/** Static gap style for card container - uses CSS custom properties */
+export const GAP_STYLE: React.CSSProperties = {
+  gap: 'var(--component-card-gap)',
+};
+
+/** Static padding style for card header */
+export const HEADER_PADDING_STYLE: React.CSSProperties = {
+  paddingInline: 'var(--component-card-header-padding-inline)',
+  paddingBlock: 'var(--component-card-header-padding-block)',
+  gap: 'var(--component-card-gap-compact)',
+};
+
+/** Static padding style for card content */
+export const CONTENT_PADDING_STYLE: React.CSSProperties = {
+  paddingInline: 'var(--component-card-padding-inline)',
+  paddingBlock: 'var(--component-card-padding-block)',
+};
+
+/** Static padding style for card footer */
+export const FOOTER_PADDING_STYLE: React.CSSProperties = {
+  paddingInline: 'var(--component-card-footer-padding-inline)',
+  paddingBlock: 'var(--component-card-footer-padding-block)',
+  gap: 'var(--component-card-gap-compact)',
+};

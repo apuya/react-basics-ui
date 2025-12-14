@@ -60,6 +60,29 @@ function isDateDisabled(
 // ============================================================================
 
 /**
+ * DatePicker.Calendar - Calendar grid for date selection.
+ *
+ * Supports single and dual calendar layouts with month/year navigation.
+ * Handles single date and date range selection modes.
+ *
+ * @example
+ * ```tsx
+ * // Single calendar
+ * <DatePicker.Calendar
+ *   selectedDate={date}
+ *   onDateSelect={setDate}
+ * />
+ *
+ * // Dual calendar for range selection
+ * <DatePicker.Calendar
+ *   variant="dual"
+ *   selectedRange={range}
+ *   onRangeSelect={setRange}
+ * />
+ * ```
+ */
+
+/**
  * SingleCalendarGrid - Internal component for a single calendar grid
  */
 const SingleCalendarGrid = memo(

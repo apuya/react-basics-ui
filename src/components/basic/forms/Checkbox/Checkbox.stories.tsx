@@ -1,10 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { JSX } from 'react';
 import { Checkbox } from './Checkbox';
+import type { CheckboxSize } from './Checkbox.types';
 import { Text } from '../../typography/Text';
 import { Stack } from '../../layout/Stack';
 
+// =============================================================================
+// Storybook Meta Configuration
+// =============================================================================
+
 type StoryWithRender = StoryObj<typeof Checkbox> & { render: () => JSX.Element };
+
+const CHECKBOX_SIZES: CheckboxSize[] = ['small', 'default', 'large'];
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Forms/Checkbox',
@@ -22,7 +29,7 @@ const meta: Meta<typeof Checkbox> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['small', 'default', 'large'],
+      options: CHECKBOX_SIZES,
       description: 'Size of the checkbox',
     },
     label: {
@@ -51,6 +58,10 @@ const meta: Meta<typeof Checkbox> = {
 export default meta;
 type Story = StoryObj<typeof Checkbox>;
 
+// =============================================================================
+// Default Story
+// =============================================================================
+
 /**
  * Basic checkbox with label. Interactive controls available in Storybook.
  */
@@ -59,6 +70,10 @@ export const Default: Story = {
     label: 'Accept terms and conditions',
   },
 };
+
+// =============================================================================
+// Size & State Variants
+// =============================================================================
 
 /**
  * Checkbox without visible label. Always provide aria-label for accessibility.
@@ -98,6 +113,10 @@ export const AllStates: StoryWithRender = {
   ),
 };
 
+// =============================================================================
+// Usage Patterns
+// =============================================================================
+
 /**
  * Group of related checkboxes using fieldset for semantic HTML and accessibility.
  */
@@ -132,6 +151,10 @@ export const SelectAllPattern: StoryWithRender = {
     </Stack>
   ),
 };
+
+// =============================================================================
+// Advanced Examples
+// =============================================================================
 
 /**
  * Checkboxes with JSX labels containing interactive elements like links.

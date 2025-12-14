@@ -86,30 +86,30 @@ export const Default: Story = {
 export const FallbackTypes: Story = {
   render: () => (
     <Flex gap="lg" align="center">
-      <Stack align="center" gap="xs">
+      <Stack align="center" spacing="xs">
         <Avatar size="lg">
           <Avatar.Image src={SAMPLE_IMAGE} alt="User Avatar" />
         </Avatar>
-        <Text size="xs" color="secondary">Image</Text>
+        <Text size="caption" color="secondary">Image</Text>
       </Stack>
-      <Stack align="center" gap="xs">
+      <Stack align="center" spacing="xs">
         <Avatar size="lg">
           <Avatar.Fallback>JD</Avatar.Fallback>
         </Avatar>
-        <Text size="xs" color="secondary">Initials</Text>
+        <Text size="caption" color="secondary">Initials</Text>
       </Stack>
-      <Stack align="center" gap="xs">
+      <Stack align="center" spacing="xs">
         <Avatar size="lg">
           <Avatar.Fallback />
         </Avatar>
-        <Text size="xs" color="secondary">Default Icon</Text>
+        <Text size="caption" color="secondary">Default Icon</Text>
       </Stack>
       {CUSTOM_ICONS.map(({ icon, label }) => (
-        <Stack key={label} align="center" gap="xs">
+        <Stack key={label} align="center" spacing="xs">
           <Avatar size="lg">
             <Avatar.Fallback icon={icon} />
           </Avatar>
-          <Text size="xs" color="secondary">{label}</Text>
+          <Text size="caption" color="secondary">{label}</Text>
         </Stack>
       ))}
     </Flex>
@@ -125,14 +125,14 @@ export const FallbackTypes: Story = {
  */
 export const AllSizes: Story = {
   render: () => (
-    <Stack gap="md">
+    <Stack spacing="md">
       <Flex gap="md" align="end">
         {AVATAR_SIZES.map((size) => (
-          <Stack key={size} align="center" gap="xs">
+          <Stack key={size} align="center" spacing="xs">
             <Avatar size={size}>
               <Avatar.Fallback>{size.toUpperCase()}</Avatar.Fallback>
             </Avatar>
-            <Text size="xs" color="secondary">{size}</Text>
+            <Text size="caption" color="secondary">{size}</Text>
           </Stack>
         ))}
       </Flex>
@@ -154,11 +154,11 @@ export const AllShapes: Story = {
   render: () => (
     <Flex gap="lg" align="center">
       {AVATAR_SHAPES.map((shape) => (
-        <Stack key={shape} align="center" gap="xs">
+        <Stack key={shape} align="center" spacing="xs">
           <Avatar shape={shape} size="lg">
             <Avatar.Image src={SAMPLE_IMAGE} alt={`${shape} avatar`} />
           </Avatar>
-          <Text size="xs" color="secondary">{shape}</Text>
+          <Text size="caption" color="secondary">{shape}</Text>
         </Stack>
       ))}
     </Flex>
@@ -175,19 +175,19 @@ export const AllShapes: Story = {
 export const ImageWithFallback: Story = {
   render: () => (
     <Flex gap="md" align="center">
-      <Stack align="center" gap="xs">
+      <Stack align="center" spacing="xs">
         <Avatar>
           <Avatar.Image src={SAMPLE_IMAGE} alt="Valid image" />
           <Avatar.Fallback>JD</Avatar.Fallback>
         </Avatar>
-        <Text size="xs" color="secondary">Valid image</Text>
+        <Text size="caption" color="secondary">Valid image</Text>
       </Stack>
-      <Stack align="center" gap="xs">
+      <Stack align="center" spacing="xs">
         <Avatar>
           <Avatar.Image src="invalid-url.jpg" alt="Broken image" />
           <Avatar.Fallback>AB</Avatar.Fallback>
         </Avatar>
-        <Text size="xs" color="secondary">Broken image</Text>
+        <Text size="caption" color="secondary">Broken image</Text>
       </Stack>
     </Flex>
   ),
@@ -204,7 +204,7 @@ export const UserList: Story = {
   render: () => (
     <Card className="w-72">
       <Card.Content>
-        <Stack gap="sm">
+        <Stack spacing="sm">
           {USER_LIST_DATA.map((user) => (
             <Flex key={user.email} align="center" gap="sm">
               <Avatar>
@@ -216,9 +216,9 @@ export const UserList: Story = {
                   <Avatar.Fallback>{user.initials}</Avatar.Fallback>
                 )}
               </Avatar>
-              <Stack gap="none">
-                <Text size="sm" weight="medium">{user.name}</Text>
-                <Text size="xs" color="secondary">{user.email}</Text>
+              <Stack spacing="none">
+                <Text size="small" weight="medium">{user.name}</Text>
+                <Text size="caption" color="secondary">{user.email}</Text>
               </Stack>
             </Flex>
           ))}
@@ -257,15 +257,15 @@ export const ProfileCard: Story = {
   render: () => (
     <Card variant="elevated" className="w-64">
       <Card.Content>
-        <Stack align="center" gap="sm">
+        <Stack align="center" spacing="sm">
           <Avatar size="2xl">
             <Avatar.Image src={SAMPLE_IMAGE} alt="Profile" />
             <Avatar.Fallback>JD</Avatar.Fallback>
           </Avatar>
-          <Stack align="center" gap="xs">
-            <Text size="lg" weight="semibold">John Doe</Text>
-            <Text size="sm" color="secondary">Software Engineer</Text>
-            <Text size="xs" color="tertiary">San Francisco, CA</Text>
+          <Stack align="center" spacing="xs">
+            <Text size="subtitle" weight="semibold">John Doe</Text>
+            <Text size="small" color="secondary">Software Engineer</Text>
+            <Text size="caption" color="tertiary">San Francisco, CA</Text>
           </Stack>
         </Stack>
       </Card.Content>
@@ -293,7 +293,7 @@ export const TeamGrid: Story = {
       <Card.Content>
         <Grid cols={3} gap="md">
           {AVATAR_SIZES.map((size, index) => (
-            <Stack key={size} align="center" gap="xs">
+            <Stack key={size} align="center" spacing="xs">
               <Avatar size="lg">
                 {index % 3 === 0 ? (
                   <Avatar.Image src={SAMPLE_IMAGE} alt={`Member ${index + 1}`} />
@@ -303,7 +303,7 @@ export const TeamGrid: Story = {
                   <Avatar.Fallback />
                 )}
               </Avatar>
-              <Text size="xs" color="secondary">Member {index + 1}</Text>
+              <Text size="caption" color="secondary">Member {index + 1}</Text>
             </Stack>
           ))}
         </Grid>

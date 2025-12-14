@@ -38,23 +38,6 @@ export const OPTION_STATE_STYLES = {
   disabled: 'bg-[color:var(--component-dropdown-item-bg-disabled)] text-[color:var(--component-dropdown-item-text-disabled)] cursor-not-allowed opacity-50',
 } as const;
 
-// Label and helper text
-export const LABEL_BASE_CLASSES =
-  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)]';
-
-export const LABEL_STATE_STYLES = {
-  default: 'text-[color:var(--component-select-label-default)]',
-  error: 'text-[color:var(--component-select-label-error)]',
-} as const;
-
-export const HELPER_BASE_CLASSES =
-  'text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)]';
-
-export const HELPER_STATE_STYLES = {
-  default: 'text-[color:var(--component-select-helper-default)]',
-  error: 'text-[color:var(--component-select-helper-error)]',
-} as const;
-
 // Icon styles
 export const ICON_BASE_CLASSES =
   'w-[length:var(--component-input-icon-size-default)] h-[length:var(--component-input-icon-size-default)] shrink-0';
@@ -66,8 +49,28 @@ export const ICON_STATE_STYLES = {
 
 export const ICON_OPEN_CLASSES = 'rotate-180';
 
+// Check icon (for selected option)
+export const CHECK_ICON_CLASSES = 'shrink-0 w-[length:var(--component-select-icon-check-size)] h-[length:var(--component-select-icon-check-size)]';
+
 // Placeholder text
 export const PLACEHOLDER_CLASSES = 'text-[color:var(--component-select-text-placeholder)]';
 
-// Wrapper
-export const WRAPPER_CLASSES = 'relative w-full';
+// Dynamic style functions
+export const TRIGGER_STYLE = (size: SelectSize) => ({
+  height: `var(--component-input-height-${size})`,
+  paddingInline: 'var(--component-input-padding-inline)',
+} as const);
+
+export const MENU_STYLE = {
+  paddingInline: 'var(--component-dropdown-padding-inline)',
+  paddingBlock: 'var(--component-dropdown-padding-block)',
+  top: '100%',
+  marginTop: 'var(--component-select-menu-gap)',
+} as const;
+
+export const OPTION_STYLE = {
+  height: 'var(--component-dropdown-item-height)',
+  paddingInline: 'var(--component-dropdown-item-padding-inline)',
+  paddingBlock: 'var(--component-dropdown-item-padding-block)',
+  gap: 'var(--component-dropdown-item-gap)',
+} as const;

@@ -91,6 +91,18 @@ describe('Switch', () => {
       expect(handleChange).toHaveBeenCalledTimes(1);
     });
 
+    it('calls onCheckedChange with boolean value', async () => {
+      const handleCheckedChange = vi.fn();
+      const user = userEvent.setup();
+      render(<Switch onCheckedChange={handleCheckedChange} data-testid="switch" />);
+      
+      await user.click(screen.getByTestId('switch'));
+      expect(handleCheckedChange).toHaveBeenCalledWith(true);
+      
+      await user.click(screen.getByTestId('switch'));
+      expect(handleCheckedChange).toHaveBeenCalledWith(false);
+    });
+
     it('can toggle by clicking label', async () => {
       const user = userEvent.setup();
       render(<Switch label="Toggle me" data-testid="switch" />);

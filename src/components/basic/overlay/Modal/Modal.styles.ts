@@ -1,4 +1,4 @@
-import type { ModalSize } from './Modal';
+import type { ModalSize } from './Modal.types';
 
 export const OVERLAY_CLASSES =
   'fixed inset-0 bg-[color:var(--component-modal-overlay-bg)] z-[number:var(--component-modal-z-index)] flex items-center justify-center opacity-0 transition-opacity duration-[var(--component-modal-transition-duration)]';

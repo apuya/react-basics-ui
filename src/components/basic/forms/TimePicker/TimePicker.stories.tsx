@@ -1,11 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { TimePicker } from './TimePicker';
+import { FormField } from '../FormField';
 import { TimePickerContext, type TimePickerContextValue } from './TimePickerContext';
-import { TimePickerTrigger } from './TimePickerTrigger';
-import { TimePickerMenu } from './TimePickerMenu';
-import { TimePickerLabel } from './TimePickerLabel';
-import { TimePickerHelper } from './TimePickerHelper';
 
 const meta: Meta<typeof TimePicker> = {
   title: 'Forms/TimePicker',
@@ -15,7 +12,7 @@ const meta: Meta<typeof TimePicker> = {
     docs: {
       description: {
         component:
-          'A time picker component with three-column selection for hour, minute, and AM/PM. Features a button trigger with clock icon, dropdown with independent scrollable columns, and 12-hour display format. Supports custom step intervals for minute options and controlled/uncontrolled modes.',
+          'A composable time picker component with three-column selection for hour, minute, and AM/PM. Use with FormField for labels and helper text. Features a button trigger with clock icon, dropdown with independent scrollable columns, and 12-hour display format. Supports custom step intervals for minute options and controlled/uncontrolled modes.',
       },
     },
   },
@@ -27,11 +24,6 @@ const meta: Meta<typeof TimePicker> = {
     },
     error: { control: 'boolean' },
     disabled: { control: 'boolean' },
-    required: { control: 'boolean' },
-    label: { control: 'text' },
-    helperText: { control: 'text' },
-    placeholder: { control: 'text' },
-    step: { control: 'number' },
     value: { control: 'text' },
     defaultValue: { control: 'text' },
   },
@@ -46,26 +38,41 @@ type Story = StoryObj<typeof TimePicker>;
 // ============================================================================
 
 export const Default: Story = {
-  args: {
-    label: 'Select Time',
-    placeholder: 'Choose a time',
-  },
+  render: () => (
+    <FormField>
+      <FormField.Label>Select Time</FormField.Label>
+      <TimePicker>
+        <TimePicker.Trigger placeholder="Choose a time" />
+        <TimePicker.Menu />
+      </TimePicker>
+    </FormField>
+  ),
 };
 
 export const WithValue: Story = {
-  args: {
-    label: 'Meeting Time',
-    defaultValue: '14:30',
-    helperText: 'Pre-selected time displays in 12-hour format',
-  },
+  render: () => (
+    <FormField>
+      <FormField.Label>Meeting Time</FormField.Label>
+      <TimePicker defaultValue="14:30">
+        <TimePicker.Trigger />
+        <TimePicker.Menu />
+      </TimePicker>
+      <FormField.HelperText>Pre-selected time displays in 12-hour format</FormField.HelperText>
+    </FormField>
+  ),
 };
 
 export const Required: Story = {
-  args: {
-    label: 'Appointment Time',
-    required: true,
-    helperText: 'This field is required',
-  },
+  render: () => (
+    <FormField required>
+      <FormField.Label>Appointment Time</FormField.Label>
+      <TimePicker>
+        <TimePicker.Trigger required placeholder="Select a time" />
+        <TimePicker.Menu />
+      </TimePicker>
+      <FormField.HelperText>This field is required</FormField.HelperText>
+    </FormField>
+  ),
 };
 
 // ============================================================================
@@ -75,9 +82,27 @@ export const Required: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="space-y-4">
-      <TimePicker size="small" label="Small" defaultValue="09:00" />
-      <TimePicker size="default" label="Default" defaultValue="09:00" />
-      <TimePicker size="large" label="Large" defaultValue="09:00" />
+      <FormField>
+        <FormField.Label>Small</FormField.Label>
+        <TimePicker size="small" defaultValue="09:00">
+          <TimePicker.Trigger />
+          <TimePicker.Menu />
+        </TimePicker>
+      </FormField>
+      <FormField>
+        <FormField.Label>Default</FormField.Label>
+        <TimePicker size="default" defaultValue="09:00">
+          <TimePicker.Trigger />
+          <TimePicker.Menu />
+        </TimePicker>
+      </FormField>
+      <FormField>
+        <FormField.Label>Large</FormField.Label>
+        <TimePicker size="large" defaultValue="09:00">
+          <TimePicker.Trigger />
+          <TimePicker.Menu />
+        </TimePicker>
+      </FormField>
     </div>
   ),
 };
@@ -85,9 +110,30 @@ export const Sizes: Story = {
 export const States: Story = {
   render: () => (
     <div className="space-y-4">
-      <TimePicker label="Default" helperText="Normal state" />
-      <TimePicker label="Error" error helperText="Please select a valid time" />
-      <TimePicker label="Disabled" disabled defaultValue="09:00" helperText="Cannot be changed" />
+      <FormField>
+        <FormField.Label>Default</FormField.Label>
+        <TimePicker>
+          <TimePicker.Trigger />
+          <TimePicker.Menu />
+        </TimePicker>
+        <FormField.HelperText>Normal state</FormField.HelperText>
+      </FormField>
+      <FormField error>
+        <FormField.Label>Error</FormField.Label>
+        <TimePicker error>
+          <TimePicker.Trigger />
+          <TimePicker.Menu />
+        </TimePicker>
+        <FormField.ErrorMessage>Please select a valid time</FormField.ErrorMessage>
+      </FormField>
+      <FormField disabled>
+        <FormField.Label>Disabled</FormField.Label>
+        <TimePicker disabled defaultValue="09:00">
+          <TimePicker.Trigger />
+          <TimePicker.Menu />
+        </TimePicker>
+        <FormField.HelperText>Cannot be changed</FormField.HelperText>
+      </FormField>
     </div>
   ),
 };
@@ -100,15 +146,36 @@ export const Intervals: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'The step prop controls minute options: 900 (15min), 1800 (30min), 3600 (1hr).',
+        story: 'The step prop on TimePickerMenu controls minute options: 900 (15min), 1800 (30min), 3600 (1hr).',
       },
     },
   },
   render: () => (
     <div className="space-y-4">
-      <TimePicker label="15-Minute Steps" step={900} helperText="step={900}" />
-      <TimePicker label="30-Minute Steps" step={1800} helperText="step={1800} (default)" />
-      <TimePicker label="Hourly Steps" step={3600} helperText="step={3600}" />
+      <FormField>
+        <FormField.Label>15-Minute Steps</FormField.Label>
+        <TimePicker>
+          <TimePicker.Trigger />
+          <TimePicker.Menu step={900} />
+        </TimePicker>
+        <FormField.HelperText>step=&#123;900&#125;</FormField.HelperText>
+      </FormField>
+      <FormField>
+        <FormField.Label>30-Minute Steps</FormField.Label>
+        <TimePicker>
+          <TimePicker.Trigger />
+          <TimePicker.Menu step={1800} />
+        </TimePicker>
+        <FormField.HelperText>step=&#123;1800&#125; (default)</FormField.HelperText>
+      </FormField>
+      <FormField>
+        <FormField.Label>Hourly Steps</FormField.Label>
+        <TimePicker>
+          <TimePicker.Trigger />
+          <TimePicker.Menu step={3600} />
+        </TimePicker>
+        <FormField.HelperText>step=&#123;3600&#125;</FormField.HelperText>
+      </FormField>
     </div>
   ),
 };
@@ -132,12 +199,14 @@ export const Controlled: Story = {
     
     return (
       <div className="space-y-4">
-        <TimePicker
-          label="Select Time"
-          value={time}
-          onChange={setTime}
-          helperText="Controlled component with external state"
-        />
+        <FormField>
+          <FormField.Label>Select Time</FormField.Label>
+          <TimePicker value={time} onChange={setTime}>
+            <TimePicker.Trigger />
+            <TimePicker.Menu />
+          </TimePicker>
+          <FormField.HelperText>Controlled component with external state</FormField.HelperText>
+        </FormField>
         <div className="flex items-center justify-between text-sm">
           <span className="text-[color:var(--semantic-text-secondary)]">
             Value: <strong>{formatDisplay(time)}</strong>
@@ -177,17 +246,20 @@ export const WithConfirmation: Story = {
     
     return (
       <div className="space-y-4">
-        <TimePicker
-          label="Appointment Time"
-          value={time}
-          onChange={setPendingTime}
-          showConfirmation
-          cancelLabel="Cancel"
-          saveLabel="Confirm"
-          onCancel={() => setPendingTime(time)}
-          onSave={() => setTime(pendingTime)}
-          helperText="Click Save to confirm your selection"
-        />
+        <FormField>
+          <FormField.Label>Appointment Time</FormField.Label>
+          <TimePicker value={time} onChange={setPendingTime}>
+            <TimePicker.Trigger />
+            <TimePicker.Menu
+              showConfirmation
+              cancelLabel="Cancel"
+              saveLabel="Confirm"
+              onCancel={() => setPendingTime(time)}
+              onSave={() => setTime(pendingTime)}
+            />
+          </TimePicker>
+          <FormField.HelperText>Click Save to confirm your selection</FormField.HelperText>
+        </FormField>
         <div className="text-sm text-[color:var(--semantic-text-secondary)]">
           Confirmed: <strong>{formatDisplay(time)}</strong>
         </div>
@@ -230,20 +302,21 @@ export const TimeRange: Story = {
     
     return (
       <div className="space-y-4">
-        <TimePicker
-          label="Start Time"
-          value={startTime}
-          onChange={setStartTime}
-          step={900}
-        />
-        <TimePicker
-          label="End Time"
-          value={endTime}
-          onChange={setEndTime}
-          step={900}
-          disabled={!startTime}
-          helperText={!startTime ? 'Select start time first' : undefined}
-        />
+        <FormField>
+          <FormField.Label>Start Time</FormField.Label>
+          <TimePicker value={startTime} onChange={setStartTime}>
+            <TimePicker.Trigger />
+            <TimePicker.Menu step={900} />
+          </TimePicker>
+        </FormField>
+        <FormField disabled={!startTime}>
+          <FormField.Label>End Time</FormField.Label>
+          <TimePicker value={endTime} onChange={setEndTime} disabled={!startTime}>
+            <TimePicker.Trigger />
+            <TimePicker.Menu step={900} />
+          </TimePicker>
+          {!startTime && <FormField.HelperText>Select start time first</FormField.HelperText>}
+        </FormField>
         {getDuration() && (
           <div className="p-3 rounded-md bg-[color:var(--semantic-surface-elevated)] text-sm">
             <strong>Duration:</strong> {getDuration()}
@@ -275,12 +348,8 @@ const createMockContext = (overrides: Partial<TimePickerContextValue> = {}): Tim
   disabled: false,
   error: false,
   size: 'default',
-  step: 1800,
-  min: undefined,
-  max: undefined,
   triggerId: 'trigger-id',
   menuId: 'menu-id',
-  labelId: 'label-id',
   ...overrides,
 });
 
@@ -309,7 +378,7 @@ export const SubTrigger: Story = {
             <div key={label} style={{ width: 200 }}>
               <p className="text-xs text-[color:var(--semantic-text-tertiary)] mb-1">{label}</p>
               <TimePickerContext.Provider value={createMockContext(props)}>
-                <TimePickerTrigger placeholder="Select time" />
+                <TimePicker.Trigger placeholder="Select time" />
               </TimePickerContext.Provider>
             </div>
           ))}
@@ -322,7 +391,7 @@ export const SubTrigger: Story = {
             <div key={size} style={{ width: 200 }}>
               <p className="text-xs text-[color:var(--semantic-text-tertiary)] mb-1">{size}</p>
               <TimePickerContext.Provider value={createMockContext({ size, value: '10:00' })}>
-                <TimePickerTrigger />
+                <TimePicker.Trigger />
               </TimePickerContext.Provider>
             </div>
           ))}
@@ -355,12 +424,12 @@ export const SubMenu: Story = {
           <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2">Empty</p>
           <MenuWrapper>
             <TimePickerContext.Provider value={createMockContext({
-              isOpen: true, step: 1800,
+              isOpen: true,
               selectedHour: h1, setSelectedHour: setH1,
               selectedMinute: m1, setSelectedMinute: setM1,
               selectedMeridiem: mer1, setSelectedMeridiem: setMer1,
             })}>
-              <TimePickerMenu />
+              <TimePicker.Menu step={1800} />
             </TimePickerContext.Provider>
           </MenuWrapper>
         </div>
@@ -369,12 +438,12 @@ export const SubMenu: Story = {
           <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2">With Selection</p>
           <MenuWrapper>
             <TimePickerContext.Provider value={createMockContext({
-              isOpen: true, step: 1800,
+              isOpen: true,
               selectedHour: h2, setSelectedHour: setH2,
               selectedMinute: m2, setSelectedMinute: setM2,
               selectedMeridiem: mer2, setSelectedMeridiem: setMer2,
             })}>
-              <TimePickerMenu />
+              <TimePicker.Menu step={1800} />
             </TimePickerContext.Provider>
           </MenuWrapper>
         </div>
@@ -383,51 +452,16 @@ export const SubMenu: Story = {
           <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2">With Confirmation</p>
           <MenuWrapper>
             <TimePickerContext.Provider value={createMockContext({
-              isOpen: true, step: 1800,
+              isOpen: true,
               selectedHour: h3, setSelectedHour: setH3,
               selectedMinute: m3, setSelectedMinute: setM3,
               selectedMeridiem: mer3, setSelectedMeridiem: setMer3,
             })}>
-              <TimePickerMenu showConfirmation />
+              <TimePicker.Menu showConfirmation step={1800} />
             </TimePickerContext.Provider>
           </MenuWrapper>
         </div>
       </div>
     );
   },
-};
-
-export const SubLabelHelper: Story = {
-  name: 'Sub: Label & Helper',
-  decorators: [],
-  parameters: { layout: 'padded' },
-  render: () => (
-    <div className="space-y-6">
-      <div>
-        <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2 font-medium">Labels</p>
-        <div className="flex gap-8">
-          <TimePickerContext.Provider value={createMockContext()}>
-            <TimePickerLabel>Default Label</TimePickerLabel>
-          </TimePickerContext.Provider>
-          <TimePickerContext.Provider value={createMockContext()}>
-            <TimePickerLabel required>Required Label</TimePickerLabel>
-          </TimePickerContext.Provider>
-          <TimePickerContext.Provider value={createMockContext({ error: true })}>
-            <TimePickerLabel required>Error Label</TimePickerLabel>
-          </TimePickerContext.Provider>
-        </div>
-      </div>
-      <div>
-        <p className="text-xs text-[color:var(--semantic-text-secondary)] mb-2 font-medium">Helper Text</p>
-        <div className="flex gap-8">
-          <TimePickerContext.Provider value={createMockContext()}>
-            <TimePickerHelper>Default helper text</TimePickerHelper>
-          </TimePickerContext.Provider>
-          <TimePickerContext.Provider value={createMockContext({ error: true })}>
-            <TimePickerHelper>Error helper text</TimePickerHelper>
-          </TimePickerContext.Provider>
-        </div>
-      </div>
-    </div>
-  ),
 };

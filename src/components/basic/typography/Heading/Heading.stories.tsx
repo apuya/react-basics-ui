@@ -55,7 +55,7 @@ export const Default: Story = {
 
 export const AllLevels: Story = {
   render: () => (
-    <Stack gap="md">
+    <Stack spacing="md">
       <Heading as="h1">Heading Level 1</Heading>
       <Heading as="h2">Heading Level 2</Heading>
       <Heading as="h3">Heading Level 3</Heading>
@@ -68,7 +68,7 @@ export const AllLevels: Story = {
 
 export const AllColors: Story = {
   render: () => (
-    <Stack gap="sm">
+    <Stack spacing="sm">
       <Heading as="h3" color="primary">Primary Heading</Heading>
       <Heading as="h3" color="secondary">Secondary Heading</Heading>
       <Heading as="h3" color="tertiary">Tertiary Heading</Heading>
@@ -102,16 +102,16 @@ export const Truncated: Story = {
 
 export const PageHierarchy: Story = {
   render: () => (
-    <Stack gap="lg" style={{ maxWidth: '600px' }}>
+    <Stack spacing="lg" style={{ maxWidth: '600px' }}>
       <Heading as="h1" align="center">Welcome to Our Platform</Heading>
       <Text color="secondary" align="center">Build amazing applications with our component library</Text>
       
-      <Stack gap="sm">
+      <Stack spacing="sm">
         <Heading as="h2">Getting Started</Heading>
         <Text color="secondary">Learn the basics of our component library</Text>
       </Stack>
       
-      <Stack gap="sm">
+      <Stack spacing="sm">
         <Heading as="h3">Installation</Heading>
         <Text fontFamily="mono" size="small" color="secondary">npm install react-basics-ui</Text>
       </Stack>

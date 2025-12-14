@@ -24,18 +24,6 @@ export interface StepIndicatorProps extends React.ComponentPropsWithoutRef<'div'
   icon?: ReactNode;
 }
 
-/**
- * Step indicator circle that displays step number, icon, or checkmark.
- *
- * Can be used standalone or as part of the Stepper compound component.
- *
- * @example
- * ```tsx
- * <StepIndicator status="active" stepNumber={2} size="md" />
- * <StepIndicator status="completed" icon={<CheckIcon />} />
- * ```
- */
-
 /** Determines what content to render inside the indicator */
 const getIndicatorContent = (
   status: StepStatus,
@@ -58,6 +46,17 @@ const getIndicatorContent = (
   );
 };
 
+/**
+ * Step indicator circle that displays step number, icon, or checkmark.
+ *
+ * Can be used standalone or as part of the Stepper compound component.
+ *
+ * @example
+ * ```tsx
+ * <StepIndicator status="active" stepNumber={2} size="md" />
+ * <StepIndicator status="completed" icon={<CheckIcon />} />
+ * ```
+ */
 export const StepIndicator = memo(
   React.forwardRef<HTMLDivElement, StepIndicatorProps>(
     ({ status, size = 'md', stepNumber, icon, className, ...props }, ref) => {

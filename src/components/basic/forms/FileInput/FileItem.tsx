@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { BiTrash } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/basic/utility/Icon/Icon';
@@ -33,6 +33,12 @@ export const formatFileSize = (bytes: number): string => {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 };
 
+// Static style object
+const PADDING_STYLE = {
+  paddingInline: 'var(--component-input-padding-inline)',
+  paddingBlock: 'var(--component-input-padding-inline)',
+} as const;
+
 /**
  * FileItem displays a single uploaded file with its name, size, and a remove button.
  */
@@ -42,14 +48,6 @@ export const FileItem = memo(function FileItem({
   state = 'default',
   className 
 }: FileItemProps) {
-  const paddingStyle = useMemo(
-    () => ({
-      paddingInline: 'var(--component-input-padding-inline)',
-      paddingBlock: 'var(--component-input-padding-inline)',
-    }),
-    []
-  );
-
   return (
     <div 
       className={cn(
@@ -57,7 +55,7 @@ export const FileItem = memo(function FileItem({
         FILE_ITEM_STATE_CLASSES[state], 
         className
       )}
-      style={paddingStyle}
+      style={PADDING_STYLE}
     >
       <div className="flex-1 min-w-0">
         <Text 

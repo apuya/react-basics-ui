@@ -3,7 +3,6 @@ import { Tree } from './Tree';
 import { useState } from 'react';
 import {
   BiFolder,
-  BiFolderOpen,
   BiFile,
   BiCodeAlt,
   BiImage,
@@ -100,13 +99,41 @@ export const DefaultExpanded: Story = {
   ),
 };
 
+export const ExpandCollapse: Story = {
+  render: () => (
+    <Box>
+      <Heading size="small" style={{ marginBottom: '1rem' }}>
+        Expand/Collapse Demo
+      </Heading>
+      <Text size="small" style={{ marginBottom: '1rem' }} color="secondary">
+        Click the chevron icons to expand or collapse nodes. The chevron rotates to indicate state.
+      </Text>
+      <Tree>
+        <Tree.Node nodeId="1" label="Click to expand" icon={<BiFolder />}>
+          <Tree.Node nodeId="1-1" label="Nested level 1" icon={<BiFolder />}>
+            <Tree.Node nodeId="1-1-1" label="Nested level 2" icon={<BiFile />} />
+            <Tree.Node nodeId="1-1-2" label="Another file" icon={<BiFile />} />
+          </Tree.Node>
+          <Tree.Node nodeId="1-2" label="Another folder" icon={<BiFolder />}>
+            <Tree.Node nodeId="1-2-1" label="Deep file" icon={<BiFile />} />
+          </Tree.Node>
+        </Tree.Node>
+        <Tree.Node nodeId="2" label="Second folder" icon={<BiFolder />}>
+          <Tree.Node nodeId="2-1" label="File in second" icon={<BiFile />} />
+        </Tree.Node>
+        <Tree.Node nodeId="3" label="Leaf node (no children)" icon={<BiFile />} />
+      </Tree>
+    </Box>
+  ),
+};
+
 export const Selectable: Story = {
   render: () => {
     const [selected, setSelected] = useState<string>('1-1');
 
     return (
       <Box>
-        <Text size="sm" color="secondary" className="mb-4">
+        <Text size="small" color="secondary" className="mb-4">
           Selected: <strong>{selected || 'None'}</strong>
         </Text>
         <Tree selectable selectedId={selected} onSelect={setSelected}>
@@ -138,37 +165,93 @@ export const WithDisabledNodes: Story = {
   ),
 };
 
+export const ShowLines: Story = {
+  render: () => (
+    <Tree showLines defaultExpanded={['1', '1-1']}>
+      <Tree.Node nodeId="1" label="src" icon={<BiFolder />}>
+        <Tree.Node nodeId="1-1" label="components" icon={<BiFolder />}>
+          <Tree.Node nodeId="1-1-1" label="Button.tsx" icon={<BiCodeAlt />} />
+          <Tree.Node nodeId="1-1-2" label="Input.tsx" icon={<BiCodeAlt />} />
+        </Tree.Node>
+        <Tree.Node nodeId="1-2" label="utils" icon={<BiFolder />}>
+          <Tree.Node nodeId="1-2-1" label="helpers.ts" icon={<BiFile />} />
+        </Tree.Node>
+      </Tree.Node>
+      <Tree.Node nodeId="2" label="public" icon={<BiFolder />}>
+        <Tree.Node nodeId="2-1" label="logo.png" icon={<BiImage />} />
+      </Tree.Node>
+      <Tree.Node nodeId="3" label="package.json" icon={<BiPackage />} />
+    </Tree>
+  ),
+};
+
+export const DataAttributes: Story = {
+  render: () => (
+    <Box>
+      <Heading size="small" style={{ marginBottom: '1rem' }}>
+        Data Attributes Demo
+      </Heading>
+      <Text size="small" style={{ marginBottom: '1rem' }} color="secondary">
+        Open DevTools to inspect data-* attributes for testing and CSS targeting.
+      </Text>
+      <Tree selectable selectedId="1-1" defaultExpanded={['1']}>
+        <Tree.Node nodeId="1" label="Parent Node" icon={<BiFolder />}>
+          <Tree.Node nodeId="1-1" label="Selected Child" icon={<BiFile />} />
+          <Tree.Node nodeId="1-2" label="Disabled Child" icon={<BiFile />} disabled />
+          <Tree.Node nodeId="1-3" label="Regular Child" icon={<BiFile />} />
+        </Tree.Node>
+        <Tree.Node nodeId="2" label="Leaf Node" icon={<BiFile />} />
+        <Tree.Node nodeId="3" label="Another Parent" icon={<BiFolder />}>
+          <Tree.Node nodeId="3-1" label="Nested Child" icon={<BiFile />} />
+        </Tree.Node>
+      </Tree>
+      <Box className="mt-4 p-3 bg-gray-50 border border-gray-200 rounded">
+        <Text size="small" weight="semibold" className="mb-2">Available data attributes:</Text>
+        <ul className="text-sm text-gray-700 space-y-1">
+          <li><code>data-node-id</code> - Unique node identifier</li>
+          <li><code>data-expanded</code> - Set when node is expanded</li>
+          <li><code>data-selected</code> - Set when node is selected</li>
+          <li><code>data-disabled</code> - Set when node is disabled</li>
+          <li><code>data-has-children</code> - Set when node has children</li>
+          <li><code>data-leaf</code> - Set when node has no children</li>
+          <li><code>data-show-lines</code> - Set on root when showLines is true</li>
+        </ul>
+      </Box>
+    </Box>
+  ),
+};
+
 export const WithRightContent: Story = {
   render: () => (
     <Tree>
       <Tree.Node
         nodeId="1"
         label="Documents"
-        rightContent={<Text size="xs" color="secondary">12 items</Text>}
+        rightContent={<Text size="caption" color="secondary">12 items</Text>}
       >
         <Tree.Node
           nodeId="1-1"
           label="report.pdf"
           icon={<BiFile />}
-          rightContent={<Text size="xs" color="secondary">2.4 MB</Text>}
+          rightContent={<Text size="caption" color="secondary">2.4 MB</Text>}
         />
         <Tree.Node
           nodeId="1-2"
           label="presentation.pptx"
           icon={<BiFile />}
-          rightContent={<Text size="xs" color="secondary">8.1 MB</Text>}
+          rightContent={<Text size="caption" color="secondary">8.1 MB</Text>}
         />
       </Tree.Node>
       <Tree.Node
         nodeId="2"
         label="Images"
-        rightContent={<Text size="xs" color="secondary">24 items</Text>}
+        rightContent={<Text size="caption" color="secondary">24 items</Text>}
       >
         <Tree.Node
           nodeId="2-1"
           label="photo.jpg"
           icon={<BiImage />}
-          rightContent={<Text size="xs" color="secondary">1.2 MB</Text>}
+          rightContent={<Text size="caption" color="secondary">1.2 MB</Text>}
         />
       </Tree.Node>
     </Tree>
@@ -291,11 +374,11 @@ export const InteractiveExample: Story = {
 
         {nodeInfo && (
           <Box className="p-4 bg-blue-50 border border-blue-200 rounded">
-            <Heading level={4} className="text-blue-900 mb-1">Selected Node</Heading>
-            <Text size="sm" className="text-blue-700">
+            <Heading level="h4" className="text-blue-900 mb-1">Selected Node</Heading>
+            <Text size="small" className="text-blue-700">
               <strong>ID:</strong> {nodeInfo.id}
             </Text>
-            <Text size="sm" className="text-blue-700">{nodeInfo.label}</Text>
+            <Text size="small" className="text-blue-700">{nodeInfo.label}</Text>
           </Box>
         )}
       </div>
@@ -347,7 +430,7 @@ export const CustomIcons: Story = {
   ),
 };
 
-export const ControlledExpansion: Story = {
+export const DynamicExpansion: Story = {
   render: () => {
     const [expandedIds, setExpandedIds] = useState<string[]>(['1']);
 
@@ -360,7 +443,16 @@ export const ControlledExpansion: Story = {
     };
 
     return (
-      <Stack gap="md">
+      <Stack spacing="md">
+        <Box>
+          <Heading size="small" style={{ marginBottom: '0.5rem' }}>
+            Dynamic Expansion Control
+          </Heading>
+          <Text size="small" color="secondary" style={{ marginBottom: '1rem' }}>
+            Use buttons to control which nodes are expanded. Tree remounts with new defaultExpanded values.
+          </Text>
+        </Box>
+
         <Flex gap="sm">
           <Button
             onClick={handleExpandAll}
@@ -371,7 +463,7 @@ export const ControlledExpansion: Story = {
           </Button>
           <Button
             onClick={handleCollapseAll}
-            variant="outline"
+            variant="secondary"
             size="small"
           >
             Collapse All
@@ -379,16 +471,16 @@ export const ControlledExpansion: Story = {
         </Flex>
 
         <Tree defaultExpanded={expandedIds} key={expandedIds.join(',')}>
-          <Tree.Node nodeId="1" label="Documents">
-            <Tree.Node nodeId="1-1" label="Projects">
-              <Tree.Node nodeId="1-1-1" label="Project A" />
-              <Tree.Node nodeId="1-1-2" label="Project B" />
+          <Tree.Node nodeId="1" label="Documents" icon={<BiFolder />}>
+            <Tree.Node nodeId="1-1" label="Projects" icon={<BiFolder />}>
+              <Tree.Node nodeId="1-1-1" label="Project A" icon={<BiFile />} />
+              <Tree.Node nodeId="1-1-2" label="Project B" icon={<BiFile />} />
             </Tree.Node>
-            <Tree.Node nodeId="1-2" label="Archive" />
+            <Tree.Node nodeId="1-2" label="Archive" icon={<BiFolder />} />
           </Tree.Node>
-          <Tree.Node nodeId="2" label="Media">
-            <Tree.Node nodeId="2-1" label="Photos" />
-            <Tree.Node nodeId="2-2" label="Videos" />
+          <Tree.Node nodeId="2" label="Media" icon={<BiFolder />}>
+            <Tree.Node nodeId="2-1" label="Photos" icon={<BiImage />} />
+            <Tree.Node nodeId="2-2" label="Videos" icon={<BiImage />} />
           </Tree.Node>
         </Tree>
       </Stack>

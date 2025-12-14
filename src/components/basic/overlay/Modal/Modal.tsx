@@ -1,4 +1,4 @@
-import { memo, useMemo, type ReactNode } from 'react';
+import { memo, useMemo } from 'react';
 import { createComponentContext } from '@/lib/createComponentContext';
 import { BaseOverlayDialog } from '@/lib/BaseOverlayDialog';
 import { cn } from '@/lib/cn';
@@ -13,31 +13,7 @@ import { ModalHeader } from './ModalHeader';
 import { ModalContent } from './ModalContent';
 import { ModalFooter } from './ModalFooter';
 import { ModalTitle } from './ModalTitle';
-
-export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
-
-export interface ModalProps {
-  /** Modal content (typically Modal.Header, Modal.Content, Modal.Footer) */
-  children: ReactNode;
-  /** Whether the modal is open */
-  isOpen: boolean;
-  /** Callback when modal should close */
-  onClose: () => void;
-  /** Size of the modal */
-  size?: ModalSize;
-  /** Whether clicking the overlay closes the modal */
-  closeOnOverlayClick?: boolean;
-  /** Whether pressing Escape closes the modal */
-  closeOnEscape?: boolean;
-  /** Whether to show the close button */
-  showCloseButton?: boolean;
-  /** Whether to prevent body scrolling when modal is open */
-  preventBodyScroll?: boolean;
-}
-
-interface ModalContextValue {
-  onClose: () => void;
-}
+import type { ModalContextValue, ModalProps } from './Modal.types';
 
 const { Context: ModalContext, useContext: useModalContext } =
   createComponentContext<ModalContextValue>('Modal');

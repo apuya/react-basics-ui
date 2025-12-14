@@ -41,22 +41,26 @@ const TimelineRoot = memo(
         [position, className]
       );
 
-      // Add index to each child
-      const childrenWithIndex = React.Children.map(children, (child, index) => {
-        if (!React.isValidElement(child)) return child;
+      // Add index to each child - wrap all children in single context provider with index
+      const childrenWithIndex = useMemo(
+        () =>
+          React.Children.map(children, (child, index) => {
+            if (!React.isValidElement(child)) return child;
 
-        const contextValue: TimelineContextValue = {
-          position,
-          size,
-          itemIndex: index,
-        };
+            const contextValue: TimelineContextValue = {
+              position,
+              size,
+              itemIndex: index,
+            };
 
-        return (
-          <TimelineContext.Provider value={contextValue}>
-            {child}
-          </TimelineContext.Provider>
-        );
-      });
+            return (
+              <TimelineContext.Provider value={contextValue}>
+                {child}
+              </TimelineContext.Provider>
+            );
+          }),
+        [children, position, size]
+      );
 
       return (
         <div

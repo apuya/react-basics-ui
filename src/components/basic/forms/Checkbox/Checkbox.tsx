@@ -1,84 +1,41 @@
 import { cn } from '@/lib/cn';
 import { generateFormId } from '@/lib/generateFormId';
-import {
-  forwardRef,
-  memo,
-  useMemo,
-  type ComponentPropsWithoutRef,
-  type ReactNode,
-} from 'react';
+import { forwardRef, memo, useMemo } from 'react';
+import { CheckIcon } from './CheckIcon';
 import {
   CHECKBOX_BASE_CLASSES,
   CHECKBOX_SIZE_STYLES,
   CHECK_ICON_CLASSES,
   HIDDEN_INPUT_CLASSES,
-  ICON_CLASSES,
   LABEL_CLASSES,
   WRAPPER_BASE_CLASSES,
 } from './Checkbox.styles';
+import type { CheckboxProps } from './Checkbox.types';
+import { IndeterminateIcon } from './IndeterminateIcon';
 
-/** Available checkbox sizes */
-export type CheckboxSize = 'small' | 'default' | 'large';
-
-/**
- * Props for the Checkbox component
- */
-export interface CheckboxProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'> {
-  /** The size of the checkbox */
-  size?: CheckboxSize;
-  /** Label content for the checkbox */
-  label?: ReactNode;
-  /** Whether the checkbox is in an error state */
-  error?: boolean;
-  /** Whether the checkbox is in an indeterminate state */
-  indeterminate?: boolean;
-}
-
-// Memoized check icon component
-const CheckIcon = memo(() => (
-  <svg
-    viewBox="0 0 16 16"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={ICON_CLASSES}
-    aria-hidden="true"
-  >
-    <polyline points="3,8 6,11 13,4" />
-  </svg>
-));
-CheckIcon.displayName = 'CheckIcon';
-
-// Memoized indeterminate icon component
-const IndeterminateIcon = memo(() => (
-  <svg
-    viewBox="0 0 16 16"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={ICON_CLASSES}
-    aria-hidden="true"
-  >
-    <line x1="4" y1="8" x2="12" y2="8" />
-  </svg>
-));
-IndeterminateIcon.displayName = 'IndeterminateIcon';
+// =============================================================================
+// Checkbox Component
+// =============================================================================
 
 /**
- * A checkbox component for binary choices or multiple selections.
- * Supports multiple sizes, indeterminate state, error state, and flexible label content.
+ * Checkbox - A form control for binary choices or multiple selections.
+ *
+ * Uses CSS `has-[:checked]` and `peer-*` selectors for state-based styling,
+ * avoiding JavaScript state for visual updates. Supports indeterminate state
+ * for "select all" scenarios.
  *
  * @example
  * ```tsx
  * // Basic usage
- * <Checkbox label="Accept terms" />
+ * <Checkbox label="Accept terms" onChange={handleChange} />
  *
- * // With indeterminate state
- * <Checkbox label="Select all" indeterminate />
+ * // Controlled with indeterminate state
+ * <Checkbox
+ *   label="Select all"
+ *   checked={allSelected}
+ *   indeterminate={someSelected && !allSelected}
+ *   onChange={handleSelectAll}
+ * />
  *
  * // Different sizes
  * <Checkbox size="small" label="Small" />
@@ -108,11 +65,8 @@ export const Checkbox = memo(
       [id, label]
     );
 
-    // Compute checkbox classes
-    const checkboxClasses = useMemo(
-      () => cn(CHECKBOX_BASE_CLASSES, className),
-      [className]
-    );
+    // Compute checkbox classes (simple merge, no memoization needed)
+    const checkboxClasses = cn(CHECKBOX_BASE_CLASSES, className);
 
     // Get size-specific styles
     const sizeStyle = CHECKBOX_SIZE_STYLES[size];

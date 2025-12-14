@@ -1,3 +1,3 @@
 export { AspectRatio } from './AspectRatio';
-export type { AspectRatioProps } from './AspectRatio';
+export type { AspectRatioProps } from './AspectRatio.types';
 export type { CommonRatioName } from './AspectRatio.styles';

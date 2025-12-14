@@ -8,18 +8,20 @@ import {
 } from './DatePicker.styles';
 
 /**
- * DatePickerCell - Individual cell in the calendar grid
- * 
- * Handles different visual states:
- * - header: Static weekday label (Su, Mo, Tu, etc.) - non-interactive
- * - default: Normal selectable day
- * - selected: Single date selection
- * - range-start: Start of date range
- * - range-end: End of date range
- * - in-range: Days between range start and end
- * - today: Current date highlight
- * - disabled: Non-selectable day
- * - outside-month: Days from previous/next month
+ * DatePicker.Cell - Individual cell in the calendar grid.
+ *
+ * Renders as a button for interactive dates or a div for headers.
+ * Handles visual states: selected, range-start/end, in-range, today, disabled.
+ *
+ * @example
+ * ```tsx
+ * <DatePicker.Cell
+ *   date={new Date()}
+ *   label="15"
+ *   state="selected"
+ *   onClick={handleSelect}
+ * />
+ * ```
  */
 export const DatePickerCell = memo(
   forwardRef<HTMLButtonElement | HTMLDivElement, DatePickerCellProps>(

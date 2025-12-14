@@ -1,8 +1,7 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
-import { CONTENT_CLASSES } from './Card.styles';
-
-export interface CardContentProps extends ComponentPropsWithoutRef<'div'> {}
+import { forwardRef, memo } from 'react';
+import { CONTENT_CLASSES, CONTENT_PADDING_STYLE } from './Card.styles';
+import type { CardContentProps } from './Card.types';
 
 export const CardContent = memo(
   forwardRef<HTMLDivElement, CardContentProps>(({ className, style, children, ...props }, ref) => (
@@ -10,8 +9,7 @@ export const CardContent = memo(
       ref={ref}
       className={cn(CONTENT_CLASSES, className)}
       style={{
-        paddingInline: 'var(--component-card-padding-inline)',
-        paddingBlock: 'var(--component-card-padding-block)',
+        ...CONTENT_PADDING_STYLE,
         ...style,
       }}
       {...props}

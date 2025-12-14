@@ -6,6 +6,7 @@ import { Flex } from '../../layout/Flex';
 import { Stack } from '../../layout/Stack';
 import { Text } from '../../typography/Text';
 import { Heading } from '../../typography/Heading';
+import { Icon } from '../../utility/Icon';
 
 const meta = {
   title: 'Feedback/ConfirmDialog',
@@ -15,7 +16,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Confirmation dialog for user confirmations and critical actions. Supports multiple variants with appropriate icons and button styles.',
+          'Compound component for confirmation dialogs. Compose Header, Icon, Title, Content, Footer, CancelButton, and ConfirmButton for flexible layouts.',
       },
     },
   },
@@ -25,38 +26,15 @@ const meta = {
       control: 'boolean',
       description: 'Whether the dialog is open',
     },
-    title: {
-      control: 'text',
-      description: 'Dialog title',
-    },
-    description: {
-      control: 'text',
-      description: 'Dialog description',
-    },
-    confirmText: {
-      control: 'text',
-      description: 'Confirm button text',
-      table: { defaultValue: { summary: 'Confirm' } },
-    },
-    cancelText: {
-      control: 'text',
-      description: 'Cancel button text',
-      table: { defaultValue: { summary: 'Cancel' } },
-    },
     variant: {
       control: 'select',
       options: ['default', 'destructive', 'warning', 'info'],
-      description: 'Visual variant',
+      description: 'Visual variant (affects icon and confirm button style)',
       table: { defaultValue: { summary: 'default' } },
-    },
-    showIcon: {
-      control: 'boolean',
-      description: 'Show variant icon',
-      table: { defaultValue: { summary: 'true' } },
     },
     isLoading: {
       control: 'boolean',
-      description: 'Loading state for confirm button',
+      description: 'Loading state for buttons',
     },
   },
 } as Meta<typeof ConfirmDialog>;
@@ -74,13 +52,23 @@ export const Default: Story = {
         <ConfirmDialog
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          title="Confirm Action"
-          description="Are you sure you want to proceed with this action?"
           onConfirm={() => {
             alert('Confirmed!');
             setIsOpen(false);
           }}
-        />
+        >
+          <ConfirmDialog.Header>
+            <ConfirmDialog.Icon />
+            <ConfirmDialog.Title>Confirm Action</ConfirmDialog.Title>
+          </ConfirmDialog.Header>
+          <ConfirmDialog.Content>
+            Are you sure you want to proceed with this action?
+          </ConfirmDialog.Content>
+          <ConfirmDialog.Footer>
+            <ConfirmDialog.CancelButton />
+            <ConfirmDialog.ConfirmButton />
+          </ConfirmDialog.Footer>
+        </ConfirmDialog>
       </Stack>
     );
   },
@@ -90,59 +78,77 @@ export const AllVariants: Story = {
   render: () => {
     const [openDialog, setOpenDialog] = useState<string | null>(null);
 
-    const variants = [
-      { key: 'default', label: 'Default', buttonVariant: 'primary' as const },
-      { key: 'destructive', label: 'Destructive', buttonVariant: 'destructive' as const },
-      { key: 'warning', label: 'Warning', buttonVariant: 'primary' as const },
-      { key: 'info', label: 'Info', buttonVariant: 'primary' as const },
-    ];
-
-    const dialogConfigs = {
-      default: {
+    const variants: Array<{
+      key: 'default' | 'destructive' | 'warning' | 'info';
+      label: string;
+      buttonVariant: 'primary' | 'destructive';
+      title: string;
+      description: string;
+      confirmText: string;
+    }> = [
+      {
+        key: 'default',
+        label: 'Default',
+        buttonVariant: 'primary',
         title: 'Default Confirmation',
         description: 'This is a default confirmation dialog.',
+        confirmText: 'Confirm',
       },
-      destructive: {
+      {
+        key: 'destructive',
+        label: 'Destructive',
+        buttonVariant: 'destructive',
         title: 'Delete Item',
         description: 'This action cannot be undone.',
         confirmText: 'Delete',
       },
-      warning: {
+      {
+        key: 'warning',
+        label: 'Warning',
+        buttonVariant: 'primary',
         title: 'Warning',
         description: 'Please review before proceeding.',
         confirmText: 'Continue',
       },
-      info: {
+      {
+        key: 'info',
+        label: 'Info',
+        buttonVariant: 'primary',
         title: 'Information',
         description: 'This is an informational message.',
         confirmText: 'OK',
       },
-    };
+    ];
 
     return (
       <Stack spacing="default">
         <Heading level="h6">Click to preview each variant</Heading>
         <Flex wrap="wrap" gap="sm">
           {variants.map(({ key, label, buttonVariant }) => (
-            <Button
-              key={key}
-              variant={buttonVariant}
-              onClick={() => setOpenDialog(key)}
-            >
+            <Button key={key} variant={buttonVariant} onClick={() => setOpenDialog(key)}>
               {label}
             </Button>
           ))}
         </Flex>
 
-        {variants.map(({ key }) => (
+        {variants.map(({ key, title, description, confirmText }) => (
           <ConfirmDialog
             key={key}
             isOpen={openDialog === key}
             onClose={() => setOpenDialog(null)}
-            variant={key as 'default' | 'destructive' | 'warning' | 'info'}
+            variant={key}
             onConfirm={() => setOpenDialog(null)}
-            {...dialogConfigs[key as keyof typeof dialogConfigs]}
-          />
+          >
+            <ConfirmDialog.Header>
+              <ConfirmDialog.Icon />
+              <ConfirmDialog.Title>{title}</ConfirmDialog.Title>
+            </ConfirmDialog.Header>
+            <ConfirmDialog.Content>{description}</ConfirmDialog.Content>
+            <ConfirmDialog.Footer>
+              <ConfirmDialog.CancelButton />
+              <ConfirmDialog.ConfirmButton>{confirmText}</ConfirmDialog.ConfirmButton>
+            </ConfirmDialog.Footer>
+          </ConfirmDialog>
         ))}
       </Stack>
     );
@@ -175,12 +181,19 @@ export const WithLoading: Story = {
         <ConfirmDialog
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          title="Save Changes"
-          description="Do you want to save these changes?"
-          confirmText="Save"
           isLoading={isLoading}
           onConfirm={handleConfirm}
-        />
+        >
+          <ConfirmDialog.Header>
+            <ConfirmDialog.Icon />
+            <ConfirmDialog.Title>Save Changes</ConfirmDialog.Title>
+          </ConfirmDialog.Header>
+          <ConfirmDialog.Content>Do you want to save these changes?</ConfirmDialog.Content>
+          <ConfirmDialog.Footer>
+            <ConfirmDialog.CancelButton />
+            <ConfirmDialog.ConfirmButton>Save</ConfirmDialog.ConfirmButton>
+          </ConfirmDialog.Footer>
+        </ConfirmDialog>
       </Stack>
     );
   },
@@ -203,21 +216,29 @@ export const WithoutIcon: Story = {
         <ConfirmDialog
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          title="Confirm Action"
-          description="This is a simple confirmation without an icon."
-          showIcon={false}
           onConfirm={() => {
             alert('Confirmed!');
             setIsOpen(false);
           }}
-        />
+        >
+          <ConfirmDialog.Header>
+            <ConfirmDialog.Title>Confirm Action</ConfirmDialog.Title>
+          </ConfirmDialog.Header>
+          <ConfirmDialog.Content>
+            This is a simple confirmation without an icon.
+          </ConfirmDialog.Content>
+          <ConfirmDialog.Footer>
+            <ConfirmDialog.CancelButton />
+            <ConfirmDialog.ConfirmButton />
+          </ConfirmDialog.Footer>
+        </ConfirmDialog>
       </Stack>
     );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Dialog without the variant icon for a cleaner look.',
+        story: 'Dialog without the variant icon for a cleaner look. Simply omit the Icon component.',
       },
     },
   },
@@ -235,23 +256,41 @@ export const CustomContent: Story = {
         <ConfirmDialog
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          title="Delete Items"
           variant="destructive"
-          confirmText="Delete All"
           onConfirm={() => {
             alert('Deleted!');
             setIsOpen(false);
           }}
         >
-          <Stack spacing="compact">
-            <Text size="small" color="secondary">You are about to delete:</Text>
-            <Stack as="ul" spacing="none" className="list-disc list-inside">
-              <Text as="li" size="small" color="secondary">Document.pdf</Text>
-              <Text as="li" size="small" color="secondary">Image.png</Text>
-              <Text as="li" size="small" color="secondary">Spreadsheet.xlsx</Text>
+          <ConfirmDialog.Header>
+            <ConfirmDialog.Icon />
+            <ConfirmDialog.Title>Delete Items</ConfirmDialog.Title>
+          </ConfirmDialog.Header>
+          <ConfirmDialog.Content>
+            <Stack spacing="compact">
+              <Text size="small" color="secondary">
+                You are about to delete:
+              </Text>
+              <Stack as="ul" spacing="none" className="list-disc list-inside">
+                <Text as="li" size="small" color="secondary">
+                  Document.pdf
+                </Text>
+                <Text as="li" size="small" color="secondary">
+                  Image.png
+                </Text>
+                <Text as="li" size="small" color="secondary">
+                  Spreadsheet.xlsx
+                </Text>
+              </Stack>
+              <Text size="small" weight="semibold" color="error">
+                This action cannot be undone.
+              </Text>
             </Stack>
-            <Text size="small" weight="semibold" color="error">This action cannot be undone.</Text>
-          </Stack>
+          </ConfirmDialog.Content>
+          <ConfirmDialog.Footer>
+            <ConfirmDialog.CancelButton />
+            <ConfirmDialog.ConfirmButton>Delete All</ConfirmDialog.ConfirmButton>
+          </ConfirmDialog.Footer>
         </ConfirmDialog>
       </Stack>
     );
@@ -259,7 +298,47 @@ export const CustomContent: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Dialog with custom content instead of simple description.',
+        story: 'Dialog with custom content. Use any React nodes inside Content component.',
+      },
+    },
+  },
+};
+
+export const CustomLayout: Story = {
+  render: () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <Stack spacing="default">
+        <Button onClick={() => setIsOpen(true)}>Custom Layout</Button>
+        <ConfirmDialog
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          variant="warning"
+          onConfirm={() => {
+            alert('Confirmed!');
+            setIsOpen(false);
+          }}
+        >
+          <ConfirmDialog.Header>
+            <ConfirmDialog.Title>Custom Header Layout</ConfirmDialog.Title>
+            <Icon name="AlertTriangle" size="lg" />
+          </ConfirmDialog.Header>
+          <ConfirmDialog.Content>
+            Swap the icon position or use custom icons in the header.
+          </ConfirmDialog.Content>
+          <ConfirmDialog.Footer>
+            <ConfirmDialog.ConfirmButton>I Understand</ConfirmDialog.ConfirmButton>
+          </ConfirmDialog.Footer>
+        </ConfirmDialog>
+      </Stack>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Compound pattern allows custom layouts. Rearrange sub-components or add custom elements.',
       },
     },
   },

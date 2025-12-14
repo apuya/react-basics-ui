@@ -45,7 +45,7 @@ export const Label = memo(
         BASE_CLASSES,
         SIZE_STYLES[size],
         WEIGHT_STYLES[weight],
-        disabled ? COLOR_STYLES.disabled : COLOR_STYLES[color],
+        COLOR_STYLES[disabled ? 'disabled' : color],
         disabled && STATE_STYLES.disabled,
         className
       ),
@@ -58,6 +58,7 @@ export const Label = memo(
         className={labelClasses}
         data-size={size}
         data-color={disabled ? 'disabled' : color}
+        data-disabled={disabled || undefined}
         {...rest}
       >
         {children}

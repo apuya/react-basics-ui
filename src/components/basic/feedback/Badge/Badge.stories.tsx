@@ -69,7 +69,7 @@ export const StyleVariants: StoryWithRender = {
   render: () => (
     <Stack spacing="md">
       <Stack spacing="xs">
-        <Text size="sm" color="secondary">Subtle</Text>
+        <Text size="small" color="secondary">Subtle</Text>
         <Flex wrap="wrap" gap="xs">
           <Badge styleVariant="subtle" color="primary">Primary</Badge>
           <Badge styleVariant="subtle" color="success">Success</Badge>
@@ -79,7 +79,7 @@ export const StyleVariants: StoryWithRender = {
         </Flex>
       </Stack>
       <Stack spacing="xs">
-        <Text size="sm" color="secondary">Solid</Text>
+        <Text size="small" color="secondary">Solid</Text>
         <Flex wrap="wrap" gap="xs">
           <Badge styleVariant="solid" color="primary">Primary</Badge>
           <Badge styleVariant="solid" color="success">Success</Badge>
@@ -89,7 +89,7 @@ export const StyleVariants: StoryWithRender = {
         </Flex>
       </Stack>
       <Stack spacing="xs">
-        <Text size="sm" color="secondary">Outline</Text>
+        <Text size="small" color="secondary">Outline</Text>
         <Flex wrap="wrap" gap="xs">
           <Badge styleVariant="outline" color="primary">Primary</Badge>
           <Badge styleVariant="outline" color="success">Success</Badge>
@@ -99,7 +99,7 @@ export const StyleVariants: StoryWithRender = {
         </Flex>
       </Stack>
       <Stack spacing="xs">
-        <Text size="sm" color="secondary">Subtle Outline</Text>
+        <Text size="small" color="secondary">Subtle Outline</Text>
         <Flex wrap="wrap" gap="xs">
           <Badge styleVariant="subtle-outline" color="primary">Primary</Badge>
           <Badge styleVariant="subtle-outline" color="success">Success</Badge>
@@ -155,27 +155,27 @@ export const Sizes: StoryWithRender = {
   ),
 };
 
-export const WithIcons: StoryWithRender = {
+export const WithVisuals: StoryWithRender = {
   render: () => (
     <Stack spacing="md">
       <Flex wrap="wrap" gap="xs">
-        <Badge color="success" leadingIcon={<BiCheckCircle />}>Verified</Badge>
-        <Badge color="primary" trailingIcon={<BiStar />}>Premium</Badge>
-        <Badge color="info" leadingIcon={<BiInfoCircle />}>Info</Badge>
-        <Badge color="error" leadingIcon={<BiErrorCircle />}>Error</Badge>
+        <Badge color="success" leadingVisual={<BiCheckCircle />}>Verified</Badge>
+        <Badge color="primary" trailingVisual={<BiStar />}>Premium</Badge>
+        <Badge color="info" leadingVisual={<BiInfoCircle />}>Info</Badge>
+        <Badge color="error" leadingVisual={<BiErrorCircle />}>Error</Badge>
       </Flex>
       <Flex align="center" gap="xs">
-        <Text size="sm" color="secondary">Icon only:</Text>
-        <Badge color="success" leadingIcon={<BiCheckCircle />} />
-        <Badge color="error" leadingIcon={<BiX />} />
-        <Badge color="primary" leadingIcon={<BiStar />} />
+        <Text size="small" color="secondary">Icon only:</Text>
+        <Badge color="success" leadingVisual={<BiCheckCircle />} />
+        <Badge color="error" leadingVisual={<BiX />} />
+        <Badge color="primary" leadingVisual={<BiStar />} />
       </Flex>
     </Stack>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Badges with leading icons, trailing icons, or icon-only.',
+        story: 'Badges with leading visuals, trailing visuals, or visual-only.',
       },
     },
   },
@@ -208,10 +208,10 @@ export const Dismissible: StoryWithRender = {
 export const StatusIndicators: StoryWithRender = {
   render: () => (
     <Flex wrap="wrap" gap="xs">
-      <Badge color="success" leadingIcon={<BiCheckCircle />}>Active</Badge>
-      <Badge color="warning" leadingIcon={<BiInfoCircle />}>Pending</Badge>
-      <Badge color="error" leadingIcon={<BiX />}>Inactive</Badge>
-      <Badge color="info" leadingIcon={<BiInfoCircle />}>Draft</Badge>
+      <Badge color="success" leadingVisual={<BiCheckCircle />}>Active</Badge>
+      <Badge color="warning" leadingVisual={<BiInfoCircle />}>Pending</Badge>
+      <Badge color="error" leadingVisual={<BiX />}>Inactive</Badge>
+      <Badge color="info" leadingVisual={<BiInfoCircle />}>Draft</Badge>
     </Flex>
   ),
   parameters: {

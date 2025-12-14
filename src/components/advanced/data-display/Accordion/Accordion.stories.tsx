@@ -240,7 +240,7 @@ export const ComplexContent: Story = {
       <Accordion.Item value="pricing">
         <Accordion.Trigger>Pricing Plans</Accordion.Trigger>
         <Accordion.Content>
-          <Stack gap="md">
+          <Stack spacing="md">
             <div className="border rounded-lg p-4">
               <h4 className="font-semibold mb-2">Basic Plan - $9/month</h4>
               <ul className="text-sm space-y-1 text-gray-600">
@@ -317,7 +317,7 @@ export const ControlledMode: Story = {
     };
     
     return (
-      <Stack gap="md">
+      <Stack spacing="md">
         <Flex gap="xs">
           <button
             onClick={() => setValue('item-1')}
@@ -344,7 +344,7 @@ export const ControlledMode: Story = {
             Close All
           </button>
         </Flex>
-        <Text size="sm" color="secondary">
+        <Text size="small" color="secondary">
           Current value: <code className="bg-gray-100 px-2 py-1 rounded">{value || '(none)'}</code>
         </Text>
         <Accordion type="single" collapsible value={value} onChange={handleChange}>
@@ -469,214 +469,6 @@ export const CustomTypography: Story = {
         </Accordion.Trigger>
         <Accordion.Content>
           Subtitle size with bold weight for maximum impact.
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
-  ),
-};
-
-/**
- * Example using Accordion.Title for semantic content structure.
- * The Title component uses the Heading component for consistent typography.
- */
-export const WithSemanticTitle: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Use Accordion.Title for semantic headings within accordion content. Provides proper document outline and consistent typography.',
-      },
-    },
-  },
-  render: () => (
-    <Accordion type="single" collapsible defaultValue="feature-1">
-      <Accordion.Item value="feature-1">
-        <Accordion.Trigger>Advanced Features</Accordion.Trigger>
-        <Accordion.Content>
-          <Accordion.Title level="h5">Typography System</Accordion.Title>
-          <p className="mb-4">
-            Our design system includes a comprehensive typography scale with semantic heading
-            levels and consistent text styling across all components.
-          </p>
-          
-          <Accordion.Title level="h6">Key Benefits</Accordion.Title>
-          <ul className="list-disc pl-5 space-y-1">
-            <li>Consistent visual hierarchy</li>
-            <li>Accessible document structure</li>
-            <li>Easy customization</li>
-          </ul>
-        </Accordion.Content>
-      </Accordion.Item>
-      
-      <Accordion.Item value="feature-2">
-        <Accordion.Trigger>Design Tokens</Accordion.Trigger>
-        <Accordion.Content>
-          <Accordion.Title level="h5" color="primary">
-            CSS Variable-Based Theming
-          </Accordion.Title>
-          <p className="mb-4">
-            All styling uses CSS custom properties (design tokens) for easy theming and
-            consistent design language.
-          </p>
-          
-          <Accordion.Title level="h6">Categories</Accordion.Title>
-          <p>Colors, spacing, typography, borders, and shadows are all tokenized.</p>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
-  ),
-};
-
-/**
- * Example using Accordion.Description for supporting text.
- * The Description component uses the Text component with sensible defaults.
- */
-export const WithDescriptions: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Use Accordion.Description for secondary information with consistent styling. Automatically uses small size and secondary color.',
-      },
-    },
-  },
-  render: () => (
-    <Accordion type="single" collapsible defaultValue="plan-1">
-      <Accordion.Item value="plan-1">
-        <Accordion.Trigger>Free Plan</Accordion.Trigger>
-        <Accordion.Content>
-          <Accordion.Title level="h5">Starter Features</Accordion.Title>
-          <Accordion.Description>
-            Perfect for individuals and small teams just getting started. Includes all
-            essential features you need to begin your journey.
-          </Accordion.Description>
-          
-          <div className="mt-4 space-y-2">
-            <div className="flex justify-between items-center">
-              <span>Users</span>
-              <strong>Up to 5</strong>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Storage</span>
-              <strong>1GB</strong>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Support</span>
-              <strong>Community</strong>
-            </div>
-          </div>
-        </Accordion.Content>
-      </Accordion.Item>
-      
-      <Accordion.Item value="plan-2">
-        <Accordion.Trigger>Pro Plan</Accordion.Trigger>
-        <Accordion.Content>
-          <Accordion.Title level="h5">Professional Features</Accordion.Title>
-          <Accordion.Description>
-            For growing teams and businesses that need advanced capabilities and
-            priority support. Unlock powerful features and integrations.
-          </Accordion.Description>
-          
-          <div className="mt-4 space-y-2">
-            <div className="flex justify-between items-center">
-              <span>Users</span>
-              <strong>Up to 50</strong>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Storage</span>
-              <strong>100GB</strong>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Support</span>
-              <strong>Priority Email</strong>
-            </div>
-          </div>
-        </Accordion.Content>
-      </Accordion.Item>
-      
-      <Accordion.Item value="plan-3">
-        <Accordion.Trigger>Enterprise Plan</Accordion.Trigger>
-        <Accordion.Content>
-          <Accordion.Title level="h5">Enterprise Features</Accordion.Title>
-          <Accordion.Description>
-            Designed for large organizations with custom requirements. Includes
-            dedicated support, advanced security, and custom integrations.
-          </Accordion.Description>
-          
-          <div className="mt-4 space-y-2">
-            <div className="flex justify-between items-center">
-              <span>Users</span>
-              <strong>Unlimited</strong>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Storage</span>
-              <strong>Unlimited</strong>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Support</span>
-              <strong>24/7 Dedicated</strong>
-            </div>
-          </div>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
-  ),
-};
-
-/**
- * Example combining all semantic typography components.
- * Shows how Title and Description work together for rich content.
- */
-export const CompleteSemanticStructure: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Complete example combining Accordion.Title and Accordion.Description for well-structured, semantic content with proper typography hierarchy.',
-      },
-    },
-  },
-  render: () => (
-    <Accordion type="single" collapsible defaultValue="guide-1">
-      <Accordion.Item value="guide-1">
-        <Accordion.Trigger textSize="subtitle" textWeight="semibold">
-          Getting Started Guide
-        </Accordion.Trigger>
-        <Accordion.Content>
-          <Accordion.Title level="h4">Welcome to the Platform</Accordion.Title>
-          <Accordion.Description>
-            This comprehensive guide will walk you through the essential steps to get
-            your account set up and ready to use. Follow along at your own pace.
-          </Accordion.Description>
-          
-          <div className="mt-6 space-y-4">
-            <div>
-              <Accordion.Title level="h5">Step 1: Create Your Profile</Accordion.Title>
-              <Accordion.Description>
-                Add your personal information and customize your account settings.
-              </Accordion.Description>
-              <p className="mt-2">
-                Navigate to Settings → Profile to update your details.
-              </p>
-            </div>
-            
-            <div>
-              <Accordion.Title level="h5">Step 2: Configure Preferences</Accordion.Title>
-              <Accordion.Description>
-                Set up your notifications, privacy settings, and appearance preferences.
-              </Accordion.Description>
-              <p className="mt-2">
-                Visit Settings → Preferences for customization options.
-              </p>
-            </div>
-            
-            <div>
-              <Accordion.Title level="h5">Step 3: Invite Your Team</Accordion.Title>
-              <Accordion.Description size="small" color="tertiary">
-                Optional: Collaborate with others by inviting team members to your workspace.
-              </Accordion.Description>
-              <p className="mt-2">
-                Go to Team → Invite Members to send invitations.
-              </p>
-            </div>
-          </div>
         </Accordion.Content>
       </Accordion.Item>
     </Accordion>

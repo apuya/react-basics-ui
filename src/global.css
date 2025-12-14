@@ -2672,22 +2672,27 @@ svg {
 
   /* Slider Component */
   --component-slider-track-bg: var(--semantic-surface-base);
-  --component-slider-track-border: var(--semantic-border-default);
   --component-slider-track-height: var(--semantic-slider-track-height);
+  --component-slider-track-height-sm: 4px;
+  --component-slider-track-height-lg: 8px;
   --component-slider-track-radius: var(--semantic-radius-full);
-  --component-slider-track-border-width: var(--semantic-border-width-default);
-  --component-slider-thumb-bg: var(--semantic-brand-secondary-default);
+  --component-slider-fill-bg-default: var(--semantic-brand-secondary-default);
+  --component-slider-fill-bg-primary: var(--semantic-brand-primary-default);
+  --component-slider-fill-bg-success: var(--semantic-status-success-default);
+  --component-slider-fill-bg-warning: var(--semantic-status-warning-default);
+  --component-slider-fill-bg-error: var(--semantic-status-error-default);
+  --component-slider-thumb-bg: var(--semantic-brand-secondary-dark);
   --component-slider-thumb-bg-hover: var(--semantic-brand-secondary-hover);
   --component-slider-thumb-bg-active: var(--semantic-brand-secondary-active);
   --component-slider-thumb-bg-disabled: var(--semantic-border-disabled);
-  --component-slider-thumb-border: var(--semantic-surface-elevated);
-  --component-slider-thumb-border-hover: var(--semantic-surface-elevated);
+  --component-slider-thumb-border: rgba(255, 255, 255, 0.25);
+  --component-slider-thumb-border-hover: rgba(255, 255, 255, 0.4);
   --component-slider-thumb-border-disabled: var(--semantic-border-disabled);
   --component-slider-thumb-size: var(--semantic-icon-medium);
-  --component-slider-thumb-border-width: var(--semantic-border-width-medium);
-  --component-slider-thumb-shadow: var(--semantic-shadow-sm);
-  --component-slider-thumb-shadow-hover: var(--semantic-shadow-md);
-  --component-slider-thumb-shadow-active: var(--semantic-shadow-sm);
+  --component-slider-thumb-border-width: 2px;
+  --component-slider-thumb-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --component-slider-thumb-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --component-slider-thumb-shadow-active: 0 1px 2px 0 rgb(0 0 0 / 0.1);
   --component-slider-label-color: var(--semantic-text-primary);
   --component-slider-label-color-disabled: var(--semantic-text-disabled);
   --component-slider-label-size: var(--semantic-text-size-body);
@@ -2864,13 +2869,16 @@ svg {
   --component-text-letter-spacing-wide: var(--semantic-letter-spacing-wide);
 
   /* Label Component */
-  --component-label-color-default: var(--semantic-text-primary);
-  --component-label-color-disabled: var(--semantic-text-disabled);
+  --component-label-color: var(--semantic-text-primary);
+  --component-label-color-secondary: var(--semantic-text-secondary);
   --component-label-color-error: var(--semantic-text-error);
+  --component-label-color-disabled: var(--semantic-text-disabled);
   --component-label-font-size-small: var(--semantic-text-size-small);
-  --component-label-font-size-default: var(--semantic-text-size-body);
+  --component-label-font-size: var(--semantic-text-size-body);
   --component-label-font-size-large: var(--semantic-text-size-subtitle);
-  --component-label-font-weight: var(--semantic-text-weight-medium);
+  --component-label-font-weight: var(--semantic-text-weight-regular);
+  --component-label-font-weight-medium: var(--semantic-text-weight-medium);
+  --component-label-font-weight-semibold: var(--semantic-text-weight-semibold);
   --component-label-line-height: var(--semantic-line-height-normal);
   --component-label-margin-bottom: var(--semantic-space-tight);
   --component-label-required-color: var(--semantic-status-error-default);

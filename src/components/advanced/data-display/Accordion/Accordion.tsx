@@ -1,7 +1,30 @@
-import {
-  useMemo,
-  type ComponentPropsWithoutRef,
-} from 'react';
+/**
+ * @file Accordion.tsx
+ * @description Root Accordion component providing collapsible content panel functionality.
+ *
+ * Implements the compound component pattern via Object.assign, exposing:
+ * - Accordion.Item - Container for each accordion section
+ * - Accordion.Trigger - Clickable button to expand/collapse
+ * - Accordion.Content - Collapsible content region
+ *
+ * Uses a two-level context system:
+ * - AccordionContext: Root-level state (active items, variant, keyboard nav)
+ * - AccordionItemContext: Item-level state (value, isOpen, disabled)
+ *
+ * @example
+ * ```tsx
+ * <Accordion type="single" collapsible>
+ *   <Accordion.Item value="item-1">
+ *     <Accordion.Trigger>Section 1</Accordion.Trigger>
+ *     <Accordion.Content>
+ *       <p>Content for section 1</p>
+ *     </Accordion.Content>
+ *   </Accordion.Item>
+ * </Accordion>
+ * ```
+ */
+
+import { useMemo } from 'react';
 import { cn } from '@/lib/cn';
 import { createComponentContext } from '@/lib/createComponentContext';
 import { useDisclosureState } from '@/hooks/useDisclosureState';
@@ -9,41 +32,7 @@ import { useDisclosureKeyboardNav } from '@/hooks/useDisclosureKeyboardNav';
 import { AccordionItem } from './AccordionItem';
 import { AccordionTrigger } from './AccordionTrigger';
 import { AccordionContent } from './AccordionContent';
-import { AccordionTitle } from './AccordionTitle';
-import { AccordionDescription } from './AccordionDescription';
-
-export type AccordionType = 'single' | 'multiple';
-export type AccordionVariant = 'default' | 'bordered' | 'separated';
-
-export interface AccordionProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
-  /** Type of accordion - 'single' allows one item open, 'multiple' allows multiple items */
-  type?: AccordionType;
-  /** Default active value(s) when uncontrolled */
-  defaultValue?: string | string[];
-  /** Controlled active value(s) */
-  value?: string | string[];
-  /** Callback when value changes (standardized to onChange) */
-  onChange?: (value: string | string[]) => void;
-  /** @deprecated Use onChange instead. Will be removed in v2.0 */
-  onValueChange?: (value: string | string[]) => void;
-  /** Visual variant of the accordion */
-  variant?: AccordionVariant;
-  /** Whether items can be collapsed in single mode */
-  collapsible?: boolean;
-  /** Size variant - currently only 'md' is supported */
-  size?: 'md';
-}
-
-interface AccordionContextValue {
-  type: AccordionType;
-  activeItems: string[];
-  toggleItem: (value: string) => void;
-  variant: AccordionVariant;
-  disabledItems: Map<string, boolean>;
-  registerTrigger: (itemValue: string, element: HTMLElement | null) => void;
-  unregisterTrigger: (itemValue: string) => void;
-  handleKeyDown: (event: React.KeyboardEvent) => void;
-}
+import type { AccordionProps, AccordionContextValue } from './Accordion.types';
 
 const { Context: AccordionContext, useContext: useAccordionContext } =
   createComponentContext<AccordionContextValue>('Accordion');
@@ -148,6 +137,4 @@ export const Accordion = Object.assign(AccordionRoot, {
   Item: AccordionItem,
   Trigger: AccordionTrigger,
   Content: AccordionContent,
-  Title: AccordionTitle,
-  Description: AccordionDescription,
 });

@@ -1,37 +1,20 @@
 import { cn } from '@/lib/cn';
 import { createComponentContext } from '@/lib/createComponentContext';
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import { BASE_CLASSES, SHAPE_STYLES, SIZE_STYLES, type AvatarShape, type AvatarSize } from './Avatar.styles';
+import { forwardRef, memo, useMemo } from 'react';
+import { BASE_CLASSES, SHAPE_STYLES, SIZE_STYLES } from './Avatar.styles';
+import type { AvatarContextValue, AvatarProps } from './Avatar.types';
 import { AvatarImage } from './AvatarImage';
 import { AvatarFallback } from './AvatarFallback';
 
 // =============================================================================
-// CONTEXT
+// Context - Shares size and shape with sub-components
 // =============================================================================
-
-interface AvatarContextValue {
-  size: AvatarSize;
-  shape: AvatarShape;
-}
 
 export const { Context: AvatarContext, useContext: useAvatarContext } =
   createComponentContext<AvatarContextValue>('Avatar');
 
 // =============================================================================
-// TYPES
-// =============================================================================
-
-export interface AvatarProps extends ComponentPropsWithoutRef<'div'> {
-  /** Size of the avatar */
-  size?: AvatarSize;
-  /** Shape of the avatar */
-  shape?: AvatarShape;
-  /** Avatar content (Image, Fallback, or both) */
-  children?: ReactNode;
-}
-
-// =============================================================================
-// COMPONENT
+// Avatar Root Component
 // =============================================================================
 
 const AvatarRoot = memo(
@@ -64,7 +47,9 @@ const AvatarRoot = memo(
 AvatarRoot.displayName = 'Avatar';
 
 // =============================================================================
-// COMPOUND COMPONENT
+// Compound Component Export
+// Avatar.Image - Displays user image with error handling
+// Avatar.Fallback - Shows initials or icon when no image available
 // =============================================================================
 
 export const Avatar = Object.assign(AvatarRoot, {

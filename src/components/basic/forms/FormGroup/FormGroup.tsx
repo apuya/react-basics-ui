@@ -1,39 +1,56 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useId, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import {
-  BASE_CLASSES,
-  CHILDREN_HORIZONTAL_CLASSES,
-  CHILDREN_VERTICAL_CLASSES,
-  DESCRIPTION_CLASSES,
-  ERROR_CLASSES,
-  LEGEND_CLASSES,
-} from './FormGroup.styles';
+import { forwardRef, memo, useId, type ComponentPropsWithoutRef } from 'react';
+import { BASE_CLASSES } from './FormGroup.styles';
+import { FormGroupContext, type FormGroupContextValue } from './FormGroupContext';
+import { FormGroupLegend } from './FormGroupLegend';
+import { FormGroupDescription } from './FormGroupDescription';
+import { FormGroupErrorMessage } from './FormGroupErrorMessage';
+
+// =============================================================================
+// Types
+// =============================================================================
 
 export type FormGroupOrientation = 'vertical' | 'horizontal';
 
 export interface FormGroupProps extends ComponentPropsWithoutRef<'fieldset'> {
-  /** Legend/title displayed at the top of the group */
-  legend?: ReactNode;
-  /** Helper description text below the legend */
-  description?: ReactNode;
   /** Layout direction for child elements */
   orientation?: FormGroupOrientation;
-  /** Indicates validation error state */
+  /** Enables error state styling (shared with sub-components via context) */
   error?: boolean;
-  /** Error message displayed when error is true */
-  errorMessage?: string;
+  /** Sets data-disabled attribute (shared with sub-components via context) */
+  disabled?: boolean;
   /** ID for the error message element (for aria-describedby). Auto-generated if not provided. */
   errorId?: string;
 }
 
-export const FormGroup = memo(
-  forwardRef<HTMLFieldSetElement, FormGroupProps>(function FormGroup(
+// =============================================================================
+// Root Component
+// =============================================================================
+
+/**
+ * FormGroup - Compound component for grouping related form controls with automatic state sharing.
+ *
+ * Provides context to sub-components (Legend, Description, ErrorMessage) for automatic
+ * error/disabled state sharing.
+ *
+ * @example
+ * ```tsx
+ * // Compound component usage (recommended)
+ * <FormGroup error orientation="vertical">
+ *   <FormGroup.Legend>Notification Preferences</FormGroup.Legend>
+ *   <FormGroup.Description>Choose how you want to be notified</FormGroup.Description>
+ *   <Checkbox>Email</Checkbox>
+ *   <Checkbox>SMS</Checkbox>
+ *   <FormGroup.ErrorMessage>Please select at least one option</FormGroup.ErrorMessage>
+ * </FormGroup>
+ * ```
+ */
+const FormGroupRoot = memo(
+  forwardRef<HTMLFieldSetElement, FormGroupProps>(function FormGroupRoot(
     {
-      legend,
-      description,
       orientation = 'vertical',
       error = false,
-      errorMessage,
+      disabled = false,
       errorId: errorIdProp,
       className,
       children,
@@ -41,48 +58,57 @@ export const FormGroup = memo(
     },
     ref
   ) {
-    const generatedId = useId();
-    const hasError = error && errorMessage;
-    const errorId = hasError ? (errorIdProp ?? `${generatedId}-error`) : undefined;
+    const generatedErrorId = useId();
+    const errorId = errorIdProp ?? `${generatedErrorId}-error`;
 
-    const fieldsetClasses = useMemo(
-      () => cn(BASE_CLASSES, className),
-      [className]
-    );
-
-    const childrenClasses = useMemo(
-      () =>
-        orientation === 'horizontal'
-          ? CHILDREN_HORIZONTAL_CLASSES
-          : CHILDREN_VERTICAL_CLASSES,
-      [orientation]
-    );
+    const contextValue: FormGroupContextValue = {
+      error,
+      disabled,
+      errorId,
+      orientation,
+    };
 
     return (
-      <fieldset
-        ref={ref}
-        className={fieldsetClasses}
-        data-orientation={orientation}
-        data-error={error || undefined}
-        aria-invalid={error || undefined}
-        aria-describedby={errorId}
-        {...rest}
-      >
-        {legend && <legend className={LEGEND_CLASSES}>{legend}</legend>}
-        {description && <p className={DESCRIPTION_CLASSES}>{description}</p>}
-
-        <div className={childrenClasses}>
+      <FormGroupContext.Provider value={contextValue}>
+        <fieldset
+          ref={ref}
+          className={cn(BASE_CLASSES, className)}
+          data-orientation={orientation}
+          data-error={error || undefined}
+          data-disabled={disabled || undefined}
+          aria-invalid={error || undefined}
+          aria-describedby={error ? errorId : undefined}
+          disabled={disabled}
+          {...rest}
+        >
           {children}
-        </div>
-
-        {hasError && (
-          <p id={errorId} className={ERROR_CLASSES} role="alert">
-            {errorMessage}
-          </p>
-        )}
-      </fieldset>
+        </fieldset>
+      </FormGroupContext.Provider>
     );
   })
 );
 
-FormGroup.displayName = 'FormGroup';
+FormGroupRoot.displayName = 'FormGroup';
+
+// =============================================================================
+// Compound Component Export
+// =============================================================================
+
+/**
+ * FormGroup compound component with sub-components for flexible form group composition.
+ *
+ * @example
+ * ```tsx
+ * <FormGroup error>
+ *   <FormGroup.Legend>Settings</FormGroup.Legend>
+ *   <FormGroup.Description>Customize your preferences</FormGroup.Description>
+ *   <Checkbox>Option 1</Checkbox>
+ *   <FormGroup.ErrorMessage>Error text</FormGroup.ErrorMessage>
+ * </FormGroup>
+ * ```
+ */
+export const FormGroup = Object.assign(FormGroupRoot, {
+  Legend: FormGroupLegend,
+  Description: FormGroupDescription,
+  ErrorMessage: FormGroupErrorMessage,
+});

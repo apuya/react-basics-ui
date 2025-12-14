@@ -46,7 +46,7 @@ export const Default: Story = {
   render: (args) => (
     <Card>
       <Card.Content>
-        <Stack gap="sm">
+        <Stack spacing="sm">
           <Text size="small" color="secondary">
             The hidden content is inside this card:
           </Text>
@@ -109,8 +109,8 @@ export const HiddenFormLabel: Story = {
 
 export const DecorativeVsAccessible: Story = {
   render: () => (
-    <Stack gap="md">
-      <Stack gap="xs">
+    <Stack spacing="md">
+      <Stack spacing="xs">
         <Text size="small" weight="medium">
           Decorative icon (hidden from assistive tech):
         </Text>
@@ -119,7 +119,7 @@ export const DecorativeVsAccessible: Story = {
           Like
         </Button>
       </Stack>
-      <Stack gap="xs">
+      <Stack spacing="xs">
         <Text size="small" weight="medium">
           Icon-only button (needs hidden label):
         </Text>

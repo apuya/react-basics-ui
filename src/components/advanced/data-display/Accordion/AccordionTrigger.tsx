@@ -1,32 +1,45 @@
+/**
+ * @file AccordionTrigger.tsx
+ * @description Clickable trigger button for expanding/collapsing accordion items.
+ *
+ * Renders as a semantic button element with full accessibility support including
+ * aria-expanded, aria-controls, and keyboard navigation. Registers with parent
+ * Accordion for Arrow key navigation between triggers.
+ *
+ * Features:
+ * - Customizable text size and weight via Text component
+ * - Custom icon support (defaults to chevron)
+ * - Animated icon rotation on open state
+ * - Full keyboard navigation support
+ *
+ * @example
+ * ```tsx
+ * <Accordion.Trigger textSize="body" textWeight="semibold">
+ *   Section Title
+ * </Accordion.Trigger>
+ * ```
+ */
+
 import {
   forwardRef,
   memo,
   useMemo,
   useCallback,
   useEffect,
-  type ReactNode,
-  type ComponentPropsWithoutRef,
 } from 'react';
 import { cn } from '@/lib/cn';
-import { Text, type TextSize, type TextWeight } from '@/components/basic/typography/Text';
+import { Text } from '@/components/basic/typography/Text';
 import { BiChevronDown } from 'react-icons/bi';
 import { useAccordionContext } from './Accordion';
 import { useAccordionItemContext } from './AccordionItem';
 import {
   ACCORDION_TRIGGER_BASE_CLASSES,
   ACCORDION_TRIGGER_VARIANT_STYLES,
+  ACCORDION_TRIGGER_PADDING_STYLE,
   ACCORDION_ICON_BASE_CLASSES,
   ACCORDION_ICON_OPEN_CLASS,
 } from './Accordion.styles';
-
-export interface AccordionTriggerProps extends ComponentPropsWithoutRef<'button'> {
-  children: ReactNode;
-  icon?: ReactNode;
-  /** Text size for the trigger label. @default 'body' */
-  textSize?: TextSize;
-  /** Text weight for the trigger label. @default 'medium' */
-  textWeight?: TextWeight;
-}
+import type { AccordionTriggerProps } from './Accordion.types';
 
 export const AccordionTrigger = memo(
   forwardRef<HTMLButtonElement, AccordionTriggerProps>(
@@ -70,14 +83,6 @@ export const AccordionTrigger = memo(
         [isOpen]
       );
 
-      const triggerStyle = useMemo(
-        () => ({
-          paddingBlock: 'var(--component-accordion-padding-block)',
-          paddingInline: 'var(--component-accordion-padding-inline)',
-        }),
-        []
-      );
-
       return (
         <button
           ref={triggerRef}
@@ -89,7 +94,7 @@ export const AccordionTrigger = memo(
           onKeyDown={handleKeyDown}
           disabled={disabled}
           className={triggerClasses}
-          style={triggerStyle}
+          style={ACCORDION_TRIGGER_PADDING_STYLE}
           data-open={isOpen || undefined}
           data-disabled={disabled || undefined}
           {...props}

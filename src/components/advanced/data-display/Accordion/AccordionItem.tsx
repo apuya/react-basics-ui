@@ -1,9 +1,24 @@
+/**
+ * @file AccordionItem.tsx
+ * @description Individual accordion item container providing item-level context.
+ *
+ * Wraps each accordion section and provides AccordionItemContext to child
+ * Trigger and Content components. Handles disabled state registration with
+ * the parent Accordion for keyboard navigation.
+ *
+ * @example
+ * ```tsx
+ * <Accordion.Item value="unique-id" disabled={false}>
+ *   <Accordion.Trigger>Click to expand</Accordion.Trigger>
+ *   <Accordion.Content>Hidden content</Accordion.Content>
+ * </Accordion.Item>
+ * ```
+ */
+
 import {
   useMemo,
   useEffect,
   useRef,
-  type ReactNode,
-  type ComponentPropsWithoutRef,
   forwardRef,
   memo,
 } from 'react';
@@ -12,20 +27,7 @@ import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { createComponentContext } from '@/lib/createComponentContext';
 import { useAccordionContext } from './Accordion';
 import { ACCORDION_ITEM_BASE_CLASSES, ACCORDION_ITEM_VARIANT_STYLES } from './Accordion.styles';
-
-export interface AccordionItemProps extends ComponentPropsWithoutRef<'div'> {
-  /** Unique value identifying this accordion item */
-  value: string;
-  children: ReactNode;
-  /** Whether this item is disabled */
-  disabled?: boolean;
-}
-
-interface AccordionItemContextValue {
-  value: string;
-  isOpen: boolean;
-  disabled: boolean;
-}
+import type { AccordionItemProps, AccordionItemContextValue } from './Accordion.types';
 
 const { Context: AccordionItemContext, useContext: useAccordionItemContext } =
   createComponentContext<AccordionItemContextValue>('AccordionItem');

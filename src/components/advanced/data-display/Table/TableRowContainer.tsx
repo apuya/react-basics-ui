@@ -1,3 +1,10 @@
+/**
+ * @file TableRowContainer.tsx
+ * @description Table row (tr) component with variant-aware styling.
+ *
+ * Applies row-level styles (hover, striping) based on table variant from context.
+ */
+
 import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
 import { useTableContext } from './TableContext';

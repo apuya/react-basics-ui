@@ -1,3 +1,10 @@
+/**
+ * @file TableHeaderContainer.tsx
+ * @description Table header container (thead) component.
+ *
+ * Semantic wrapper for table header rows with optional sticky positioning.
+ */
+
 import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
 import { TABLE_HEADER_CONTAINER_BASE_CLASSES, TABLE_HEADER_CONTAINER_STICKY_CLASS } from './Table.styles';

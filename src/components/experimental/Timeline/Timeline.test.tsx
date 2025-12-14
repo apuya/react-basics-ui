@@ -431,7 +431,9 @@ describe('Timeline', () => {
         </Timeline>
       );
 
-      expect(screen.getByRole('button', { name: /view details/i })).toBeInTheDocument();
+      const link = screen.getByRole('link', { name: /view details/i });
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute('href', '/details');
     });
   });
 
@@ -533,8 +535,9 @@ describe('Timeline', () => {
         </Timeline>
       );
 
-      const statusButton = screen.getByRole('button', { name: /go to link/i });
-      expect(statusButton).toBeInTheDocument();
+      const link = screen.getByRole('link', { name: /go to link/i });
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute('href', '/some-link');
     });
 
     it.each(['default', 'info', 'success', 'warning', 'error'] as const)(

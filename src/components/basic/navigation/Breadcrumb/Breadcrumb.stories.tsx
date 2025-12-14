@@ -3,6 +3,10 @@ import { Breadcrumb } from './Breadcrumb';
 import { ICON_SIZE_STYLES } from './Breadcrumb.styles';
 import { FiChevronRight, FiHome, FiFolder, FiFile } from 'react-icons/fi';
 
+// =============================================================================
+// Storybook Meta Configuration
+// =============================================================================
+
 const meta: Meta<typeof Breadcrumb> = {
   title: 'Navigation/Breadcrumb',
   component: Breadcrumb,
@@ -11,7 +15,7 @@ const meta: Meta<typeof Breadcrumb> = {
     docs: {
       description: {
         component:
-          'Breadcrumb navigation component that shows the current page location within a site hierarchy. Supports custom separators, icons, and collapsible paths with ellipsis.',
+          'Breadcrumb navigation component that shows the current page location within a site hierarchy. Supports custom separators, icons, and collapsible paths with ellipsis. Uses compound component pattern with `Breadcrumb.Item`, `Breadcrumb.Link`, and `Breadcrumb.Ellipsis`.',
       },
     },
   },
@@ -27,6 +31,10 @@ const meta: Meta<typeof Breadcrumb> = {
 
 export default meta;
 type Story = StoryObj<typeof Breadcrumb>;
+
+// =============================================================================
+// Default Story
+// =============================================================================
 
 export const Default: Story = {
   parameters: {
@@ -50,6 +58,10 @@ export const Default: Story = {
     </Breadcrumb>
   ),
 };
+
+// =============================================================================
+// Separator Variants
+// =============================================================================
 
 export const WithCustomSeparator: Story = {
   parameters: {
@@ -90,6 +102,10 @@ export const WithCustomSeparator: Story = {
   ),
 };
 
+// =============================================================================
+// With Icons
+// =============================================================================
+
 export const WithIcons: Story = {
   parameters: {
     docs: {
@@ -121,6 +137,10 @@ export const WithIcons: Story = {
     </Breadcrumb>
   ),
 };
+
+// =============================================================================
+// Ellipsis & Edge Cases
+// =============================================================================
 
 export const WithEllipsis: Story = {
   parameters: {

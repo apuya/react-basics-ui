@@ -316,3 +316,83 @@ export const InteractiveVertical: Story = {
     );
   },
 };
+
+// =============================================================================
+// SUBCOMPONENTS
+// =============================================================================
+
+/**
+ * Standalone step indicator showing all statuses.
+ */
+export const SubcomponentIndicatorStatuses: Story = {
+  render: () => (
+    <Flex gap="lg" className="items-center">
+      <Box className="text-center">
+        <Stepper.Indicator status="completed" stepNumber={1} />
+        <Text size="caption" color="tertiary" className="mt-2">
+          Completed
+        </Text>
+      </Box>
+      <Box className="text-center">
+        <Stepper.Indicator status="active" stepNumber={2} />
+        <Text size="caption" color="tertiary" className="mt-2">
+          Active
+        </Text>
+      </Box>
+      <Box className="text-center">
+        <Stepper.Indicator status="upcoming" stepNumber={3} />
+        <Text size="caption" color="tertiary" className="mt-2">
+          Upcoming
+        </Text>
+      </Box>
+      <Box className="text-center">
+        <Stepper.Indicator status="error" stepNumber={4} />
+        <Text size="caption" color="tertiary" className="mt-2">
+          Error
+        </Text>
+      </Box>
+    </Flex>
+  ),
+};
+
+/**
+ * Standalone step indicator in all sizes.
+ */
+export const SubcomponentIndicatorSizes: Story = {
+  render: () => (
+    <Flex gap="lg" className="items-end">
+      <Box className="text-center">
+        <Stepper.Indicator status="active" stepNumber={1} size="sm" />
+        <Text size="caption" color="tertiary" className="mt-2">
+          Small
+        </Text>
+      </Box>
+      <Box className="text-center">
+        <Stepper.Indicator status="active" stepNumber={2} size="md" />
+        <Text size="caption" color="tertiary" className="mt-2">
+          Medium
+        </Text>
+      </Box>
+      <Box className="text-center">
+        <Stepper.Indicator status="active" stepNumber={3} size="lg" />
+        <Text size="caption" color="tertiary" className="mt-2">
+          Large
+        </Text>
+      </Box>
+    </Flex>
+  ),
+};
+
+/**
+ * Standalone step indicator with custom icons.
+ */
+export const SubcomponentIndicatorWithIcons: Story = {
+  render: () => (
+    <Flex gap="lg" className="items-center">
+      <Stepper.Indicator status="completed" stepNumber={1} size="lg" icon={<BiUser />} />
+      <Stepper.Indicator status="active" stepNumber={2} size="lg" icon={<BiCart />} />
+      <Stepper.Indicator status="upcoming" stepNumber={3} size="lg" icon={<BiPackage />} />
+      <Stepper.Indicator status="error" stepNumber={4} size="lg" icon={<BiCheckCircle />} />
+    </Flex>
+  ),
+};

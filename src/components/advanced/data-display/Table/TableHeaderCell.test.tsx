@@ -2,16 +2,18 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { createRef } from 'react';
 import { TableHeaderCell } from './TableHeaderCell';
-import { Table } from './Table';
+import { TableContext } from './TableContext';
 
 // Helper to render TableHeaderCell within Table context
-const renderWithTable = (ui: React.ReactElement) => {
+const renderWithTable = (ui: React.ReactElement, { size = 'md', variant = 'default' } = {}) => {
   return render(
-    <Table>
-      <Table.HeaderContainer>
-        <Table.Row>{ui}</Table.Row>
-      </Table.HeaderContainer>
-    </Table>
+    <TableContext.Provider value={{ size: size as 'sm' | 'md' | 'lg', variant: variant as 'default' | 'striped' | 'bordered' }}>
+      <table>
+        <thead>
+          <tr>{ui}</tr>
+        </thead>
+      </table>
+    </TableContext.Provider>
   );
 };
 

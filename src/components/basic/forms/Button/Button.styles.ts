@@ -29,6 +29,8 @@ export const VARIANT_STYLES = {
 
 export const ICON_WRAPPER_CLASSES = 'inline-flex items-center justify-center shrink-0';
 
+export const BLOCK_CLASSES = 'w-full';
+
 export const SPINNER_WRAPPER_CLASSES = 'inline-flex items-center justify-center shrink-0 animate-spin';
 
 export const SPINNER_CLASSES = 'h-full w-full rounded-[var(--component-button-spinner-radius)] border-current border-t-transparent';
@@ -41,4 +43,11 @@ export const ICON_SIZE_STYLES = {
   small: 'w-[length:var(--component-button-icon-size-small)] h-[length:var(--component-button-icon-size-small)]',
   default: 'w-[length:var(--component-button-icon-size-default)] h-[length:var(--component-button-icon-size-default)]',
   large: 'w-[length:var(--component-button-icon-size-large)] h-[length:var(--component-button-icon-size-large)]',
+} as const;
+
+/** Icon button dimensions (square aspect ratio) */
+export const ICON_BUTTON_SIZE_STYLES = {
+  small: 'size-8',
+  default: 'size-10',
+  large: 'size-12',
 } as const;

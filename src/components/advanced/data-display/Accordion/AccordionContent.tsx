@@ -1,10 +1,28 @@
+/**
+ * @file AccordionContent.tsx
+ * @description Collapsible content region for accordion items.
+ *
+ * Uses CSS Grid animation (grid-rows: 0fr/1fr) for smooth height transitions.
+ * Implements WAI-ARIA region role with proper labelling from the trigger.
+ *
+ * The three-div structure enables smooth animation:
+ * 1. Outer div: CSS Grid container with row transition
+ * 2. Middle div: overflow-hidden wrapper
+ * 3. Inner div: padding container for content
+ *
+ * @example
+ * ```tsx
+ * <Accordion.Content>
+ *   <p>Your content here...</p>
+ * </Accordion.Content>
+ * ```
+ */
+
 import {
   forwardRef,
   memo,
   useMemo,
   useRef,
-  type ReactNode,
-  type ComponentPropsWithoutRef,
 } from 'react';
 import { cn } from '@/lib/cn';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
@@ -12,11 +30,9 @@ import { useAccordionItemContext } from './AccordionItem';
 import {
   ACCORDION_CONTENT_BASE_CLASSES,
   ACCORDION_CONTENT_INNER_CLASSES,
+  ACCORDION_CONTENT_PADDING_STYLE,
 } from './Accordion.styles';
-
-export interface AccordionContentProps extends ComponentPropsWithoutRef<'div'> {
-  children: ReactNode;
-}
+import type { AccordionContentProps } from './Accordion.types';
 
 export const AccordionContent = memo(
   forwardRef<HTMLDivElement, AccordionContentProps>(({ children, className, ...props }, forwardedRef) => {
@@ -27,15 +43,6 @@ export const AccordionContent = memo(
     const contentClasses = useMemo(
       () => cn('grid', ACCORDION_CONTENT_BASE_CLASSES, className),
       [className]
-    );
-
-    const contentStyle = useMemo(
-      () => ({
-        paddingBottom: 'var(--component-accordion-content-padding-block)',
-        paddingTop: '0',
-        paddingInline: 'var(--component-accordion-content-padding-inline)',
-      }),
-      []
     );
 
     return (
@@ -50,7 +57,7 @@ export const AccordionContent = memo(
         {...props}
       >
         <div className={ACCORDION_CONTENT_INNER_CLASSES}>
-          <div style={contentStyle}>{children}</div>
+          <div style={ACCORDION_CONTENT_PADDING_STYLE}>{children}</div>
         </div>
       </div>
     );

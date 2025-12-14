@@ -17,7 +17,7 @@ const meta: Meta<typeof Card> = {
     docs: {
       description: {
         component:
-          'A versatile container component for grouping related content. Built using the compound component pattern with `Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, and `Card.Footer` subcomponents.',
+          'A versatile container component for grouping related content. Built using the compound component pattern with `Card.Header`, `Card.Content`, and `Card.Footer` subcomponents. Use `Heading` and `Text` components within headers for consistent typography.',
       },
     },
   },
@@ -58,8 +58,8 @@ export const Default: Story = {
   render: () => (
     <Card>
       <Card.Header>
-        <Card.Title>Card Title</Card.Title>
-        <Card.Description>This is a card description</Card.Description>
+        <Heading as="h3" level="h5">Card Title</Heading>
+        <Text size="body" color="secondary">This is a card description</Text>
       </Card.Header>
       <Card.Content>
         <Text size="body">Card content goes here. This is the main content area of the card.</Text>
@@ -92,8 +92,8 @@ export const NoFooter: Story = {
   render: () => (
     <Card>
       <Card.Header>
-        <Card.Title>Information Card</Card.Title>
-        <Card.Description>Additional context</Card.Description>
+        <Heading as="h3" level="h5">Information Card</Heading>
+        <Text size="body" color="secondary">Additional context</Text>
       </Card.Header>
       <Card.Content>
         <Text size="body">Card without footer actions.</Text>
@@ -113,8 +113,8 @@ export const Elevated: Story = {
   render: () => (
     <Card variant="elevated">
       <Card.Header>
-        <Card.Title>Elevated Card</Card.Title>
-        <Card.Description>Prominent shadow effect</Card.Description>
+        <Heading as="h3" level="h5">Elevated Card</Heading>
+        <Text size="body" color="secondary">Prominent shadow effect</Text>
       </Card.Header>
       <Card.Content>
         <Text size="body">The elevated variant makes the card appear lifted from the page.</Text>
@@ -130,8 +130,8 @@ export const Outlined: Story = {
   render: () => (
     <Card variant="outlined">
       <Card.Header>
-        <Card.Title>Outlined Card</Card.Title>
-        <Card.Description>Border-based definition</Card.Description>
+        <Heading as="h3" level="h5">Outlined Card</Heading>
+        <Text size="body" color="secondary">Border-based definition</Text>
       </Card.Header>
       <Card.Content>
         <Text size="body">The outlined variant uses a border for definition rather than shadows.</Text>
@@ -147,8 +147,8 @@ export const Interactive: Story = {
   render: () => (
     <Card variant="interactive">
       <Card.Header>
-        <Card.Title>Interactive Card</Card.Title>
-        <Card.Description>Hover to see effect</Card.Description>
+        <Heading as="h3" level="h5">Interactive Card</Heading>
+        <Text size="body" color="secondary">Hover to see effect</Text>
       </Card.Header>
       <Card.Content>
         <Text size="body">Interactive cards respond to hover and are clickable.</Text>
@@ -173,8 +173,8 @@ export const AllVariants: Story = {
       {CARD_VARIANTS.map((variant) => (
         <Card key={variant} variant={variant}>
           <Card.Header>
-            <Card.Title>{variant.charAt(0).toUpperCase() + variant.slice(1)}</Card.Title>
-            <Card.Description>variant=&quot;{variant}&quot;</Card.Description>
+            <Heading as="h3" level="h5">{variant.charAt(0).toUpperCase() + variant.slice(1)}</Heading>
+            <Text size="body" color="secondary">variant=&quot;{variant}&quot;</Text>
           </Card.Header>
           <Card.Content>
             <Text size="body">Card content for the {variant} variant.</Text>
@@ -196,7 +196,7 @@ export const StatsCard: Story = {
   render: () => (
     <Card variant="elevated">
       <Card.Header>
-        <Card.Title>Monthly Revenue</Card.Title>
+        <Heading as="h3" level="h5">Monthly Revenue</Heading>
       </Card.Header>
       <Card.Content>
         <Stack gap="sm" align="center">
@@ -248,8 +248,8 @@ export const ProjectCard: Story = {
       <Card.Header>
         <Flex justify="between" align="start">
           <Stack gap="xs">
-            <Card.Title>Project Dashboard</Card.Title>
-            <Card.Description>Overview of project metrics</Card.Description>
+            <Heading as="h3" level="h5">Project Dashboard</Heading>
+            <Text size="body" color="secondary">Overview of project metrics</Text>
           </Stack>
           <Badge variant="success">Active</Badge>
         </Flex>
@@ -294,7 +294,7 @@ export const CardGrid: Story = {
       {(['default', 'elevated', 'outlined'] as const).map((variant) => (
         <Card key={variant} variant={variant}>
           <Card.Header>
-            <Card.Title>{variant.charAt(0).toUpperCase() + variant.slice(1)}</Card.Title>
+            <Heading as="h3" level="h5">{variant.charAt(0).toUpperCase() + variant.slice(1)}</Heading>
           </Card.Header>
           <Card.Content>
             <Text size="body">Card {variant === 'default' ? 'first' : variant === 'elevated' ? 'second' : 'third'} in grid.</Text>

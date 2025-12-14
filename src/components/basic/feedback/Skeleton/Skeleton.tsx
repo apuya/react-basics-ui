@@ -1,4 +1,4 @@
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
 import {
   ANIMATION_CLASSES,
@@ -67,29 +67,21 @@ export const Skeleton = memo(
     ref
   ) {
     const animationClass = animation ? ANIMATION_CLASSES[animation] : '';
+    const skeletonClasses = cn(BASE_CLASSES, animationClass, className);
 
-    const skeletonClasses = useMemo(
-      () => cn(BASE_CLASSES, animationClass, className),
-      [animationClass, className]
-    );
+    const computedStyle: React.CSSProperties = {
+      backgroundColor: 'var(--component-skeleton-bg)',
+      ...VARIANT_STYLES[variant],
+      ...style,
+    };
 
-    const computedStyle = useMemo(() => {
-      const styles: React.CSSProperties = {
-        backgroundColor: 'var(--component-skeleton-bg)',
-        ...VARIANT_STYLES[variant],
-        ...style,
-      };
+    if (width !== undefined) {
+      computedStyle.width = typeof width === 'number' ? `${width}px` : width;
+    }
 
-      if (width !== undefined) {
-        styles.width = typeof width === 'number' ? `${width}px` : width;
-      }
-
-      if (height !== undefined) {
-        styles.height = typeof height === 'number' ? `${height}px` : height;
-      }
-
-      return styles;
-    }, [variant, width, height, style]);
+    if (height !== undefined) {
+      computedStyle.height = typeof height === 'number' ? `${height}px` : height;
+    }
 
     // For text variant with count > 1, render multiple lines
     if (variant === 'text' && count > 1) {

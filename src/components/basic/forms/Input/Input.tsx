@@ -5,9 +5,12 @@ import { FormField } from '../FormField';
 import {
   BASE_CLASSES,
   ICON_SIZE_STYLES,
+  ICON_WRAPPER_BASE_CLASSES,
+  LEADING_ICON_STYLE,
   SIZE_STYLES,
   STATE_STYLES,
   SUFFIX_STYLE,
+  TRAILING_ICON_STYLE,
 } from './Input.styles';
 
 export type InputSize = keyof typeof SIZE_STYLES;
@@ -30,17 +33,6 @@ export interface InputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'siz
   /** Additional className for the wrapper element */
   wrapperClassName?: string;
 }
-
-/** Static styles for icon positioning */
-const LEADING_ICON_STYLE = {
-  left: 'var(--component-input-padding-inline)',
-  color: 'var(--component-input-text-placeholder)',
-} as const;
-
-const TRAILING_ICON_STYLE = {
-  right: 'var(--component-input-padding-inline)',
-  color: 'var(--component-input-text-placeholder)',
-} as const;
 
 export const Input = memo(
   forwardRef<HTMLInputElement, InputProps>(function Input(
@@ -66,7 +58,7 @@ export const Input = memo(
       () => cn(
         BASE_CLASSES,
         SIZE_STYLES[size],
-        error ? STATE_STYLES.error : STATE_STYLES.default,
+        STATE_STYLES[error ? 'error' : 'default'],
         className
       ),
       [size, error, className]
@@ -74,22 +66,21 @@ export const Input = memo(
 
     const inputStyle = useMemo(
       () => {
-        const hasSuffixOrTrailing = suffix || trailingIcon;
+        const hasTrailing = suffix || trailingIcon;
         return {
           height: `var(--component-input-height-${size})`,
           paddingLeft: leadingIcon
-            ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
+            ? `calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-${size}))`
             : 'var(--component-input-padding-inline)',
-          paddingRight: hasSuffixOrTrailing
-            ? 'calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-default))'
+          paddingRight: hasTrailing
+            ? `calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-${size}))`
             : 'var(--component-input-padding-inline)',
         };
       },
       [size, leadingIcon, trailingIcon, suffix]
     );
 
-    // Simple lookup - no memoization needed
-    const iconWrapperClasses = ICON_SIZE_STYLES[size];
+    const iconWrapperClasses = cn(ICON_WRAPPER_BASE_CLASSES, ICON_SIZE_STYLES[size]);
 
     return (
       <FormField
@@ -100,13 +91,15 @@ export const Input = memo(
         disabled={disabled}
         className={cn('w-full', wrapperClassName)}
       >
-        <div className="relative" data-size={size} data-error={error || undefined}>
+        <div
+          className="relative"
+          data-size={size}
+          data-error={error || undefined}
+          data-disabled={disabled || undefined}
+        >
           {leadingIcon && (
             <span
-              className={cn(
-                'absolute top-1/2 -translate-y-1/2',
-                iconWrapperClasses
-              )}
+              className={iconWrapperClasses}
               style={LEADING_ICON_STYLE}
               aria-hidden="true"
             >
@@ -120,17 +113,13 @@ export const Input = memo(
             disabled={disabled}
             className={inputClasses}
             style={inputStyle}
-            data-size={size}
-            data-error={error || undefined}
+            aria-invalid={error || undefined}
             {...rest}
           />
 
           {trailingIcon && (
             <span
-              className={cn(
-                'absolute top-1/2 -translate-y-1/2',
-                iconWrapperClasses
-              )}
+              className={iconWrapperClasses}
               style={TRAILING_ICON_STYLE}
               aria-hidden="true"
             >

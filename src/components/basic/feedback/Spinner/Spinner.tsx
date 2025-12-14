@@ -1,4 +1,4 @@
-import { type ComponentPropsWithoutRef, forwardRef, memo, useMemo } from 'react';
+import { type ComponentPropsWithoutRef, forwardRef, memo } from 'react';
 import { cn } from '@/lib/cn';
 import { ANIMATION_STYLE, BASE_CLASSES, COLOR_STYLES, SIZE_STYLES } from './Spinner.styles';
 
@@ -39,17 +39,14 @@ export const Spinner = memo(
     { size = 'md', color = 'default', label = 'Loading...', className, style, ...rest },
     ref
   ) {
-    const spinnerClasses = useMemo(() => cn(BASE_CLASSES, className), [className]);
+    const spinnerClasses = cn(BASE_CLASSES, className);
 
-    const spinnerStyles = useMemo(
-      () => ({
-        ...SIZE_STYLES[size],
-        ...COLOR_STYLES[color],
-        ...ANIMATION_STYLE,
-        ...style,
-      }),
-      [size, color, style]
-    );
+    const spinnerStyles: React.CSSProperties = {
+      ...SIZE_STYLES[size],
+      ...COLOR_STYLES[color],
+      ...ANIMATION_STYLE,
+      ...style,
+    };
 
     return (
       <span

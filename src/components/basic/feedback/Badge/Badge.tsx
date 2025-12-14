@@ -1,24 +1,7 @@
-import { cn } from "@/lib/cn";
-import {
-  forwardRef,
-  memo,
-  useCallback,
-  useMemo,
-  type ComponentPropsWithoutRef,
-  type ReactNode,
-} from "react";
-import { BiXCircle } from "react-icons/bi";
-
-// Extract text content from ReactNode for aria-label
-function getTextContent(node: ReactNode): string {
-  if (typeof node === 'string' || typeof node === 'number') {
-    return String(node);
-  }
-  if (Array.isArray(node)) {
-    return node.map(getTextContent).join('');
-  }
-  return '';
-}
+import { cn } from '@/lib/cn';
+import { forwardRef, memo, useMemo, type ReactNode } from 'react';
+import { BiXCircle } from 'react-icons/bi';
+import type { BadgeProps, BadgeSize } from './Badge.types';
 import {
   BASE_CLASSES,
   SIZE_STYLES,
@@ -26,50 +9,67 @@ import {
   STYLE_VARIANT_CLASSES,
   PADDING_TOKENS,
   ICON_SIZE_TOKENS,
-  type BadgeColor,
-  type BadgeSize,
-  type BadgeStyleVariant,
 } from './Badge.styles';
 
-export type { BadgeColor, BadgeSize, BadgeStyleVariant };
+// Re-export types from types file
+export type {
+  BadgeProps,
+  BadgeSize,
+  BadgeColor,
+  BadgeStyleVariant,
+  BadgeVariant,
+} from './Badge.types';
 
-// Legacy type alias for backwards compatibility
-export type BadgeVariant = BadgeColor;
+// =============================================================================
+// Internal Components
+// =============================================================================
 
-export interface BadgeProps extends ComponentPropsWithoutRef<"span"> {
-  /** @deprecated Use `color` instead */
-  variant?: BadgeColor;
-  color?: BadgeColor;
-  styleVariant?: BadgeStyleVariant;
-  size?: BadgeSize;
-  leadingIcon?: ReactNode;
-  trailingIcon?: ReactNode;
-  dismissible?: boolean;
-  onDismiss?: () => void;
-  disabled?: boolean;
-  className?: string;
-}
+const VISUAL_WRAPPER_CLASSES =
+  'inline-flex shrink-0 items-center justify-center [&>svg]:h-full [&>svg]:w-full';
 
-const ICON_WRAPPER_CLASSES = "inline-flex shrink-0 items-center justify-center [&>svg]:h-full [&>svg]:w-full";
-
-const IconWrapper = memo(({ icon, size }: { icon: ReactNode; size: BadgeSize }) => (
-  <span className={ICON_WRAPPER_CLASSES} style={ICON_SIZE_TOKENS[size]} aria-hidden="true">
-    {icon}
+/** Wrapper for leading/trailing visuals with proper sizing */
+const VisualWrapper = ({ visual, size }: { visual: ReactNode; size: BadgeSize }) => (
+  <span className={VISUAL_WRAPPER_CLASSES} style={ICON_SIZE_TOKENS[size]} aria-hidden="true">
+    {visual}
   </span>
-));
-IconWrapper.displayName = "IconWrapper";
+);
 
+/**
+ * A badge component for displaying status, labels, or counts.
+ *
+ * @example
+ * ```tsx
+ * // Basic badge
+ * <Badge>New</Badge>
+ *
+ * // With color and style variant
+ * <Badge color="success" styleVariant="solid">Active</Badge>
+ *
+ * // With leading visual
+ * <Badge leadingVisual={<CheckIcon />}>Verified</Badge>
+ *
+ * // Dismissible badge
+ * <Badge dismissible onDismiss={() => console.log('dismissed')}>
+ *   Closeable
+ * </Badge>
+ * ```
+ */
 export const Badge = memo(
   forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
     {
       children,
       className,
+      // New API
+      color = 'neutral',
+      styleVariant = 'subtle',
+      size = 'default',
+      leadingVisual,
+      trailingVisual,
+      // Deprecated props (backwards compatibility)
       variant,
-      color = "neutral",
-      styleVariant = "subtle",
-      size = "default",
       leadingIcon,
       trailingIcon,
+      // Behavior
       dismissible = false,
       onDismiss,
       disabled = false,
@@ -78,8 +78,10 @@ export const Badge = memo(
     },
     ref
   ) {
-    // Support legacy `variant` prop as alias for `color`
+    // Resolve deprecated props (old takes precedence if both provided for safety)
     const resolvedColor = variant ?? color;
+    const resolvedLeading = leadingIcon ?? leadingVisual;
+    const resolvedTrailing = trailingIcon ?? trailingVisual;
 
     // Get color styles based on styleVariant - optimized single lookup
     const colorStyles = useMemo(
@@ -88,72 +90,66 @@ export const Badge = memo(
     );
 
     const badgeClasses = useMemo(
-      () => cn(
-        BASE_CLASSES,
-        SIZE_STYLES[size],
-        STYLE_VARIANT_CLASSES[styleVariant],
-        colorStyles,
-        dismissible && !disabled && "cursor-pointer hover:opacity-[var(--component-badge-hover-opacity)]",
-        disabled && "opacity-50 cursor-not-allowed",
-        className
-      ),
+      () =>
+        cn(
+          BASE_CLASSES,
+          SIZE_STYLES[size],
+          STYLE_VARIANT_CLASSES[styleVariant],
+          colorStyles,
+          dismissible && !disabled && 'cursor-pointer hover:opacity-[var(--component-badge-hover-opacity)]',
+          disabled && 'opacity-50 cursor-not-allowed',
+          className
+        ),
       [size, styleVariant, colorStyles, dismissible, disabled, className]
     );
 
-    const handleClick = useCallback(
-      (e: React.MouseEvent<HTMLSpanElement>) => {
-        if (disabled) return;
-        if (dismissible) {
-          onDismiss?.();
-        }
-        onClick?.(e);
-      },
-      [dismissible, onDismiss, onClick, disabled]
-    );
-
-    const handleKeyDown = useCallback(
-      (e: React.KeyboardEvent<HTMLSpanElement>) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onDismiss?.();
-        }
-      },
-      [onDismiss]
-    );
+    const paddingStyle = PADDING_TOKENS[size];
+    const isInteractive = dismissible && !disabled;
 
     return (
       <span
         ref={ref}
         className={badgeClasses}
-        role={dismissible ? "button" : "status"}
-        aria-label={dismissible ? `${getTextContent(children)} - click to dismiss` : undefined}
-        aria-disabled={disabled || undefined}
-        tabIndex={dismissible && !disabled ? 0 : undefined}
-        onClick={(dismissible || onClick) ? handleClick : undefined}
-        onKeyDown={dismissible && !disabled ? handleKeyDown : undefined}
+        role={dismissible ? 'button' : 'status'}
+        aria-label={dismissible && typeof children === 'string' ? `${children} - click to dismiss` : undefined}
+        aria-disabled={disabled}
+        tabIndex={isInteractive ? 0 : undefined}
+        onClick={
+          disabled
+            ? undefined
+            : (e) => {
+                if (dismissible) onDismiss?.();
+                onClick?.(e);
+              }
+        }
+        onKeyDown={
+          isInteractive
+            ? (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onDismiss?.();
+                }
+              }
+            : undefined
+        }
         data-size={size}
         data-color={resolvedColor}
         data-style-variant={styleVariant}
         data-dismissible={dismissible || undefined}
         data-disabled={disabled || undefined}
-        style={{
-          ...PADDING_TOKENS[size],
-          ...(dismissible && {
-            transition: 'opacity var(--component-badge-transition-duration)',
-          }),
-        }}
+        style={paddingStyle}
         {...props}
       >
-        {leadingIcon && <IconWrapper icon={leadingIcon} size={size} />}
+        {resolvedLeading && <VisualWrapper visual={resolvedLeading} size={size} />}
         {children && <span className="truncate">{children}</span>}
         {dismissible ? (
-          <IconWrapper icon={<BiXCircle />} size={size} />
+          <VisualWrapper visual={<BiXCircle />} size={size} />
         ) : (
-          trailingIcon && <IconWrapper icon={trailingIcon} size={size} />
+          resolvedTrailing && <VisualWrapper visual={resolvedTrailing} size={size} />
         )}
       </span>
     );
   })
 );
 
-Badge.displayName = "Badge";
+Badge.displayName = 'Badge';

@@ -32,28 +32,6 @@ export const MENU_BASE_CLASSES =
 export const MENU_VISIBLE_CLASS = 'opacity-100 pointer-events-auto';
 
 // ============================================================================
-// Label & Helper Text Styles
-// ============================================================================
-
-export const LABEL_CLASSES =
-  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)] text-[color:var(--component-timepicker-label-default)] mb-[length:var(--component-input-gap-compact)]';
-
-export const LABEL_ERROR_CLASSES =
-  'block text-[length:var(--component-input-label-font-size)] font-[number:var(--component-input-label-font-weight)] text-[color:var(--component-timepicker-label-error)] mb-[length:var(--component-input-gap-compact)]';
-
-export const HELPER_CLASSES =
-  'mt-[length:var(--component-input-gap-compact)] text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)] text-[color:var(--component-timepicker-helper-default)]';
-
-export const HELPER_ERROR_CLASSES =
-  'mt-[length:var(--component-input-gap-compact)] text-[length:var(--component-input-helper-font-size)] font-[number:var(--component-input-helper-font-weight)] text-[color:var(--component-timepicker-helper-error)]';
-
-// ============================================================================
-// Placeholder Styles
-// ============================================================================
-
-export const PLACEHOLDER_CLASSES = 'text-[color:var(--component-timepicker-text-placeholder)]';
-
-// ============================================================================
 // Option Styles
 // ============================================================================
 

@@ -2,7 +2,6 @@ import {
   type ComponentPropsWithoutRef,
   forwardRef,
   memo,
-  useMemo,
 } from 'react';
 import { cn } from '@/lib/cn';
 import {
@@ -71,26 +70,13 @@ export const Progress = memo(
     ref
   ) {
     // Clamp value between 0 and max
-    const clampedValue = useMemo(
-      () => Math.min(Math.max(0, value), max),
-      [value, max]
-    );
+    const clampedValue = Math.min(Math.max(0, value), max);
 
     // Calculate percentage
-    const percentage = useMemo(
-      () => (clampedValue / max) * 100,
-      [clampedValue, max]
-    );
+    const percentage = (clampedValue / max) * 100;
 
-    const trackClasses = useMemo(
-      () => cn(TRACK_BASE_CLASSES, SIZE_STYLES[size], className),
-      [size, className]
-    );
-
-    const fillClasses = useMemo(
-      () => cn(FILL_BASE_CLASSES, VARIANT_STYLES[variant]),
-      [variant]
-    );
+    const trackClasses = cn(TRACK_BASE_CLASSES, SIZE_STYLES[size], className);
+    const fillClasses = cn(FILL_BASE_CLASSES, VARIANT_STYLES[variant]);
 
     return (
       <div

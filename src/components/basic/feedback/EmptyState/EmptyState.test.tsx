@@ -230,9 +230,8 @@ describe('EmptyState', () => {
     it('should apply proper title spacing', () => {
       render(<EmptyState title="Test Title" />);
       const title = screen.getByText('Test Title');
-      // Title uses Heading component, spacing on wrapper div
-      const titleWrapper = title.parentElement;
-      expect(titleWrapper).toHaveStyle({
+      // Title uses Heading component with inline style
+      expect(title).toHaveStyle({
         marginBottom: 'var(--component-emptystate-title-gap)',
       });
       // Verify it's an h3 element (rendered by Heading component)
@@ -242,9 +241,8 @@ describe('EmptyState', () => {
     it('should apply proper description spacing', () => {
       render(<EmptyState description="Test Description" />);
       const description = screen.getByText('Test Description');
-      // Description uses Text component, spacing on wrapper div
-      const descriptionWrapper = description.parentElement;
-      expect(descriptionWrapper).toHaveStyle({
+      // Description uses Text component with inline style
+      expect(description).toHaveStyle({
         marginBottom: 'var(--component-emptystate-description-gap)',
       });
       // Verify it's a p element (rendered by Text component)

@@ -1,8 +1,7 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
-import { FOOTER_CLASSES } from './Card.styles';
-
-export interface CardFooterProps extends ComponentPropsWithoutRef<'div'> {}
+import { forwardRef, memo } from 'react';
+import { FOOTER_CLASSES, FOOTER_PADDING_STYLE } from './Card.styles';
+import type { CardFooterProps } from './Card.types';
 
 export const CardFooter = memo(
   forwardRef<HTMLDivElement, CardFooterProps>(({ className, style, children, ...props }, ref) => (
@@ -10,9 +9,7 @@ export const CardFooter = memo(
       ref={ref}
       className={cn(FOOTER_CLASSES, className)}
       style={{
-        paddingInline: 'var(--component-card-footer-padding-inline)',
-        paddingBlock: 'var(--component-card-footer-padding-block)',
-        gap: 'var(--component-card-gap-compact)',
+        ...FOOTER_PADDING_STYLE,
         ...style,
       }}
       {...props}

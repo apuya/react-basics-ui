@@ -7,4 +7,4 @@ export type {
   GridAlign,
   GridJustify,
   GridFlow,
-} from './Grid';
+} from './Grid.types';

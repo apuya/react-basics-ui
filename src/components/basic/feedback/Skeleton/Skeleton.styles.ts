@@ -37,13 +37,6 @@ export const ANIMATION_CLASSES: Record<SkeletonAnimation, string> = {
 } as const;
 
 /**
- * Wave animation style using design tokens
- */
-export const WAVE_ANIMATION_STYLE: React.CSSProperties = {
-  // Wave animation uses CSS animation with token duration
-};
-
-/**
  * Container style for text variant with multiple lines
  */
 export const TEXT_CONTAINER_STYLE: React.CSSProperties = {

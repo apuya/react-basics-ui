@@ -1,3 +1,36 @@
+/**
+ * @file Table.tsx
+ * @description Root Table component providing data table functionality.
+ *
+ * Implements the compound component pattern via Object.assign, exposing:
+ * - Table.HeaderContainer - The thead wrapper
+ * - Table.Body - The tbody wrapper
+ * - Table.Row - Individual table rows
+ * - Table.HeaderCell - Header cells (th) with sorting, checkbox, etc.
+ * - Table.Cell - Data cells (td) with multiple variants
+ * - Table.Footer - Footer with pagination/navigation
+ * - Table.ActionBar - Search and action buttons in header
+ *
+ * Uses TableContext to share size and variant state with all sub-components.
+ *
+ * @example
+ * ```tsx
+ * <Table
+ *   size="md"
+ *   variant="striped"
+ *   actionBar={{ variant: 'search', searchProps: { placeholder: 'Search...' } }}
+ *   headerCells={<Table.HeaderCell>Name</Table.HeaderCell>}
+ *   footer={{ variant: 'pagination', totalPages: 10 }}
+ * >
+ *   <Table.Body>
+ *     <Table.Row>
+ *       <Table.Cell>John Doe</Table.Cell>
+ *     </Table.Row>
+ *   </Table.Body>
+ * </Table>
+ * ```
+ */
+
 import {
   useMemo,
   type ComponentPropsWithoutRef,

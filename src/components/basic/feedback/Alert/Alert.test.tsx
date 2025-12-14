@@ -81,25 +81,33 @@ describe('Alert', () => {
     });
   });
 
-  describe('Icon', () => {
-    it('should show icon by default', () => {
+  describe('Leading Icon', () => {
+    it('should show default variant icon by default', () => {
       const { container } = render(<Alert title="Test">Content</Alert>);
-      const icon = container.querySelector('[aria-hidden="true"]');
-      expect(icon).toBeInTheDocument();
+      const icons = container.querySelectorAll('[aria-hidden="true"]');
+      expect(icons.length).toBeGreaterThan(0);
     });
 
-    it('should hide icon when showIcon is false', () => {
+    it('should hide icon when leadingIcon is null', () => {
       const { container } = render(
-        <Alert title="Test" showIcon={false}>
+        <Alert title="Test" leadingIcon={null}>
           Content
         </Alert>
       );
       const icons = container.querySelectorAll('[aria-hidden="true"]');
-      // Should only have aria-hidden on the icon, not the close button
       expect(icons.length).toBe(0);
     });
 
-    it('should render correct icon for each variant', () => {
+    it('should render custom leading icon when provided', () => {
+      render(
+        <Alert title="Test" leadingIcon={<span data-testid="custom-icon">⚠️</span>}>
+          Content
+        </Alert>
+      );
+      expect(screen.getByTestId('custom-icon')).toBeInTheDocument();
+    });
+
+    it('should render correct default icon for each variant', () => {
       const { container: infoContainer } = render(
         <Alert variant="info" title="Info">
           Content
@@ -117,6 +125,43 @@ describe('Alert', () => {
       expect(successIcon).toHaveClass(
         'text-[color:var(--component-alert-icon-success)]'
       );
+    });
+  });
+
+  describe('Trailing Icon', () => {
+    it('should not render trailing icon by default', () => {
+      const { container } = render(<Alert title="Test">Content</Alert>);
+      const icons = container.querySelectorAll('[aria-hidden="true"]');
+      // Only leading icon, no trailing icon
+      expect(icons.length).toBe(1);
+    });
+
+    it('should render trailing icon when provided', () => {
+      const { container } = render(
+        <Alert title="Test" trailingIcon={<span data-testid="trailing-icon">→</span>}>
+          Content
+        </Alert>
+      );
+      expect(screen.getByTestId('trailing-icon')).toBeInTheDocument();
+      const icons = container.querySelectorAll('[aria-hidden="true"]');
+      // Both leading and trailing icons
+      expect(icons.length).toBe(2);
+    });
+
+    it('should render both leading and trailing icons', () => {
+      const { container } = render(
+        <Alert 
+          title="Test" 
+          leadingIcon={<span data-testid="leading">←</span>}
+          trailingIcon={<span data-testid="trailing">→</span>}
+        >
+          Content
+        </Alert>
+      );
+      expect(screen.getByTestId('leading')).toBeInTheDocument();
+      expect(screen.getByTestId('trailing')).toBeInTheDocument();
+      const icons = container.querySelectorAll('[aria-hidden="true"]');
+      expect(icons.length).toBe(2);
     });
   });
 

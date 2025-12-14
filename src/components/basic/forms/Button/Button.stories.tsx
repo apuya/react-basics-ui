@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
-import { BiCheck, BiX, BiPlus, BiSearch, BiDownload } from 'react-icons/bi';
+import { IconButton } from './IconButton';
+import { ButtonGroup } from './ButtonGroup';
+import { BiCheck, BiX, BiPlus, BiSearch, BiDownload, BiMenu, BiHeart } from 'react-icons/bi';
 import { Flex } from '../../layout/Flex';
 
 const meta: Meta<typeof Button> = {
@@ -11,7 +13,7 @@ const meta: Meta<typeof Button> = {
     docs: {
       description: {
         component:
-          'Button component for user actions and form submissions. Supports multiple variants, sizes, loading states, and icons. Polymorphic - can render as any element type.',
+          'Button component for user actions and form submissions. Supports multiple variants, sizes, loading states, and visual slots. Polymorphic - can render as any element type.',
       },
     },
   },
@@ -33,9 +35,13 @@ const meta: Meta<typeof Button> = {
       control: 'boolean',
       description: 'Disabled state',
     },
-    isLoading: {
+    loading: {
       control: 'boolean',
-      description: 'Loading state',
+      description: 'Loading state - shows spinner and announces to screen readers',
+    },
+    block: {
+      control: 'boolean',
+      description: 'Full width button',
     },
   },
 };
@@ -89,16 +95,32 @@ export const AllSizes: Story = {
 export const Loading: Story = {
   render: () => (
     <Flex wrap gap="sm">
-      <Button variant="primary" isLoading>Primary</Button>
-      <Button variant="secondary" isLoading>Secondary</Button>
-      <Button variant="tertiary" isLoading>Tertiary</Button>
-      <Button variant="destructive" isLoading>Destructive</Button>
+      <Button variant="primary" loading>Primary</Button>
+      <Button variant="secondary" loading>Secondary</Button>
+      <Button variant="tertiary" loading>Tertiary</Button>
+      <Button variant="destructive" loading>Destructive</Button>
     </Flex>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Loading state shows spinner and disables interaction.',
+        story: 'Loading state shows spinner, uses `aria-disabled` (keeps focus), and announces to screen readers.',
+      },
+    },
+  },
+};
+
+export const LoadingWithAnnouncement: Story = {
+  render: () => (
+    <Flex wrap gap="sm">
+      <Button loading loadingAnnouncement="Saving your changes...">Save</Button>
+      <Button loading loadingAnnouncement="Submitting form...">Submit</Button>
+    </Flex>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Custom loading announcements for screen readers. Default is "Loading".',
       },
     },
   },
@@ -122,51 +144,101 @@ export const Disabled: Story = {
   },
 };
 
-export const WithIcons: Story = {
+export const WithVisuals: Story = {
   render: () => (
     <Flex wrap gap="sm">
-      <Button leadingIcon={<BiPlus />}>Add Item</Button>
-      <Button trailingIcon={<BiDownload />}>Download</Button>
-      <Button leadingIcon={<BiCheck />} trailingIcon={<BiX />}>Both Icons</Button>
+      <Button leadingVisual={<BiPlus />}>Add Item</Button>
+      <Button trailingVisual={<BiDownload />}>Download</Button>
+      <Button leadingVisual={<BiCheck />} trailingVisual={<BiX />}>Both</Button>
     </Flex>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Buttons with leading, trailing, or both icons.',
+        story: 'Buttons with leading, trailing, or both visual elements (icons, badges, etc.).',
       },
     },
   },
 };
 
-export const IconOnly: Story = {
+export const IconButtonSizes: Story = {
   render: () => (
     <Flex align="center" gap="sm">
-      <Button size="small" leadingIcon={<BiSearch />} aria-label="Search" />
-      <Button size="default" leadingIcon={<BiSearch />} aria-label="Search" />
-      <Button size="large" leadingIcon={<BiSearch />} aria-label="Search" />
+      <IconButton size="small" icon={<BiSearch />} aria-label="Search" />
+      <IconButton size="default" icon={<BiSearch />} aria-label="Search" />
+      <IconButton size="large" icon={<BiSearch />} aria-label="Search" />
     </Flex>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Icon-only buttons. Always include aria-label for accessibility.',
+        story: 'IconButton in all sizes. Requires aria-label for accessibility.',
       },
     },
   },
 };
 
-export const ButtonGroup: Story = {
+export const IconButtonShapes: Story = {
   render: () => (
-    <Flex gap="sm">
-      <Button variant="secondary">Cancel</Button>
-      <Button variant="primary">Save Changes</Button>
+    <Flex align="center" gap="sm">
+      <IconButton icon={<BiMenu />} aria-label="Menu" shape="square" />
+      <IconButton icon={<BiHeart />} aria-label="Favorite" shape="circle" />
+      <IconButton icon={<BiX />} aria-label="Close" shape="circle" variant="ghost" />
     </Flex>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Common pattern of primary and secondary button pairing.',
+        story: 'IconButton supports square (default) and circle shapes.',
+      },
+    },
+  },
+};
+
+export const IconButtonVariants: Story = {
+  render: () => (
+    <Flex wrap gap="sm">
+      <IconButton variant="primary" icon={<BiCheck />} aria-label="Confirm" />
+      <IconButton variant="secondary" icon={<BiPlus />} aria-label="Add" />
+      <IconButton variant="tertiary" icon={<BiSearch />} aria-label="Search" />
+      <IconButton variant="ghost" icon={<BiMenu />} aria-label="Menu" />
+      <IconButton variant="destructive" icon={<BiX />} aria-label="Delete" />
+    </Flex>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'IconButton supports all button variants.',
+      },
+    },
+  },
+};
+
+export const ButtonGroupStory: Story = {
+  name: 'ButtonGroup',
+  render: () => (
+    <Flex direction="column" gap="md">
+      <ButtonGroup>
+        <Button variant="secondary">Left</Button>
+        <Button variant="secondary">Center</Button>
+        <Button variant="secondary">Right</Button>
+      </ButtonGroup>
+      <ButtonGroup attached>
+        <Button variant="secondary">Left</Button>
+        <Button variant="secondary">Center</Button>
+        <Button variant="secondary">Right</Button>
+      </ButtonGroup>
+      <ButtonGroup orientation="vertical">
+        <Button variant="secondary">Top</Button>
+        <Button variant="secondary">Middle</Button>
+        <Button variant="secondary">Bottom</Button>
+      </ButtonGroup>
+    </Flex>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'ButtonGroup for grouping related actions. Supports attached mode and vertical orientation.',
       },
     },
   },
@@ -187,20 +259,56 @@ export const AsLink: Story = {
   },
 };
 
-export const VariantsWithIcons: Story = {
+export const VariantsWithVisuals: Story = {
   render: () => (
     <Flex wrap gap="sm">
-      <Button variant="primary" leadingIcon={<BiCheck />}>Confirm</Button>
-      <Button variant="secondary" leadingIcon={<BiPlus />}>Add</Button>
-      <Button variant="tertiary" leadingIcon={<BiSearch />}>Search</Button>
-      <Button variant="ghost" leadingIcon={<BiDownload />}>Download</Button>
-      <Button variant="destructive" leadingIcon={<BiX />}>Delete</Button>
+      <Button variant="primary" leadingVisual={<BiCheck />}>Confirm</Button>
+      <Button variant="secondary" leadingVisual={<BiPlus />}>Add</Button>
+      <Button variant="tertiary" leadingVisual={<BiSearch />}>Search</Button>
+      <Button variant="ghost" leadingVisual={<BiDownload />}>Download</Button>
+      <Button variant="destructive" leadingVisual={<BiX />}>Delete</Button>
     </Flex>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'All variants with icons to verify icon color consistency.',
+        story: 'All variants with leading visuals to verify icon color consistency.',
+      },
+    },
+  },
+};
+
+export const BlockButton: Story = {
+  render: () => (
+    <div style={{ width: 300 }}>
+      <Flex direction="column" gap="sm">
+        <Button block>Full Width Primary</Button>
+        <Button block variant="secondary">Full Width Secondary</Button>
+        <Button block variant="tertiary" leadingVisual={<BiDownload />}>Download File</Button>
+      </Flex>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Block buttons take full width of their container.',
+      },
+    },
+  },
+};
+
+export const LoadingWithVisuals: Story = {
+  render: () => (
+    <Flex wrap gap="sm">
+      <Button loading leadingVisual={<BiCheck />}>Saving...</Button>
+      <Button loading trailingVisual={<BiDownload />}>Downloading...</Button>
+      <Button loading>Loading...</Button>
+    </Flex>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Loading replaces the leading visual with spinner. If only trailing visual, spinner replaces it. If no visuals, spinner overlays content.',
       },
     },
   },

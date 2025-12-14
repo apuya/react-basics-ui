@@ -33,18 +33,10 @@ export interface TimePickerContextValue {
   error: boolean;
   /** Size variant */
   size: TimePickerSize;
-  /** Step interval in seconds (affects minute options) */
-  step: number;
-  /** Minimum time constraint */
-  min?: string;
-  /** Maximum time constraint */
-  max?: string;
   /** ID for the trigger element */
   triggerId: string;
   /** ID for the menu element */
   menuId: string;
-  /** ID for the label element */
-  labelId: string | undefined;
 }
 
 const { Context: TimePickerContext, useContext: useTimePickerContext } =

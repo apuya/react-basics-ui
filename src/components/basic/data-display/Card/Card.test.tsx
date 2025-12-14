@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Card } from './Card';
+import { Heading } from '../../typography/Heading/Heading';
+import { Text } from '../../typography/Text/Text';
 import { createRef } from 'react';
 
 describe('Card', () => {
@@ -136,83 +138,6 @@ describe('Card', () => {
       });
     });
 
-    describe('Card.Title', () => {
-      it('renders title as h3', () => {
-        render(
-          <Card>
-            <Card.Header>
-              <Card.Title>My Title</Card.Title>
-            </Card.Header>
-          </Card>
-        );
-        const title = screen.getByRole('heading', { level: 3, name: 'My Title' });
-        expect(title).toBeInTheDocument();
-      });
-
-      it('forwards ref to title element', () => {
-        const ref = createRef<HTMLHeadingElement>();
-        render(
-          <Card>
-            <Card.Header>
-              <Card.Title ref={ref}>Title</Card.Title>
-            </Card.Header>
-          </Card>
-        );
-        expect(ref.current).toBeInstanceOf(HTMLHeadingElement);
-      });
-
-      it('applies custom className', () => {
-        render(
-          <Card>
-            <Card.Header>
-              <Card.Title className="custom-title" data-testid="title">
-                Title
-              </Card.Title>
-            </Card.Header>
-          </Card>
-        );
-        expect(screen.getByTestId('title')).toHaveClass('custom-title');
-      });
-    });
-
-    describe('Card.Description', () => {
-      it('renders description as paragraph', () => {
-        render(
-          <Card>
-            <Card.Header>
-              <Card.Description>My description</Card.Description>
-            </Card.Header>
-          </Card>
-        );
-        expect(screen.getByText('My description')).toBeInTheDocument();
-      });
-
-      it('forwards ref to description element', () => {
-        const ref = createRef<HTMLParagraphElement>();
-        render(
-          <Card>
-            <Card.Header>
-              <Card.Description ref={ref}>Description</Card.Description>
-            </Card.Header>
-          </Card>
-        );
-        expect(ref.current).toBeInstanceOf(HTMLParagraphElement);
-      });
-
-      it('applies custom className', () => {
-        render(
-          <Card>
-            <Card.Header>
-              <Card.Description className="custom-desc" data-testid="desc">
-                Description
-              </Card.Description>
-            </Card.Header>
-          </Card>
-        );
-        expect(screen.getByTestId('desc')).toHaveClass('custom-desc');
-      });
-    });
-
     describe('Card.Content', () => {
       it('renders content', () => {
         render(
@@ -289,8 +214,8 @@ describe('Card', () => {
       render(
         <Card data-testid="card">
           <Card.Header data-testid="header">
-            <Card.Title>Title</Card.Title>
-            <Card.Description>Description</Card.Description>
+            <Heading as="h3" level="h5">Title</Heading>
+            <Text size="body" color="secondary">Description</Text>
           </Card.Header>
           <Card.Content data-testid="content">Main content</Card.Content>
           <Card.Footer data-testid="footer">Footer actions</Card.Footer>
@@ -318,7 +243,7 @@ describe('Card', () => {
       render(
         <Card>
           <Card.Header>
-            <Card.Title>Title</Card.Title>
+            <Heading as="h3" level="h5">Title</Heading>
           </Card.Header>
           <Card.Content>Content</Card.Content>
         </Card>

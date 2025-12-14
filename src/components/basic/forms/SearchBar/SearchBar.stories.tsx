@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { BiSearch, BiX } from 'react-icons/bi';
 import { SearchBar } from './SearchBar';
+import { Icon } from '../../utility/Icon';
+import { Spinner } from '../../feedback/Spinner';
 import { Text } from '../../typography/Text';
 import { Stack } from '../../layout/Stack';
 import { Box } from '../../layout/Box';
@@ -14,7 +17,7 @@ const meta: Meta<typeof SearchBar> = {
     docs: {
       description: {
         component:
-          'Search input with built-in clear button, search button, loading states, keyboard shortcuts, and visual variants.',
+          'Search input with flexible leading and trailing icon slots. Uses props slots pattern similar to Input component.',
       },
     },
   },
@@ -23,11 +26,6 @@ const meta: Meta<typeof SearchBar> = {
     size: { control: 'select', options: ['small', 'default', 'large'] },
     variant: { control: 'select', options: ['outline', 'filled', 'ghost'] },
     error: { control: 'boolean' },
-    isLoading: { control: 'boolean' },
-    showClearButton: { control: 'boolean' },
-    showSearchButton: { control: 'boolean' },
-    showShortcut: { control: 'boolean' },
-    shortcutText: { control: 'text' },
     disabled: { control: 'boolean' },
     placeholder: { control: 'text' },
   },
@@ -43,6 +41,7 @@ type Story = StoryObj<typeof SearchBar>;
 
 export const Default: Story = {
   args: {
+    leadingIcon: <Icon icon={BiSearch} />,
     placeholder: 'Search...',
   },
 };
@@ -52,15 +51,27 @@ export const AllVariants: Story = {
     <Stack spacing="md">
       <Stack spacing="xs">
         <Text size="caption" color="secondary">Outline</Text>
-        <SearchBar variant="outline" placeholder="Bordered style..." />
+        <SearchBar 
+          leadingIcon={<Icon icon={BiSearch} />}
+          variant="outline" 
+          placeholder="Bordered style..." 
+        />
       </Stack>
       <Stack spacing="xs">
         <Text size="caption" color="secondary">Filled</Text>
-        <SearchBar variant="filled" placeholder="Background style..." />
+        <SearchBar 
+          leadingIcon={<Icon icon={BiSearch} />}
+          variant="filled" 
+          placeholder="Background style..." 
+        />
       </Stack>
       <Stack spacing="xs">
         <Text size="caption" color="secondary">Ghost</Text>
-        <SearchBar variant="ghost" placeholder="Minimal style..." />
+        <SearchBar 
+          leadingIcon={<Icon icon={BiSearch} />}
+          variant="ghost" 
+          placeholder="Minimal style..." 
+        />
       </Stack>
     </Stack>
   ),
@@ -69,9 +80,21 @@ export const AllVariants: Story = {
 export const AllSizes: Story = {
   render: () => (
     <Stack spacing="md">
-      <SearchBar size="small" placeholder="Small" />
-      <SearchBar size="default" placeholder="Default" />
-      <SearchBar size="large" placeholder="Large" />
+      <SearchBar 
+        leadingIcon={<Icon icon={BiSearch} />}
+        size="small" 
+        placeholder="Small" 
+      />
+      <SearchBar 
+        leadingIcon={<Icon icon={BiSearch} />}
+        size="default" 
+        placeholder="Default" 
+      />
+      <SearchBar 
+        leadingIcon={<Icon icon={BiSearch} />}
+        size="large" 
+        placeholder="Large" 
+      />
     </Stack>
   ),
 };
@@ -85,15 +108,27 @@ export const States: Story = {
     <Stack spacing="md">
       <Stack spacing="xs">
         <Text size="caption" color="secondary">Loading</Text>
-        <SearchBar isLoading placeholder="Searching..." />
+        <SearchBar 
+          leadingIcon={<Icon icon={BiSearch} />}
+          trailingIcon={<Spinner size="sm" />}
+          placeholder="Searching..." 
+        />
       </Stack>
       <Stack spacing="xs">
         <Text size="caption" color="secondary">Error</Text>
-        <SearchBar error placeholder="Invalid query" />
+        <SearchBar 
+          leadingIcon={<Icon icon={BiSearch} />}
+          error 
+          placeholder="Invalid query" 
+        />
       </Stack>
       <Stack spacing="xs">
         <Text size="caption" color="secondary">Disabled</Text>
-        <SearchBar disabled placeholder="Unavailable" />
+        <SearchBar 
+          leadingIcon={<Icon icon={BiSearch} />}
+          disabled 
+          placeholder="Unavailable" 
+        />
       </Stack>
     </Stack>
   ),
@@ -103,31 +138,38 @@ export const States: Story = {
 // FEATURES
 // =============================================================================
 
-export const WithSearchButton: Story = {
+export const WithClearButton: Story = {
   render: function Render() {
-    const [value, setValue] = useState('');
-    const [result, setResult] = useState('');
+    const [value, setValue] = useState('test query');
+
+    const handleClear = useCallback(() => {
+      setValue('');
+    }, []);
 
     return (
-      <Stack spacing="sm">
-        <SearchBar
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onSearch={setResult}
-          showSearchButton
-          placeholder="Type and search..."
-        />
-        {result && (
-          <Text size="small" color="secondary">
-            Searched: <Text as="span" weight="semibold">{result}</Text>
-          </Text>
-        )}
-      </Stack>
+      <SearchBar
+        leadingIcon={<Icon icon={BiSearch} />}
+        trailingIcon={
+          value ? (
+            <button
+              type="button"
+              onClick={handleClear}
+              className="inline-flex items-center justify-center p-1 rounded hover:bg-gray-200 transition-colors"
+              aria-label="Clear search"
+            >
+              <Icon icon={BiX} size="md" />
+            </button>
+          ) : null
+        }
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Type to see clear button..."
+      />
     );
   },
 };
 
-export const WithShortcut: Story = {
+export const WithKeyboardShortcut: Story = {
   render: function Render() {
     const [value, setValue] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -147,10 +189,16 @@ export const WithShortcut: Story = {
       <Stack spacing="xs">
         <SearchBar
           ref={inputRef}
+          leadingIcon={<Icon icon={BiSearch} />}
+          trailingIcon={
+            !value && (
+              <span className="inline-flex items-center justify-center px-2 h-5 rounded bg-gray-100 text-gray-600 text-xs font-medium border border-gray-300">
+                ⌘K
+              </span>
+            )
+          }
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          showShortcut
-          shortcutText="⌘K"
           placeholder="Press ⌘K to focus..."
         />
         <Text size="caption" color="tertiary">Try ⌘K (or Ctrl+K)</Text>
@@ -194,9 +242,10 @@ export const InstantSearch: Story = {
     return (
       <Stack spacing="sm">
         <SearchBar
+          leadingIcon={<Icon icon={BiSearch} />}
+          trailingIcon={isLoading && <Spinner size="sm" />}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          isLoading={isLoading}
           placeholder="Search components..."
         />
         {value && !isLoading && (
@@ -237,6 +286,7 @@ export const WithFilters: Story = {
     return (
       <Stack spacing="sm">
         <SearchBar
+          leadingIcon={<Icon icon={BiSearch} />}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="Search with filters..."
@@ -283,6 +333,7 @@ export const WithValidation: Story = {
     return (
       <Stack spacing="xs">
         <SearchBar
+          leadingIcon={<Icon icon={BiSearch} />}
           value={value}
           onChange={handleChange}
           error={!!error}
@@ -325,16 +376,25 @@ export const FullFeatured: Story = {
     return (
       <Stack spacing="md">
         <SearchBar
+          leadingIcon={<Icon icon={BiSearch} />}
+          trailingIcon={
+            isLoading ? (
+              <Spinner size="sm" />
+            ) : value ? (
+              <button
+                type="button"
+                onClick={handleClear}
+                className="inline-flex items-center justify-center p-1 rounded hover:bg-gray-200 transition-colors"
+                aria-label="Clear search"
+              >
+                <Icon icon={BiX} size="md" />
+              </button>
+            ) : null
+          }
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          onClear={handleClear}
           onSearch={handleSearch}
-          isLoading={isLoading}
-          showClearButton
-          showSearchButton
-          showShortcut
-          shortcutText="⌘K"
-          placeholder="All features enabled..."
+          placeholder="All features: clear, loading, search..."
         />
         {results.length > 0 && (
           <Box className="border rounded-md p-4">

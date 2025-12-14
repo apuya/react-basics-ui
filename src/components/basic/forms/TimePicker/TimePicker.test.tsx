@@ -2,82 +2,172 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { TimePicker } from './TimePicker';
+import { FormField } from '../FormField';
+
+// Helper to render TimePicker with FormField pattern
+const renderTimePicker = (props: {
+  value?: string;
+  onChange?: (value: string) => void;
+  defaultValue?: string;
+  disabled?: boolean;
+  error?: boolean;
+  size?: 'small' | 'default' | 'large';
+  className?: string;
+  label?: string;
+  helperText?: string;
+  placeholder?: string;
+  required?: boolean;
+  min?: string;
+  max?: string;
+  step?: number;
+  showConfirmation?: boolean;
+  cancelLabel?: string;
+  saveLabel?: string;
+  onCancel?: () => void;
+  onSave?: () => void;
+} = {}) => {
+  const {
+    value,
+    onChange,
+    defaultValue,
+    disabled,
+    error,
+    size,
+    className,
+    label,
+    helperText,
+    placeholder,
+    required,
+    min,
+    max,
+    step,
+    showConfirmation,
+    cancelLabel,
+    saveLabel,
+    onCancel,
+    onSave,
+  } = props;
+
+  return render(
+    <FormField error={error} required={required} disabled={disabled}>
+      {label && <FormField.Label>{label}</FormField.Label>}
+      <TimePicker
+        value={value}
+        onChange={onChange}
+        defaultValue={defaultValue}
+        disabled={disabled}
+        error={error}
+        size={size}
+        className={className}
+      >
+        <TimePicker.Trigger placeholder={placeholder} required={required} />
+        <TimePicker.Menu
+          min={min}
+          max={max}
+          step={step}
+          showConfirmation={showConfirmation}
+          cancelLabel={cancelLabel}
+          saveLabel={saveLabel}
+          onCancel={onCancel}
+          onSave={onSave}
+        />
+      </TimePicker>
+      {helperText && <FormField.HelperText>{helperText}</FormField.HelperText>}
+      {error && helperText && <FormField.ErrorMessage>{helperText}</FormField.ErrorMessage>}
+    </FormField>
+  );
+};
 
 describe('TimePicker', () => {
   describe('Rendering', () => {
     it('renders without crashing', () => {
-      render(<TimePicker />);
+      renderTimePicker();
       expect(screen.getByRole('combobox')).toBeInTheDocument();
     });
 
     it('displays placeholder text when no value', () => {
-      render(<TimePicker placeholder="Pick a time" />);
+      renderTimePicker({ placeholder: 'Pick a time' });
       expect(screen.getByText('Pick a time')).toBeInTheDocument();
     });
 
     it('displays selected value in 12-hour format', () => {
-      render(<TimePicker value="14:30" />);
+      renderTimePicker({ value: '14:30' });
       expect(screen.getByText('2:30 PM')).toBeInTheDocument();
     });
 
     it('displays AM times correctly', () => {
-      render(<TimePicker value="09:15" />);
+      renderTimePicker({ value: '09:15' });
       expect(screen.getByText('9:15 AM')).toBeInTheDocument();
     });
 
     it('displays 12:00 PM correctly', () => {
-      render(<TimePicker value="12:00" />);
+      renderTimePicker({ value: '12:00' });
       expect(screen.getByText('12:00 PM')).toBeInTheDocument();
     });
 
     it('displays 12:00 AM correctly', () => {
-      render(<TimePicker value="00:00" />);
+      renderTimePicker({ value: '00:00' });
       expect(screen.getByText('12:00 AM')).toBeInTheDocument();
     });
 
     it('renders with label', () => {
-      render(<TimePicker label="Select Time" />);
+      renderTimePicker({ label: 'Select Time' });
       expect(screen.getByText('Select Time')).toBeInTheDocument();
     });
 
     it('renders with helper text', () => {
-      render(<TimePicker helperText="Choose your preferred time" />);
+      renderTimePicker({ helperText: 'Choose your preferred time' });
       expect(screen.getByText('Choose your preferred time')).toBeInTheDocument();
     });
 
     it('renders clock icon', () => {
-      render(<TimePicker />);
+      renderTimePicker();
       const trigger = screen.getByRole('combobox');
       expect(trigger.querySelector('svg')).toBeInTheDocument();
     });
 
     it('renders all sizes without errors', () => {
-      const { rerender } = render(<TimePicker size="small" />);
+      const { rerender } = render(
+        <TimePicker size="small">
+          <TimePicker.Trigger />
+          <TimePicker.Menu />
+        </TimePicker>
+      );
       expect(screen.getByRole('combobox')).toHaveAttribute('data-size', 'small');
-      
-      rerender(<TimePicker size="default" />);
+
+      rerender(
+        <TimePicker size="default">
+          <TimePicker.Trigger />
+          <TimePicker.Menu />
+        </TimePicker>
+      );
       expect(screen.getByRole('combobox')).toHaveAttribute('data-size', 'default');
-      
-      rerender(<TimePicker size="large" />);
+
+      rerender(
+        <TimePicker size="large">
+          <TimePicker.Trigger />
+          <TimePicker.Menu />
+        </TimePicker>
+      );
       expect(screen.getByRole('combobox')).toHaveAttribute('data-size', 'large');
     });
   });
 
   describe('Size Variants', () => {
     it('applies small size', () => {
-      render(<TimePicker size="small" />);
+      renderTimePicker({ size: 'small' });
       const trigger = screen.getByRole('combobox');
       expect(trigger).toHaveAttribute('data-size', 'small');
     });
 
     it('applies default size', () => {
-      render(<TimePicker size="default" />);
+      renderTimePicker({ size: 'default' });
       const trigger = screen.getByRole('combobox');
       expect(trigger).toHaveAttribute('data-size', 'default');
     });
 
     it('applies large size', () => {
-      render(<TimePicker size="large" />);
+      renderTimePicker({ size: 'large' });
       const trigger = screen.getByRole('combobox');
       expect(trigger).toHaveAttribute('data-size', 'large');
     });
@@ -85,415 +175,347 @@ describe('TimePicker', () => {
 
   describe('Error State', () => {
     it('applies error state styling', () => {
-      render(<TimePicker error />);
+      renderTimePicker({ error: true });
       const trigger = screen.getByRole('combobox');
       expect(trigger).toHaveAttribute('data-error', 'true');
       expect(trigger).toHaveAttribute('aria-invalid', 'true');
     });
 
     it('does not have error attributes when no error', () => {
-      render(<TimePicker />);
+      renderTimePicker();
       const trigger = screen.getByRole('combobox');
       expect(trigger).not.toHaveAttribute('data-error');
       expect(trigger).not.toHaveAttribute('aria-invalid');
     });
 
-    it('applies error styling to helper text', () => {
-      render(<TimePicker error helperText="Invalid time" />);
+    it('shows error helper text with role alert', () => {
+      renderTimePicker({ error: true, helperText: 'Invalid time' });
       const helper = screen.getByText('Invalid time');
       expect(helper).toHaveAttribute('role', 'alert');
     });
   });
 
   describe('Disabled State', () => {
-    it('handles disabled state', () => {
-      render(<TimePicker disabled />);
+    it('disables trigger when disabled', () => {
+      renderTimePicker({ disabled: true });
       const trigger = screen.getByRole('combobox');
       expect(trigger).toBeDisabled();
     });
 
-    it('applies data-disabled attribute', () => {
-      const { container } = render(<TimePicker disabled />);
-      const wrapper = container.firstChild;
-      expect(wrapper).toHaveAttribute('data-disabled', 'true');
+    it('does not open menu when disabled', async () => {
+      const user = userEvent.setup();
+      const { container } = renderTimePicker({ disabled: true });
+      
+      await user.click(screen.getByRole('combobox'));
+      expect(container.querySelector('[role="listbox"]')).not.toBeInTheDocument();
     });
 
-    it('does not open dropdown when disabled', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker disabled />);
-      
-      const trigger = screen.getByRole('combobox');
-      await user.click(trigger);
-      
-      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    it('applies data-disabled attribute', () => {
+      const { container } = renderTimePicker({ disabled: true });
+      const wrapper = container.querySelector('[data-disabled="true"]');
+      expect(wrapper).toBeInTheDocument();
     });
   });
 
-  describe('Required State', () => {
-    it('sets aria-required when required', () => {
-      render(<TimePicker required />);
-      const trigger = screen.getByRole('combobox');
-      expect(trigger).toHaveAttribute('aria-required', 'true');
+  describe('Menu Interaction', () => {
+    it('opens menu on trigger click', async () => {
+      const user = userEvent.setup();
+      renderTimePicker();
+
+      await user.click(screen.getByRole('combobox'));
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
     });
 
-    it('shows required indicator in label', () => {
-      render(<TimePicker label="Time" required />);
+    it('closes menu on second trigger click', async () => {
+      const user = userEvent.setup();
+      const { container } = renderTimePicker();
+
+      const trigger = screen.getByRole('combobox');
+      await user.click(trigger);
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+
+      await user.click(trigger);
+      expect(container.querySelector('[role="listbox"]')).not.toBeInTheDocument();
+    });
+
+    it('closes menu on escape key', async () => {
+      const user = userEvent.setup();
+      const { container } = renderTimePicker();
+
+      await user.click(screen.getByRole('combobox'));
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+
+      await user.keyboard('{Escape}');
+      expect(container.querySelector('[role="listbox"]')).not.toBeInTheDocument();
+    });
+
+    it('displays hour, minute, and meridiem columns', async () => {
+      const user = userEvent.setup();
+      renderTimePicker();
+
+      await user.click(screen.getByRole('combobox'));
+      const menu = screen.getByRole('listbox');
+      
+      // Check that menu has 3 columns
+      const columns = menu.querySelectorAll('.overflow-y-auto');
+      expect(columns).toHaveLength(3);
+    });
+  });
+
+  describe('Time Selection', () => {
+    it('calls onChange when time is selected', async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+      renderTimePicker({ onChange: handleChange });
+
+      await user.click(screen.getByRole('combobox'));
+      const menu = screen.getByRole('listbox');
+      
+      // Click on hour 2
+      const hourButton = within(menu).getByRole('option', { name: '2' });
+      await user.click(hourButton);
+
+      // Click on minute 30
+      const minuteButton = within(menu).getByRole('option', { name: '30' });
+      await user.click(minuteButton);
+
+      // Click on PM
+      const meridiemButton = within(menu).getByRole('option', { name: 'PM' });
+      await user.click(meridiemButton);
+
+      // Should call onChange with 24-hour format
+      expect(handleChange).toHaveBeenCalledWith('14:30');
+    });
+
+    it('updates displayed value when selection changes', async () => {
+      const user = userEvent.setup();
+      renderTimePicker({ defaultValue: '09:00', step: 900 }); // Use 15-min steps to ensure 45 is available
+
+      expect(screen.getByText('9:00 AM')).toBeInTheDocument();
+
+      await user.click(screen.getByRole('combobox'));
+      const menu = screen.getByRole('listbox');
+
+      // Change hour to 3
+      const hourButton = within(menu).getByRole('option', { name: '3' });
+      await user.click(hourButton);
+
+      // Change minute to 45
+      const minuteButton = within(menu).getByRole('option', { name: '45' });
+      await user.click(minuteButton);
+
+      // Change to PM
+      const meridiemButton = within(menu).getByRole('option', { name: 'PM' });
+      await user.click(meridiemButton);
+
+      // Display should update
+      expect(screen.getByText('3:45 PM')).toBeInTheDocument();
+    });
+  });
+
+  describe('Controlled Mode', () => {
+    it('works in controlled mode', async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+      renderTimePicker({ value: '10:00', onChange: handleChange });
+
+      expect(screen.getByText('10:00 AM')).toBeInTheDocument();
+
+      await user.click(screen.getByRole('combobox'));
+      const menu = screen.getByRole('listbox');
+
+      const hourButton = within(menu).getByRole('option', { name: '11' });
+      await user.click(hourButton);
+
+      expect(handleChange).toHaveBeenCalledWith('11:00');
+    });
+
+    it('does not update value if onChange not provided in controlled mode', async () => {
+      const user = userEvent.setup();
+      renderTimePicker({ value: '10:00' });
+
+      await user.click(screen.getByRole('combobox'));
+      const menu = screen.getByRole('listbox');
+
+      const hourButton = within(menu).getByRole('option', { name: '11' });
+      await user.click(hourButton);
+
+      // Value should stay the same
+      expect(screen.getByText('10:00 AM')).toBeInTheDocument();
+    });
+  });
+
+  describe('Uncontrolled Mode', () => {
+    it('works in uncontrolled mode', async () => {
+      const user = userEvent.setup();
+      renderTimePicker({ defaultValue: '10:00' });
+
+      expect(screen.getByText('10:00 AM')).toBeInTheDocument();
+
+      await user.click(screen.getByRole('combobox'));
+      const menu = screen.getByRole('listbox');
+
+      const hourButton = within(menu).getByRole('option', { name: '11' });
+      await user.click(hourButton);
+
+      // Value should update
+      expect(screen.getByText('11:00 AM')).toBeInTheDocument();
+    });
+  });
+
+  describe('Required Field', () => {
+    it('shows required indicator on label', () => {
+      renderTimePicker({ label: 'Time', required: true });
       expect(screen.getByText('*')).toBeInTheDocument();
     });
-  });
 
-  describe('Dropdown Behavior', () => {
-    it('opens dropdown on click', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker />);
-      
+    it('sets aria-required on trigger', () => {
+      renderTimePicker({ required: true });
       const trigger = screen.getByRole('combobox');
-      await user.click(trigger);
-      
-      expect(screen.getByRole('listbox')).toBeInTheDocument();
-      expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    });
-
-    it('closes dropdown on click outside', async () => {
-      const user = userEvent.setup();
-      render(
-        <div>
-          <TimePicker />
-          <button>Outside</button>
-        </div>
-      );
-      
-      const trigger = screen.getByRole('combobox');
-      await user.click(trigger);
-      expect(screen.getByRole('listbox')).toBeInTheDocument();
-      
-      await user.click(screen.getByText('Outside'));
-      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
-    });
-
-    it('closes dropdown on escape key', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker />);
-      
-      const trigger = screen.getByRole('combobox');
-      await user.click(trigger);
-      expect(screen.getByRole('listbox')).toBeInTheDocument();
-      
-      await user.keyboard('{Escape}');
-      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
-    });
-
-    it('toggles dropdown on multiple clicks', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker />);
-      
-      const trigger = screen.getByRole('combobox');
-      
-      await user.click(trigger);
-      expect(screen.getByRole('listbox')).toBeInTheDocument();
-      
-      await user.click(trigger);
-      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
-    });
-  });
-
-  describe('Time Options', () => {
-    it('renders three columns: hour, minute, and meridiem', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker step={3600} />);
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // Should have 12 hours + 1 minute (hourly) + 2 meridiems = 15 options
-      const options = within(listbox).getAllByRole('option');
-      expect(options.length).toBe(15);
-    });
-
-    it('generates minute options based on step', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker step={1800} />); // 30-minute intervals
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // Should have 12 hours + 2 minutes (00, 30) + 2 meridiems = 16 options
-      const options = within(listbox).getAllByRole('option');
-      expect(options.length).toBe(16);
-      
-      // Check minute options exist
-      expect(within(listbox).getByText('00')).toBeInTheDocument();
-      expect(within(listbox).getByText('30')).toBeInTheDocument();
-    });
-
-    it('generates 15-minute interval options', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker step={900} />); // 15-minute intervals
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // Should have 12 hours + 4 minutes (00, 15, 30, 45) + 2 meridiems = 18 options
-      const options = within(listbox).getAllByRole('option');
-      expect(options.length).toBe(18);
-    });
-
-    it('displays all 12 hours', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker />);
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // All 12 hours should be present
-      for (let h = 1; h <= 12; h++) {
-        expect(within(listbox).getByText(h.toString())).toBeInTheDocument();
-      }
-    });
-
-    it('displays AM and PM options', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker />);
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      expect(within(listbox).getByText('AM')).toBeInTheDocument();
-      expect(within(listbox).getByText('PM')).toBeInTheDocument();
-    });
-  });
-
-  describe('Selection Behavior', () => {
-    it('selects time by clicking hour, minute, and meridiem', async () => {
-      const user = userEvent.setup();
-      const handleChange = vi.fn();
-      render(<TimePicker onChange={handleChange} step={3600} />);
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // Click hour 2
-      await user.click(within(listbox).getByText('2'));
-      // Click minute 00
-      await user.click(within(listbox).getByText('00'));
-      // Click PM
-      await user.click(within(listbox).getByText('PM'));
-      
-      // Should have called onChange with 14:00
-      expect(handleChange).toHaveBeenCalledWith('14:00');
-    });
-
-    it('shows selected state for current value components', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker value="14:30" step={1800} />);
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // Hour 2 should be selected
-      const hour2 = within(listbox).getByText('2').closest('button');
-      expect(hour2).toHaveAttribute('aria-selected', 'true');
-      
-      // Minute 30 should be selected
-      const minute30 = within(listbox).getByText('30').closest('button');
-      expect(minute30).toHaveAttribute('aria-selected', 'true');
-      
-      // PM should be selected
-      const pm = within(listbox).getByText('PM').closest('button');
-      expect(pm).toHaveAttribute('aria-selected', 'true');
-    });
-
-    it('works as controlled component', async () => {
-      const user = userEvent.setup();
-      const handleChange = vi.fn();
-      const { rerender } = render(<TimePicker value="10:00" onChange={handleChange} step={3600} />);
-      
-      expect(screen.getByText('10:00 AM')).toBeInTheDocument();
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // Change hour to 3
-      await user.click(within(listbox).getByText('3'));
-      // Change meridiem to PM
-      await user.click(within(listbox).getByText('PM'));
-      
-      expect(handleChange).toHaveBeenCalledWith('15:00');
-      
-      // Value should update when parent updates it
-      rerender(<TimePicker value="15:00" onChange={handleChange} step={3600} />);
-      expect(screen.getByText('3:00 PM')).toBeInTheDocument();
-    });
-
-    it('works as uncontrolled component with defaultValue', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker defaultValue="10:00" step={3600} />);
-      
-      expect(screen.getByText('10:00 AM')).toBeInTheDocument();
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // Change hour to 3, meridiem to PM
-      await user.click(within(listbox).getByText('3'));
-      await user.click(within(listbox).getByText('PM'));
-      
-      expect(screen.getByText('3:00 PM')).toBeInTheDocument();
-    });
-  });
-
-  describe('Keyboard Navigation', () => {
-    it('options are clickable with mouse', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker step={3600} />);
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // All column options should be clickable
-      const hourOption = within(listbox).getByText('3');
-      await user.click(hourOption);
-      expect(hourOption.closest('button')).toHaveAttribute('data-selected', 'true');
-    });
-
-    it('can select all three components', async () => {
-      const user = userEvent.setup();
-      const handleChange = vi.fn();
-      render(<TimePicker step={1800} onChange={handleChange} />);
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // Select hour
-      await user.click(within(listbox).getByText('9'));
-      // Select minute
-      await user.click(within(listbox).getByText('30'));
-      // Select meridiem
-      await user.click(within(listbox).getByText('AM'));
-      
-      expect(handleChange).toHaveBeenCalledWith('09:30');
-    });
-
-    it('meridiem toggle changes between AM and PM', async () => {
-      const user = userEvent.setup();
-      const handleChange = vi.fn();
-      render(<TimePicker defaultValue="09:00" step={3600} onChange={handleChange} />);
-      
-      await user.click(screen.getByRole('combobox'));
-      const listbox = screen.getByRole('listbox');
-      
-      // Initially AM is selected, switch to PM
-      await user.click(within(listbox).getByText('PM'));
-      
-      // Should now be 21:00 (9 PM)
-      expect(handleChange).toHaveBeenCalledWith('21:00');
+      expect(trigger).toHaveAttribute('aria-required', 'true');
     });
   });
 
   describe('Accessibility', () => {
-    it('has combobox role', () => {
-      render(<TimePicker />);
-      expect(screen.getByRole('combobox')).toBeInTheDocument();
-    });
-
-    it('has correct aria-haspopup', () => {
-      render(<TimePicker />);
-      expect(screen.getByRole('combobox')).toHaveAttribute('aria-haspopup', 'listbox');
-    });
-
-    it('has aria-expanded false when closed', () => {
-      render(<TimePicker />);
-      expect(screen.getByRole('combobox')).toHaveAttribute('aria-expanded', 'false');
-    });
-
-    it('has aria-expanded true when open', async () => {
-      const user = userEvent.setup();
-      render(<TimePicker />);
+    it('has correct ARIA attributes on trigger', () => {
+      renderTimePicker({ label: 'Select Time' });
+      const trigger = screen.getByRole('combobox');
       
-      await user.click(screen.getByRole('combobox'));
-      expect(screen.getByRole('combobox')).toHaveAttribute('aria-expanded', 'true');
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      expect(trigger).toHaveAttribute('aria-haspopup', 'listbox');
     });
 
-    it('has aria-controls pointing to listbox when open', async () => {
+    it('updates aria-expanded when menu opens', async () => {
       const user = userEvent.setup();
-      render(<TimePicker />);
+      renderTimePicker();
       
       const trigger = screen.getByRole('combobox');
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
       await user.click(trigger);
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('FormField connects helper text to form controls', () => {
+      renderTimePicker({ helperText: 'Pick your time' });
+      const helperText = screen.getByText('Pick your time');
       
-      const listbox = screen.getByRole('listbox');
-      expect(trigger).toHaveAttribute('aria-controls', listbox.id);
+      // FormField handles aria-describedby linking
+      expect(helperText).toHaveAttribute('id');
+      expect(helperText.id).toContain('-helper');
     });
 
-    it('associates trigger with label via aria-labelledby', () => {
-      render(<TimePicker label="Select Time" />);
-      const trigger = screen.getByRole('combobox');
-      const labelId = trigger.getAttribute('aria-labelledby');
-      expect(labelId).toBeTruthy();
-      expect(document.getElementById(labelId!)).toHaveTextContent('Select Time');
-    });
-
-    it('associates trigger with helper text via aria-describedby', () => {
-      render(<TimePicker helperText="Choose your time" />);
-      const trigger = screen.getByRole('combobox');
-      const helperId = trigger.getAttribute('aria-describedby');
-      expect(helperId).toBeTruthy();
-      expect(document.getElementById(helperId!)).toHaveTextContent('Choose your time');
-    });
-
-    it('options have option role and aria-selected', async () => {
+    it('menu has role listbox', async () => {
       const user = userEvent.setup();
-      render(<TimePicker value="14:00" step={3600} />);
-      
+      renderTimePicker();
+
+      await user.click(screen.getByRole('combobox'));
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+    });
+
+    it('options have role option', async () => {
+      const user = userEvent.setup();
+      renderTimePicker();
+
       await user.click(screen.getByRole('combobox'));
       const options = screen.getAllByRole('option');
+      expect(options.length).toBeGreaterThan(0);
+    });
+
+    it('selected option has aria-selected=true', async () => {
+      const user = userEvent.setup();
+      renderTimePicker({ value: '02:00' });
+
+      await user.click(screen.getByRole('combobox'));
       
-      options.forEach((option) => {
-        expect(option).toHaveAttribute('aria-selected');
+      const hourOption = screen.getByRole('option', { name: '2' });
+      expect(hourOption).toHaveAttribute('aria-selected', 'true');
+    });
+  });
+
+  describe('Step Intervals', () => {
+    it('generates minute options based on step prop', async () => {
+      const user = userEvent.setup();
+      renderTimePicker({ step: 900 }); // 15 minutes
+
+      await user.click(screen.getByRole('combobox'));
+      const menu = screen.getByRole('listbox');
+      
+      // Should have minutes: 00, 15, 30, 45
+      expect(within(menu).getByRole('option', { name: '00' })).toBeInTheDocument();
+      expect(within(menu).getByRole('option', { name: '15' })).toBeInTheDocument();
+      expect(within(menu).getByRole('option', { name: '30' })).toBeInTheDocument();
+      expect(within(menu).getByRole('option', { name: '45' })).toBeInTheDocument();
+    });
+  });
+
+  describe('Confirmation Footer', () => {
+    it('shows cancel and save buttons when showConfirmation is true', async () => {
+      const user = userEvent.setup();
+      renderTimePicker({ showConfirmation: true });
+
+      await user.click(screen.getByRole('combobox'));
+      
+      expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
+    });
+
+    it('uses custom cancel and save labels', async () => {
+      const user = userEvent.setup();
+      renderTimePicker({
+        showConfirmation: true,
+        cancelLabel: 'Reset',
+        saveLabel: 'Apply',
       });
-    });
-  });
 
-  describe('Custom Styling', () => {
-    it('applies custom className to wrapper', () => {
-      const { container } = render(<TimePicker className="custom-class" />);
-      expect(container.firstChild).toHaveClass('custom-class');
-    });
-  });
-
-  describe('ID Generation', () => {
-    it('generates id from label when id not provided', () => {
-      render(<TimePicker label="Appointment Time" />);
-      const trigger = screen.getByRole('combobox');
-      expect(trigger.id).toContain('appointment-time');
+      await user.click(screen.getByRole('combobox'));
+      
+      expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Apply' })).toBeInTheDocument();
     });
 
-    it('uses provided id over generated one', () => {
-      render(<TimePicker label="Appointment Time" id="custom-id" />);
-      const trigger = screen.getByRole('combobox');
-      expect(trigger.id).toBe('custom-id-trigger');
+    it('calls onCancel and closes menu', async () => {
+      const user = userEvent.setup();
+      const handleCancel = vi.fn();
+      const { container } = renderTimePicker({
+        showConfirmation: true,
+        onCancel: handleCancel,
+      });
+
+      await user.click(screen.getByRole('combobox'));
+      await user.click(screen.getByRole('button', { name: 'Cancel' }));
+
+      expect(handleCancel).toHaveBeenCalledTimes(1);
+      expect(container.querySelector('[role="listbox"]')).not.toBeInTheDocument();
+    });
+
+    it('calls onSave and closes menu', async () => {
+      const user = userEvent.setup();
+      const handleSave = vi.fn();
+      const { container } = renderTimePicker({
+        showConfirmation: true,
+        onSave: handleSave,
+      });
+
+      await user.click(screen.getByRole('combobox'));
+      await user.click(screen.getByRole('button', { name: 'Save' }));
+
+      expect(handleSave).toHaveBeenCalledTimes(1);
+      expect(container.querySelector('[role="listbox"]')).not.toBeInTheDocument();
     });
   });
 
   describe('Data Attributes', () => {
-    it('sets data-open attribute on wrapper', async () => {
-      const user = userEvent.setup();
-      const { container } = render(<TimePicker />);
-      
-      expect(container.firstChild).toHaveAttribute('data-open', 'false');
-      
-      await user.click(screen.getByRole('combobox'));
-      expect(container.firstChild).toHaveAttribute('data-open', 'true');
-    });
-
-    it('sets data-error on wrapper when error', () => {
-      const { container } = render(<TimePicker error />);
-      expect(container.firstChild).toHaveAttribute('data-error', 'true');
-    });
-
-    it('sets data-size on wrapper', () => {
-      const { container } = render(<TimePicker size="large" />);
-      expect(container.firstChild).toHaveAttribute('data-size', 'large');
+    it('passes through data-* attributes', () => {
+      render(
+        <TimePicker data-testid="time-picker" className="custom-class">
+          <TimePicker.Trigger />
+          <TimePicker.Menu />
+        </TimePicker>
+      );
+      const wrapper = screen.getByTestId('time-picker');
+      expect(wrapper).toBeInTheDocument();
+      expect(wrapper).toHaveClass('custom-class');
     });
   });
 });

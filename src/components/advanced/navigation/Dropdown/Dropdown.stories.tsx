@@ -211,7 +211,9 @@ export const UserAccountMenu: Story = {
           as="button"
           className="flex items-center gap-2 px-3 py-2 rounded-md border border-[color:var(--semantic-border-default)] bg-[color:var(--semantic-surface-primary)] cursor-pointer hover:bg-[color:var(--semantic-surface-hover)] transition-colors"
         >
-          <Avatar name="John Doe" size="sm" />
+          <Avatar size="sm">
+            <Avatar.Fallback>JD</Avatar.Fallback>
+          </Avatar>
           <Text>John Doe</Text>
         </Box>
       </Dropdown.Trigger>

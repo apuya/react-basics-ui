@@ -61,7 +61,7 @@ export const Default: Story = {
 
 export const AllSizes: Story = {
   render: () => (
-    <Stack gap="sm">
+    <Stack spacing="sm">
       <Text size="caption">Caption - The quick brown fox</Text>
       <Text size="small">Small - The quick brown fox</Text>
       <Text size="body">Body - The quick brown fox</Text>
@@ -72,7 +72,7 @@ export const AllSizes: Story = {
 
 export const AllWeights: Story = {
   render: () => (
-    <Stack gap="sm">
+    <Stack spacing="sm">
       <Text weight="light" size="subtitle">Light weight</Text>
       <Text weight="regular" size="subtitle">Regular weight</Text>
       <Text weight="medium" size="subtitle">Medium weight</Text>
@@ -84,7 +84,7 @@ export const AllWeights: Story = {
 
 export const AllColors: Story = {
   render: () => (
-    <Stack gap="sm">
+    <Stack spacing="sm">
       <Text color="primary">Primary color</Text>
       <Text color="secondary">Secondary color</Text>
       <Text color="tertiary">Tertiary color</Text>
@@ -116,7 +116,7 @@ export const Truncated: Story = {
 
 export const SemanticElements: Story = {
   render: () => (
-    <Stack gap="sm">
+    <Stack spacing="sm">
       <Text as="p">Paragraph element</Text>
       <Text as="strong" weight="bold">Strong element</Text>
       <Text as="em">Emphasis element</Text>

@@ -3,7 +3,6 @@ import { Icon } from '@/components/basic/utility/Icon';
 import {
   forwardRef,
   memo,
-  useMemo,
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from 'react';
@@ -42,21 +41,16 @@ export const SidebarSectionHeader = memo(
     { icon, className, style, children, ...props },
     ref
   ) {
-    const paddingStyle = useMemo(
-      () => ({
-        paddingInline: 'var(--component-sidebar-section-header-padding-inline)',
-        paddingBlock: 'var(--component-sidebar-section-header-padding-block)',
-        gap: 'var(--component-sidebar-section-header-gap)',
-        ...style,
-      }),
-      [style]
-    );
-
     return (
       <div
         ref={ref}
         className={cn(SECTION_HEADER_CLASSES, 'flex items-center', className)}
-        style={paddingStyle}
+        style={{
+          paddingInline: 'var(--component-sidebar-section-header-padding-inline)',
+          paddingBlock: 'var(--component-sidebar-section-header-padding-block)',
+          gap: 'var(--component-sidebar-section-header-gap)',
+          ...style,
+        }}
         {...props}
       >
         {icon && (
@@ -102,18 +96,6 @@ export const SidebarItem = memo(
     { active = false, icon, className, style, children, ...props },
     ref
   ) {
-    const paddingStyle = useMemo(
-      () => ({
-        paddingInline: 'var(--component-sidebar-item-padding-inline)',
-        paddingBlock: 'var(--component-sidebar-item-padding-block)',
-        gap: 'var(--component-sidebar-item-gap)',
-        minHeight: 'var(--component-sidebar-item-min-height)',
-        borderRadius: 'var(--component-sidebar-item-radius)',
-        ...style,
-      }),
-      [style]
-    );
-
     return (
       <button
         ref={ref}
@@ -123,7 +105,14 @@ export const SidebarItem = memo(
           active && ITEM_ACTIVE_CLASS,
           className
         )}
-        style={paddingStyle}
+        style={{
+          paddingInline: 'var(--component-sidebar-item-padding-inline)',
+          paddingBlock: 'var(--component-sidebar-item-padding-block)',
+          gap: 'var(--component-sidebar-item-gap)',
+          minHeight: 'var(--component-sidebar-item-min-height)',
+          borderRadius: 'var(--component-sidebar-item-radius)',
+          ...style,
+        }}
         data-active={active || undefined}
         {...props}
       >

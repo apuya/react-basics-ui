@@ -1,3 +1,10 @@
+/**
+ * @file TableBody.tsx
+ * @description Table body container (tbody) component.
+ *
+ * Semantic wrapper for table data rows.
+ */
+
 import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
 import { TABLE_BODY_BASE_CLASSES } from './Table.styles';

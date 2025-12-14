@@ -3,6 +3,7 @@ import { generateFormId } from '@/lib/generateFormId';
 import {
   forwardRef,
   memo,
+  useCallback,
   useId,
   useMemo,
   useState,
@@ -90,55 +91,69 @@ export const Textarea = memo(
 
     const showCounter = showCharCount && maxLength !== undefined;
     const hasHelperContent = helperText || showCounter;
-    const helperId = hasHelperContent ? `${generatedHelperId}-helper` : undefined;
+    const helperId = useMemo(
+      () => (hasHelperContent ? `${generatedHelperId}-helper` : undefined),
+      [hasHelperContent, generatedHelperId]
+    );
     
     // Merge aria-describedby: user-provided + auto-generated helper ID
-    const mergedAriaDescribedBy = [ariaDescribedBy, helperId].filter(Boolean).join(' ') || undefined;
+    const mergedAriaDescribedBy = useMemo(
+      () => [ariaDescribedBy, helperId].filter(Boolean).join(' ') || undefined,
+      [ariaDescribedBy, helperId]
+    );
 
-    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-      // Update internal length for uncontrolled mode
-      if (value === undefined) {
-        setInternalLength(e.target.value.length);
-      }
-      onChange?.(e);
-    };
+    const handleChange = useCallback(
+      (e: ChangeEvent<HTMLTextAreaElement>) => {
+        // Update internal length for uncontrolled mode
+        if (value === undefined) {
+          setInternalLength(e.target.value.length);
+        }
+        onChange?.(e);
+      },
+      [value, onChange]
+    );
 
     // Compute helper content - either just text, just counter, or both
-    const helperContent = showCounter ? (
-      <span className="flex items-start justify-between gap-2 w-full">
-        <span>{helperText}</span>
-        <span
-          className={cn(
-            'text-right shrink-0',
-            currentLength === maxLength && CHAR_COUNT_ERROR_CLASSES
-          )}
-        >
-          {currentLength}/{maxLength}
+    const helperContent = useMemo(() => {
+      if (!showCounter) return helperText;
+      
+      return (
+        <span className="flex items-start justify-between gap-2 w-full">
+          <span>{helperText}</span>
+          <span
+            className={cn(
+              'text-right shrink-0',
+              currentLength === maxLength && CHAR_COUNT_ERROR_CLASSES
+            )}
+          >
+            {currentLength}/{maxLength}
+          </span>
         </span>
-      </span>
-    ) : helperText;
+      );
+    }, [showCounter, helperText, currentLength, maxLength]);
 
     return (
       <FormField
-        label={label}
-        htmlFor={textareaId}
-        helperText={helperContent}
         error={error}
         required={required}
         disabled={disabled}
         helperId={helperId}
         className={wrapperClassName}
       >
+        {label && <FormField.Label htmlFor={textareaId}>{label}</FormField.Label>}
         <textarea
           ref={ref}
           id={textareaId}
           disabled={disabled}
           className={textareaClasses}
-          style={{
-            paddingInline: 'var(--component-textarea-padding-inline)',
-            paddingBlock: 'var(--component-textarea-padding-block)',
-            minHeight: `var(--component-textarea-min-height-${size})`,
-          }}
+          style={useMemo(
+            () => ({
+              paddingInline: 'var(--component-textarea-padding-inline)',
+              paddingBlock: 'var(--component-textarea-padding-block)',
+              minHeight: `var(--component-textarea-min-height-${size})`,
+            }),
+            [size]
+          )}
           maxLength={maxLength}
           value={value}
           defaultValue={defaultValue}
@@ -151,6 +166,7 @@ export const Textarea = memo(
           data-disabled={disabled || undefined}
           {...rest}
         />
+        {helperContent && <FormField.HelperText id={helperId}>{helperContent}</FormField.HelperText>}
       </FormField>
     );
   })

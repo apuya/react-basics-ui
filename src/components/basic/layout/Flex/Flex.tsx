@@ -8,47 +8,28 @@ import {
   JUSTIFY_STYLES,
   WRAP_STYLES,
 } from './Flex.styles';
+import type { FlexProps } from './Flex.types';
 
-export type FlexDirection = keyof typeof DIRECTION_STYLES;
-export type FlexAlign = keyof typeof ALIGN_STYLES;
-export type FlexJustify = keyof typeof JUSTIFY_STYLES;
-export type FlexWrap = keyof typeof WRAP_STYLES;
-export type FlexGap = keyof typeof GAP_STYLES;
-
-export interface FlexProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Flex direction */
-  direction?: FlexDirection;
-  /** Align items */
-  align?: FlexAlign;
-  /** Justify content */
-  justify?: FlexJustify;
-  /** Flex wrap */
-  wrap?: FlexWrap;
-  /** Gap between items - can be a preset size or custom value */
-  gap?: FlexGap | number | string;
-  /** Display as inline-flex instead of flex */
-  inline?: boolean;
-  /** Children elements */
-  children?: React.ReactNode;
-}
+// =============================================================================
+// Flex Component
+// =============================================================================
 
 export const Flex = memo(
-  React.forwardRef<HTMLDivElement, FlexProps>(
-    (
-      {
-        direction = 'row',
-        align,
-        justify,
-        wrap,
-        gap,
-        inline = false,
-        className,
-        style,
-        children,
-        ...props
-      },
-      ref
-    ) => {
+  React.forwardRef<HTMLDivElement, FlexProps>(function Flex(
+    {
+      direction = 'row',
+      align,
+      justify,
+      wrap,
+      gap,
+      inline = false,
+      className,
+      style,
+      children,
+      ...props
+    },
+    ref
+  ) {
       const gapStyle = useMemo(() => {
         if (!gap) return undefined;
 

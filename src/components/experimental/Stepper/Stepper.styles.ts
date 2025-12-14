@@ -44,19 +44,17 @@ export const STEP_INDICATOR_STATES: Record<'completed' | 'active' | 'upcoming' |
 };
 
 // Step connector (line between steps)
-export const STEP_CONNECTOR_BASE_CLASSES = 'transition-colors duration-[var(--component-stepper-transition)]';
+export const STEP_CONNECTOR_BASE_CLASSES =
+  'transition-colors duration-[var(--component-stepper-transition)] bg-[color:var(--component-stepper-connector-bg-upcoming)]';
 
 export const STEP_CONNECTOR_ORIENTATION = {
-  horizontal: 'flex-1 h-[length:var(--component-stepper-connector-height)]',
+  horizontal: 'w-full h-[length:var(--component-stepper-connector-height)]',
   vertical: 'w-[length:var(--component-stepper-connector-width)] h-[length:var(--component-stepper-connector-height-vertical)]',
 } as const;
 
-/** Generates connector background class for a given status */
-const connectorState = (status: string) => `bg-[color:var(--component-stepper-connector-bg-${status})]`;
-
-export const STEP_CONNECTOR_STATES = {
-  completed: connectorState('completed'),
-  upcoming: connectorState('upcoming'),
+export const STEP_CONNECTOR_STATE_STYLES = {
+  completed: 'bg-[color:var(--component-stepper-connector-bg-completed)]',
+  upcoming: '',
 } as const;
 
 // Step content (label and description) - base classes only, spacing via inline styles

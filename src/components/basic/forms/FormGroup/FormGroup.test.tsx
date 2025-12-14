@@ -15,24 +15,70 @@ describe('FormGroup', () => {
       expect(screen.getByText('Child content')).toBeInTheDocument();
     });
 
-    it('renders legend when provided', () => {
-      render(<FormGroup legend="Group Legend">Content</FormGroup>);
+    it('forwards ref to fieldset element', () => {
+      const ref = { current: null };
+      render(<FormGroup ref={ref}>Content</FormGroup>);
+      expect(ref.current).toBeInstanceOf(HTMLFieldSetElement);
+    });
+  });
+
+  // Compound Components
+  describe('Compound Components', () => {
+    it('renders with FormGroup.Legend sub-component', () => {
+      render(
+        <FormGroup>
+          <FormGroup.Legend>Group Legend</FormGroup.Legend>
+          <div>Content</div>
+        </FormGroup>
+      );
       expect(screen.getByText('Group Legend')).toBeInTheDocument();
+      expect(screen.getByText('Group Legend').tagName).toBe('LEGEND');
     });
 
-    it('renders description when provided', () => {
-      render(<FormGroup description="Group description">Content</FormGroup>);
+    it('renders with FormGroup.Description sub-component', () => {
+      render(
+        <FormGroup>
+          <FormGroup.Description>Group description</FormGroup.Description>
+          <div>Content</div>
+        </FormGroup>
+      );
       expect(screen.getByText('Group description')).toBeInTheDocument();
     });
 
-    it('renders both legend and description', () => {
+    it('renders with FormGroup.ErrorMessage sub-component when error is true', () => {
       render(
-        <FormGroup legend="Title" description="Description text">
-          Content
+        <FormGroup error>
+          <FormGroup.ErrorMessage>Error message</FormGroup.ErrorMessage>
+          <div>Content</div>
+        </FormGroup>
+      );
+      expect(screen.getByText('Error message')).toBeInTheDocument();
+      expect(screen.getByRole('alert')).toHaveTextContent('Error message');
+    });
+
+    it('does not render FormGroup.ErrorMessage when error is false', () => {
+      render(
+        <FormGroup>
+          <FormGroup.ErrorMessage>Error message</FormGroup.ErrorMessage>
+          <div>Content</div>
+        </FormGroup>
+      );
+      expect(screen.queryByText('Error message')).not.toBeInTheDocument();
+    });
+
+    it('renders all sub-components together', () => {
+      render(
+        <FormGroup error>
+          <FormGroup.Legend>Title</FormGroup.Legend>
+          <FormGroup.Description>Description text</FormGroup.Description>
+          <div>Content</div>
+          <FormGroup.ErrorMessage>Error text</FormGroup.ErrorMessage>
         </FormGroup>
       );
       expect(screen.getByText('Title')).toBeInTheDocument();
       expect(screen.getByText('Description text')).toBeInTheDocument();
+      expect(screen.getByText('Content')).toBeInTheDocument();
+      expect(screen.getByText('Error text')).toBeInTheDocument();
     });
   });
 
@@ -57,40 +103,45 @@ describe('FormGroup', () => {
       const { container } = render(<FormGroup>Content</FormGroup>);
       expect(container.querySelector('fieldset')).not.toHaveAttribute('data-error');
     });
+
+    it('sets data-disabled when disabled is true', () => {
+      const { container } = render(<FormGroup disabled>Content</FormGroup>);
+      expect(container.querySelector('fieldset')).toHaveAttribute('data-disabled', 'true');
+    });
   });
 
-  // Error States
-  describe('Error States', () => {
-    it('renders error message when error and errorMessage are provided', () => {
+  // Context Sharing
+  describe('Context Sharing', () => {
+    it('shares error state with ErrorMessage sub-component', () => {
       render(
-        <FormGroup error errorMessage="This field is required">
-          Content
+        <FormGroup error>
+          <FormGroup.ErrorMessage>Error text</FormGroup.ErrorMessage>
         </FormGroup>
       );
-      expect(screen.getByText('This field is required')).toBeInTheDocument();
+      expect(screen.getByText('Error text')).toBeInTheDocument();
     });
 
-    it('does not render error message when error is false', () => {
+    it('shares errorId with ErrorMessage sub-component', () => {
       render(
-        <FormGroup error={false} errorMessage="This field is required">
-          Content
+        <FormGroup error errorId="custom-id">
+          <FormGroup.ErrorMessage>Error text</FormGroup.ErrorMessage>
         </FormGroup>
       );
-      expect(screen.queryByText('This field is required')).not.toBeInTheDocument();
+      expect(screen.getByText('Error text')).toHaveAttribute('id', 'custom-id');
     });
 
-    it('does not render error message when errorMessage is not provided', () => {
-      const { container } = render(<FormGroup error>Content</FormGroup>);
-      expect(container.querySelector('[role="alert"]')).not.toBeInTheDocument();
-    });
-
-    it('sets role="alert" on error message', () => {
-      render(
-        <FormGroup error errorMessage="Error text">
-          Content
+    it('auto-generates errorId when not provided', () => {
+      const { container } = render(
+        <FormGroup error>
+          <FormGroup.ErrorMessage>Error text</FormGroup.ErrorMessage>
         </FormGroup>
       );
-      expect(screen.getByRole('alert')).toHaveTextContent('Error text');
+      const fieldset = container.querySelector('fieldset');
+      const errorElement = screen.getByRole('alert');
+      
+      expect(fieldset).toHaveAttribute('aria-describedby');
+      expect(errorElement).toHaveAttribute('id');
+      expect(fieldset?.getAttribute('aria-describedby')).toBe(errorElement.getAttribute('id'));
     });
   });
 
@@ -106,29 +157,15 @@ describe('FormGroup', () => {
       expect(container.querySelector('fieldset')).not.toHaveAttribute('aria-invalid');
     });
 
-    it('sets aria-describedby pointing to error message', () => {
+    it('sets aria-describedby pointing to error message when error is true', () => {
       const { container } = render(
-        <FormGroup error errorMessage="Error text" errorId="custom-error-id">
-          Content
+        <FormGroup error errorId="custom-error-id">
+          <FormGroup.ErrorMessage>Error text</FormGroup.ErrorMessage>
         </FormGroup>
       );
       const fieldset = container.querySelector('fieldset');
       expect(fieldset).toHaveAttribute('aria-describedby', 'custom-error-id');
       expect(screen.getByText('Error text')).toHaveAttribute('id', 'custom-error-id');
-    });
-
-    it('auto-generates error id when not provided', () => {
-      const { container } = render(
-        <FormGroup error errorMessage="Error text">
-          Content
-        </FormGroup>
-      );
-      const fieldset = container.querySelector('fieldset');
-      const errorElement = screen.getByRole('alert');
-      
-      expect(fieldset).toHaveAttribute('aria-describedby');
-      expect(errorElement).toHaveAttribute('id');
-      expect(fieldset?.getAttribute('aria-describedby')).toBe(errorElement.getAttribute('id'));
     });
 
     it('does not set aria-describedby when no error', () => {
@@ -142,44 +179,35 @@ describe('FormGroup', () => {
     });
 
     it('uses semantic legend element', () => {
-      const { container } = render(<FormGroup legend="Title">Content</FormGroup>);
-      expect(container.querySelector('legend')).toBeInTheDocument();
+      render(
+        <FormGroup>
+          <FormGroup.Legend>Title</FormGroup.Legend>
+        </FormGroup>
+      );
+      expect(screen.getByText('Title').tagName).toBe('LEGEND');
+    });
+
+    it('sets disabled attribute on fieldset', () => {
+      const { container } = render(<FormGroup disabled>Content</FormGroup>);
+      expect(container.querySelector('fieldset')).toBeDisabled();
     });
   });
 
   // Orientation
   describe('Orientation', () => {
-    it('applies vertical classes by default', () => {
-      const { container } = render(
-        <FormGroup>
-          <span>Item 1</span>
-          <span>Item 2</span>
-        </FormGroup>
-      );
-      const childrenWrapper = container.querySelector('fieldset > div');
-      expect(childrenWrapper).toHaveClass('flex-col');
+    it('sets data-orientation to vertical by default', () => {
+      const { container } = render(<FormGroup>Content</FormGroup>);
+      expect(container.querySelector('fieldset')).toHaveAttribute('data-orientation', 'vertical');
     });
 
-    it('applies horizontal classes when orientation is horizontal', () => {
-      const { container } = render(
-        <FormGroup orientation="horizontal">
-          <span>Item 1</span>
-          <span>Item 2</span>
-        </FormGroup>
-      );
-      const childrenWrapper = container.querySelector('fieldset > div');
-      expect(childrenWrapper).toHaveClass('flex-row');
+    it('sets data-orientation to horizontal', () => {
+      const { container } = render(<FormGroup orientation="horizontal">Content</FormGroup>);
+      expect(container.querySelector('fieldset')).toHaveAttribute('data-orientation', 'horizontal');
     });
   });
 
   // Forwarded Props
   describe('Forwarded Props', () => {
-    it('forwards ref to fieldset element', () => {
-      const ref = { current: null as HTMLFieldSetElement | null };
-      render(<FormGroup ref={ref}>Content</FormGroup>);
-      expect(ref.current).toBeInstanceOf(HTMLFieldSetElement);
-    });
-
     it('applies custom className', () => {
       const { container } = render(<FormGroup className="custom-class">Content</FormGroup>);
       expect(container.querySelector('fieldset')).toHaveClass('custom-class');
@@ -191,26 +219,30 @@ describe('FormGroup', () => {
           Content
         </FormGroup>
       );
-      expect(container.querySelector('fieldset')).toHaveAttribute('disabled');
+      expect(container.querySelector('fieldset')).toBeDisabled();
       expect(container.querySelector('fieldset')).toHaveAttribute('data-testid', 'test-group');
     });
   });
 
   // Complex Content
   describe('Complex Content', () => {
-    it('renders ReactNode as legend', () => {
+    it('renders ReactNode in Legend sub-component', () => {
       render(
-        <FormGroup legend={<span data-testid="complex-legend">Complex Legend</span>}>
-          Content
+        <FormGroup>
+          <FormGroup.Legend>
+            <span data-testid="complex-legend">Complex Legend</span>
+          </FormGroup.Legend>
         </FormGroup>
       );
       expect(screen.getByTestId('complex-legend')).toBeInTheDocument();
     });
 
-    it('renders ReactNode as description', () => {
+    it('renders ReactNode in Description sub-component', () => {
       render(
-        <FormGroup description={<em data-testid="complex-desc">Italic description</em>}>
-          Content
+        <FormGroup>
+          <FormGroup.Description>
+            <em data-testid="complex-desc">Italic description</em>
+          </FormGroup.Description>
         </FormGroup>
       );
       expect(screen.getByTestId('complex-desc')).toBeInTheDocument();
@@ -230,7 +262,19 @@ describe('FormGroup', () => {
 });
 
 describe('FormGroup displayName', () => {
-  it('has correct displayName', () => {
+  it('has correct displayName for root component', () => {
     expect(FormGroup.displayName).toBe('FormGroup');
+  });
+
+  it('has correct displayName for Legend sub-component', () => {
+    expect(FormGroup.Legend.displayName).toBe('FormGroup.Legend');
+  });
+
+  it('has correct displayName for Description sub-component', () => {
+    expect(FormGroup.Description.displayName).toBe('FormGroup.Description');
+  });
+
+  it('has correct displayName for ErrorMessage sub-component', () => {
+    expect(FormGroup.ErrorMessage.displayName).toBe('FormGroup.ErrorMessage');
   });
 });

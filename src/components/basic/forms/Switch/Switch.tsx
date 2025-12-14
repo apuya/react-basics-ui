@@ -1,6 +1,7 @@
 import { cn } from '@/lib/cn';
 import { generateFormId } from '@/lib/generateFormId';
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef } from 'react';
+import { useControlledState } from '@/hooks/useControlledState';
+import { forwardRef, memo, useCallback, useMemo, type ComponentPropsWithoutRef } from 'react';
 import {
   INPUT_CLASSES,
   LABEL_CLASSES,
@@ -15,31 +16,61 @@ import {
 
 export type SwitchSize = 'small' | 'default' | 'large';
 
-export interface SwitchProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type' | 'size'> {
+export interface SwitchProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type' | 'size' | 'onChange'> {
   /** Size variant of the switch */
   size?: SwitchSize;
   /** Label text displayed next to the switch */
   label?: string;
+  /** Controlled checked state */
+  checked?: boolean;
+  /** Default checked state (uncontrolled) */
+  defaultChecked?: boolean;
+  /** Callback when checked state changes */
+  onCheckedChange?: (checked: boolean) => void;
   /** Additional className for the wrapper element */
   wrapperClassName?: string;
 }
 
-// Static style for wrapper gap
-const WRAPPER_STYLE = { gap: 'var(--component-switch-gap)' } as const;
+const WRAPPER_STYLE = { WebkitTapHighlightColor: 'transparent' } as const;
 
 export const Switch = memo(
   forwardRef<HTMLInputElement, SwitchProps>(function Switch(
-    { size = 'default', label, disabled, className, wrapperClassName, id, ...rest },
+    { 
+      size = 'default', 
+      label, 
+      checked,
+      defaultChecked = false,
+      onCheckedChange,
+      disabled, 
+      className, 
+      wrapperClassName, 
+      id, 
+      ...rest 
+    },
     ref
   ) {
+    const [isChecked, setIsChecked] = useControlledState(
+      checked,
+      defaultChecked,
+      onCheckedChange
+    );
+
     const switchId = id || generateFormId('switch', label);
 
+    const handleChange = useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIsChecked(event.target.checked);
+      },
+      [setIsChecked]
+    );
+
     const wrapperClasses = useMemo(
-      () => cn(
-        WRAPPER_BASE_CLASSES,
-        disabled ? WRAPPER_STATE_STYLES.disabled : WRAPPER_STATE_STYLES.enabled,
-        wrapperClassName
-      ),
+      () =>
+        cn(
+          WRAPPER_BASE_CLASSES,
+          disabled ? WRAPPER_STATE_STYLES.disabled : WRAPPER_STATE_STYLES.enabled,
+          wrapperClassName
+        ),
       [disabled, wrapperClassName]
     );
 
@@ -64,9 +95,12 @@ export const Switch = memo(
           type="checkbox"
           role="switch"
           id={switchId}
+          checked={isChecked}
+          onChange={handleChange}
           disabled={disabled}
           className={cn(INPUT_CLASSES, className)}
           data-size={size}
+          data-checked={isChecked || undefined}
           {...rest}
         />
         <span className={trackClasses} aria-hidden="true">
@@ -79,3 +113,4 @@ export const Switch = memo(
 );
 
 Switch.displayName = 'Switch';
+

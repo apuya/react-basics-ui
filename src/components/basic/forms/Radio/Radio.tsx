@@ -23,9 +23,6 @@ export interface RadioProps extends Omit<ComponentPropsWithoutRef<'input'>, 'typ
   wrapperClassName?: string;
 }
 
-// Static style for wrapper gap
-const WRAPPER_STYLE = { gap: 'var(--component-radio-gap)' } as const;
-
 export const Radio = memo(
   forwardRef<HTMLInputElement, RadioProps>(function Radio(
     { size = 'default', label, disabled, className, wrapperClassName, id, ...rest },
@@ -36,26 +33,19 @@ export const Radio = memo(
     const wrapperClasses = useMemo(
       () => cn(
         WRAPPER_BASE_CLASSES,
-        disabled ? WRAPPER_STATE_STYLES.disabled : WRAPPER_STATE_STYLES.enabled,
+        WRAPPER_STATE_STYLES[disabled ? 'disabled' : 'enabled'],
         wrapperClassName
       ),
       [disabled, wrapperClassName]
     );
 
-    const radioClasses = useMemo(
-      () => cn(RADIO_CLASSES, SIZE_RADIO_STYLES[size]),
-      [size]
-    );
-
-    const dotClasses = useMemo(
-      () => cn(DOT_CLASSES, SIZE_DOT_STYLES[size]),
-      [size]
-    );
+    const radioClasses = cn(RADIO_CLASSES, SIZE_RADIO_STYLES[size]);
+    const dotClasses = cn(DOT_CLASSES, SIZE_DOT_STYLES[size]);
 
     return (
       <label
         className={wrapperClasses}
-        style={WRAPPER_STYLE}
+        data-size={size}
         data-disabled={disabled || undefined}
       >
         <input

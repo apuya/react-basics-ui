@@ -59,6 +59,12 @@ export interface FileInputProps extends Omit<ComponentPropsWithoutRef<'input'>, 
   wrapperClassName?: string;
 }
 
+// Static style objects
+const PADDING_STYLE = {
+  paddingInline: 'var(--component-input-padding-inline)',
+  paddingBlock: 'var(--component-input-padding-inline)',
+} as const;
+
 export const FileInput = memo(
   forwardRef<HTMLInputElement, FileInputProps>(function FileInput(
     {
@@ -249,25 +255,15 @@ export const FileInput = memo(
       [isDragActive, error, disabled, className]
     );
 
-    const paddingStyle = useMemo(
-      () => ({
-        paddingInline: 'var(--component-input-padding-inline)',
-        paddingBlock: 'var(--component-input-padding-inline)',
-      }),
-      []
-    );
-
-    const defaultUploadIcon = useMemo(
-      () => (
-        <Icon 
-          icon={BiCloudUpload} 
-          size="xl"
-          color="inherit"
-          className={cn(UPLOAD_ICON_CLASSES, RESPONSIVE_ICON_CLASSES)}
-          aria-hidden
-        />
-      ),
-      []
+    // Static icon - no need to memoize
+    const defaultUploadIcon = (
+      <Icon 
+        icon={BiCloudUpload} 
+        size="xl"
+        color="inherit"
+        className={cn(UPLOAD_ICON_CLASSES, RESPONSIVE_ICON_CLASSES)}
+        aria-hidden
+      />
     );
 
     return (
@@ -286,7 +282,7 @@ export const FileInput = memo(
 
         <div
           className={dropzoneClasses}
-          style={paddingStyle}
+          style={PADDING_STYLE}
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}

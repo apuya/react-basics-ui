@@ -209,11 +209,3 @@ export const ICON_SIZE_TOKENS = {
     width: 'var(--component-badge-icon-size-large)',
   },
 } as const;
-
-// Derive types from style objects
-export type BadgeColor = keyof typeof SUBTLE_COLOR_STYLES;
-export type BadgeSize = keyof typeof SIZE_STYLES;
-export type BadgeStyleVariant = keyof typeof STYLE_VARIANT_CLASSES;
-
-// Legacy type alias for backwards compatibility
-export type BadgeVariant = BadgeColor;

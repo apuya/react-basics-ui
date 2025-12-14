@@ -3,7 +3,6 @@ import {
   type ReactNode,
   forwardRef,
   memo,
-  useMemo,
 } from 'react';
 import { cn } from '@/lib/cn';
 import { Heading } from '@/components/basic/typography/Heading';
@@ -14,7 +13,6 @@ import {
   CONTAINER_STYLES,
   DESCRIPTION_SPACING_STYLES,
   ICON_WRAPPER_CLASSES,
-  ICON_WRAPPER_STYLES,
   TITLE_SPACING_STYLES,
 } from './EmptyState.styles';
 
@@ -70,17 +68,12 @@ export const EmptyState = memo(
     },
     ref
   ) {
-    const containerClasses = useMemo(
-      () => cn(BASE_CLASSES, className),
-      [className]
-    );
-
     const hasContent = title || description || children;
 
     return (
       <div
         ref={ref}
-        className={containerClasses}
+        className={cn(BASE_CLASSES, className)}
         style={CONTAINER_STYLES}
         {...rest}
       >
@@ -88,10 +81,7 @@ export const EmptyState = memo(
         {icon && (
           <div
             className={ICON_WRAPPER_CLASSES}
-            style={{
-              ...ICON_WRAPPER_STYLES,
-              fontSize: `${iconSize}px`,
-            }}
+            style={{ fontSize: `${iconSize}px` }}
             aria-hidden="true"
           >
             {icon}
@@ -102,18 +92,20 @@ export const EmptyState = memo(
         {hasContent && (
           <div className="flex flex-col items-center">
             {title && (
-              <div style={TITLE_SPACING_STYLES}>
-                <Heading as="h3" level="h3">
-                  {title}
-                </Heading>
-              </div>
+              <Heading as="h3" level="h3" style={TITLE_SPACING_STYLES}>
+                {title}
+              </Heading>
             )}
             {description && (
-              <div style={DESCRIPTION_SPACING_STYLES} className="max-w-md">
-                <Text as="p" size="body" color="secondary">
-                  {description}
-                </Text>
-              </div>
+              <Text
+                as="p"
+                size="body"
+                color="secondary"
+                className="max-w-md"
+                style={DESCRIPTION_SPACING_STYLES}
+              >
+                {description}
+              </Text>
             )}
             {children}
           </div>

@@ -11,16 +11,21 @@ import { useEffect, type RefObject } from 'react';
  * 
  * @param menuRef - Reference to the menu container element
  * @param isOpen - Whether the menu is currently open
+ * @param itemSelector - CSS selector for focusable items (default: '[role="menuitem"]:not([disabled])')
  * 
  * @example
  * ```tsx
  * const menuRef = useRef<HTMLDivElement>(null);
+ * // For ARIA menu pattern
  * useMenuKeyboardNavigation(menuRef, isOpen);
+ * // For ARIA listbox pattern
+ * useMenuKeyboardNavigation(menuRef, isOpen, '[role="option"]:not([disabled])');
  * ```
  */
 export const useMenuKeyboardNavigation = (
   menuRef: RefObject<HTMLElement>,
-  isOpen: boolean
+  isOpen: boolean,
+  itemSelector: string = '[role="menuitem"]:not([disabled])'
 ) => {
   useEffect(() => {
     if (!isOpen || !menuRef.current) return;
@@ -30,7 +35,7 @@ export const useMenuKeyboardNavigation = (
       if (!menuRef.current?.contains(document.activeElement)) return;
       
       const items = menuRef.current?.querySelectorAll<HTMLButtonElement>(
-        '[role="menuitem"]:not([disabled])'
+        itemSelector
       );
       if (!items || items.length === 0) return;
 
@@ -64,5 +69,5 @@ export const useMenuKeyboardNavigation = (
     const currentMenu = menuRef.current;
     currentMenu.addEventListener('keydown', handleKeyDown);
     return () => currentMenu.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, menuRef]);
+  }, [isOpen, menuRef, itemSelector]);
 };

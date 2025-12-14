@@ -1,42 +1,42 @@
-import React, { ReactNode } from 'react';
-import { getLabelClasses, getHelperClasses } from '@/lib/sharedFormStyles';
+import { forwardRef, memo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import {
+  LABEL_CLASSES,
+  LABEL_ERROR_CLASSES,
+  HELPER_CLASSES,
+  HELPER_ERROR_CLASSES,
+} from '@/lib/sharedFormStyles';
 
-export interface FormFieldWrapperProps {
+export interface FormFieldWrapperProps extends ComponentPropsWithoutRef<'div'> {
   /**
    * Input element ID (for label association)
    */
   inputId?: string;
-  
+
   /**
    * Label text
    */
   label?: string;
-  
+
   /**
    * Helper text displayed below the input
    */
   helperText?: string;
-  
+
   /**
    * Error state
    */
   error?: boolean;
-  
+
   /**
    * The actual input/form control element
    */
   children: ReactNode;
-  
-  /**
-   * Additional wrapper class names
-   */
-  className?: string;
 }
 
 /**
  * Wrapper component for form fields that handles label and helper text rendering
  * Consolidates duplicate label/helper text logic from Input, Textarea, Select, FileInput, DatePicker, TimePicker
- * 
+ *
  * @example
  * ```tsx
  * <FormFieldWrapper
@@ -49,23 +49,23 @@ export interface FormFieldWrapperProps {
  * </FormFieldWrapper>
  * ```
  */
-export const FormFieldWrapper: React.FC<FormFieldWrapperProps> = ({
-  inputId,
-  label,
-  helperText,
-  error = false,
-  children,
-  className,
-}) => {
-  return (
-    <div className={className}>
-      {label && (
-        <label htmlFor={inputId} className={getLabelClasses(error)}>
-          {label}
-        </label>
-      )}
-      {children}
-      {helperText && <p className={getHelperClasses(error)}>{helperText}</p>}
-    </div>
-  );
-};
+export const FormFieldWrapper = memo(
+  forwardRef<HTMLDivElement, FormFieldWrapperProps>(function FormFieldWrapper(
+    { inputId, label, helperText, error = false, children, className, ...rest },
+    ref
+  ) {
+    return (
+      <div ref={ref} className={className} {...rest}>
+        {label && (
+          <label htmlFor={inputId} className={error ? LABEL_ERROR_CLASSES : LABEL_CLASSES}>
+            {label}
+          </label>
+        )}
+        {children}
+        {helperText && <p className={error ? HELPER_ERROR_CLASSES : HELPER_CLASSES}>{helperText}</p>}
+      </div>
+    );
+  })
+);
+
+FormFieldWrapper.displayName = 'FormFieldWrapper';

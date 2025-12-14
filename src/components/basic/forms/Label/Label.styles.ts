@@ -20,8 +20,7 @@ export const COLOR_STYLES = {
 } as const;
 
 export const STATE_STYLES = {
-  disabled: 'cursor-not-allowed opacity-60',
-  required: '',
+  disabled: 'cursor-not-allowed opacity-[var(--semantic-opacity-disabled)]',
 } as const;
 
 export const REQUIRED_CLASSES = 'text-[color:var(--component-label-required-color)] ml-[length:var(--component-label-required-spacing)]';

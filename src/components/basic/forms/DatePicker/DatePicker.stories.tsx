@@ -1,12 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { DatePicker } from './DatePicker';
-import { DatePickerTrigger } from './DatePickerTrigger';
-import { DatePickerContent } from './DatePickerContent';
-import { Calendar } from './Calendar';
-import { DatePickerPresets, DEFAULT_PRESETS } from './DatePickerPresets';
-import { DatePickerConfirmation } from './DatePickerConfirmation';
-import type { DateRange } from './DatePicker.types';
+import { DEFAULT_PRESETS } from './DatePickerPresets';
+import type { DateRange, CellState } from './DatePicker.types';
 import {
   CONTENT_ROW_CLASSES,
   CONTENT_ROW_STYLE,
@@ -32,11 +28,11 @@ A compound component for date selection with support for single dates and date r
 
 ## Compound Components
 - \`DatePicker\` - Root component that provides context
-- \`DatePickerTrigger\` - Button that opens the picker
-- \`DatePickerContent\` - Popover container
-- \`Calendar\` - Calendar grid (single or dual variant)
-- \`DatePickerPresets\` - Quick preset selections
-- \`DatePickerConfirmation\` - Date inputs with cancel/apply buttons
+- \`DatePicker.Trigger\` - Button that opens the picker
+- \`DatePicker.Content\` - Popover container
+- \`DatePicker.Calendar\` - Calendar grid (single or dual variant)
+- \`DatePicker.Presets\` - Quick preset selections
+- \`DatePicker.Confirmation\` - Date inputs with cancel/apply buttons
         `,
       },
     },
@@ -82,13 +78,13 @@ export const Single: Story = {
     return (
       <div style={{ minHeight: '400px' }}>
         <DatePicker variant="single" value={date} onChange={setDate}>
-          <DatePickerTrigger placeholder="Select date" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Select date" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               selectedDate={date}
-              onDateSelect={(d) => setDate(d)}
+              onDateSelect={setDate}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -102,13 +98,13 @@ export const SingleWithValue: Story = {
     return (
       <div style={{ minHeight: '400px' }}>
         <DatePicker variant="single" value={date} onChange={setDate}>
-          <DatePickerTrigger placeholder="Select date" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Select date" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               selectedDate={date}
               onDateSelect={(d) => setDate(d)}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -143,14 +139,14 @@ export const SingleRange: Story = {
     return (
       <div style={{ minHeight: '450px' }}>
         <DatePicker variant="single-range" rangeValue={range} onRangeChange={setRange}>
-          <DatePickerTrigger placeholder="Select date range" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Select date range" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               selectedRange={range}
               onDateSelect={handleDateSelect}
               isRangeMode
             />
-            <DatePickerConfirmation
+            <DatePicker.Confirmation
               stacked
               startDateValue={startValue}
               endDateValue={endValue}
@@ -163,7 +159,7 @@ export const SingleRange: Story = {
               }}
               onApply={() => console.log('Applied:', range)}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -198,15 +194,15 @@ export const DoubleRange: Story = {
     return (
       <div style={{ minHeight: '450px' }}>
         <DatePicker variant="double-range" rangeValue={range} onRangeChange={setRange}>
-          <DatePickerTrigger placeholder="Select date range" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Select date range" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               variant="dual"
               selectedRange={range}
               onDateSelect={handleDateSelect}
               isRangeMode
             />
-            <DatePickerConfirmation
+            <DatePicker.Confirmation
               startDateValue={startValue}
               endDateValue={endValue}
               onStartDateChange={setStartValue}
@@ -218,7 +214,7 @@ export const DoubleRange: Story = {
               }}
               onApply={() => console.log('Applied:', range)}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -265,13 +261,13 @@ export const DoublePresets: Story = {
     return (
       <div style={{ minHeight: '450px' }}>
         <DatePicker variant="double-presets" rangeValue={range} onRangeChange={setRange}>
-          <DatePickerTrigger placeholder="Select date range" />
-          <DatePickerContent>
+          <DatePicker.Trigger placeholder="Select date range" />
+          <DatePicker.Content>
             {/* Row: Presets | Calendars */}
             <div className={CONTENT_ROW_CLASSES} style={CONTENT_ROW_STYLE}>
               {/* Presets wrapper for height constraint */}
               <div className={PRESETS_WRAPPER_CLASSES} style={PRESETS_WRAPPER_STYLE}>
-                <DatePickerPresets
+                <DatePicker.Presets
                   variant="positioned"
                   presets={DEFAULT_PRESETS}
                   selectedPreset={selectedPreset}
@@ -286,7 +282,7 @@ export const DoublePresets: Story = {
                   }}
                 />
               </div>
-              <Calendar
+              <DatePicker.Calendar
                 variant="dual"
                 selectedRange={range}
                 onDateSelect={handleDateSelect}
@@ -294,7 +290,7 @@ export const DoublePresets: Story = {
               />
             </div>
             {/* Footer: Confirmation spanning full width */}
-            <DatePickerConfirmation
+            <DatePicker.Confirmation
               startDateValue={startValue}
               endDateValue={endValue}
               onStartDateChange={setStartValue}
@@ -307,7 +303,7 @@ export const DoublePresets: Story = {
               }}
               onApply={() => console.log('Applied:', range)}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -325,13 +321,13 @@ export const SmallSize: Story = {
     return (
       <div style={{ minHeight: '400px' }}>
         <DatePicker variant="single" size="small" value={date} onChange={setDate}>
-          <DatePickerTrigger placeholder="Select date" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Select date" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               selectedDate={date}
               onDateSelect={(d) => setDate(d)}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -345,13 +341,13 @@ export const LargeSize: Story = {
     return (
       <div style={{ minHeight: '400px' }}>
         <DatePicker variant="single" size="large" value={date} onChange={setDate}>
-          <DatePickerTrigger placeholder="Select date" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Select date" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               selectedDate={date}
               onDateSelect={(d) => setDate(d)}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -367,10 +363,10 @@ export const Disabled: Story = {
     return (
       <div style={{ minHeight: '400px' }}>
         <DatePicker variant="single" disabled>
-          <DatePickerTrigger placeholder="Select date" />
-          <DatePickerContent>
-            <Calendar />
-          </DatePickerContent>
+          <DatePicker.Trigger placeholder="Select date" />
+          <DatePicker.Content>
+            <DatePicker.Calendar />
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -384,13 +380,13 @@ export const Error: Story = {
     return (
       <div style={{ minHeight: '400px' }}>
         <DatePicker variant="single" error value={date} onChange={setDate}>
-          <DatePickerTrigger placeholder="Select date" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Select date" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               selectedDate={date}
               onDateSelect={(d) => setDate(d)}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -410,14 +406,14 @@ export const WithMinDate: Story = {
       <div style={{ minHeight: '400px' }}>
         <p className="text-sm text-gray-500 mb-4">Cannot select dates before today</p>
         <DatePicker variant="single" value={date} onChange={setDate} minDate={today}>
-          <DatePickerTrigger placeholder="Select future date" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Select future date" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               selectedDate={date}
               onDateSelect={setDate}
               minDate={today}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -433,14 +429,14 @@ export const WithMaxDate: Story = {
       <div style={{ minHeight: '400px' }}>
         <p className="text-sm text-gray-500 mb-4">Cannot select dates after today</p>
         <DatePicker variant="single" value={date} onChange={setDate} maxDate={today}>
-          <DatePickerTrigger placeholder="Select past date" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Select past date" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               selectedDate={date}
               onDateSelect={setDate}
               maxDate={today}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -463,15 +459,15 @@ export const WithDateRange: Story = {
           minDate={minDate}
           maxDate={maxDate}
         >
-          <DatePickerTrigger placeholder="Select date" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Select date" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               selectedDate={date}
               onDateSelect={setDate}
               minDate={minDate}
               maxDate={maxDate}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -510,10 +506,10 @@ export const ControlledOpen: Story = {
           open={isOpen}
           onOpenChange={setIsOpen}
         >
-          <DatePickerTrigger placeholder="Controlled open state" />
-          <DatePickerContent>
-            <Calendar selectedDate={date} onDateSelect={setDate} />
-          </DatePickerContent>
+          <DatePicker.Trigger placeholder="Controlled open state" />
+          <DatePicker.Content>
+            <DatePicker.Calendar selectedDate={date} onDateSelect={setDate} />
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -534,10 +530,10 @@ export const DefaultOpen: Story = {
     return (
       <div style={{ minHeight: '400px' }}>
         <DatePicker variant="single" value={date} onChange={setDate} defaultOpen>
-          <DatePickerTrigger placeholder="Opens by default" />
-          <DatePickerContent>
-            <Calendar selectedDate={date} onDateSelect={setDate} />
-          </DatePickerContent>
+          <DatePicker.Trigger placeholder="Opens by default" />
+          <DatePicker.Content>
+            <DatePicker.Calendar selectedDate={date} onDateSelect={setDate} />
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -562,14 +558,14 @@ export const MondayFirstDay: Story = {
     return (
       <div style={{ minHeight: '400px' }}>
         <DatePicker variant="single" value={date} onChange={setDate} firstDayOfWeek={1}>
-          <DatePickerTrigger placeholder="Week starts Monday" />
-          <DatePickerContent>
-            <Calendar
+          <DatePicker.Trigger placeholder="Week starts Monday" />
+          <DatePicker.Content>
+            <DatePicker.Calendar
               selectedDate={date}
               onDateSelect={setDate}
               firstDayOfWeek={1}
             />
-          </DatePickerContent>
+          </DatePicker.Content>
         </DatePicker>
       </div>
     );
@@ -616,10 +612,10 @@ export const AllVariants: Story = {
         <div>
           <p className="text-sm font-medium mb-2">Single Date</p>
           <DatePicker variant="single" value={singleDate} onChange={setSingleDate}>
-            <DatePickerTrigger placeholder="Select date" />
-            <DatePickerContent>
-              <Calendar selectedDate={singleDate} onDateSelect={setSingleDate} />
-            </DatePickerContent>
+            <DatePicker.Trigger placeholder="Select date" />
+            <DatePicker.Content>
+              <DatePicker.Calendar selectedDate={singleDate} onDateSelect={setSingleDate} />
+            </DatePicker.Content>
           </DatePicker>
         </div>
 
@@ -627,20 +623,20 @@ export const AllVariants: Story = {
         <div>
           <p className="text-sm font-medium mb-2">Single Range</p>
           <DatePicker variant="single-range" rangeValue={singleRange} onRangeChange={setSingleRange}>
-            <DatePickerTrigger placeholder="Select range" />
-            <DatePickerContent>
-              <Calendar
+            <DatePicker.Trigger placeholder="Select range" />
+            <DatePicker.Content>
+              <DatePicker.Calendar
                 selectedRange={singleRange}
                 onDateSelect={handleRangeSelect(singleRange, setSingleRange)}
                 isRangeMode
               />
-              <DatePickerConfirmation
+              <DatePicker.Confirmation
                 startDateValue={singleRange.start ? formatDate(singleRange.start) : ''}
                 endDateValue={singleRange.end ? formatDate(singleRange.end) : ''}
                 onCancel={() => setSingleRange({ start: null, end: null })}
                 onApply={() => console.log('Single range:', singleRange)}
               />
-            </DatePickerContent>
+            </DatePicker.Content>
           </DatePicker>
         </div>
 
@@ -648,21 +644,21 @@ export const AllVariants: Story = {
         <div>
           <p className="text-sm font-medium mb-2">Double Range</p>
           <DatePicker variant="double-range" rangeValue={doubleRange} onRangeChange={setDoubleRange}>
-            <DatePickerTrigger placeholder="Select range" />
-            <DatePickerContent>
-              <Calendar
+            <DatePicker.Trigger placeholder="Select range" />
+            <DatePicker.Content>
+              <DatePicker.Calendar
                 variant="dual"
                 selectedRange={doubleRange}
                 onDateSelect={handleRangeSelect(doubleRange, setDoubleRange)}
                 isRangeMode
               />
-              <DatePickerConfirmation
+              <DatePicker.Confirmation
                 startDateValue={doubleRange.start ? formatDate(doubleRange.start) : ''}
                 endDateValue={doubleRange.end ? formatDate(doubleRange.end) : ''}
                 onCancel={() => setDoubleRange({ start: null, end: null })}
                 onApply={() => console.log('Double range:', doubleRange)}
               />
-            </DatePickerContent>
+            </DatePicker.Content>
           </DatePicker>
         </div>
 
@@ -670,27 +666,27 @@ export const AllVariants: Story = {
         <div>
           <p className="text-sm font-medium mb-2">Double with Presets</p>
           <DatePicker variant="double-presets" rangeValue={presetsRange} onRangeChange={setPresetsRange}>
-            <DatePickerTrigger placeholder="Select range" />
-            <DatePickerContent>
+            <DatePicker.Trigger placeholder="Select range" />
+            <DatePicker.Content>
               <div className={CONTENT_ROW_CLASSES}>
-                <DatePickerPresets
+                <DatePicker.Presets
                   presets={DEFAULT_PRESETS}
                   onPresetSelect={setPresetsRange}
                 />
-                <Calendar
+                <DatePicker.Calendar
                   variant="dual"
                   selectedRange={presetsRange}
                   onDateSelect={handleRangeSelect(presetsRange, setPresetsRange)}
                   isRangeMode
                 />
               </div>
-              <DatePickerConfirmation
+              <DatePicker.Confirmation
                 startDateValue={presetsRange.start ? formatDate(presetsRange.start) : ''}
                 endDateValue={presetsRange.end ? formatDate(presetsRange.end) : ''}
                 onCancel={() => setPresetsRange({ start: null, end: null })}
                 onApply={() => console.log('Presets range:', presetsRange)}
               />
-            </DatePickerContent>
+            </DatePicker.Content>
           </DatePicker>
         </div>
       </div>
@@ -700,6 +696,157 @@ export const AllVariants: Story = {
     docs: {
       description: {
         story: 'All four variants displayed together for comparison.',
+      },
+    },
+  },
+};
+
+// ============================================================================
+// Sub-Component: Cell States
+// ============================================================================
+
+export const CellStates: Story = {
+  render: () => {
+    const states: { state: CellState; label?: string }[] = [
+      { state: 'default' },
+      { state: 'selected' },
+      { state: 'range-start' },
+      { state: 'range-end' },
+      { state: 'in-range' },
+      { state: 'today' },
+      { state: 'disabled' },
+      { state: 'outside-month' },
+      { state: 'header', label: 'Mon' },
+    ];
+
+    return (
+      <div className="flex flex-col gap-3">
+        <p className="text-sm font-medium mb-2">All Cell States</p>
+        {states.map(({ state, label }) => (
+          <div key={state} className="flex items-center gap-4">
+            <span className="w-28 text-sm text-neutral-500 capitalize">{state}</span>
+            <DatePicker.Cell
+              state={state}
+              date={state !== 'header' ? new Date(2025, 10, 15) : undefined}
+              label={label ?? '15'}
+              isToday={state === 'today'}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'All possible visual states for calendar cells.',
+      },
+    },
+  },
+};
+
+// ============================================================================
+// Sub-Component: Confirmation Layouts
+// ============================================================================
+
+export const ConfirmationLayouts: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <div>
+        <p className="text-sm font-medium mb-2">Inline (Double Calendar)</p>
+        <div style={{ width: 560 }}>
+          <DatePicker.Confirmation
+            startDateValue="Nov 1, 2025"
+            endDateValue="Nov 15, 2025"
+            onCancel={() => console.log('Cancel')}
+            onApply={() => console.log('Apply')}
+          />
+        </div>
+      </div>
+      <div>
+        <p className="text-sm font-medium mb-2">Stacked (Single Calendar)</p>
+        <div style={{ width: 280 }}>
+          <DatePicker.Confirmation
+            stacked
+            startDateValue="Nov 1, 2025"
+            endDateValue="Nov 15, 2025"
+            onCancel={() => console.log('Cancel')}
+            onApply={() => console.log('Apply')}
+          />
+        </div>
+      </div>
+      <div>
+        <p className="text-sm font-medium mb-2">Empty State</p>
+        <div style={{ width: 560 }}>
+          <DatePicker.Confirmation
+            startDateValue=""
+            endDateValue=""
+            onCancel={() => console.log('Cancel')}
+            onApply={() => console.log('Apply')}
+            applyDisabled
+          />
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Confirmation footer layouts for different calendar configurations.',
+      },
+    },
+  },
+};
+
+// ============================================================================
+// Sub-Component: Presets
+// ============================================================================
+
+export const PresetsShowcase: Story = {
+  render: () => {
+    const [selectedPreset, setSelectedPreset] = useState<string | undefined>(undefined);
+    const [selectedRange, setSelectedRange] = useState<DateRange>({ start: null, end: null });
+
+    const handlePresetSelect = (range: DateRange) => {
+      setSelectedRange(range);
+      const preset = DEFAULT_PRESETS.find((p) => {
+        const r = p.getValue();
+        return r.start?.getTime() === range.start?.getTime() && r.end?.getTime() === range.end?.getTime();
+      });
+      setSelectedPreset(preset?.label);
+    };
+
+    const formatDate = (d: Date) =>
+      d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    return (
+      <div className="flex gap-6">
+        <div>
+          <p className="text-sm font-medium mb-2">Presets</p>
+          <DatePicker.Presets
+            presets={DEFAULT_PRESETS}
+            onPresetSelect={handlePresetSelect}
+            selectedPreset={selectedPreset}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium">Selected</p>
+          <p className="text-sm text-neutral-500">
+            {selectedPreset ?? 'None'}
+          </p>
+          {selectedRange.start && (
+            <p className="text-xs text-neutral-400">
+              {formatDate(selectedRange.start)} - {selectedRange.end ? formatDate(selectedRange.end) : '...'}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Quick preset selections for common date ranges.',
       },
     },
   },

@@ -1,212 +1,71 @@
-import { memo, useCallback, useId, useMemo, useRef, useState } from 'react';
+import { memo } from 'react';
 import { DatePickerContext } from './DatePickerContext';
-import {
-  WRAPPER_CLASSES,
-} from './DatePicker.styles';
-import type {
-  DatePickerProps,
-  DatePickerContextValue,
-  DateRange,
-  DatePickerVariant,
-  DatePickerSize,
-} from './DatePicker.types';
+import { useDatePickerState } from './useDatePickerState';
+import { WRAPPER_CLASSES } from './DatePicker.styles';
+import type { DatePickerProps } from './DatePicker.types';
+
+// =============================================================================
+// SUB-COMPONENT IMPORTS
+// =============================================================================
+import { DatePickerTrigger } from './DatePickerTrigger';
+import { DatePickerContent } from './DatePickerContent';
+import { DatePickerConfirmation } from './DatePickerConfirmation';
+import { DatePickerPresets } from './DatePickerPresets';
+import { DatePickerCell } from './DatePickerCell';
+import { Calendar } from './Calendar';
+import { CalendarHeader } from './CalendarHeader';
+
+// =============================================================================
+// ROOT COMPONENT
+// =============================================================================
 
 /**
  * DatePicker - Main compound component for date selection
- * 
+ *
  * Supports 4 variants:
  * - `single`: Single calendar, single date selection
  * - `single-range`: Single calendar, date range selection
  * - `double-range`: Double calendar, date range selection
  * - `double-presets`: Double calendar with presets sidebar
- * 
+ *
  * @example
  * ```tsx
  * // Single date picker
  * <DatePicker variant="single" onChange={setDate}>
- *   <DatePickerTrigger placeholder="Select date" />
- *   <DatePickerContent>
- *     <Calendar />
- *   </DatePickerContent>
+ *   <DatePicker.Trigger placeholder="Select date" />
+ *   <DatePicker.Content>
+ *     <DatePicker.Calendar />
+ *   </DatePicker.Content>
  * </DatePicker>
- * 
+ *
  * // Range with presets
  * <DatePicker variant="double-presets" onRangeChange={setRange}>
- *   <DatePickerTrigger placeholder="Select range" />
- *   <DatePickerContent>
- *     <DatePickerPresets />
+ *   <DatePicker.Trigger placeholder="Select range" />
+ *   <DatePicker.Content>
+ *     <DatePicker.Presets />
  *     <div>
- *       <Calendar variant="dual" />
- *       <DatePickerConfirmation />
+ *       <DatePicker.Calendar variant="dual" />
+ *       <DatePicker.Confirmation />
  *     </div>
- *   </DatePickerContent>
+ *   </DatePicker.Content>
  * </DatePicker>
  * ```
  */
-export const DatePicker = memo(function DatePicker({
+const DatePickerRoot = memo(function DatePickerRoot({
   children,
   variant = 'single',
-  defaultOpen = false,
-  open,
-  onOpenChange,
-  value,
-  defaultValue = null,
-  rangeValue,
-  defaultRangeValue = { start: null, end: null },
-  onChange,
-  onRangeChange,
-  minDate,
-  maxDate,
-  disabledDates,
-  firstDayOfWeek = 0,
   size = 'default',
   disabled = false,
   error = false,
-  closeOnSelect = true,
+  ...stateProps
 }: DatePickerProps) {
-  // Generate unique IDs
-  const id = useId();
-  const triggerId = `datepicker-trigger-${id}`;
-  const contentId = `datepicker-content-${id}`;
-
-  // Refs
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  // Open state (controlled or uncontrolled)
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const isOpen = open !== undefined ? open : internalOpen;
-
-  const setIsOpen = useCallback(
-    (newOpen: boolean) => {
-      if (open === undefined) {
-        setInternalOpen(newOpen);
-      }
-      onOpenChange?.(newOpen);
-    },
-    [open, onOpenChange]
-  );
-
-  // Single date state (controlled or uncontrolled)
-  const [internalDate, setInternalDate] = useState<Date | null>(defaultValue);
-  const selectedDate = value !== undefined ? value : internalDate;
-
-  const setSelectedDate = useCallback(
-    (date: Date | null) => {
-      if (value === undefined) {
-        setInternalDate(date);
-      }
-      onChange?.(date);
-      
-      // Close on select for single mode
-      if (closeOnSelect && variant === 'single' && date) {
-        setIsOpen(false);
-      }
-    },
-    [value, onChange, closeOnSelect, variant, setIsOpen]
-  );
-
-  // Date range state (controlled or uncontrolled)
-  const [internalRange, setInternalRange] = useState<DateRange>(defaultRangeValue);
-  const selectedRange = rangeValue !== undefined ? rangeValue : internalRange;
-
-  const setSelectedRange = useCallback(
-    (range: DateRange) => {
-      if (rangeValue === undefined) {
-        setInternalRange(range);
-      }
-      onRangeChange?.(range);
-    },
-    [rangeValue, onRangeChange]
-  );
-
-  // Hover state for range preview
-  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
-
-  // Display state (month/year being viewed)
-  const now = new Date();
-  const [displayMonth, setDisplayMonth] = useState(
-    selectedDate?.getMonth() ?? selectedRange.start?.getMonth() ?? now.getMonth()
-  );
-  const [displayYear, setDisplayYear] = useState(
-    selectedDate?.getFullYear() ?? selectedRange.start?.getFullYear() ?? now.getFullYear()
-  );
-
-  // Secondary display state for dual calendar (next month)
-  const secondaryDisplayMonth = displayMonth === 11 ? 0 : displayMonth + 1;
-  const secondaryDisplayYear = displayMonth === 11 ? displayYear + 1 : displayYear;
-
-  // Confirm handler (for range modes)
-  const onConfirm = useCallback(() => {
-    setIsOpen(false);
-  }, [setIsOpen]);
-
-  // Cancel handler
-  const onCancel = useCallback(() => {
-    // Reset to previous value if needed
-    setIsOpen(false);
-  }, [setIsOpen]);
-
-  // Build context value
-  const contextValue = useMemo<DatePickerContextValue>(
-    () => ({
-      isOpen,
-      setIsOpen,
-      variant: variant as DatePickerVariant,
-      size: size as DatePickerSize,
-      disabled,
-      error,
-      selectedDate,
-      setSelectedDate,
-      selectedRange,
-      setSelectedRange,
-      hoveredDate,
-      setHoveredDate,
-      displayMonth,
-      displayYear,
-      setDisplayMonth,
-      setDisplayYear,
-      secondaryDisplayMonth,
-      secondaryDisplayYear,
-      minDate,
-      maxDate,
-      disabledDates,
-      firstDayOfWeek,
-      triggerRef,
-      contentRef,
-      contentId,
-      triggerId,
-      closeOnSelect,
-      onConfirm,
-      onCancel,
-    }),
-    [
-      isOpen,
-      setIsOpen,
-      variant,
-      size,
-      disabled,
-      error,
-      selectedDate,
-      setSelectedDate,
-      selectedRange,
-      setSelectedRange,
-      hoveredDate,
-      displayMonth,
-      displayYear,
-      secondaryDisplayMonth,
-      secondaryDisplayYear,
-      minDate,
-      maxDate,
-      disabledDates,
-      firstDayOfWeek,
-      contentId,
-      triggerId,
-      closeOnSelect,
-      onConfirm,
-      onCancel,
-    ]
-  );
+  const contextValue = useDatePickerState({
+    variant,
+    size,
+    disabled,
+    error,
+    ...stateProps,
+  });
 
   return (
     <DatePickerContext.Provider value={contextValue}>
@@ -216,7 +75,7 @@ export const DatePicker = memo(function DatePicker({
         data-size={size}
         data-disabled={disabled || undefined}
         data-error={error || undefined}
-        data-open={isOpen || undefined}
+        data-open={contextValue.isOpen || undefined}
       >
         {children}
       </div>
@@ -224,4 +83,31 @@ export const DatePicker = memo(function DatePicker({
   );
 });
 
-DatePicker.displayName = 'DatePicker';
+DatePickerRoot.displayName = 'DatePicker';
+
+// =============================================================================
+// COMPOUND COMPONENT EXPORT
+// =============================================================================
+
+/**
+ * DatePicker compound component with attached sub-components.
+ * 
+ * @example
+ * ```tsx
+ * <DatePicker variant="single">
+ *   <DatePicker.Trigger placeholder="Select date" />
+ *   <DatePicker.Content>
+ *     <DatePicker.Calendar />
+ *   </DatePicker.Content>
+ * </DatePicker>
+ * ```
+ */
+export const DatePicker = Object.assign(DatePickerRoot, {
+  Trigger: DatePickerTrigger,
+  Content: DatePickerContent,
+  Confirmation: DatePickerConfirmation,
+  Presets: DatePickerPresets,
+  Cell: DatePickerCell,
+  Calendar: Calendar,
+  CalendarHeader: CalendarHeader,
+});

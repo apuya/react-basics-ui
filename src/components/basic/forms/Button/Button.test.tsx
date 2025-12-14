@@ -104,48 +104,49 @@ describe('Button', () => {
     expect(button).toBeDisabled();
   });
 
-  it('disables button when isLoading is true', () => {
-    const { container } = render(<Button isLoading>Loading</Button>);
+  it('disables button when loading is true', () => {
+    const { container } = render(<Button loading>Loading</Button>);
     const button = container.querySelector('button');
-    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('aria-disabled', 'true');
   });
 
-  it('sets aria-busy when loading', () => {
-    const { container } = render(<Button isLoading>Loading</Button>);
+  it('sets aria-disabled when loading', () => {
+    const { container } = render(<Button loading>Loading</Button>);
     const button = container.querySelector('button');
-    expect(button).toHaveAttribute('aria-busy', 'true');
+    expect(button).toHaveAttribute('aria-disabled', 'true');
   });
 
   it('sets data-loading when loading', () => {
-    const { container } = render(<Button isLoading>Loading</Button>);
+    const { container } = render(<Button loading>Loading</Button>);
     const button = container.querySelector('button');
     expect(button).toHaveAttribute('data-loading', 'true');
   });
 
   it('shows spinner when loading', () => {
-    const { container } = render(<Button isLoading>Loading</Button>);
+    const { container } = render(<Button loading>Loading</Button>);
     const spinner = container.querySelector('.animate-spin');
     expect(spinner).toBeInTheDocument();
   });
 
-  it('renders leading icon', () => {
-    const { container } = render(<Button leadingIcon={<BiPlus data-testid="icon" />}>Add</Button>);
+  it('renders leading visual', () => {
+    const { container } = render(<Button leadingVisual={<BiPlus data-testid="icon" />}>Add</Button>);
     expect(container.querySelector('[data-testid="icon"]')).toBeInTheDocument();
   });
 
-  it('renders trailing icon', () => {
-    const { container } = render(<Button trailingIcon={<BiSearch data-testid="icon" />}>Search</Button>);
+  it('renders trailing visual', () => {
+    const { container } = render(<Button trailingVisual={<BiSearch data-testid="icon" />}>Search</Button>);
     expect(container.querySelector('[data-testid="icon"]')).toBeInTheDocument();
   });
 
-  it('hides icons when loading', () => {
+  it('shows spinner in leading position when loading with leadingVisual', () => {
     const { container } = render(
-      <Button isLoading leadingIcon={<BiPlus data-testid="leading" />} trailingIcon={<BiSearch data-testid="trailing" />}>
+      <Button loading leadingVisual={<BiPlus data-testid="leading" />}>
         Loading
       </Button>
     );
+    // Leading visual is replaced by spinner when loading
     expect(container.querySelector('[data-testid="leading"]')).not.toBeInTheDocument();
-    expect(container.querySelector('[data-testid="trailing"]')).not.toBeInTheDocument();
+    expect(container.querySelector('.animate-spin')).toBeInTheDocument();
   });
 
   it('calls onClick when clicked', () => {
@@ -164,7 +165,7 @@ describe('Button', () => {
 
   it('does not call onClick when loading', () => {
     const onClick = vi.fn();
-    const { getByRole } = render(<Button isLoading onClick={onClick}>Click</Button>);
+    const { getByRole } = render(<Button loading onClick={onClick}>Click</Button>);
     fireEvent.click(getByRole('button'));
     expect(onClick).not.toHaveBeenCalled();
   });
@@ -200,7 +201,7 @@ describe('Button', () => {
   });
 
   it('renders icon-only button without children', () => {
-    const { container } = render(<Button leadingIcon={<BiSearch />} aria-label="Search" />);
+    const { container } = render(<Button leadingVisual={<BiSearch />} aria-label="Search" />);
     const button = container.querySelector('button');
     expect(button).toBeInTheDocument();
     expect(button).toHaveAttribute('aria-label', 'Search');

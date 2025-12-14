@@ -1,10 +1,11 @@
-export {
-  Text,
-  type TextProps,
-  type TextSize,
-  type TextWeight,
-  type TextColor,
-  type TextLineHeight,
-  type TextAlign,
-  type TextFontFamily,
-} from './Text';
+export { Text } from './Text';
+export type {
+  TextProps,
+  TextSize,
+  TextWeight,
+  TextColor,
+  TextLineHeight,
+  TextAlign,
+  TextFontFamily,
+  TextElement,
+} from './Text.types';

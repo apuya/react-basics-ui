@@ -174,3 +174,40 @@ export const CompleteExample: Story = {
     </DemoWrapper>
   ),
 };
+
+// =============================================================================
+// SUBCOMPONENTS
+// =============================================================================
+
+export const SubcomponentSectionHeader: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Sidebar.SectionHeader component with and without icon.',
+      },
+    },
+  },
+  render: () => (
+    <div className="w-64 flex flex-col bg-[color:var(--semantic-surface-elevated)] rounded-lg p-4 gap-4">
+      <Sidebar.SectionHeader icon={BiGridAlt}>Navigation</Sidebar.SectionHeader>
+      <Sidebar.SectionHeader>Settings</Sidebar.SectionHeader>
+    </div>
+  ),
+};
+
+export const SubcomponentItems: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Sidebar.Item component states: default and active.',
+      },
+    },
+  },
+  render: () => (
+    <div className="w-64 flex flex-col bg-[color:var(--semantic-surface-elevated)] rounded-lg p-4 gap-2">
+      <Sidebar.Item icon={BiHome}>Default</Sidebar.Item>
+      <Sidebar.Item icon={BiUser} active>Active</Sidebar.Item>
+      <Sidebar.Item icon={BiCog}>Settings</Sidebar.Item>
+    </div>
+  ),
+};

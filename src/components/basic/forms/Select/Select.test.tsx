@@ -21,32 +21,6 @@ describe('Select', () => {
       expect(screen.getByText('Select an option')).toBeInTheDocument();
     });
 
-    it('should render with label', () => {
-      render(
-        <Select label="Choose an option">
-          <Select.Trigger />
-          <Select.Menu>
-            <Select.Option value="option1">Option 1</Select.Option>
-          </Select.Menu>
-        </Select>
-      );
-
-      expect(screen.getByText('Choose an option')).toBeInTheDocument();
-    });
-
-    it('should render with helper text', () => {
-      render(
-        <Select helperText="This is helper text">
-          <Select.Trigger />
-          <Select.Menu>
-            <Select.Option value="option1">Option 1</Select.Option>
-          </Select.Menu>
-        </Select>
-      );
-
-      expect(screen.getByText('This is helper text')).toBeInTheDocument();
-    });
-
     it('should not render menu when closed', () => {
       render(
         <Select>
@@ -704,25 +678,10 @@ describe('Select', () => {
       expect(screen.getByRole('option', { name: 'Option 2' })).toHaveAttribute('aria-selected', 'false');
     });
 
-    it('should associate label with trigger via htmlFor', () => {
-      render(
-        <Select label="Test Label" id="test-select">
-          <Select.Trigger />
-          <Select.Menu>
-            <Select.Option value="option1">Option 1</Select.Option>
-          </Select.Menu>
-        </Select>
-      );
-
-      const label = screen.getByText('Test Label');
-      const trigger = screen.getByRole('combobox');
-      expect(label).toHaveAttribute('for', trigger.id);
-    });
-
     it('should set aria-controls on trigger when menu is open', async () => {
       const user = userEvent.setup();
       render(
-        <Select label="Test Label">
+        <Select>
           <Select.Trigger />
           <Select.Menu>
             <Select.Option value="option1">Option 1</Select.Option>
@@ -737,24 +696,6 @@ describe('Select', () => {
 
       const menu = screen.getByRole('listbox');
       expect(trigger).toHaveAttribute('aria-controls', menu.id);
-    });
-
-    it('should set aria-labelledby on menu when label is provided', async () => {
-      const user = userEvent.setup();
-      render(
-        <Select label="Test Label">
-          <Select.Trigger />
-          <Select.Menu>
-            <Select.Option value="option1">Option 1</Select.Option>
-          </Select.Menu>
-        </Select>
-      );
-
-      await user.click(screen.getByRole('combobox'));
-
-      const label = screen.getByText('Test Label');
-      const menu = screen.getByRole('listbox');
-      expect(menu).toHaveAttribute('aria-labelledby', label.id);
     });
   });
 

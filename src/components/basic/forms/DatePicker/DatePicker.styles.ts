@@ -9,63 +9,18 @@
 export const WRAPPER_CLASSES = 'relative inline-flex';
 
 // ----------------------------------------------------------------------------
-// Trigger Button (uses button tertiary variant styling)
+// Trigger Button (uses Button component with tertiary variant)
 // ----------------------------------------------------------------------------
-
-export const TRIGGER_BASE_CLASSES =
-  'inline-flex items-center justify-between border transition-colors focus-visible:outline-none cursor-pointer whitespace-nowrap';
-
-/** Inline styles for trigger base (spacing that Tailwind won't compile) */
-export const TRIGGER_BASE_STYLE: React.CSSProperties = {
-  gap: 'var(--component-button-gap)',
-  borderRadius: 'var(--component-button-radius)',
-  transitionDuration: 'var(--component-button-transition-duration)',
-};
-
-export const TRIGGER_SIZE_CLASSES = {
-  small: 'text-sm font-medium',
-  default: 'text-sm font-medium',
-  large: 'text-base font-medium',
-} as const;
-
-/** Inline styles for trigger sizes */
-export const TRIGGER_SIZE_STYLES = {
-  small: {
-    height: 'var(--component-button-height-small)',
-    paddingInline: 'var(--component-button-padding-inline-small)',
-  } as React.CSSProperties,
-  default: {
-    height: 'var(--component-button-height-default)',
-    paddingInline: 'var(--component-button-padding-inline-default)',
-  } as React.CSSProperties,
-  large: {
-    height: 'var(--component-button-height-large)',
-    paddingInline: 'var(--component-button-padding-inline-large)',
-  } as React.CSSProperties,
-} as const;
-
-export const TRIGGER_STATE_STYLES = {
-  default:
-    'bg-[color:var(--component-button-bg-tertiary-default)] border-[color:var(--component-button-border-tertiary-default)] text-[color:var(--component-button-text-tertiary-default)] hover:bg-[color:var(--component-button-bg-tertiary-hover)] hover:border-[color:var(--component-button-border-tertiary-hover)] hover:text-[color:var(--component-button-text-tertiary-hover)] active:bg-[color:var(--component-button-bg-tertiary-active)]',
-  error:
-    'bg-[color:var(--component-button-bg-tertiary-default)] border-[color:var(--semantic-status-error-default)] text-[color:var(--component-button-text-tertiary-default)] hover:bg-[color:var(--component-button-bg-tertiary-hover)]',
-  disabled:
-    'cursor-not-allowed bg-[color:var(--component-button-bg-tertiary-disabled)] border-[color:var(--component-button-border-tertiary-disabled)] text-[color:var(--component-button-text-tertiary-disabled)]',
-} as const;
-
-/** Inline style for disabled opacity */
-export const TRIGGER_DISABLED_STYLE: React.CSSProperties = {
-  opacity: 'var(--component-button-disabled-opacity)',
-};
-
-export const TRIGGER_ICON_CLASSES =
-  'text-current shrink-0';
 
 export const TRIGGER_PLACEHOLDER_CLASSES =
   'text-current opacity-70';
 
 export const TRIGGER_VALUE_CLASSES =
   'text-current';
+
+/** Error state override for Button's tertiary variant */
+export const TRIGGER_ERROR_CLASSES =
+  'border-[color:var(--semantic-status-error-default)]';
 
 // ----------------------------------------------------------------------------
 // Content / Popover (hugs content, children define their own min sizes)

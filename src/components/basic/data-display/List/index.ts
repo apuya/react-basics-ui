@@ -1,4 +1,2 @@
 export { List } from './List';
-export type { ListProps } from './List';
-export type { ListItemProps } from './ListItem';
-export type { ListVariant } from './List.styles';
+export type { ListProps, ListItemProps, ListVariant, ListContextValue } from './List.types';

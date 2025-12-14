@@ -17,14 +17,14 @@ export const NODE_CONTENT_STATES = {
 
 // Toggle button (chevron/arrow)
 export const TOGGLE_BUTTON_CLASSES =
-  'inline-flex items-center justify-center w-[length:var(--component-tree-toggle-size)] h-[length:var(--component-tree-toggle-size)] text-[color:var(--component-tree-toggle-color)] transition-transform duration-[var(--component-tree-transition)] shrink-0';
+  'inline-flex items-center justify-center w-[length:var(--component-tree-toggle-size)] h-[length:var(--component-tree-toggle-size)] text-[color:var(--component-tree-toggle-color)] transition-transform duration-[var(--component-tree-transition)] shrink-0 cursor-pointer hover:opacity-70 [&>svg]:pointer-events-none';
 
 export const TOGGLE_BUTTON_EXPANDED = 'rotate-90';
 export const TOGGLE_BUTTON_COLLAPSED = '';
 
 // Node icon
 export const NODE_ICON_CLASSES =
-  'inline-flex items-center justify-center w-[length:var(--component-tree-icon-size)] h-[length:var(--component-tree-icon-size)] text-[color:var(--component-tree-icon-color)] shrink-0';
+  'inline-flex items-center justify-center w-[length:var(--component-tree-icon-size)] h-[length:var(--component-tree-icon-size)] text-[color:var(--component-tree-icon-color)] shrink-0 [&>svg]:pointer-events-none';
 
 // Children container
 export const CHILDREN_CONTAINER_CLASSES = '';

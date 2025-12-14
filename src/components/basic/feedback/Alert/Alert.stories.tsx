@@ -3,6 +3,7 @@ import { Alert } from './Alert';
 import { Stack } from '../../layout/Stack';
 import { Box } from '../../layout/Box';
 import { Text } from '../../typography/Text';
+import { BiStar, BiHeart, BiRocket } from 'react-icons/bi';
 
 const meta = {
   title: 'Feedback/Alert',
@@ -12,7 +13,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Alert component for displaying important messages. Supports info, success, warning, and error variants with optional icons, titles, descriptions, and dismissible functionality.',
+          'Alert component for displaying important messages. Supports info, success, warning, and error variants with optional icons, titles, descriptions, and dismissible functionality. Icons can be customized using leadingIcon and trailingIcon props.',
       },
     },
   },
@@ -32,10 +33,13 @@ const meta = {
       control: 'text',
       description: 'Alert description',
     },
-    showIcon: {
-      control: 'boolean',
-      description: 'Show variant icon',
-      table: { defaultValue: { summary: 'true' } },
+    leadingIcon: {
+      control: false,
+      description: 'Optional icon at the start. Pass null to hide default icon.',
+    },
+    trailingIcon: {
+      control: false,
+      description: 'Optional icon at the end (before close button)',
     },
     onClose: {
       action: 'closed',
@@ -116,7 +120,7 @@ export const WithoutIcon: Story = {
     variant: 'info',
     title: 'No Icon',
     description: 'This alert is displayed without an icon.',
-    showIcon: false,
+    leadingIcon: null,
   },
   decorators: [
     (Story) => (
@@ -125,6 +129,13 @@ export const WithoutIcon: Story = {
       </Box>
     ),
   ],
+  parameters: {
+    docs: {
+      description: {
+        story: 'Alert with leadingIcon set to null to hide the default variant icon.',
+      },
+    },
+  },
 };
 
 export const Dismissible: StoryWithRender = {
@@ -173,7 +184,7 @@ export const WithChildren: StoryWithRender = {
       <Alert variant="info" onClose={() => console.log('Dismissed')}>
         <Stack spacing="xs">
           <Text weight="semibold">Update Available</Text>
-          <Text size="sm">
+          <Text size="small">
             A new version is available.{' '}
             <a href="#" style={{ textDecoration: 'underline' }}>
               View release notes
@@ -212,6 +223,69 @@ export const LongContent: Story = {
     docs: {
       description: {
         story: 'Alert with long text content.',
+      },
+    },
+  },
+};
+
+export const CustomLeadingIcon: StoryWithRender = {
+  render: () => (
+    <Box style={{ maxWidth: '32rem' }}>
+      <Stack spacing="md">
+        <Alert
+          variant="info"
+          title="Custom Icon"
+          description="This alert uses a custom leading icon."
+          leadingIcon={<BiStar />}
+        />
+        <Alert
+          variant="success"
+          title="Favorite"
+          description="This alert uses a heart icon."
+          leadingIcon={<BiHeart />}
+        />
+        <Alert
+          variant="warning"
+          title="Launch Ready"
+          description="This alert uses a rocket icon."
+          leadingIcon={<BiRocket />}
+        />
+      </Stack>
+    </Box>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Alerts with custom leading icons instead of default variant icons.',
+      },
+    },
+  },
+};
+
+export const TrailingIcon: StoryWithRender = {
+  render: () => (
+    <Box style={{ maxWidth: '32rem' }}>
+      <Stack spacing="md">
+        <Alert
+          variant="info"
+          title="Trailing Icon"
+          description="This alert has a trailing icon."
+          trailingIcon={<BiStar />}
+        />
+        <Alert
+          variant="success"
+          title="Both Icons"
+          description="This alert has both leading and trailing icons."
+          leadingIcon={<BiHeart />}
+          trailingIcon={<BiRocket />}
+        />
+      </Stack>
+    </Box>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Alerts with trailing icons, demonstrating the flexibility of the icon slots.',
       },
     },
   },

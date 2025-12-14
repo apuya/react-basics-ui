@@ -13,11 +13,26 @@ const meta: Meta<typeof FormGroup> = {
     docs: {
       description: {
         component:
-          'FormGroup uses a semantic fieldset element to group related form controls together. It provides accessible labeling via legend and supports both vertical and horizontal layouts for radio buttons, checkboxes, and other related inputs.',
+          'FormGroup is a compound component that uses a semantic fieldset element to group related form controls together. It provides accessible labeling via Legend sub-component and supports both vertical and horizontal layouts.',
       },
     },
   },
   tags: ['autodocs'],
+  argTypes: {
+    orientation: {
+      control: 'select',
+      options: ['vertical', 'horizontal'],
+      description: 'Layout direction for child elements',
+    },
+    error: {
+      control: 'boolean',
+      description: 'Enables error state styling',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Disables the entire form group',
+    },
+  },
 };
 
 export default meta;
@@ -27,41 +42,39 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Basic FormGroup with a legend and vertically stacked checkboxes. Use this for grouping related options.',
+        story: 'Basic FormGroup with Legend sub-component and vertically stacked checkboxes.',
       },
     },
   },
-  args: {
-    legend: 'Select your preferences',
-    children: (
-      <>
-        <Checkbox label="Option 1" />
-        <Checkbox label="Option 2" />
-        <Checkbox label="Option 3" />
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup>
+      <FormGroup.Legend>Select your preferences</FormGroup.Legend>
+      <Checkbox label="Option 1" />
+      <Checkbox label="Option 2" />
+      <Checkbox label="Option 3" />
+    </FormGroup>
+  ),
 };
 
 export const WithDescription: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Add a description below the legend to provide additional context about the group of options.',
+        story: 'Add a Description sub-component to provide additional context about the group of options.',
       },
     },
   },
-  args: {
-    legend: 'Notification Settings',
-    description: 'Choose how you want to be notified about updates',
-    children: (
-      <>
-        <Checkbox label="Email notifications" />
-        <Checkbox label="SMS notifications" />
-        <Checkbox label="Push notifications" />
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup>
+      <FormGroup.Legend>Notification Settings</FormGroup.Legend>
+      <FormGroup.Description>
+        Choose how you want to be notified about updates
+      </FormGroup.Description>
+      <Checkbox label="Email notifications" />
+      <Checkbox label="SMS notifications" />
+      <Checkbox label="Push notifications" />
+    </FormGroup>
+  ),
 };
 
 export const RadioGroup: Story = {
@@ -72,16 +85,14 @@ export const RadioGroup: Story = {
       },
     },
   },
-  args: {
-    legend: 'Select payment method',
-    children: (
-      <>
-        <Radio name="payment" label="Credit Card" />
-        <Radio name="payment" label="PayPal" />
-        <Radio name="payment" label="Bank Transfer" />
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup>
+      <FormGroup.Legend>Select payment method</FormGroup.Legend>
+      <Radio name="payment" label="Credit Card" />
+      <Radio name="payment" label="PayPal" />
+      <Radio name="payment" label="Bank Transfer" />
+    </FormGroup>
+  ),
 };
 
 export const CheckboxGroup: Story = {
@@ -92,18 +103,16 @@ export const CheckboxGroup: Story = {
       },
     },
   },
-  args: {
-    legend: 'Select interests',
-    description: 'Choose all that apply',
-    children: (
-      <>
-        <Checkbox label="Technology" />
-        <Checkbox label="Design" />
-        <Checkbox label="Business" />
-        <Checkbox label="Marketing" />
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup>
+      <FormGroup.Legend>Select interests</FormGroup.Legend>
+      <FormGroup.Description>Choose all that apply</FormGroup.Description>
+      <Checkbox label="Technology" />
+      <Checkbox label="Design" />
+      <Checkbox label="Business" />
+      <Checkbox label="Marketing" />
+    </FormGroup>
+  ),
 };
 
 export const Horizontal: Story = {
@@ -114,17 +123,14 @@ export const Horizontal: Story = {
       },
     },
   },
-  args: {
-    legend: 'Choose size',
-    orientation: 'horizontal',
-    children: (
-      <>
-        <Radio name="size" label="Small" />
-        <Radio name="size" label="Medium" />
-        <Radio name="size" label="Large" />
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup orientation="horizontal">
+      <FormGroup.Legend>Choose size</FormGroup.Legend>
+      <Radio name="size" label="Small" />
+      <Radio name="size" label="Medium" />
+      <Radio name="size" label="Large" />
+    </FormGroup>
+  ),
 };
 
 export const VerticalCheckboxes: Story = {
@@ -135,17 +141,14 @@ export const VerticalCheckboxes: Story = {
       },
     },
   },
-  args: {
-    legend: 'Privacy Settings',
-    orientation: 'vertical',
-    children: (
-      <>
-        <Checkbox label="Allow personalized recommendations" />
-        <Checkbox label="Share usage data for product improvement" />
-        <Checkbox label="Receive promotional emails" />
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup orientation="vertical">
+      <FormGroup.Legend>Privacy Settings</FormGroup.Legend>
+      <Checkbox label="Allow personalized recommendations" />
+      <Checkbox label="Share usage data for product improvement" />
+      <Checkbox label="Receive promotional emails" />
+    </FormGroup>
+  ),
 };
 
 export const WithError: Story = {
@@ -156,12 +159,13 @@ export const WithError: Story = {
       },
     },
   },
-  args: {
-    legend: 'Accept terms',
-    error: true,
-    errorMessage: 'You must accept the terms to continue',
-    children: <Checkbox label="I accept the terms and conditions" />,
-  },
+  render: () => (
+    <FormGroup error>
+      <FormGroup.Legend>Accept terms</FormGroup.Legend>
+      <Checkbox label="I accept the terms and conditions" />
+      <FormGroup.ErrorMessage>You must accept the terms to continue</FormGroup.ErrorMessage>
+    </FormGroup>
+  ),
 };
 
 export const ErrorWithDescription: Story = {
@@ -172,41 +176,38 @@ export const ErrorWithDescription: Story = {
       },
     },
   },
-  args: {
-    legend: 'Select at least one option',
-    description: 'Choose your preferred contact methods',
-    error: true,
-    errorMessage: 'Please select at least one contact method',
-    children: (
-      <>
-        <Checkbox label="Email" />
-        <Checkbox label="Phone" />
-        <Checkbox label="Mail" />
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup error>
+      <FormGroup.Legend>Select at least one option</FormGroup.Legend>
+      <FormGroup.Description>Choose your preferred contact methods</FormGroup.Description>
+      <Checkbox label="Email" />
+      <Checkbox label="Phone" />
+      <Checkbox label="Mail" />
+      <FormGroup.ErrorMessage>Please select at least one contact method</FormGroup.ErrorMessage>
+    </FormGroup>
+  ),
 };
 
 export const LongDescription: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Descriptions can contain longer text to provide detailed instructions or context.',
+        story: 'Description can be longer text that provides detailed context for the form group.',
       },
     },
   },
-  args: {
-    legend: 'Data Sharing Preferences',
-    description:
-      'We respect your privacy. Select which types of data you are comfortable sharing with our partners. You can change these settings at any time from your account preferences.',
-    children: (
-      <>
-        <Checkbox label="Basic profile information" />
-        <Checkbox label="Usage analytics" />
-        <Checkbox label="Marketing preferences" />
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup>
+      <FormGroup.Legend>Data Sharing Preferences</FormGroup.Legend>
+      <FormGroup.Description>
+        We respect your privacy. Select which types of data you are comfortable sharing with our
+        partners. You can change these settings at any time from your account preferences.
+      </FormGroup.Description>
+      <Checkbox label="Basic profile information" />
+      <Checkbox label="Usage analytics" />
+      <Checkbox label="Marketing preferences" />
+    </FormGroup>
+  ),
 };
 
 export const NestedFormFields: Story = {
@@ -217,23 +218,24 @@ export const NestedFormFields: Story = {
       },
     },
   },
-  args: {
-    legend: 'Shipping Address',
-    description: 'Enter your delivery address',
-    children: (
-      <>
-        <FormField label="Street Address" htmlFor="street">
-          <Input id="street" placeholder="123 Main St" />
-        </FormField>
-        <FormField label="City" htmlFor="city">
-          <Input id="city" placeholder="New York" />
-        </FormField>
-        <FormField label="Zip Code" htmlFor="zip">
-          <Input id="zip" placeholder="10001" />
-        </FormField>
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup>
+      <FormGroup.Legend>Shipping Address</FormGroup.Legend>
+      <FormGroup.Description>Enter your delivery address</FormGroup.Description>
+      <FormField>
+        <FormField.Label htmlFor="street">Street Address</FormField.Label>
+        <Input id="street" placeholder="123 Main St" />
+      </FormField>
+      <FormField>
+        <FormField.Label htmlFor="city">City</FormField.Label>
+        <Input id="city" placeholder="New York" />
+      </FormField>
+      <FormField>
+        <FormField.Label htmlFor="zip">Zip Code</FormField.Label>
+        <Input id="zip" placeholder="10001" />
+      </FormField>
+    </FormGroup>
+  ),
 };
 
 export const MixedChildren: Story = {
@@ -244,18 +246,17 @@ export const MixedChildren: Story = {
       },
     },
   },
-  args: {
-    legend: 'Account Preferences',
-    children: (
-      <>
-        <Checkbox label="Enable two-factor authentication" />
-        <Checkbox label="Show online status" />
-        <FormField label="Display Name" htmlFor="display-name">
-          <Input id="display-name" placeholder="Your public name" />
-        </FormField>
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup>
+      <FormGroup.Legend>Account Preferences</FormGroup.Legend>
+      <Checkbox label="Enable two-factor authentication" />
+      <Checkbox label="Show online status" />
+      <FormField>
+        <FormField.Label htmlFor="display-name">Display Name</FormField.Label>
+        <Input id="display-name" placeholder="Your public name" />
+      </FormField>
+    </FormGroup>
+  ),
 };
 
 export const AllOrientations: Story = {
@@ -268,12 +269,14 @@ export const AllOrientations: Story = {
   },
   render: () => (
     <div style={{ display: 'flex', gap: '48px' }}>
-      <FormGroup legend="Vertical (Default)" orientation="vertical">
+      <FormGroup orientation="vertical">
+        <FormGroup.Legend>Vertical (Default)</FormGroup.Legend>
         <Radio name="v-size" label="Small" />
         <Radio name="v-size" label="Medium" />
         <Radio name="v-size" label="Large" />
       </FormGroup>
-      <FormGroup legend="Horizontal" orientation="horizontal">
+      <FormGroup orientation="horizontal">
+        <FormGroup.Legend>Horizontal</FormGroup.Legend>
         <Radio name="h-size" label="Small" />
         <Radio name="h-size" label="Medium" />
         <Radio name="h-size" label="Large" />
@@ -290,15 +293,13 @@ export const RequiredGroup: Story = {
       },
     },
   },
-  args: {
-    legend: 'Subscription Type *',
-    description: 'Please select your preferred plan',
-    children: (
-      <>
-        <Radio name="plan" label="Free" />
-        <Radio name="plan" label="Pro - $9/month" />
-        <Radio name="plan" label="Enterprise - Contact us" />
-      </>
-    ),
-  },
+  render: () => (
+    <FormGroup>
+      <FormGroup.Legend>Subscription Type *</FormGroup.Legend>
+      <FormGroup.Description>Please select your preferred plan</FormGroup.Description>
+      <Radio name="plan" label="Free" />
+      <Radio name="plan" label="Pro - $9/month" />
+      <Radio name="plan" label="Enterprise - Contact us" />
+    </FormGroup>
+  ),
 };

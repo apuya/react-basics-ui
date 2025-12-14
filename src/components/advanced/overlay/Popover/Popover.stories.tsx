@@ -275,7 +275,9 @@ export const RichContent: Story = {
         <Popover.Trigger className={TRIGGER_CLASSES}>View Profile</Popover.Trigger>
         <Popover.Content>
           <Flex gap="md">
-            <Avatar name={USER_PROFILE.name} size="lg" />
+            <Avatar size="lg">
+              <Avatar.Fallback>{USER_PROFILE.name.split(' ').map((n: string) => n[0]).join('')}</Avatar.Fallback>
+            </Avatar>
             <VStack spacing="xs" align="start">
               <Popover.Title>{USER_PROFILE.name}</Popover.Title>
               <Popover.Description>{USER_PROFILE.role}</Popover.Description>

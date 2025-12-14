@@ -1,40 +1,57 @@
 import { cn } from '@/lib/cn';
-import { forwardRef, memo, useId, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import {
-  BASE_CLASSES,
-  ERROR_CLASSES,
-  HELPER_CLASSES,
-  LABEL_CLASSES,
-  REQUIRED_CLASSES,
-} from './FormField.styles';
+import { forwardRef, memo, useId, type ComponentPropsWithoutRef } from 'react';
+import { BASE_CLASSES } from './FormField.styles';
+import { FormFieldContext, type FormFieldContextValue } from './FormFieldContext';
+import { FormFieldLabel } from './FormFieldLabel';
+import { FormFieldHelperText } from './FormFieldHelperText';
+import { FormFieldErrorMessage } from './FormFieldErrorMessage';
+
+// =============================================================================
+// Types
+// =============================================================================
 
 export interface FormFieldProps extends ComponentPropsWithoutRef<'div'> {
-  /** Label text displayed above the input */
-  label?: ReactNode;
-  /** Associates the label with an input via id */
-  htmlFor?: string;
-  /** Helper text displayed below the input */
-  helperText?: ReactNode;
-  /** Enables error state styling */
+  /** Enables error state styling (shared with sub-components via context) */
   error?: boolean;
-  /** Error message (replaces helperText when error=true) */
-  errorMessage?: string;
-  /** Shows required indicator (*) */
+  /** Shows required indicator (*) (shared with sub-components via context) */
   required?: boolean;
-  /** Sets data-disabled attribute */
+  /** Sets data-disabled attribute (shared with sub-components via context) */
   disabled?: boolean;
   /** ID for the helper/error text element (for aria-describedby). Auto-generated if not provided. */
   helperId?: string;
 }
 
-export const FormField = memo(
-  forwardRef<HTMLDivElement, FormFieldProps>(function FormField(
+// =============================================================================
+// Root Component
+// =============================================================================
+
+/**
+ * FormField - Compound component for form field layout with automatic state sharing.
+ *
+ * Provides context to sub-components (Label, HelperText, ErrorMessage) for automatic
+ * error/disabled/required state sharing.
+ *
+ * @example
+ * ```tsx
+ * // Compound component usage (recommended)
+ * <FormField error required>
+ *   <FormField.Label htmlFor="username">Username</FormField.Label>
+ *   <Input id="username" aria-describedby={helperId} />
+ *   <FormField.ErrorMessage>Username is required</FormField.ErrorMessage>
+ * </FormField>
+ *
+ * // With helper text
+ * <FormField>
+ *   <FormField.Label htmlFor="email">Email</FormField.Label>
+ *   <Input id="email" type="email" />
+ *   <FormField.HelperText>We'll never share your email</FormField.HelperText>
+ * </FormField>
+ * ```
+ */
+const FormFieldRoot = memo(
+  forwardRef<HTMLDivElement, FormFieldProps>(function FormFieldRoot(
     {
-      label,
-      htmlFor,
-      helperText,
       error = false,
-      errorMessage,
       required = false,
       disabled = false,
       helperId: helperIdProp,
@@ -45,48 +62,47 @@ export const FormField = memo(
     ref
   ) {
     const generatedHelperId = useId();
-    const hasHelperContent = helperText || (error && errorMessage);
-    const helperId = hasHelperContent ? (helperIdProp ?? `${generatedHelperId}-helper`) : undefined;
+    const helperId = helperIdProp ?? `${generatedHelperId}-helper`;
 
-    const wrapperClasses = useMemo(
-      () => cn(BASE_CLASSES, className),
-      [className]
-    );
+    const contextValue: FormFieldContextValue = {
+      error,
+      disabled,
+      required,
+      helperId,
+    };
 
     return (
-      <div
-        ref={ref}
-        className={wrapperClasses}
-        data-error={error || undefined}
-        data-disabled={disabled || undefined}
-        data-required={required || undefined}
-        {...rest}
-      >
-        {label && (
-          <label htmlFor={htmlFor} className={LABEL_CLASSES}>
-            {label}
-            {required && (
-              <span className={REQUIRED_CLASSES} aria-hidden="true">
-                *
-              </span>
-            )}
-          </label>
-        )}
-
-        {children}
-
-        {hasHelperContent && (
-          <p
-            id={helperId}
-            className={error ? ERROR_CLASSES : HELPER_CLASSES}
-            role={error ? 'alert' : undefined}
-          >
-            {error && errorMessage ? errorMessage : helperText}
-          </p>
-        )}
-      </div>
+      <FormFieldContext.Provider value={contextValue}>
+        <div
+          ref={ref}
+          className={cn(BASE_CLASSES, className)}
+          data-error={error || undefined}
+          data-disabled={disabled || undefined}
+          data-required={required || undefined}
+          {...rest}
+        >
+          {children}
+        </div>
+      </FormFieldContext.Provider>
     );
   })
 );
 
-FormField.displayName = 'FormField';
+FormFieldRoot.displayName = 'FormField';
+
+// =============================================================================
+// Compound Component Export
+// =============================================================================
+
+/**
+ * FormField compound component with attached sub-components.
+ */
+export const FormField = Object.assign(FormFieldRoot, {
+  Label: FormFieldLabel,
+  HelperText: FormFieldHelperText,
+  ErrorMessage: FormFieldErrorMessage,
+});
+
+// Re-export context for advanced usage
+export { FormFieldContext, useFormFieldContext } from './FormFieldContext';
+export type { FormFieldContextValue } from './FormFieldContext';

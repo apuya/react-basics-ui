@@ -3,7 +3,7 @@ import { cn } from '@/lib/cn';
 import { useTimePickerContext } from './TimePickerContext';
 import { Button } from '@/components/basic/forms/Button';
 import {
-  generateHourOptions,
+  HOUR_OPTIONS,
   generateMinuteOptions,
   generateMeridiemOptions,
 } from './timePickerUtils';
@@ -33,6 +33,12 @@ const OPTION_STYLE = {
 export interface TimePickerMenuProps {
   /** Additional class name */
   className?: string;
+  /** Minimum time (HH:MM format) */
+  min?: string;
+  /** Maximum time (HH:MM format) */
+  max?: string;
+  /** Step interval in seconds (default: 1800 = 30 minutes) */
+  step?: number;
   /** Show confirmation footer with Cancel/Save buttons */
   showConfirmation?: boolean;
   /** Label for cancel button */
@@ -49,6 +55,9 @@ export const TimePickerMenu = memo(
   forwardRef<HTMLDivElement, TimePickerMenuProps>(function TimePickerMenu(
     {
       className,
+      min,
+      max,
+      step = 1800,
       showConfirmation = false,
       cancelLabel = 'Cancel',
       saveLabel = 'Save',
@@ -60,7 +69,6 @@ export const TimePickerMenu = memo(
     const {
       isOpen,
       setIsOpen,
-      step,
       menuId,
       labelId,
       selectedHour,
@@ -79,7 +87,6 @@ export const TimePickerMenu = memo(
       [isOpen, className]
     );
 
-    const hourOptions = useMemo(() => generateHourOptions(), []);
     const minuteOptions = useMemo(() => generateMinuteOptions(step), [step]);
     const meridiemOptions = useMemo(() => generateMeridiemOptions(), []);
 
@@ -133,7 +140,7 @@ export const TimePickerMenu = memo(
         <div className="grid grid-cols-3">
           {/* Hour Column */}
           <div ref={hourColumnRef} className="overflow-y-auto scrollbar-hidden" style={COLUMN_STYLE}>
-            {hourOptions.map((hour) => (
+            {HOUR_OPTIONS.map((hour) => (
               <ColumnOption
                 key={hour}
                 value={hour}

@@ -11,12 +11,6 @@ export type { TimePickerMenuProps } from './TimePickerMenu';
 export { TimePickerOption } from './TimePickerOption';
 export type { TimePickerOptionProps } from './TimePickerOption';
 
-export { TimePickerLabel } from './TimePickerLabel';
-export type { TimePickerLabelProps } from './TimePickerLabel';
-
-export { TimePickerHelper } from './TimePickerHelper';
-export type { TimePickerHelperProps } from './TimePickerHelper';
-
 // Context
 export { TimePickerContext, useTimePickerContext } from './TimePickerContext';
 export type { TimePickerContextValue } from './TimePickerContext';
@@ -24,7 +18,7 @@ export type { TimePickerContextValue } from './TimePickerContext';
 // Utilities
 export {
   formatTimeDisplay,
-  generateHourOptions,
+  HOUR_OPTIONS,
   generateMinuteOptions,
   generateMeridiemOptions,
   parseTimeToMinutes,
