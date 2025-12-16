@@ -1,21 +1,19 @@
-import {
-  BiCheckCircle,
-  BiErrorCircle,
-  BiInfoCircle,
-  BiXCircle,
-} from 'react-icons/bi';
+/**
+ * Alert variant type
+ */
+export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
 
 /**
- * Base classes for the Alert component
+ * Base classes for the Alert component (extends BaseAlertBox defaults)
  */
 export const BASE_CLASSES =
-  'flex items-start w-full rounded-[length:var(--component-alert-radius)]';
+  'rounded-[length:var(--component-alert-radius)]';
 
 /**
  * Variant-specific styles for the Alert component
  * Uses design tokens from global.css for backgrounds and text colors
  */
-export const VARIANT_STYLES = {
+export const VARIANT_STYLES: Record<AlertVariant, string> = {
   info: 'bg-[color:var(--component-alert-bg-info)] text-[color:var(--component-alert-text-info)]',
   success:
     'bg-[color:var(--component-alert-bg-success)] text-[color:var(--component-alert-text-success)]',
@@ -26,19 +24,9 @@ export const VARIANT_STYLES = {
 } as const;
 
 /**
- * Icon components mapped to each variant
- */
-export const VARIANT_ICONS = {
-  info: BiInfoCircle,
-  success: BiCheckCircle,
-  warning: BiErrorCircle,
-  error: BiXCircle,
-} as const;
-
-/**
  * Icon color styles for each variant
  */
-export const ICON_COLOR_STYLES = {
+export const ICON_COLOR_STYLES: Record<AlertVariant, string> = {
   info: 'text-[color:var(--component-alert-icon-info)]',
   success: 'text-[color:var(--component-alert-icon-success)]',
   warning: 'text-[color:var(--component-alert-icon-warning)]',
@@ -46,14 +34,9 @@ export const ICON_COLOR_STYLES = {
 } as const;
 
 /**
- * Alert variant type derived from VARIANT_STYLES keys
- */
-export type AlertVariant = keyof typeof VARIANT_STYLES;
-
-/**
  * Title content styles using design tokens
  */
-export const TITLE_STYLES = {
+export const TITLE_STYLES: React.CSSProperties = {
   fontSize: 'var(--component-alert-title-size)',
   lineHeight: 'var(--component-alert-title-line-height)',
 } as const;
@@ -61,15 +44,16 @@ export const TITLE_STYLES = {
 /**
  * Body content styles using design tokens
  */
-export const BODY_STYLES = {
+export const BODY_STYLES: React.CSSProperties = {
   fontSize: 'var(--component-alert-body-size)',
   lineHeight: 'var(--component-alert-body-line-height)',
+  marginTop: 'var(--component-alert-content-gap)',
 } as const;
 
 /**
  * Container layout styles using design tokens
  */
-export const CONTAINER_STYLES = {
+export const CONTAINER_STYLES: React.CSSProperties = {
   paddingBlock: 'var(--component-alert-padding-block)',
   paddingInline: 'var(--component-alert-padding-inline)',
   gap: 'var(--component-alert-gap)',
@@ -78,6 +62,6 @@ export const CONTAINER_STYLES = {
 /**
  * Icon size style using design tokens
  */
-export const ICON_SIZE_STYLE = {
+export const ICON_SIZE_STYLE: React.CSSProperties = {
   fontSize: 'var(--component-alert-icon-size)',
 } as const;

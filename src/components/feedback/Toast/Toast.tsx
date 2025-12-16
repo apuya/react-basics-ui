@@ -1,13 +1,10 @@
 import { type ComponentPropsWithoutRef, forwardRef, memo } from 'react';
-import { BiCheckCircle, BiErrorCircle, BiInfoCircle, BiXCircle, BiX } from 'react-icons/bi';
-import { cn } from '@/lib/cn';
+import { BaseAlertBox } from '../BaseAlertBox';
 import {
   BASE_CLASSES,
   BODY_STYLES,
-  CLOSE_BUTTON_CLASSES,
   CLOSE_BUTTON_SIZE_STYLE,
   CONTAINER_STYLES,
-  CONTENT_CLASSES,
   ICON_COLOR_STYLES,
   ICON_SIZE_STYLE,
   TITLE_STYLES,
@@ -16,17 +13,6 @@ import {
 
 /** Available toast variants for different notification types. */
 export type ToastVariant = 'success' | 'error' | 'warning' | 'info' | 'default';
-
-/**
- * Icon components mapped to each variant
- */
-const VARIANT_ICONS = {
-  success: BiCheckCircle,
-  error: BiXCircle,
-  warning: BiErrorCircle,
-  info: BiInfoCircle,
-  default: BiInfoCircle,
-} as const;
 
 export interface ToastProps extends Omit<ComponentPropsWithoutRef<'div'>, 'title'> {
   /**
@@ -56,6 +42,7 @@ export interface ToastProps extends Omit<ComponentPropsWithoutRef<'div'>, 'title
 
 /**
  * A toast notification component for displaying temporary messages.
+ * Composed using BaseAlertBox for consistent structure with Alert component.
  *
  * @example
  * ```tsx
@@ -76,59 +63,28 @@ export const Toast = memo(
     },
     ref
   ) {
-    const toastClasses = cn(BASE_CLASSES, VARIANT_STYLES[variant], className);
-    const IconComponent = VARIANT_ICONS[variant];
-    const hasContent = title || description || children;
-
-    // Shared style for description/children with conditional top margin
-    const contentBodyStyle = {
-      ...BODY_STYLES,
-      marginTop: title ? 'var(--semantic-space-tight)' : '0',
-    };
-
     return (
-      <div
+      <BaseAlertBox
         ref={ref}
-        role="alert"
-        aria-live="polite"
-        className={toastClasses}
-        style={CONTAINER_STYLES}
-        data-variant={variant}
+        variant={variant}
+        title={title}
+        description={description}
+        leadingIcon={showIcon ? undefined : null}
+        onClose={onClose}
+        closeButtonLabel="Close notification"
+        baseClasses={BASE_CLASSES}
+        variantClasses={VARIANT_STYLES}
+        iconColorClasses={ICON_COLOR_STYLES}
+        containerStyles={CONTAINER_STYLES}
+        titleStyles={TITLE_STYLES}
+        bodyStyles={BODY_STYLES}
+        iconSizeStyle={ICON_SIZE_STYLE}
+        closeButtonSizeStyle={CLOSE_BUTTON_SIZE_STYLE}
+        className={className}
         {...rest}
       >
-        {/* Icon */}
-        {showIcon && (
-          <span
-            className={cn('shrink-0', ICON_COLOR_STYLES[variant])}
-            style={ICON_SIZE_STYLE}
-            aria-hidden="true"
-          >
-            <IconComponent />
-          </span>
-        )}
-
-        {/* Content */}
-        {hasContent && (
-          <div className={CONTENT_CLASSES}>
-            {title && <div style={TITLE_STYLES}>{title}</div>}
-            {description && <div style={contentBodyStyle}>{description}</div>}
-            {children && !description && <div style={contentBodyStyle}>{children}</div>}
-          </div>
-        )}
-
-        {/* Close button */}
-        {onClose && (
-          <button
-            type="button"
-            onClick={onClose}
-            className={cn('shrink-0', CLOSE_BUTTON_CLASSES, ICON_COLOR_STYLES[variant])}
-            style={CLOSE_BUTTON_SIZE_STYLE}
-            aria-label="Close notification"
-          >
-            <BiX />
-          </button>
-        )}
-      </div>
+        {children}
+      </BaseAlertBox>
     );
   })
 );

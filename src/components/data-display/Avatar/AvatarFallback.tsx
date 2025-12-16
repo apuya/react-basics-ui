@@ -11,9 +11,9 @@ import { useAvatarContext } from './Avatar';
 
 export const AvatarFallback = memo(
   forwardRef<HTMLDivElement, AvatarFallbackProps>(
-    ({ icon, children, size: sizeProp, className, ...props }, ref) => {
+    ({ icon, children, className, ...props }, ref) => {
       const context = useAvatarContext();
-      const size = sizeProp ?? context.size;
+      const size = context.size;
       const Icon = icon || BiUser;
 
       return (

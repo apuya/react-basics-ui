@@ -177,9 +177,6 @@ export const COLOR_STYLES_BY_VARIANT = {
   'subtle-outline': SUBTLE_OUTLINE_COLOR_STYLES,
 } as const;
 
-// Legacy export for backwards compatibility
-export const VARIANT_STYLES = SUBTLE_COLOR_STYLES;
-
 export const PADDING_TOKENS = {
   small: {
     paddingInline: 'var(--component-badge-padding-inline-small)',

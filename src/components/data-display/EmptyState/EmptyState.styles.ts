@@ -19,13 +19,6 @@ export const ICON_WRAPPER_CLASSES =
   'flex items-center justify-center text-[color:var(--component-emptystate-icon-color)]';
 
 /**
- * Icon wrapper styles - margin applied inline
- */
-export const ICON_WRAPPER_STYLES = {
-  marginBottom: 'var(--component-emptystate-icon-gap)',
-} as const;
-
-/**
  * Title spacing styles (typography handled by Heading component)
  */
 export const TITLE_SPACING_STYLES = {

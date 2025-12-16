@@ -77,8 +77,4 @@ export interface AvatarFallbackProps extends ComponentPropsWithoutRef<'div'> {
    * Content to display (initials or custom content).
    */
   children?: ReactNode;
-  /**
-   * @deprecated Size is now inherited from Avatar context. This prop will be removed in a future version.
-   */
-  size?: AvatarSize;
 }

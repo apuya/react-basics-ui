@@ -3,10 +3,8 @@ import {
   type ReactNode,
   forwardRef,
   memo,
-  useMemo,
 } from 'react';
-import { BiX } from 'react-icons/bi';
-import { cn } from '@/lib/cn';
+import { BaseAlertBox } from '../BaseAlertBox';
 import {
   BASE_CLASSES,
   BODY_STYLES,
@@ -15,7 +13,6 @@ import {
   ICON_SIZE_STYLE,
   TITLE_STYLES,
   type AlertVariant,
-  VARIANT_ICONS,
   VARIANT_STYLES,
 } from './Alert.styles';
 
@@ -51,7 +48,8 @@ export interface AlertProps
 }
 
 /**
- * Alert component for displaying important messages to users
+ * Alert component for displaying important messages to users.
+ * Composed using BaseAlertBox for consistent structure with Toast component.
  *
  * @example
  * ```tsx
@@ -76,97 +74,28 @@ export const Alert = memo(
     },
     ref
   ) {
-    const alertClasses = useMemo(
-      () => cn(BASE_CLASSES, VARIANT_STYLES[variant], className),
-      [variant, className]
-    );
-
-    const DefaultIcon = VARIANT_ICONS[variant];
-    
-    // Determine which leading icon to render
-    // undefined = show default variant icon
-    // null = hide icon
-    // ReactNode = show custom icon
-    const resolvedLeadingIcon = useMemo(() => {
-      if (leadingIcon === null) return null;
-      if (leadingIcon !== undefined) return leadingIcon;
-      return <DefaultIcon />;
-    }, [leadingIcon, DefaultIcon]);
-
-    // Use description if provided, otherwise fall back to children
-    const bodyContent = description || children;
-    const bodyStyles = useMemo(
-      () => ({ ...BODY_STYLES, marginTop: title ? 'var(--component-alert-content-gap)' : '0' }),
-      [title]
-    );
-
-    // Shared icon wrapper classes
-    const iconClasses = useMemo(
-      () => cn('flex-shrink-0', ICON_COLOR_STYLES[variant]),
-      [variant]
-    );
-
     return (
-      <div
+      <BaseAlertBox
         ref={ref}
-        role="alert"
-        className={alertClasses}
-        style={CONTAINER_STYLES}
-        data-variant={variant}
+        variant={variant}
+        title={title}
+        description={description}
+        leadingIcon={leadingIcon}
+        trailingIcon={trailingIcon}
+        onClose={onClose}
+        closeButtonLabel="Close alert"
+        baseClasses={BASE_CLASSES}
+        variantClasses={VARIANT_STYLES}
+        iconColorClasses={ICON_COLOR_STYLES}
+        containerStyles={CONTAINER_STYLES}
+        titleStyles={TITLE_STYLES}
+        bodyStyles={BODY_STYLES}
+        iconSizeStyle={ICON_SIZE_STYLE}
+        className={className}
         {...rest}
       >
-        {/* Leading Icon */}
-        {resolvedLeadingIcon && (
-          <span className={iconClasses} style={ICON_SIZE_STYLE} aria-hidden="true">
-            {resolvedLeadingIcon}
-          </span>
-        )}
-
-        {/* Content */}
-        {(title || bodyContent) && (
-          <div className="flex-1 min-w-0">
-            {title && (
-              <div
-                className="font-[var(--component-alert-title-weight)]"
-                style={TITLE_STYLES}
-              >
-                {title}
-              </div>
-            )}
-            {bodyContent && (
-              <div
-                className="font-[var(--component-alert-body-weight)]"
-                style={bodyStyles}
-              >
-                {bodyContent}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Trailing Icon */}
-        {trailingIcon && (
-          <span className={iconClasses} style={ICON_SIZE_STYLE} aria-hidden="true">
-            {trailingIcon}
-          </span>
-        )}
-
-        {/* Close button */}
-        {onClose && (
-          <button
-            type="button"
-            onClick={onClose}
-            className={cn(
-              'flex-shrink-0 inline-flex items-center justify-center rounded-sm opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-1',
-              ICON_COLOR_STYLES[variant]
-            )}
-            style={ICON_SIZE_STYLE}
-            aria-label="Close alert"
-          >
-            <BiX />
-          </button>
-        )}
-      </div>
+        {children}
+      </BaseAlertBox>
     );
   })
 );
