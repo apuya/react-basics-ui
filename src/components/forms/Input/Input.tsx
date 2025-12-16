@@ -1,19 +1,9 @@
-import { cn } from '@/lib/cn';
 import { generateFormId } from '@/lib/generateFormId';
-import { forwardRef, memo, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { forwardRef, memo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { BaseInputField } from '../BaseInputField';
 import { FormField } from '../FormField';
-import {
-  BASE_CLASSES,
-  ICON_SIZE_STYLES,
-  ICON_WRAPPER_BASE_CLASSES,
-  LEADING_ICON_STYLE,
-  SIZE_STYLES,
-  STATE_STYLES,
-  SUFFIX_STYLE,
-  TRAILING_ICON_STYLE,
-} from './Input.styles';
 
-export type InputSize = keyof typeof SIZE_STYLES;
+export type InputSize = 'small' | 'default' | 'large';
 
 export interface InputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'> {
   /** Size variant of the input */
@@ -54,89 +44,47 @@ export const Input = memo(
   ) {
     const inputId = id || generateFormId('input', label);
 
-    const inputClasses = useMemo(
-      () => cn(
-        BASE_CLASSES,
-        SIZE_STYLES[size],
-        STATE_STYLES[error ? 'error' : 'default'],
-        className
-      ),
-      [size, error, className]
-    );
-
-    const inputStyle = useMemo(
-      () => {
-        const hasTrailing = suffix || trailingIcon;
-        return {
-          height: `var(--component-input-height-${size})`,
-          paddingLeft: leadingIcon
-            ? `calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-${size}))`
-            : 'var(--component-input-padding-inline)',
-          paddingRight: hasTrailing
-            ? `calc(var(--component-input-padding-inline) * 2 + var(--component-input-icon-size-${size}))`
-            : 'var(--component-input-padding-inline)',
-        };
-      },
-      [size, leadingIcon, trailingIcon, suffix]
-    );
-
-    const iconWrapperClasses = cn(ICON_WRAPPER_BASE_CLASSES, ICON_SIZE_STYLES[size]);
-
-    return (
-      <FormField
-        label={label}
-        helperText={helperText}
-        error={error}
-        htmlFor={inputId}
-        disabled={disabled}
-        className={cn('w-full', wrapperClassName)}
-      >
-        <div
-          className="relative"
-          data-size={size}
-          data-error={error || undefined}
-          data-disabled={disabled || undefined}
-        >
-          {leadingIcon && (
-            <span
-              className={iconWrapperClasses}
-              style={LEADING_ICON_STYLE}
-              aria-hidden="true"
-            >
-              {leadingIcon}
-            </span>
-          )}
-
-          <input
+    // If no label or helperText, render input directly wrapped in FormField
+    if (!label && !helperText) {
+      return (
+        <FormField error={error} disabled={disabled} className={wrapperClassName}>
+          <BaseInputField
             ref={ref}
             id={inputId}
+            size={size}
+            variant="input"
+            error={error}
             disabled={disabled}
-            className={inputClasses}
-            style={inputStyle}
-            aria-invalid={error || undefined}
+            leadingIcon={leadingIcon}
+            trailingIcon={trailingIcon}
+            suffix={suffix}
+            className={className}
+            cssPrefix="input"
             {...rest}
           />
+        </FormField>
+      );
+    }
 
-          {trailingIcon && (
-            <span
-              className={iconWrapperClasses}
-              style={TRAILING_ICON_STYLE}
-              aria-hidden="true"
-            >
-              {trailingIcon}
-            </span>
-          )}
-
-          {suffix && !trailingIcon && (
-            <span
-              className="absolute top-1/2 right-0 -translate-y-1/2 pointer-events-none select-none"
-              style={SUFFIX_STYLE}
-              aria-hidden="true"
-            >
-              {suffix}
-            </span>
-          )}
-        </div>
+    return (
+      <FormField error={error} disabled={disabled} className={wrapperClassName}>
+        {label && <FormField.Label htmlFor={inputId}>{label}</FormField.Label>}
+        <BaseInputField
+          ref={ref}
+          id={inputId}
+          size={size}
+          variant="input"
+          error={error}
+          disabled={disabled}
+          leadingIcon={leadingIcon}
+          trailingIcon={trailingIcon}
+          suffix={suffix}
+          className={className}
+          cssPrefix="input"
+          {...rest}
+        />
+        {helperText && !error && <FormField.HelperText>{helperText}</FormField.HelperText>}
+        {helperText && error && <FormField.ErrorMessage>{helperText}</FormField.ErrorMessage>}
       </FormField>
     );
   })

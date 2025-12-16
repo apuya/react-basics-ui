@@ -21,8 +21,8 @@ export const DROPZONE_CLASSES =
 export const DROPZONE_DRAG_ACTIVE_CLASSES =
   'border-[color:var(--component-fileinput-border-focus)] bg-[color:var(--component-fileinput-bg-drag-active)]';
 
-export const DROPZONE_ERROR_CLASSES =\n  'border-[color:var(--component-fileinput-border-error)] hover:border-[color:var(--component-fileinput-border-error)]';\n\nexport const UPLOAD_ICON_CLASSES =
-  'text-[color:var(--component-fileinput-icon-default)]';
+export const DROPZONE_ERROR_CLASSES =
+  'border-[color:var(--component-fileinput-border-error)] hover:border-[color:var(--component-fileinput-border-error)]';
 
 export const UPLOAD_TEXT_CLASSES =
   'text-center text-[color:var(--component-fileinput-text-default)] flex flex-col gap-1';
@@ -40,3 +40,9 @@ export const FILE_ITEM_STATE_CLASSES = {
 
 export const FILE_REMOVE_BUTTON_CLASSES =
   'flex-shrink-0 p-1.5 rounded-[length:var(--component-input-radius)] hover:bg-[color:var(--component-fileitem-remove-bg-hover)] text-[color:var(--component-fileitem-remove-text)] hover:text-[color:var(--component-fileitem-remove-text-hover)] transition-colors duration-[var(--component-fileinput-transition-duration)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--component-fileinput-focus-ring-color)]';
+
+/** Shared padding style for FileInput and FileItem */
+export const PADDING_STYLE = {
+  paddingInline: 'var(--component-input-padding-inline)',
+  paddingBlock: 'var(--component-input-padding-inline)',
+} as const;

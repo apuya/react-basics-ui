@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { ListVariant } from './List.types';
+import type { TextListVariant } from './TextList.types';
 
 // =============================================================================
 // BASE STYLES
@@ -11,7 +11,7 @@ export const BASE_CLASSES = 'flex flex-col';
 // VARIANT STYLES
 // =============================================================================
 
-export const VARIANT_STYLES: Record<ListVariant, string> = {
+export const VARIANT_STYLES: Record<TextListVariant, string> = {
   default: 'bg-[color:var(--component-list-bg)]',
   divided:
     'bg-[color:var(--component-list-bg)] [&>li:not(:last-child)]:border-b [&>li:not(:last-child)]:border-[color:var(--component-list-divider-color)]',

@@ -1,17 +1,19 @@
-import { forwardRef, useCallback, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, useCallback, cloneElement, isValidElement, type ReactElement } from 'react';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { useDropdownContext } from './Dropdown';
 
 /**
  * Props for the DropdownTrigger component.
  */
-export interface DropdownTriggerProps extends ComponentPropsWithoutRef<'button'> {}
+export interface DropdownTriggerProps {
+  children: ReactElement;
+}
 
 /**
- * Trigger button that toggles the dropdown menu visibility.
+ * Trigger that toggles the dropdown menu visibility.
  * 
- * Automatically manages ARIA attributes for accessibility and focus states.
- * The trigger can contain any content, typically a Button component.
+ * Enhances the child element with ARIA attributes and click handlers.
+ * Does not wrap - passes props directly to the child.
  * 
  * @example
  * ```tsx
@@ -21,37 +23,37 @@ export interface DropdownTriggerProps extends ComponentPropsWithoutRef<'button'>
  * ```
  */
 
-export const DropdownTrigger = forwardRef<HTMLButtonElement, DropdownTriggerProps>(
-  ({ children, onClick, ...props }, ref) => {
+export const DropdownTrigger = forwardRef<HTMLElement, DropdownTriggerProps>(
+  ({ children }, ref) => {
     const { isOpen, setIsOpen, triggerRef, menuId } = useDropdownContext();
     
-    // Merge external ref with internal context ref
-    const mergedRef = useMergedRefs(ref, triggerRef);
+    // Merge external ref with internal context ref and child's ref
+    const childRef = (children as any).ref;
+    const mergedRef = useMergedRefs(ref, triggerRef, childRef);
 
     /**
      * Toggle dropdown visibility and call optional onClick handler.
      */
+    const childOnClick = (children.props as any).onClick;
     const handleClick = useCallback(
-      (e: React.MouseEvent<HTMLButtonElement>) => {
+      (e: React.MouseEvent) => {
         setIsOpen(!isOpen);
-        onClick?.(e);
+        childOnClick?.(e);
       },
-      [isOpen, setIsOpen, onClick]
+      [isOpen, setIsOpen, childOnClick]
     );
 
-    return (
-      <button
-        ref={mergedRef}
-        type="button"
-        aria-expanded={isOpen}
-        aria-haspopup="true"
-        aria-controls={menuId || undefined}
-        onClick={handleClick}
-        {...props}
-      >
-        {children}
-      </button>
-    );
+    if (!isValidElement(children)) {
+      throw new Error('Dropdown.Trigger: children must be a valid React element');
+    }
+
+    return cloneElement(children, {
+      ref: mergedRef,
+      'aria-expanded': isOpen,
+      'aria-haspopup': 'true',
+      'aria-controls': menuId || undefined,
+      onClick: handleClick,
+    } as any);
   }
 );
 

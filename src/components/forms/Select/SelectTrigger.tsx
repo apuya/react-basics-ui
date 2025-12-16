@@ -2,6 +2,7 @@ import { forwardRef, memo, useCallback, useMemo, type ComponentPropsWithoutRef }
 import { BiChevronDown } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/utility/Icon';
+import { useListContext } from '@/components/overlays/List/ListContext';
 import { useSelectContext } from './SelectContext';
 import {
   ICON_BASE_CLASSES,
@@ -21,7 +22,8 @@ export interface SelectTriggerProps extends Omit<ComponentPropsWithoutRef<'butto
 export const SelectTrigger = memo(
   forwardRef<HTMLButtonElement, SelectTriggerProps>(
     ({ placeholder = 'Select an option...', className, ...props }, ref) => {
-      const { isOpen, setIsOpen, value, disabled, error, size, getOptionLabel, triggerId, menuId } = useSelectContext();
+      const { isOpen, setIsOpen, value, getOptionLabel, menuId } = useListContext();
+      const { disabled, error, size, triggerId } = useSelectContext();
 
       const displayValue = useMemo(
         () => value ? getOptionLabel(value) || value : undefined,

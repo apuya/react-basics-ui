@@ -7,12 +7,12 @@ import { Stack } from '@/components/layout/Stack/Stack';
 import { Heading } from '@/components/typography/Heading/Heading';
 import { Text } from '@/components/typography/Text/Text';
 import { Icon } from '@/components/utility/Icon/Icon';
-import { List } from './List';
-import type { ListVariant } from './List.types';
+import { TextList } from './TextList';
+import type { TextListVariant } from './TextList.types';
 
 const meta = {
-  title: 'Basic/Data Display/List',
-  component: List,
+  title: 'Typography/TextList',
+  component: TextList,
   parameters: {
     layout: 'padded',
     docs: {
@@ -34,35 +34,35 @@ const meta = {
       description: 'Render as ordered list (ol) instead of unordered (ul)',
     },
     children: {
-      description: 'List items (List.Item components)',
+      description: 'TextList items (TextList.Item components)',
     },
   },
-} satisfies Meta<typeof List>;
+} satisfies Meta<typeof TextList>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Sample data for reuse
 const sampleItems = ['First item', 'Second item', 'Third item'];
-const variants: ListVariant[] = ['default', 'divided', 'bordered', 'interactive'];
+const variants: TextListVariant[] = ['default', 'divided', 'bordered', 'interactive'];
 
 export const Default: Story = {
   render: () => (
-    <List>
+    <TextList>
       {sampleItems.map((item) => (
-        <List.Item key={item}><Text>{item}</Text></List.Item>
+        <TextList.Item key={item}><Text>{item}</Text></TextList.Item>
       ))}
-    </List>
+    </TextList>
   ),
 };
 
 export const Ordered: Story = {
   render: () => (
-    <List ordered>
+    <TextList ordered>
       {['Step one', 'Step two', 'Step three'].map((step) => (
-        <List.Item key={step}><Text>{step}</Text></List.Item>
+        <TextList.Item key={step}><Text>{step}</Text></TextList.Item>
       ))}
-    </List>
+    </TextList>
   ),
 };
 
@@ -72,13 +72,13 @@ export const AllVariants: Story = {
       {variants.map((variant) => (
         <Stack key={variant} spacing="compact">
           <Heading as="h3" level="h6" className="capitalize">{variant}</Heading>
-          <List variant={variant}>
+          <TextList variant={variant}>
             {sampleItems.map((item, i) => (
-              <List.Item key={i}>
+              <TextList.Item key={i}>
                 <Text>{variant === 'interactive' ? `Hover me ${i + 1}` : `Item ${i + 1}`}</Text>
-              </List.Item>
+              </TextList.Item>
             ))}
-          </List>
+          </TextList>
         </Stack>
       ))}
     </Grid>
@@ -97,26 +97,26 @@ export const WithIcons: Story = {
     const tasks = ['Task completed', 'Tests passing', 'Documentation updated'];
     
     return (
-      <List variant="divided">
+      <TextList variant="divided">
         {tasks.map((task) => (
-          <List.Item key={task}>
+          <TextList.Item key={task}>
             <Icon icon={BiCheck} color="success" />
             <Text>{task}</Text>
-          </List.Item>
+          </TextList.Item>
         ))}
-      </List>
+      </TextList>
     );
   },
   parameters: {
     docs: {
       description: {
-        story: 'List items with icons using the Icon component.',
+        story: 'TextList items with icons using the Icon component.',
       },
     },
   },
 };
 
-export const FeatureList: Story = {
+export const FeatureTextList: Story = {
   render: () => {
     const features = [
       { title: 'Unlimited projects', description: 'Create as many as you need' },
@@ -128,17 +128,17 @@ export const FeatureList: Story = {
       <Box maxWidth="md">
         <Stack spacing="compact">
           <Heading as="h2" level="h5">Premium Features</Heading>
-          <List variant="divided">
+          <TextList variant="divided">
             {features.map(({ title, description }) => (
-              <List.Item key={title}>
+              <TextList.Item key={title}>
                 <Icon icon={BiStar} color="warning" />
                 <Stack spacing="none">
                   <Text weight="medium">{title}</Text>
                   <Text size="small" color="secondary">{description}</Text>
                 </Stack>
-              </List.Item>
+              </TextList.Item>
             ))}
-          </List>
+          </TextList>
         </Stack>
       </Box>
     );
@@ -162,14 +162,14 @@ export const InteractiveMenu: Story = {
 
     return (
       <Box maxWidth="xs">
-        <List variant="interactive">
+        <TextList variant="interactive">
           {menuItems.map(({ icon, label }) => (
-            <List.Item key={label}>
+            <TextList.Item key={label}>
               <Icon icon={icon} />
               <Text>{label}</Text>
-            </List.Item>
+            </TextList.Item>
           ))}
-        </List>
+        </TextList>
       </Box>
     );
   },
@@ -182,7 +182,7 @@ export const InteractiveMenu: Story = {
   },
 };
 
-export const NestedList: Story = {
+export const NestedTextList: Story = {
   render: () => {
     const items = [
       { main: 'Main item one', sub: ['Sub-item 1a', 'Sub-item 1b'] },
@@ -190,20 +190,20 @@ export const NestedList: Story = {
     ];
 
     return (
-      <List ordered>
+      <TextList ordered>
         {items.map(({ main, sub }) => (
-          <List.Item key={main}>
+          <TextList.Item key={main}>
             <Stack spacing="compact">
               <Text>{main}</Text>
-              <List>
+              <TextList>
                 {sub.map((subItem) => (
-                  <List.Item key={subItem}><Text>{subItem}</Text></List.Item>
+                  <TextList.Item key={subItem}><Text>{subItem}</Text></TextList.Item>
                 ))}
-              </List>
+              </TextList>
             </Stack>
-          </List.Item>
+          </TextList.Item>
         ))}
-      </List>
+      </TextList>
     );
   },
   parameters: {
@@ -215,7 +215,7 @@ export const NestedList: Story = {
   },
 };
 
-export const TaskList: Story = {
+export const TaskTextList: Story = {
   render: () => {
     const tasks = [
       { name: 'Task item', status: 'Due today', statusColor: 'secondary' as const },
@@ -225,16 +225,16 @@ export const TaskList: Story = {
 
     return (
       <Box maxWidth="md">
-        <List variant="bordered">
+        <TextList variant="bordered">
           {tasks.map(({ name, status, statusColor }) => (
-            <List.Item key={name}>
+            <TextList.Item key={name}>
               <Flex justify="between" align="center" className="w-full">
                 <Text>{name}</Text>
                 <Text size="small" color={statusColor}>{status}</Text>
               </Flex>
-            </List.Item>
+            </TextList.Item>
           ))}
-        </List>
+        </TextList>
       </Box>
     );
   },

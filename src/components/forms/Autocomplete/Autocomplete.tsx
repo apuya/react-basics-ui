@@ -1,83 +1,25 @@
 import {
   useState,
-  useMemo,
-  useCallback,
   useRef,
-  useEffect,
+  useCallback,
   useId,
-  type ComponentPropsWithoutRef,
+  useMemo,
+  useEffect,
 } from 'react';
-import { createComponentContext } from '@/lib/createComponentContext';
 import { useControlledState } from '@/hooks/useControlledState';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
+import { useDebounce } from '@/hooks/useDebounce';
 import { FormField } from '@/components/forms/FormField';
+import { ListContext } from '@/components/overlays/List/ListContext';
 import { cn } from '@/lib/cn';
 import { AutocompleteInput } from './AutocompleteInput';
-import { AutocompleteList } from './AutocompleteList';
 import { AutocompleteOption } from './AutocompleteOption';
 import { AutocompleteEmpty } from './AutocompleteEmpty';
+import { AutocompleteContext } from './Autocomplete.context';
+import type { AutocompleteProps, AutocompleteOptionData } from './Autocomplete.types';
 
-/**
- * Data structure for autocomplete options
- */
-export interface AutocompleteOptionData {
-  value: string;
-  label: string;
-  disabled?: boolean;
-}
-
-export type AutocompleteSize = 'small' | 'default' | 'large';
-
-/**
- * Main Autocomplete component props
- */
-export interface AutocompleteProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
-  value?: string | string[];
-  defaultValue?: string | string[];
-  onChange?: (value: string | string[]) => void;
-  open?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  options?: AutocompleteOptionData[];
-  multiple?: boolean;
-  placeholder?: string;
-  disabled?: boolean;
-  filter?: (option: AutocompleteOptionData, query: string) => boolean;
-  emptyMessage?: string;
-  // FormField integration
-  label?: string;
-  helperText?: string;
-  error?: boolean;
-  id?: string;
-  size?: AutocompleteSize;
-}
-
-interface AutocompleteContextValue {
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
-  selectedValue: string[];
-  selectOption: (value: string) => void;
-  query: string;
-  setQuery: (query: string) => void;
-  multiple: boolean;
-  disabled: boolean;
-  error: boolean;
-  size: AutocompleteSize;
-  placeholder: string;
-  options: AutocompleteOptionData[];
-  filteredOptions: AutocompleteOptionData[];
-  highlightedIndex: number;
-  setHighlightedIndex: (index: number | ((prev: number) => number)) => void;
-  inputRef: React.RefObject<HTMLInputElement>;
-  listRef: React.RefObject<HTMLDivElement>;
-  listId: string;
-}
-
-const { Context: AutocompleteContext, useContext: useAutocompleteContext } =
-  createComponentContext<AutocompleteContextValue>('Autocomplete');
-
-export { useAutocompleteContext };
+export { useAutocompleteContext } from './Autocomplete.context';
 
 const defaultFilter = (option: AutocompleteOptionData, query: string) => {
   return option.label.toLowerCase().includes(query.toLowerCase());
@@ -94,8 +36,18 @@ const AutocompleteRoot = ({
   multiple = false,
   placeholder,
   disabled = false,
+  clearable = false,
+  loading = false,
+  debounceDelay = 0,
+  minSearchLength = 0,
+  showDropdownIcon = true,
+  maxHeight = 300,
+  allowCreate = false,
+  onCreateOption,
+  onSearch,
+  highlightMatches = false,
+  renderOption,
   filter = defaultFilter,
-  emptyMessage = 'No results found',
   label,
   helperText,
   error = false,
@@ -109,7 +61,6 @@ const AutocompleteRoot = ({
   const inputId = providedId || autoId;
   const listId = useId();
   const [query, setQuery] = useState('');
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
 
   const inputRef = useRef<HTMLInputElement>(null!);
   const listRef = useRef<HTMLDivElement>(null!);
@@ -129,101 +80,131 @@ const AutocompleteRoot = ({
     onOpenChange
   );
 
-  const filteredOptions = useMemo(() => {
-    if (!query) return options;
-    return options.filter((option) => filter(option, query));
-  }, [options, query, filter]);
+  // Debounce the query for filtering
+  const debouncedQuery = useDebounce(query, debounceDelay);
 
-  const selectOption = useCallback(
-    (optionValue: string) => {
-      if (disabled) return;
-      
-      const newValue = multiple
-        ? selectedValue.includes(optionValue)
-          ? selectedValue.filter((v) => v !== optionValue)
-          : [...selectedValue, optionValue]
-        : [optionValue];
-
-      setSelectedValue(newValue);
-
-      if (!multiple) {
-        setIsOpen(false);
-        setQuery('');
-      }
-    },
-    [multiple, selectedValue, setSelectedValue, setIsOpen, disabled]
-  );
-
-  useClickOutside(containerRef, () => {
-    if (!disabled) {
-      setIsOpen(false);
-      setQuery('');
-    }
-  });
-
-  useEscapeKey(() => {
-    if (!disabled) {
-      setIsOpen(false);
-      setQuery('');
-    }
-  }, isOpen);
-
-  // Reset highlighted index when filtered options change
+  // Trigger onSearch callback when debounced query changes
   useEffect(() => {
-    setHighlightedIndex(0);
-  }, [filteredOptions]);
+    if (onSearch && debouncedQuery) {
+      onSearch(debouncedQuery);
+    }
+  }, [debouncedQuery, onSearch]);
 
-  const contextValue = useMemo(
-    () => ({
-      isOpen,
-      setIsOpen,
-      selectedValue,
-      selectOption,
-      query,
-      setQuery,
-      multiple,
-      disabled,
-      error,
-      size,
-      placeholder: placeholder || 'Search...',
-      options,
-      filteredOptions,
-      highlightedIndex,
-      setHighlightedIndex,
-      inputRef,
-      listRef,
-      listId,
-    }),
-    [isOpen, setIsOpen, selectedValue, selectOption, query, multiple, disabled, error, size, placeholder, options, filteredOptions, highlightedIndex, listId]
+  // Only filter if query meets minimum length requirement
+  const filteredOptions = !debouncedQuery || debouncedQuery.length < minSearchLength
+    ? options
+    : options.filter((option) => filter(option, debouncedQuery));
+
+  const selectOption = useCallback((optionValue: string) => {
+    if (disabled) return;
+    
+    const newValue = multiple
+      ? selectedValue.includes(optionValue)
+        ? selectedValue.filter((v) => v !== optionValue)
+        : [...selectedValue, optionValue]
+      : [optionValue];
+
+    setSelectedValue(newValue);
+
+    if (!multiple) {
+      setIsOpen(false);
+      setQuery('');
+    }
+  }, [disabled, multiple, selectedValue, setSelectedValue, setIsOpen]);
+
+  const handleClear = useCallback(() => {
+    if (disabled) return;
+    setSelectedValue([]);
+    setQuery('');
+    inputRef.current?.focus();
+  }, [disabled, setSelectedValue, inputRef]);
+
+  const handleClickOutside = useCallback(() => {
+    if (!disabled) {
+      setIsOpen(false);
+      setQuery('');
+    }
+  }, [disabled, setIsOpen, setQuery]);
+
+  const handleEscapeKey = useCallback(() => {
+    if (!disabled) {
+      setIsOpen(false);
+      setQuery('');
+    }
+  }, [disabled, setIsOpen, setQuery]);
+
+  useClickOutside(containerRef, handleClickOutside);
+  useEscapeKey(handleEscapeKey, isOpen);
+
+  const autocompleteContextValue = useMemo(() => ({
+    isOpen,
+    setIsOpen,
+    selectedValue,
+    selectOption,
+    query,
+    setQuery,
+    multiple,
+    disabled,
+    error,
+    size,
+    placeholder: placeholder || 'Search...',
+    clearable,
+    loading,
+    minSearchLength,
+    showDropdownIcon,
+    maxHeight,
+    allowCreate,
+    onCreateOption,
+    highlightMatches,
+    renderOption,
+    onClear: handleClear,
+    options,
+    filteredOptions,
+    inputRef,
+    listRef,
+    listId,
+  }), [isOpen, setIsOpen, selectedValue, selectOption, query, multiple, disabled, error, size, placeholder, clearable, loading, minSearchLength, showDropdownIcon, maxHeight, allowCreate, onCreateOption, highlightMatches, renderOption, handleClear, options, filteredOptions, inputRef, listId]);
+
+  // Check if a value is selected (works for both single and multi-select)
+  const isValueSelected = useCallback(
+    (val: string) => selectedValue.includes(val),
+    [selectedValue]
   );
 
-  const autocompleteClasses = useMemo(
-    () => cn('relative w-full', className),
-    [className]
-  );
+  // List context for List.Container and List.Item integration
+  const listContextValue = useMemo(() => ({
+    isOpen,
+    setIsOpen,
+    value: multiple ? undefined : selectedValue[0],
+    setValue: selectOption,
+    isValueSelected,
+    getOptionLabel: (val: string) => options.find(opt => opt.value === val)?.label,
+    registerOption: () => {}, // No-op, options managed by Autocomplete
+    menuId: listId,
+  }), [isOpen, setIsOpen, multiple, selectedValue, selectOption, isValueSelected, options, listId]);
 
   return (
-    <FormField
-      label={label}
-      helperText={helperText}
-      error={error}
-      htmlFor={inputId}
-      disabled={disabled}
-    >
-      <AutocompleteContext.Provider value={contextValue}>
-        <div
-          ref={containerRef}
-          className={autocompleteClasses}
-          data-size={size}
-          data-error={error || undefined}
-          data-disabled={disabled || undefined}
-          data-open={isOpen}
-          data-multiple={multiple || undefined}
-          {...props}
-        >
-          {children}
-        </div>
+    <FormField error={error} disabled={disabled}>
+      {label && <FormField.Label htmlFor={inputId}>{label}</FormField.Label>}
+      <AutocompleteContext.Provider value={autocompleteContextValue}>
+        <ListContext.Provider value={listContextValue}>
+          <div
+            ref={containerRef}
+            data-autocomplete-container
+            className={cn('relative w-full', className)}
+            data-size={size}
+            data-error={error || undefined}
+            data-disabled={disabled || undefined}
+            data-open={isOpen}
+            data-multiple={multiple || undefined}
+            {...props}
+          >
+            {children}
+          </div>
+        </ListContext.Provider>
       </AutocompleteContext.Provider>
+      {helperText && !error && <FormField.HelperText>{helperText}</FormField.HelperText>}
+      {helperText && error && <FormField.ErrorMessage>{helperText}</FormField.ErrorMessage>}
     </FormField>
   );
 };
@@ -232,7 +213,6 @@ AutocompleteRoot.displayName = 'Autocomplete';
 
 export const Autocomplete = Object.assign(AutocompleteRoot, {
   Input: AutocompleteInput,
-  List: AutocompleteList,
   Option: AutocompleteOption,
   Empty: AutocompleteEmpty,
 });

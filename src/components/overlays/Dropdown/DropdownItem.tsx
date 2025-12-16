@@ -1,22 +1,10 @@
-import { forwardRef, useCallback, useEffect, useState, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { BiCheck } from 'react-icons/bi';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/utility/Icon';
 import { Text } from '@/components/typography/Text';
+import { Menu, type MenuItemProps } from '@/components/overlays/Menu';
 import { useDropdownContext } from './Dropdown';
-import {
-  DESCRIPTION_TEXT_STYLE,
-  DISABLED_ICON_CLASSES,
-  DISABLED_ITEM_CLASSES,
-  ICON_STYLE,
-  ICON_VARIANT_STYLES,
-  ICON_WRAPPER_CLASSES,
-  ITEM_BASE_CLASSES,
-  ITEM_STYLE,
-  ITEM_VARIANT_STYLES,
-  SHORTCUT_CLASSES,
-  type DropdownItemVariant,
-} from './Dropdown.styles';
 
 /**
  * Individual actionable menu item with support for icons, shortcuts, variants, and states.
@@ -49,17 +37,9 @@ import {
 /**
  * Props for the DropdownItem component.
  */
-export interface DropdownItemProps extends ComponentPropsWithoutRef<'button'> {
-  /** Disable interaction and apply disabled styles */
-  disabled?: boolean;
+export interface DropdownItemProps extends Omit<MenuItemProps, 'onAction' | 'closeOnAction'> {
   /** Callback invoked when item is selected (before menu closes) */
   onSelect?: () => void;
-  /** Keyboard shortcut text displayed on the right */
-  shortcut?: string;
-  /** Icon element displayed before the text */
-  leadingIcon?: ReactNode;
-  /** Semantic variant for color theming */
-  variant?: DropdownItemVariant;
   /**
    * @deprecated Use variant="danger" instead
    */
@@ -70,14 +50,28 @@ export interface DropdownItemProps extends ComponentPropsWithoutRef<'button'> {
   defaultChecked?: boolean;
   /** Callback when checkbox state changes */
   onCheckedChange?: (checked: boolean) => void;
-  /** Secondary description text below the main label */
-  description?: string;
   /** Whether to close the menu when this item is selected. Defaults to true. */
   closeOnSelect?: boolean;
 }
 
 export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
-  ({ disabled = false, onSelect, shortcut, leadingIcon, variant = 'default', destructive = false, checked, defaultChecked, onCheckedChange, description, closeOnSelect, className, children, onClick, ...props }, ref) => {
+  ({ 
+    disabled = false, 
+    onSelect, 
+    shortcut, 
+    leadingIcon, 
+    variant = 'default', 
+    destructive = false, 
+    checked, 
+    defaultChecked, 
+    onCheckedChange, 
+    description, 
+    closeOnSelect, 
+    className, 
+    children, 
+    onClick, 
+    ...props 
+  }, ref) => {
     const { setIsOpen } = useDropdownContext();
 
     // Determine if checkbox is controlled or uncontrolled
@@ -107,113 +101,116 @@ export const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
     
     const effectiveVariant = destructive ? 'danger' : variant;
 
-    // Get style objects from constants
-    const itemStyle = ITEM_STYLE(!!description);
-    const iconStyle = ICON_STYLE;
-
-    // Build CSS classes with variant-specific styling
-    const itemClasses = disabled
-      ? cn(ITEM_BASE_CLASSES, DISABLED_ITEM_CLASSES, className)
-      : cn(
-          ITEM_BASE_CLASSES,
-          ITEM_VARIANT_STYLES[effectiveVariant].default,
-          ITEM_VARIANT_STYLES[effectiveVariant].hoverClasses,
-          ITEM_VARIANT_STYLES[effectiveVariant].activeClasses,
-          className
-        );
-
-    // Icon color classes based on variant
-    const iconClasses = disabled
-      ? cn(ICON_WRAPPER_CLASSES, DISABLED_ICON_CLASSES)
-      : cn(
-          ICON_WRAPPER_CLASSES,
-          ICON_VARIANT_STYLES[effectiveVariant].default,
-          ICON_VARIANT_STYLES[effectiveVariant].hoverClasses,
-          ICON_VARIANT_STYLES[effectiveVariant].activeClasses
-        );
-
     /**
      * Handle item click: toggle checkbox if applicable, invoke callbacks, optionally close menu.
-     * Prevents action if item is disabled.
      */
+    const handleAction = useCallback(() => {
+      if (disabled) return;
+      
+      // Toggle checkbox state if this is a checkbox item
+      if (isCheckbox) {
+        const newChecked = !effectiveChecked;
+        if (!isControlled) {
+          setInternalChecked(newChecked);
+        }
+        onCheckedChange?.(newChecked);
+      }
+      
+      onSelect?.();
+      
+      if (shouldCloseOnSelect) {
+        setIsOpen(false);
+      }
+    }, [disabled, isCheckbox, effectiveChecked, isControlled, onCheckedChange, onSelect, shouldCloseOnSelect, setIsOpen]);
+
     const handleClick = useCallback(
       (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (disabled) return;
-        
-        // Toggle checkbox state if this is a checkbox item
-        if (isCheckbox) {
-          const newChecked = !effectiveChecked;
-          if (!isControlled) {
-            setInternalChecked(newChecked);
-          }
-          onCheckedChange?.(newChecked);
-        }
-        
-        onSelect?.();
-        if (shouldCloseOnSelect) {
-          setIsOpen(false);
-        }
         onClick?.(e);
       },
-      [disabled, isCheckbox, effectiveChecked, isControlled, onCheckedChange, onSelect, shouldCloseOnSelect, setIsOpen, onClick]
+      [onClick]
     );
 
-    return (
-      <button
-        ref={ref}
-        type="button"
-        role={isCheckbox ? 'menuitemcheckbox' : 'menuitem'}
-        aria-checked={isCheckbox ? effectiveChecked : undefined}
-        disabled={disabled}
-        className={cn('group', itemClasses)}
-        style={itemStyle}
-        onClick={handleClick}
-        {...props}
-      >
-          {isCheckbox && (
+    // If checkbox item, render with Menu.Item but add checkbox UI
+    if (isCheckbox) {
+      return (
+        <Menu.Item
+          ref={ref}
+          role="menuitemcheckbox"
+          aria-checked={effectiveChecked}
+          disabled={disabled}
+          variant={effectiveVariant}
+          closeOnAction={shouldCloseOnSelect}
+          onAction={handleAction}
+          onClick={handleClick}
+          className={className}
+          {...props}
+        >
+          <span 
+            className="relative inline-flex items-center justify-center flex-shrink-0 border-2 rounded transition-all"
+            style={{
+              width: 'var(--component-checkbox-size-small)',
+              height: 'var(--component-checkbox-size-small)',
+              borderColor: effectiveChecked ? 'var(--component-checkbox-border-checked)' : 'var(--component-checkbox-border-default)',
+              backgroundColor: effectiveChecked ? 'var(--component-checkbox-bg-checked)' : 'var(--component-checkbox-bg-default)',
+            }}
+            aria-hidden="true"
+          >
             <span 
-              className="relative inline-flex items-center justify-center flex-shrink-0 border-2 rounded transition-all"
+              className="absolute inset-0 flex items-center justify-center transition-opacity"
               style={{
-                width: 'var(--component-checkbox-size-small)',
-                height: 'var(--component-checkbox-size-small)',
-                borderColor: effectiveChecked ? 'var(--component-checkbox-border-checked)' : 'var(--component-checkbox-border-default)',
-                backgroundColor: effectiveChecked ? 'var(--component-checkbox-bg-checked)' : 'var(--component-checkbox-bg-default)',
+                opacity: effectiveChecked ? 'var(--component-checkbox-check-opacity-visible)' : 'var(--component-checkbox-check-opacity-hidden)',
               }}
-              aria-hidden="true"
             >
-              <span 
-                className="absolute inset-0 flex items-center justify-center transition-opacity"
-                style={{
-                  opacity: effectiveChecked ? 'var(--component-checkbox-check-opacity-visible)' : 'var(--component-checkbox-check-opacity-hidden)',
-                }}
-              >
-                <Icon icon={BiCheck} size="sm" color="inverse" />
-              </span>
+              <Icon icon={BiCheck} size="sm" color="inverse" />
             </span>
-          )}
+          </span>
+          
           {leadingIcon && (
-            <span className={iconClasses} style={iconStyle} aria-hidden="true">
+            <span className="shrink-0" aria-hidden="true">
               {leadingIcon}
             </span>
           )}
+          
           <span className="flex-1 text-left min-w-0">
             <span className="block truncate">{children}</span>
             {description && (
               <Text
                 as="div"
-                className="overflow-hidden text-ellipsis"
-                style={{ ...DESCRIPTION_TEXT_STYLE, marginTop: 'var(--component-dropdown-item-gap)' }}
+                size="small"
+                color="secondary"
+                className="overflow-hidden text-ellipsis mt-1"
               >
                 {description}
               </Text>
             )}
           </span>
+          
           {shortcut && (
-            <Text size="small" color="tertiary" className={SHORTCUT_CLASSES} as="span" aria-label={`Keyboard shortcut: ${shortcut}`}>
+            <Text size="small" color="tertiary" as="span" aria-label={`Keyboard shortcut: ${shortcut}`}>
               {shortcut}
             </Text>
           )}
-      </button>
+        </Menu.Item>
+      );
+    }
+
+    // For non-checkbox items, delegate to Menu.Item
+    return (
+      <Menu.Item
+        ref={ref}
+        disabled={disabled}
+        variant={effectiveVariant}
+        leadingIcon={leadingIcon}
+        shortcut={shortcut}
+        description={description}
+        closeOnAction={shouldCloseOnSelect}
+        onAction={handleAction}
+        onClick={handleClick}
+        className={className}
+        {...props}
+      >
+        {children}
+      </Menu.Item>
     );
   }
 );

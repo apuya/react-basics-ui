@@ -19,7 +19,7 @@ const PANEL_TRANSITION = 'transition-all duration-300 ease-in-out flex items-cen
 const COLLAPSED_SIZE = 'w-8';
 
 const meta: Meta<typeof Navbar> = {
-  title: 'Experimental/Navbar',
+  title: 'Navigation/Navbar',
   component: Navbar,
   parameters: {
     layout: 'fullscreen',

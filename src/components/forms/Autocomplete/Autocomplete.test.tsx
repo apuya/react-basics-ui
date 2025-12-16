@@ -1,7 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Autocomplete, type AutocompleteOptionData } from './Autocomplete';
+import { Autocomplete } from './Autocomplete';
+import { List } from '@/components/overlays/List';
+import type { AutocompleteOptionData } from './Autocomplete.types';
 
 const mockOptions: AutocompleteOptionData[] = [
   { value: 'apple', label: 'Apple' },
@@ -23,11 +25,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions}>
           <Autocomplete.Input placeholder="Search..." />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -39,11 +41,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} label="Fruit Selection">
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -54,11 +56,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} helperText="Select your favorite fruit">
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -71,11 +73,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} value="apple">
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -90,11 +92,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} value="" onChange={handleChange}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -113,11 +115,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} defaultValue="banana">
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -131,11 +133,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -156,11 +158,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -175,11 +177,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} defaultOpen>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -191,11 +193,11 @@ describe('Autocomplete', () => {
       const { rerender } = render(
         <Autocomplete options={mockOptions} open={false}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -205,11 +207,11 @@ describe('Autocomplete', () => {
       rerender(
         <Autocomplete options={mockOptions} open={true}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -225,11 +227,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} defaultOpen>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -252,11 +254,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} defaultOpen onChange={handleChange}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -275,11 +277,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} defaultOpen>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -299,11 +301,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptionsWithDisabled} defaultOpen onChange={handleChange}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptionsWithDisabled.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptionsWithDisabled.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -322,32 +324,18 @@ describe('Autocomplete', () => {
     it('filters options based on query', async () => {
       const user = userEvent.setup();
 
-      const FilterableAutocomplete = () => {
-        const { query, filteredOptions } = { query: '', filteredOptions: mockOptions };
-        return (
-          <Autocomplete options={mockOptions}>
-            <Autocomplete.Input />
-            <Autocomplete.List>
-              {mockOptions.map((option, index) => (
-                <Autocomplete.Option key={option.value} option={option} index={index} />
-              ))}
-            </Autocomplete.List>
-          </Autocomplete>
-        );
-      };
-
       // NOTE: The filtering is done in context and passed to children.
       // This test verifies the filtering works through the UI interaction.
       render(
         <Autocomplete options={mockOptions}>
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {mockOptions
               .filter(o => o.label.toLowerCase().includes('ber'))
-              .map((option, index) => (
-                <Autocomplete.Option key={option.value} option={option} index={index} />
+              .map((option) => (
+                <List.Item key={option.value} value={option.value} />
               ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -365,12 +353,12 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
             <Autocomplete.Empty>No results found</Autocomplete.Empty>
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -394,11 +382,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} filter={customFilter}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {filteredByStartsWith.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {filteredByStartsWith.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -419,11 +407,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} multiple onChange={handleChange}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -448,11 +436,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} multiple value={['apple', 'banana']} onChange={handleChange}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -472,11 +460,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -492,11 +480,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions}>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -514,11 +502,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} defaultOpen>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -536,11 +524,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} value="apple" defaultOpen>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -552,11 +540,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptionsWithDisabled} defaultOpen>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptionsWithDisabled.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptionsWithDisabled.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -570,11 +558,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} disabled>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -588,11 +576,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} disabled>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -609,11 +597,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} error>
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -628,11 +616,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} size="small">
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 
@@ -645,11 +633,11 @@ describe('Autocomplete', () => {
       render(
         <Autocomplete options={mockOptions} size="large">
           <Autocomplete.Input />
-          <Autocomplete.List>
-            {mockOptions.map((option, index) => (
-              <Autocomplete.Option key={option.value} option={option} index={index} />
+          <List.Container>
+            {mockOptions.map((option) => (
+              <List.Item key={option.value} value={option.value} />
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       );
 

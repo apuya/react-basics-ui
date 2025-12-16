@@ -61,7 +61,7 @@ const USER_PROFILE = {
 // ============================================================================
 
 const meta: Meta<typeof Popover> = {
-  title: 'Overlay/Popover',
+  title: 'Overlays/Popover',
   component: Popover,
   parameters: {
     layout: 'centered',

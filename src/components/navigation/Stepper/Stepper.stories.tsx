@@ -16,7 +16,7 @@ import { Flex } from '../../layout/Flex';
 import { Stepper } from './Stepper';
 
 const meta: Meta<typeof Stepper> = {
-  title: 'Experimental/Stepper',
+  title: 'Navigation/Stepper',
   component: Stepper,
   parameters: {
     layout: 'padded',

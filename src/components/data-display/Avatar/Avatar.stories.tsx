@@ -8,7 +8,7 @@ import { Card } from '@/components/data-display/Card/Card';
 import { Grid } from '@/components/layout/Grid';
 
 const meta: Meta<typeof Avatar> = {
-  title: 'Basic/Data Display/Avatar',
+  title: 'Data Display/Avatar',
   component: Avatar,
   parameters: {
     layout: 'centered',

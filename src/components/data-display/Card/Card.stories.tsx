@@ -10,7 +10,7 @@ import { Grid } from '@/components/layout/Grid';
 import { Avatar } from '@/components/data-display/Avatar/Avatar';
 
 const meta: Meta<typeof Card> = {
-  title: 'Basic/Data Display/Card',
+  title: 'Data Display/Card',
   component: Card,
   parameters: {
     layout: 'centered',

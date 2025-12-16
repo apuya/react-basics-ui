@@ -1,19 +1,14 @@
 import {
   forwardRef,
   memo,
-  useMemo,
-  useCallback,
   type ComponentPropsWithoutRef,
   type CSSProperties,
 } from 'react';
-import { cn } from '@/lib/cn';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
-import { useAutocompleteContext } from './Autocomplete';
-import { 
-  AUTOCOMPLETE_INPUT_BASE_CLASSES, 
-  AUTOCOMPLETE_INPUT_SIZE_STYLES, 
-  AUTOCOMPLETE_INPUT_STATE_STYLES 
-} from './Autocomplete.styles';
+import { useAutocompleteContext } from './Autocomplete.context';
+import { BaseInputField } from '../BaseInputField';
+import { Spinner } from '@/components/feedback/Spinner';
+import { IoClose, IoChevronDown } from 'react-icons/io5';
 
 export interface AutocompleteInputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'value' | 'onChange'> {
   placeholder?: string;
@@ -22,122 +17,146 @@ export interface AutocompleteInputProps extends Omit<ComponentPropsWithoutRef<'i
 export const AutocompleteInput = memo(
   forwardRef<HTMLInputElement, AutocompleteInputProps>(
     ({ placeholder: placeholderProp, className, style, disabled: disabledProp, ...props }, forwardedRef) => {
-      const { isOpen, query, setQuery, setIsOpen, selectedValue, multiple, options, filteredOptions, highlightedIndex, setHighlightedIndex, selectOption, inputRef, listId, disabled: contextDisabled, error, size, placeholder: contextPlaceholder } = useAutocompleteContext();
-      const placeholder = placeholderProp ?? contextPlaceholder;
+      const { 
+        isOpen, 
+        query, 
+        setQuery, 
+        setIsOpen, 
+        selectedValue, 
+        multiple, 
+        options, 
+        inputRef,
+        listRef,
+        listId, 
+        disabled: contextDisabled, 
+        error, 
+        size, 
+        placeholder: contextPlaceholder,
+        clearable,
+        loading,
+        showDropdownIcon,
+        onClear
+      } = useAutocompleteContext();
       
+      const placeholder = placeholderProp ?? contextPlaceholder;
       const disabled = disabledProp ?? contextDisabled;
       const mergedRef = useMergedRefs(forwardedRef, inputRef);
 
-      const handleInputChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-          if (disabled) return;
-          setQuery(e.target.value);
-          setIsOpen(true);
-        },
-        [setQuery, setIsOpen, disabled]
-      );
+      const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (disabled) return;
+        setQuery(e.target.value);
+        setIsOpen(true);
+      };
 
-      const handleInputFocus = useCallback(() => {
+      const handleInputFocus = () => {
         if (disabled) return;
         setIsOpen(true);
-      }, [setIsOpen, disabled]);
+      };
 
-      const handleKeyDown = useCallback(
-        (e: React.KeyboardEvent<HTMLInputElement>) => {
-          if (!filteredOptions.length) return;
+      const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // Escape key to close
+        if (e.key === 'Escape') {
+          setIsOpen(false);
+          setQuery('');
+          return;
+        }
 
-          // Helper to find next non-disabled index
-          const findNextIndex = (startIndex: number, direction: 1 | -1): number => {
-            let nextIndex = startIndex + direction;
-            while (
-              nextIndex >= 0 &&
-              nextIndex < filteredOptions.length &&
-              filteredOptions[nextIndex]?.disabled
-            ) {
-              nextIndex += direction;
-            }
-            // Clamp to valid range
-            if (nextIndex < 0) return startIndex;
-            if (nextIndex >= filteredOptions.length) return startIndex;
-            return nextIndex;
-          };
+        // ArrowDown: Focus first option in the list
+        if (e.key === 'ArrowDown' && isOpen) {
+          e.preventDefault();
+          const firstOption = listRef.current?.querySelector<HTMLButtonElement>('[role="option"]:not([disabled])');
+          firstOption?.focus();
+          return;
+        }
 
-          switch (e.key) {
-            case 'ArrowDown':
-              e.preventDefault();
-              setHighlightedIndex((prev) => findNextIndex(prev, 1));
-              break;
-            case 'ArrowUp':
-              e.preventDefault();
-              setHighlightedIndex((prev) => findNextIndex(prev, -1));
-              break;
-            case 'Enter':
-              e.preventDefault();
-              if (filteredOptions[highlightedIndex] && !filteredOptions[highlightedIndex].disabled) {
-                selectOption(filteredOptions[highlightedIndex].value);
-              }
-              break;
-            case 'Escape':
-              setIsOpen(false);
-              setQuery('');
-              break;
-          }
-        },
-        [filteredOptions, highlightedIndex, selectOption, setHighlightedIndex, setIsOpen, setQuery]
-      );
+        // Other arrow keys and Enter are handled by List.Container's keyboard navigation
+      };
 
-      const inputClasses = useMemo(
-        () => cn(
-          AUTOCOMPLETE_INPUT_BASE_CLASSES,
-          AUTOCOMPLETE_INPUT_SIZE_STYLES[size],
-          error ? AUTOCOMPLETE_INPUT_STATE_STYLES.error : AUTOCOMPLETE_INPUT_STATE_STYLES.default,
-          className
-        ),
-        [size, error, className]
-      );
-
-      const displayValue = useMemo(() => {
+      const displayValue = (() => {
         if (query) return query;
         if (!multiple && selectedValue.length === 1) {
           const selected = options.find((opt) => opt.value === selectedValue[0]);
           return selected?.label || '';
         }
         return '';
-      }, [query, multiple, selectedValue, options]);
+      })();
 
-      const inputStyle = useMemo<CSSProperties>(
-        () => ({
-          height: `var(--component-input-height-${size})`,
-          paddingInline: 'var(--component-autocomplete-input-padding-inline)',
-          ...style,
-        }),
-        [size, style]
-      );
+      const inputStyle: CSSProperties = {
+        paddingInline: 'var(--component-autocomplete-input-padding-inline)',
+        ...style,
+      };
+
+      // Show loading spinner, clear button, or dropdown indicator
+      const showClearButton = clearable && !disabled && !loading && (selectedValue.length > 0 || query);
+      const showDropdown = showDropdownIcon && !loading && !showClearButton;
+
+      // Spinner size mapping based on input size
+      const spinnerSize = size === 'small' ? 'xs' : size === 'large' ? 'sm' : 'xs';
+      // Icon size mapping based on input size
+      const iconSize = size === 'small' ? '16px' : size === 'large' ? '20px' : '18px';
+
+      const trailingIcon = loading ? (
+        <Spinner size={spinnerSize} label="Loading options" />
+      ) : showClearButton ? (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClear();
+          }}
+          className="flex items-center justify-center shrink-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
+          aria-label="Clear selection"
+          tabIndex={-1}
+          style={{ width: iconSize, height: iconSize, minWidth: iconSize, minHeight: iconSize }}
+        >
+          <IoClose style={{ width: '100%', height: '100%', display: 'block' }} />
+        </button>
+      ) : showDropdown ? (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!disabled) {
+              setIsOpen(!isOpen);
+            }
+          }}
+          className="flex items-center justify-center shrink-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-all"
+          aria-label={isOpen ? 'Close dropdown' : 'Open dropdown'}
+          tabIndex={-1}
+          style={{ 
+            width: iconSize, 
+            height: iconSize, 
+            minWidth: iconSize, 
+            minHeight: iconSize,
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)'
+          }}
+        >
+          <IoChevronDown style={{ width: '100%', height: '100%', display: 'block' }} />
+        </button>
+      ) : undefined;
 
       return (
-        <input
+        <BaseInputField
           ref={mergedRef}
           type="text"
+          size={size}
+          variant="input"
+          error={error}
+          disabled={disabled}
+          className={className}
+          cssPrefix="input"
+          inputStyle={inputStyle}
+          trailingIcon={trailingIcon}
           role="combobox"
           aria-autocomplete="list"
           aria-expanded={isOpen}
           aria-controls={listId}
-          aria-activedescendant={
-            isOpen && highlightedIndex >= 0 && filteredOptions[highlightedIndex]
-              ? `${listId}-option-${filteredOptions[highlightedIndex].value}`
-              : undefined
-          }
+          aria-busy={loading}
           value={displayValue}
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          disabled={disabled}
-          className={inputClasses}
-          style={inputStyle}
-          data-size={size}
-          data-error={error || undefined}
-          data-open={isOpen}
           {...props}
         />
       );

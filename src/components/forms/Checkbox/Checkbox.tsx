@@ -1,13 +1,14 @@
 import { cn } from '@/lib/cn';
 import { generateFormId } from '@/lib/generateFormId';
-import { forwardRef, memo, useMemo } from 'react';
+import { Label } from '@/components/typography/Label';
+import { useMergedRefs } from '@/hooks/useMergedRefs';
+import { forwardRef, memo, useEffect, useRef } from 'react';
 import { CheckIcon } from './CheckIcon';
 import {
   CHECKBOX_BASE_CLASSES,
   CHECKBOX_SIZE_STYLES,
   CHECK_ICON_CLASSES,
   HIDDEN_INPUT_CLASSES,
-  LABEL_CLASSES,
   WRAPPER_BASE_CLASSES,
 } from './Checkbox.styles';
 import type { CheckboxProps } from './Checkbox.types';
@@ -59,39 +60,30 @@ export const Checkbox = memo(
     },
     ref
   ) {
+    // Internal ref for indeterminate state management
+    const internalRef = useRef<HTMLInputElement>(null);
+    const mergedRef = useMergedRefs(ref, internalRef);
+
     // Generate ID if not provided (for label association)
-    const checkboxId = useMemo(
-      () => id || generateFormId('checkbox', label ? String(label) : undefined),
-      [id, label]
-    );
+    const checkboxId = id || generateFormId('checkbox', label ? String(label) : undefined);
 
-    // Compute checkbox classes (simple merge, no memoization needed)
-    const checkboxClasses = cn(CHECKBOX_BASE_CLASSES, className);
-
-    // Get size-specific styles
-    const sizeStyle = CHECKBOX_SIZE_STYLES[size];
+    // Handle indeterminate state via effect
+    useEffect(() => {
+      if (internalRef.current) {
+        internalRef.current.indeterminate = indeterminate;
+      }
+    }, [indeterminate]);
 
     return (
       <label className={WRAPPER_BASE_CLASSES}>
         <span
-          className={checkboxClasses}
+          className={cn(CHECKBOX_BASE_CLASSES, className)}
           data-error={error || undefined}
-          data-size={size}
-          style={sizeStyle}
+          data-disabled={disabled || undefined}
+          style={CHECKBOX_SIZE_STYLES[size]}
         >
           <input
-            ref={(node) => {
-              // Handle indeterminate state
-              if (node) {
-                node.indeterminate = indeterminate;
-              }
-              // Forward ref
-              if (typeof ref === 'function') {
-                ref(node);
-              } else if (ref) {
-                ref.current = node;
-              }
-            }}
+            ref={mergedRef}
             id={checkboxId}
             type="checkbox"
             disabled={disabled}
@@ -108,9 +100,9 @@ export const Checkbox = memo(
 
         {/* Label */}
         {label && (
-          <span className={LABEL_CLASSES}>
+          <Label htmlFor={checkboxId} disabled={disabled} className="peer-disabled:cursor-not-allowed">
             {label}
-          </span>
+          </Label>
         )}
       </label>
     );

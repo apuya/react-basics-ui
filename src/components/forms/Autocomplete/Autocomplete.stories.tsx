@@ -1,22 +1,49 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { BiPlus, BiSearch } from 'react-icons/bi';
-import { Autocomplete, type AutocompleteOptionData } from './Autocomplete';
+import { Autocomplete } from './Autocomplete';
+import { List } from '@/components/overlays/List';
+import type { AutocompleteOptionData } from './Autocomplete.types';
 import { Stack } from '@/components/layout/Stack';
 import { Text } from '@/components/typography/Text';
 import { Button } from '@/components/actions/Button';
 import { Avatar } from '@/components/data-display/Avatar';
 import { Icon } from '@/components/utility/Icon';
 
-const meta: Meta<typeof Autocomplete> = {
-  title: 'Advanced/Forms/Autocomplete',
+const meta = {
+  title: 'Forms/Autocomplete',
   component: Autocomplete,
+  subcomponents: {
+    'Autocomplete.Input': Autocomplete.Input,
+    'Autocomplete.Option': Autocomplete.Option,
+    'Autocomplete.Empty': Autocomplete.Empty,
+    'List.Container': List.Container,
+    'List.Item': List.Item,
+  },
   parameters: {
     layout: 'centered',
     docs: {
       description: {
         component:
-          'A compound autocomplete component with filtering, keyboard navigation, single/multiple selection, and FormField integration.',
+          'A flexible compound autocomplete component with filtering, keyboard navigation, single/multiple selection, and FormField integration.\n\n' +
+          '## Features\n' +
+          '- **Filtering**: Real-time search with customizable filter function\n' +
+          '- **Keyboard Navigation**: Arrow keys, Enter to select, Escape to close\n' +
+          '- **Selection Modes**: Single or multiple selection\n' +
+          '- **FormField Integration**: Labels, helper text, error states\n' +
+          '- **Customization**: Custom option rendering, empty states, icons\n' +
+          '- **Accessibility**: ARIA compliant with combobox pattern\n\n' +
+          '## Compound Components\n' +
+          '- `Autocomplete.Input`: Input field with clear/dropdown controls\n' +
+          '- `List.Container`: Dropdown container for options (from List component)\n' +
+          '- `List.Item`: Basic selectable option (from List component)\n' +
+          '- `Autocomplete.Option`: Enhanced option with auto-lookup and text highlighting\n' +
+          '- `Autocomplete.Empty`: No results state\n\n' +
+          '## Use Cases\n' +
+          '- **Search & Select**: User search, product search, command palette\n' +
+          '- **Forms**: Country/state selection, category picker, tag input\n' +
+          '- **Data Entry**: Contact picker, skill selection, multi-tag editor\n' +
+          '- **Filtering**: Advanced filters, faceted search, smart suggestions',
       },
     },
   },
@@ -28,7 +55,83 @@ const meta: Meta<typeof Autocomplete> = {
       </div>
     ),
   ],
-};
+  argTypes: {
+    value: {
+      control: false,
+      description: 'Current selected value (string for single, string[] for multiple)',
+      table: { category: 'State' },
+    },
+    onChange: {
+      description: 'Callback when selection changes',
+      table: { category: 'Events' },
+    },
+    options: {
+      description: 'Array of selectable options with value/label/disabled',
+      table: { category: 'Data' },
+    },
+    multiple: {
+      control: 'boolean',
+      description: 'Enable multiple selection mode',
+      table: { category: 'Behavior', defaultValue: { summary: 'false' } },
+    },
+    size: {
+      control: 'select',
+      options: ['small', 'default', 'large'],
+      description: 'Input field size',
+      table: { category: 'Appearance', defaultValue: { summary: 'default' } },
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Disable the entire component',
+      table: { category: 'State' },
+    },
+    error: {
+      control: 'boolean',
+      description: 'Show error state',
+      table: { category: 'State' },
+    },
+    label: {
+      control: 'text',
+      description: 'FormField label',
+      table: { category: 'FormField' },
+    },
+    helperText: {
+      control: 'text',
+      description: 'FormField helper text',
+      table: { category: 'FormField' },
+    },
+    placeholder: {
+      control: 'text',
+      description: 'Input placeholder text',
+      table: { category: 'Content' },
+    },
+    clearable: {
+      control: 'boolean',
+      description: 'Show clear button to reset selection',
+      table: { category: 'Behavior', defaultValue: { summary: 'false' } },
+    },
+    loading: {
+      control: 'boolean',
+      description: 'Show loading state indicator',
+      table: { category: 'State', defaultValue: { summary: 'false' } },
+    },
+    filter: {
+      control: false,
+      description: 'Custom filter function (option, query) => boolean',
+      table: { category: 'Behavior' },
+    },
+    defaultOpen: {
+      control: 'boolean',
+      description: 'Open dropdown by default',
+      table: { category: 'Behavior' },
+    },
+    defaultValue: {
+      control: false,
+      description: 'Initial value (uncontrolled)',
+      table: { category: 'State' },
+    },
+  },
+} satisfies Meta<typeof Autocomplete>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -43,6 +146,50 @@ const fruits: AutocompleteOptionData[] = [
   { value: 'grape', label: 'Grape' },
   { value: 'honeydew', label: 'Honeydew' },
 ];
+
+// ============================================================================
+// PLAYGROUND
+// ============================================================================
+
+export const Playground: Story = {
+  args: {
+    options: [
+      { value: 'apple', label: 'Apple' },
+      { value: 'banana', label: 'Banana' },
+      { value: 'cherry', label: 'Cherry' },
+      { value: 'date', label: 'Date' },
+    ],
+    placeholder: 'Search...',
+    label: 'Choose an option',
+    helperText: 'Start typing to filter',
+    size: 'default',
+    disabled: false,
+    error: false,
+    multiple: false,
+  },
+  render: (args) => {
+    const [value, setValue] = useState<string | string[]>(args.multiple ? [] : '');
+    return (
+      <div className="w-80">
+        <Autocomplete
+          {...args}
+          value={value}
+          onChange={setValue}
+        >
+          <Autocomplete.Input />
+          <List.Container>
+            {args.options?.map((option) => (
+              <List.Item key={option.value} value={option.value}>
+                {option.label}
+              </List.Item>
+            ))}
+            <Autocomplete.Empty />
+          </List.Container>
+        </Autocomplete>
+      </div>
+    );
+  },
+};
 
 // ============================================================================
 // DEFAULT
@@ -60,12 +207,14 @@ export const Default: Story = {
           placeholder="Search fruits..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container style={{ maxHeight: 300 }}>
             {fruits.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
+              <List.Item key={option.value} value={option.value}>
+                {option.label}
+              </List.Item>
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
         <Text size="sm" color="tertiary">
           Selected: {value || 'None'}
@@ -93,12 +242,12 @@ export const WithFormField: Story = {
           placeholder="Select a fruit..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {fruits.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       </Stack>
     );
@@ -125,12 +274,12 @@ export const SizeVariants: Story = {
           placeholder="Small..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {fruits.map((opt) => (
-              <Autocomplete.Option key={opt.value} value={opt.value} />
+              <List.Item key={opt.value} value={opt.value} />
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
 
         <Autocomplete
@@ -142,12 +291,12 @@ export const SizeVariants: Story = {
           placeholder="Default..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {fruits.map((opt) => (
-              <Autocomplete.Option key={opt.value} value={opt.value} />
+              <List.Item key={opt.value} value={opt.value} />
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
 
         <Autocomplete
@@ -159,12 +308,12 @@ export const SizeVariants: Story = {
           placeholder="Large..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {fruits.map((opt) => (
-              <Autocomplete.Option key={opt.value} value={opt.value} />
+              <List.Item key={opt.value} value={opt.value} />
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       </Stack>
     );
@@ -189,12 +338,12 @@ export const MultipleSelection: Story = {
           placeholder="Select multiple..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {fruits.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
         <Text size="sm" color="tertiary">
           Selected: {value.length > 0 ? value.join(', ') : 'None'}
@@ -224,12 +373,12 @@ export const States: Story = {
           placeholder="Select a fruit..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {fruits.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
 
         <Autocomplete
@@ -241,11 +390,11 @@ export const States: Story = {
           helperText="This field cannot be edited"
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {fruits.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
             ))}
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       </Stack>
     );
@@ -275,12 +424,12 @@ export const DisabledOptions: Story = {
           placeholder="Select an option..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {options.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
         <Text size="sm" color="tertiary">
           Selected: {value || 'None'}
@@ -310,12 +459,12 @@ export const CustomFilter: Story = {
           placeholder="Type to filter (starts with)..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {fruits.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
         <Text size="xs" color="tertiary">
           Custom filter: only matches from start of label
@@ -345,12 +494,12 @@ export const LongList: Story = {
           placeholder="Search in long list..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {longList.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
         <Text size="sm" color="tertiary">
           Selected: {value || 'None'}
@@ -383,9 +532,9 @@ export const CustomOptionContent: Story = {
           placeholder="Search users..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {users.map((user) => (
-              <Autocomplete.Option key={user.value} value={user.value}>
+              <List.Item key={user.value} value={user.value}>
                 <Stack direction="horizontal" spacing="sm" align="center">
                   <Avatar size="sm">
                     <Avatar.Fallback>{user.label.split(' ').map((n: string) => n[0]).join('')}</Avatar.Fallback>
@@ -399,10 +548,10 @@ export const CustomOptionContent: Story = {
                     </Text>
                   </Stack>
                 </Stack>
-              </Autocomplete.Option>
+              </List.Item>
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
         <Text size="sm" color="tertiary">
           Selected: {value || 'None'}
@@ -442,17 +591,17 @@ export const WithIcons: Story = {
           placeholder="Select country..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {countries.map((country) => (
-              <Autocomplete.Option key={country.value} value={country.value}>
+              <List.Item key={country.value} value={country.value}>
                 <Stack direction="horizontal" gap="sm" align="center">
                   <Text size="lg">{flagEmojis[country.value]}</Text>
                   <Text size="sm">{country.label}</Text>
                 </Stack>
-              </Autocomplete.Option>
+              </List.Item>
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
       </Stack>
     );
@@ -475,9 +624,9 @@ export const CustomEmptyState: Story = {
           placeholder="Type 'xyz' to see empty state..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {fruits.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
             ))}
             <Autocomplete.Empty>
               <Stack gap="sm" align="center" className="py-2">
@@ -491,7 +640,112 @@ export const CustomEmptyState: Story = {
                 </Button>
               </Stack>
             </Autocomplete.Empty>
-          </Autocomplete.List>
+          </List.Container>
+        </Autocomplete>
+      </Stack>
+    );
+  },
+};
+
+// ============================================================================
+// CLEARABLE
+// ============================================================================
+
+export const Clearable: Story = {
+  render: () => {
+    const [singleValue, setSingleValue] = useState('banana');
+    const [multiValue, setMultiValue] = useState<string[]>(['apple', 'cherry']);
+    
+    return (
+      <Stack gap="lg" className="w-80">
+        <Autocomplete
+          value={singleValue}
+          onChange={(val) => setSingleValue(val as string)}
+          options={fruits}
+          clearable
+          label="Single Select with Clear"
+          helperText="Click X to clear selection"
+          placeholder="Search fruits..."
+        >
+          <Autocomplete.Input />
+          <List.Container>
+            {fruits.map((option) => (
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
+            ))}
+            <Autocomplete.Empty />
+          </List.Container>
+        </Autocomplete>
+
+        <Autocomplete
+          value={multiValue}
+          onChange={(val) => setMultiValue(val as string[])}
+          options={fruits}
+          multiple
+          clearable
+          label="Multiple Select with Clear"
+          helperText="Clear all selections at once"
+          placeholder="Select multiple..."
+        >
+          <Autocomplete.Input />
+          <List.Container>
+            {fruits.map((option) => (
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
+            ))}
+            <Autocomplete.Empty />
+          </List.Container>
+        </Autocomplete>
+
+        <Text size="sm" color="tertiary">
+          Single: {singleValue || 'None'} | Multiple: {multiValue.length > 0 ? multiValue.join(', ') : 'None'}
+        </Text>
+      </Stack>
+    );
+  },
+};
+
+// ============================================================================
+// LOADING STATE
+// ============================================================================
+
+export const LoadingState: Story = {
+  render: () => {
+    return (
+      <Stack gap="lg" className="w-80">
+        <Autocomplete
+          value=""
+          onChange={() => {}}
+          options={fruits}
+          loading={true}
+          label="Loading Options"
+          helperText="Spinner shown in empty state and input"
+          placeholder="Loading..."
+        >
+          <Autocomplete.Input />
+          <List.Container>
+            {fruits.map((option) => (
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
+            ))}
+            <Autocomplete.Empty />
+          </List.Container>
+        </Autocomplete>
+
+        <Autocomplete
+          value="apple"
+          onChange={() => {}}
+          options={fruits}
+          loading={true}
+          clearable
+          label="Loading with Selection"
+          helperText="Spinner replaces clear button when loading"
+          placeholder="Loading..."
+        >
+          <Autocomplete.Input />
+          <List.Container>
+            {fruits.map((option) => (
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
+            ))}
+            <Autocomplete.Empty />
+          </List.Container>
         </Autocomplete>
       </Stack>
     );
@@ -515,12 +769,12 @@ export const KeyboardNavigation: Story = {
           placeholder="Use arrow keys..."
         >
           <Autocomplete.Input />
-          <Autocomplete.List>
+          <List.Container>
             {fruits.map((option) => (
-              <Autocomplete.Option key={option.value} value={option.value} />
+              <List.Item key={option.value} value={option.value}>{option.label}</List.Item>
             ))}
             <Autocomplete.Empty />
-          </Autocomplete.List>
+          </List.Container>
         </Autocomplete>
         <Stack gap="xs">
           <Text size="xs" weight="medium">
@@ -540,6 +794,37 @@ export const KeyboardNavigation: Story = {
           </Text>
         </Stack>
       </Stack>
+    );
+  },
+};
+
+// ============================================================================
+// WITH TEXT HIGHLIGHTING
+// ============================================================================
+
+export const WithTextHighlighting: Story = {
+  render: () => {
+    const [value, setValue] = useState('');
+    return (
+      <div className="w-80">
+        <Autocomplete
+          value={value}
+          onChange={(val) => setValue(val as string)}
+          options={fruits}
+          highlightMatches={true}
+          placeholder="Type to see highlighting..."
+          label="Search Fruits"
+          helperText="Matching text will be highlighted in yellow"
+        >
+          <Autocomplete.Input />
+          <List.Container style={{ maxHeight: 300 }}>
+            {fruits.map((option) => (
+              <Autocomplete.Option key={option.value} value={option.value} />
+            ))}
+            <Autocomplete.Empty />
+          </List.Container>
+        </Autocomplete>
+      </div>
     );
   },
 };

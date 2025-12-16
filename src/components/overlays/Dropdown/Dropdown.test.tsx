@@ -10,7 +10,7 @@ describe('Dropdown', () => {
     it('should render trigger and menu structure', () => {
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
             <Dropdown.Item>Item 2</Dropdown.Item>
@@ -24,7 +24,7 @@ describe('Dropdown', () => {
     it('should not render menu when closed', () => {
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -38,7 +38,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -55,7 +55,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
             <Dropdown.Item>Item 2</Dropdown.Item>
@@ -76,7 +76,7 @@ describe('Dropdown', () => {
     it('should respect controlled open state', () => {
       render(
         <Dropdown open={true} onOpenChange={() => {}}>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -92,7 +92,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown open={false} onOpenChange={onOpenChange}>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -110,7 +110,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown open={true} onOpenChange={onOpenChange}>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -128,7 +128,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -149,7 +149,7 @@ describe('Dropdown', () => {
     it('should respect defaultOpen prop', () => {
       render(
         <Dropdown defaultOpen={true}>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -165,7 +165,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -183,7 +183,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
             <Dropdown.Item>Item 2</Dropdown.Item>
@@ -205,7 +205,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
             <Dropdown.Item>Item 2</Dropdown.Item>
@@ -228,7 +228,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
             <Dropdown.Item>Item 2</Dropdown.Item>
@@ -254,7 +254,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
             <Dropdown.Item>Item 2</Dropdown.Item>
@@ -278,7 +278,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
             <Dropdown.Item disabled>Item 2 (Disabled)</Dropdown.Item>
@@ -305,7 +305,7 @@ describe('Dropdown', () => {
         <div>
           <div data-testid="outside">Outside</div>
           <Dropdown>
-            <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+            <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
             <Dropdown.Menu>
               <Dropdown.Item>Item 1</Dropdown.Item>
             </Dropdown.Menu>
@@ -324,7 +324,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -346,7 +346,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
             <Dropdown.Item>Item 2</Dropdown.Item>
@@ -372,7 +372,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -397,7 +397,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item onSelect={onSelect}>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -414,7 +414,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -434,7 +434,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item disabled onSelect={onSelect}>
               Disabled Item
@@ -455,7 +455,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item checked={false} onSelect={onSelect}>
               Checkbox Item
@@ -479,7 +479,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item checked={false} closeOnSelect={true}>
               Checkbox Item
@@ -502,7 +502,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item closeOnSelect={false}>
               Regular Item
@@ -526,7 +526,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item variant="default">Default Item</Dropdown.Item>
           </Dropdown.Menu>
@@ -543,7 +543,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item variant="danger">Delete Item</Dropdown.Item>
           </Dropdown.Menu>
@@ -560,7 +560,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item variant="warning">Warning Item</Dropdown.Item>
           </Dropdown.Menu>
@@ -577,7 +577,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item variant="success">Success Item</Dropdown.Item>
           </Dropdown.Menu>
@@ -594,7 +594,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item variant="info">Info Item</Dropdown.Item>
           </Dropdown.Menu>
@@ -615,7 +615,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item destructive>Delete Item</Dropdown.Item>
           </Dropdown.Menu>
@@ -641,7 +641,7 @@ describe('Dropdown', () => {
     it('should have correct ARIA attributes on trigger', () => {
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -657,7 +657,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -674,7 +674,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -689,7 +689,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
             <Dropdown.Item>Item 2</Dropdown.Item>
@@ -706,7 +706,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item disabled>Disabled Item</Dropdown.Item>
           </Dropdown.Menu>
@@ -723,7 +723,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item shortcut="⌘K">Item with shortcut</Dropdown.Item>
           </Dropdown.Menu>
@@ -742,7 +742,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -764,7 +764,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item shortcut="⌘K">Search</Dropdown.Item>
           </Dropdown.Menu>
@@ -781,7 +781,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item leadingIcon={icon}>Search</Dropdown.Item>
           </Dropdown.Menu>
@@ -796,7 +796,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item description="Additional info">Item</Dropdown.Item>
           </Dropdown.Menu>
@@ -811,7 +811,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item checked>Selected Item</Dropdown.Item>
           </Dropdown.Menu>
@@ -830,7 +830,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
             <Dropdown.MenuItem variant="divider" />
@@ -849,7 +849,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.MenuItem variant="header" label="Section Title" />
             <Dropdown.Item>Item 1</Dropdown.Item>
@@ -868,7 +868,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown>
-          <Dropdown.Trigger ref={triggerRef}>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger ref={triggerRef}><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -885,7 +885,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown defaultOpen>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu ref={menuRef}>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -902,7 +902,7 @@ describe('Dropdown', () => {
       
       render(
         <Dropdown defaultOpen>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item ref={itemRef}>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -919,7 +919,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu>
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -937,7 +937,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu side="top">
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -952,7 +952,7 @@ describe('Dropdown', () => {
       const user = userEvent.setup();
       render(
         <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
+          <Dropdown.Trigger><button>Open Menu</button></Dropdown.Trigger>
           <Dropdown.Menu align="end">
             <Dropdown.Item>Item 1</Dropdown.Item>
           </Dropdown.Menu>
@@ -961,22 +961,6 @@ describe('Dropdown', () => {
 
       await user.click(screen.getByRole('button'));
       expect(screen.getByRole('menu')).toBeInTheDocument();
-    });
-  });
-
-  describe('Error Boundary', () => {
-    it('should render DropdownErrorBoundary component', () => {
-      const { container } = render(
-        <Dropdown>
-          <Dropdown.Trigger>Open Menu</Dropdown.Trigger>
-          <Dropdown.Menu>
-            <Dropdown.Item>Item 1</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      );
-
-      // Error boundary wraps the component
-      expect(container).toBeInTheDocument();
     });
   });
 });

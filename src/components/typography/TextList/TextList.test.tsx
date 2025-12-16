@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { List } from './List';
+import { TextList } from './TextList';
 import { createRef } from 'react';
 
-describe('List', () => {
+describe('TextList', () => {
   // ===========================================================================
   // BASIC RENDERING
   // ===========================================================================
@@ -11,48 +11,48 @@ describe('List', () => {
   describe('Basic Rendering', () => {
     it('renders with default variant', () => {
       render(
-        <List data-testid="list">
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList data-testid="list">
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list')).toBeInTheDocument();
     });
 
     it('renders children correctly', () => {
       render(
-        <List>
-          <List.Item>First item</List.Item>
-          <List.Item>Second item</List.Item>
-        </List>
+        <TextList>
+          <TextList.Item>First item</TextList.Item>
+          <TextList.Item>Second item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByText('First item')).toBeInTheDocument();
       expect(screen.getByText('Second item')).toBeInTheDocument();
     });
 
     it('forwards ref to the list element', () => {
-      const ref = createRef<HTMLUListElement>();
+      const ref = createRef<HTMLUTextListElement>();
       render(
-        <List ref={ref}>
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList ref={ref}>
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
-      expect(ref.current).toBeInstanceOf(HTMLUListElement);
+      expect(ref.current).toBeInstanceOf(HTMLUTextListElement);
     });
 
     it('applies custom className', () => {
       render(
-        <List className="custom-class" data-testid="list">
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList className="custom-class" data-testid="list">
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list')).toHaveClass('custom-class');
     });
 
     it('spreads additional props', () => {
       render(
-        <List data-testid="list" aria-label="Custom list">
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList data-testid="list" aria-label="Custom list">
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list')).toHaveAttribute('aria-label', 'Custom list');
     });
@@ -62,33 +62,33 @@ describe('List', () => {
   // LIST TYPE (ORDERED VS UNORDERED)
   // ===========================================================================
 
-  describe('List Type', () => {
+  describe('TextList Type', () => {
     it('renders as unordered list (ul) by default', () => {
       render(
-        <List data-testid="list">
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList data-testid="list">
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list').tagName).toBe('UL');
     });
 
     it('renders as ordered list (ol) when ordered prop is true', () => {
       render(
-        <List ordered data-testid="list">
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList ordered data-testid="list">
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list').tagName).toBe('OL');
     });
 
     it('forwards ref correctly for ordered list', () => {
-      const ref = createRef<HTMLOListElement>();
+      const ref = createRef<HTMLOTextListElement>();
       render(
-        <List ref={ref} ordered>
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList ref={ref} ordered>
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
-      expect(ref.current).toBeInstanceOf(HTMLOListElement);
+      expect(ref.current).toBeInstanceOf(HTMLOTextListElement);
     });
   });
 
@@ -99,36 +99,36 @@ describe('List', () => {
   describe('Variants', () => {
     it('renders default variant', () => {
       render(
-        <List variant="default" data-testid="list">
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList variant="default" data-testid="list">
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list')).toHaveAttribute('data-variant', 'default');
     });
 
     it('renders divided variant', () => {
       render(
-        <List variant="divided" data-testid="list">
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList variant="divided" data-testid="list">
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list')).toHaveAttribute('data-variant', 'divided');
     });
 
     it('renders bordered variant', () => {
       render(
-        <List variant="bordered" data-testid="list">
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList variant="bordered" data-testid="list">
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list')).toHaveAttribute('data-variant', 'bordered');
     });
 
     it('renders interactive variant', () => {
       render(
-        <List variant="interactive" data-testid="list">
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList variant="interactive" data-testid="list">
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list')).toHaveAttribute('data-variant', 'interactive');
     });
@@ -141,9 +141,9 @@ describe('List', () => {
   describe('Inline Styles', () => {
     it('applies gap inline style to list', () => {
       render(
-        <List data-testid="list">
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList data-testid="list">
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list')).toHaveStyle({
         gap: 'var(--component-list-gap)',
@@ -152,9 +152,9 @@ describe('List', () => {
 
     it('merges custom style with default inline styles', () => {
       render(
-        <List data-testid="list" style={{ backgroundColor: 'red' }}>
-          <List.Item>Item</List.Item>
-        </List>
+        <TextList data-testid="list" style={{ backgroundColor: 'red' }}>
+          <TextList.Item>Item</TextList.Item>
+        </TextList>
       );
       const list = screen.getByTestId('list');
       // Check that default gap is present
@@ -170,12 +170,12 @@ describe('List', () => {
   // LIST.ITEM SUBCOMPONENT
   // ===========================================================================
 
-  describe('List.Item', () => {
+  describe('TextList.Item', () => {
     it('renders list item', () => {
       render(
-        <List>
-          <List.Item data-testid="item">Item content</List.Item>
-        </List>
+        <TextList>
+          <TextList.Item data-testid="item">Item content</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('item')).toBeInTheDocument();
       expect(screen.getByText('Item content')).toBeInTheDocument();
@@ -183,9 +183,9 @@ describe('List', () => {
 
     it('renders as li element', () => {
       render(
-        <List>
-          <List.Item data-testid="item">Item</List.Item>
-        </List>
+        <TextList>
+          <TextList.Item data-testid="item">Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('item').tagName).toBe('LI');
     });
@@ -193,36 +193,36 @@ describe('List', () => {
     it('forwards ref to list item', () => {
       const ref = createRef<HTMLLIElement>();
       render(
-        <List>
-          <List.Item ref={ref}>Item</List.Item>
-        </List>
+        <TextList>
+          <TextList.Item ref={ref}>Item</TextList.Item>
+        </TextList>
       );
       expect(ref.current).toBeInstanceOf(HTMLLIElement);
     });
 
     it('applies custom className to list item', () => {
       render(
-        <List>
-          <List.Item className="custom-item" data-testid="item">Item</List.Item>
-        </List>
+        <TextList>
+          <TextList.Item className="custom-item" data-testid="item">Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('item')).toHaveClass('custom-item');
     });
 
     it('spreads additional props to list item', () => {
       render(
-        <List>
-          <List.Item data-testid="item" aria-label="Item label">Item</List.Item>
-        </List>
+        <TextList>
+          <TextList.Item data-testid="item" aria-label="Item label">Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('item')).toHaveAttribute('aria-label', 'Item label');
     });
 
     it('applies inline styles for padding and gap', () => {
       render(
-        <List>
-          <List.Item data-testid="item">Item</List.Item>
-        </List>
+        <TextList>
+          <TextList.Item data-testid="item">Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('item')).toHaveStyle({
         paddingInline: 'var(--component-list-item-padding-inline)',
@@ -233,9 +233,9 @@ describe('List', () => {
 
     it('merges custom style with default inline styles', () => {
       render(
-        <List>
-          <List.Item data-testid="item" style={{ color: 'blue' }}>Item</List.Item>
-        </List>
+        <TextList>
+          <TextList.Item data-testid="item" style={{ color: 'blue' }}>Item</TextList.Item>
+        </TextList>
       );
       const item = screen.getByTestId('item');
       // Check that default styles are present
@@ -253,20 +253,20 @@ describe('List', () => {
 
   describe('Compound Component Structure', () => {
     it('exposes Item subcomponent', () => {
-      expect(List.Item).toBeDefined();
+      expect(TextList.Item).toBeDefined();
     });
 
     it('Item has correct displayName', () => {
-      expect(List.Item.displayName).toBe('List.Item');
+      expect(TextList.Item.displayName).toBe('TextList.Item');
     });
 
     it('renders multiple items correctly', () => {
       render(
-        <List>
-          <List.Item>Item 1</List.Item>
-          <List.Item>Item 2</List.Item>
-          <List.Item>Item 3</List.Item>
-        </List>
+        <TextList>
+          <TextList.Item>Item 1</TextList.Item>
+          <TextList.Item>Item 2</TextList.Item>
+          <TextList.Item>Item 3</TextList.Item>
+        </TextList>
       );
       expect(screen.getByText('Item 1')).toBeInTheDocument();
       expect(screen.getByText('Item 2')).toBeInTheDocument();
@@ -275,12 +275,12 @@ describe('List', () => {
 
     it('renders items with complex content', () => {
       render(
-        <List>
-          <List.Item>
+        <TextList>
+          <TextList.Item>
             <span data-testid="icon">Icon</span>
             <span data-testid="text">Text content</span>
-          </List.Item>
-        </List>
+          </TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('icon')).toBeInTheDocument();
       expect(screen.getByTestId('text')).toBeInTheDocument();
@@ -291,17 +291,17 @@ describe('List', () => {
   // NESTED LISTS
   // ===========================================================================
 
-  describe('Nested Lists', () => {
+  describe('Nested TextLists', () => {
     it('renders nested list structure', () => {
       render(
-        <List data-testid="parent-list">
-          <List.Item>
+        <TextList data-testid="parent-list">
+          <TextList.Item>
             Parent item
-            <List data-testid="nested-list">
-              <List.Item>Nested item</List.Item>
-            </List>
-          </List.Item>
-        </List>
+            <TextList data-testid="nested-list">
+              <TextList.Item>Nested item</TextList.Item>
+            </TextList>
+          </TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('parent-list')).toBeInTheDocument();
       expect(screen.getByTestId('nested-list')).toBeInTheDocument();
@@ -311,14 +311,14 @@ describe('List', () => {
 
     it('nested list can have different variant', () => {
       render(
-        <List variant="default" data-testid="parent-list">
-          <List.Item>
+        <TextList variant="default" data-testid="parent-list">
+          <TextList.Item>
             Parent
-            <List variant="bordered" data-testid="nested-list">
-              <List.Item>Nested</List.Item>
-            </List>
-          </List.Item>
-        </List>
+            <TextList variant="bordered" data-testid="nested-list">
+              <TextList.Item>Nested</TextList.Item>
+            </TextList>
+          </TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('parent-list')).toHaveAttribute('data-variant', 'default');
       expect(screen.getByTestId('nested-list')).toHaveAttribute('data-variant', 'bordered');
@@ -332,9 +332,9 @@ describe('List', () => {
   describe('Accessibility', () => {
     it('renders semantic list structure', () => {
       render(
-        <List data-testid="list">
-          <List.Item data-testid="item">Item</List.Item>
-        </List>
+        <TextList data-testid="list">
+          <TextList.Item data-testid="item">Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list').tagName).toBe('UL');
       expect(screen.getByTestId('item').tagName).toBe('LI');
@@ -342,9 +342,9 @@ describe('List', () => {
 
     it('renders semantic ordered list structure', () => {
       render(
-        <List ordered data-testid="list">
-          <List.Item data-testid="item">Item</List.Item>
-        </List>
+        <TextList ordered data-testid="list">
+          <TextList.Item data-testid="item">Item</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list').tagName).toBe('OL');
       expect(screen.getByTestId('item').tagName).toBe('LI');
@@ -352,18 +352,18 @@ describe('List', () => {
 
     it('supports aria-label', () => {
       render(
-        <List aria-label="Navigation menu" data-testid="list">
-          <List.Item>Home</List.Item>
-        </List>
+        <TextList aria-label="Navigation menu" data-testid="list">
+          <TextList.Item>Home</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list')).toHaveAttribute('aria-label', 'Navigation menu');
     });
 
     it('supports role attribute', () => {
       render(
-        <List role="menu" data-testid="list">
-          <List.Item role="menuitem">Option 1</List.Item>
-        </List>
+        <TextList role="menu" data-testid="list">
+          <TextList.Item role="menuitem">Option 1</TextList.Item>
+        </TextList>
       );
       expect(screen.getByTestId('list')).toHaveAttribute('role', 'menu');
     });

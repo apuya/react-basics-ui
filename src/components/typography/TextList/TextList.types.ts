@@ -4,22 +4,22 @@ import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 // VARIANT TYPES
 // =============================================================================
 
-export type ListVariant = 'default' | 'divided' | 'bordered' | 'interactive';
+export type TextListVariant = 'default' | 'divided' | 'bordered' | 'interactive';
 
 // =============================================================================
 // COMPONENT PROPS
 // =============================================================================
 
-export interface ListProps extends ComponentPropsWithoutRef<'ul'> {
+export interface TextListProps extends ComponentPropsWithoutRef<'ul'> {
   /** Visual variant of the list */
-  variant?: ListVariant;
+  variant?: TextListVariant;
   /** Render as ordered list (ol) instead of unordered (ul) */
   ordered?: boolean;
-  /** List items */
+  /** TextList items */
   children?: ReactNode;
 }
 
-export interface ListItemProps extends ComponentPropsWithoutRef<'li'> {
+export interface TextListItemProps extends ComponentPropsWithoutRef<'li'> {
   /** Item content */
   children: ReactNode;
 }
@@ -28,7 +28,7 @@ export interface ListItemProps extends ComponentPropsWithoutRef<'li'> {
 // CONTEXT TYPES
 // =============================================================================
 
-export interface ListContextValue {
-  /** Current variant from parent List */
-  variant: ListVariant;
+export interface TextListContextValue {
+  /** Current variant from parent TextList */
+  variant: TextListVariant;
 }

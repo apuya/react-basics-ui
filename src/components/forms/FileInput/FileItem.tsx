@@ -7,6 +7,7 @@ import {
   FILE_ITEM_CLASSES,
   FILE_ITEM_STATE_CLASSES,
   FILE_REMOVE_BUTTON_CLASSES,
+  PADDING_STYLE,
 } from './FileInput.styles';
 
 export type FileItemState = keyof typeof FILE_ITEM_STATE_CLASSES;
@@ -32,12 +33,6 @@ export const formatFileSize = (bytes: number): string => {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 };
-
-// Static style object
-const PADDING_STYLE = {
-  paddingInline: 'var(--component-input-padding-inline)',
-  paddingBlock: 'var(--component-input-padding-inline)',
-} as const;
 
 /**
  * FileItem displays a single uploaded file with its name, size, and a remove button.

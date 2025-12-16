@@ -9,6 +9,7 @@ export { useControlledState } from './useControlledState';
 export { useDisclosureState } from './useDisclosureState';
 export { useDisclosureKeyboardNav } from './useDisclosureKeyboardNav';
 export { useResponsivePosition } from './useResponsivePosition';
+export { useDebounce } from './useDebounce';
 
 // Re-export useTheme from theme component for convenience
 export { useTheme } from '@/components/theme';

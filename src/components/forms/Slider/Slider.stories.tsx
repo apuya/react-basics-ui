@@ -4,7 +4,7 @@ import { Slider } from './Slider';
 import { Stack } from '@/components/layout/Stack';
 import { Text } from '@/components/typography/Text';
 import { Heading } from '@/components/typography/Heading';
-import { Button } from '@/components/forms/Button';
+import { Button } from "@/components/actions/Button";
 
 const meta: Meta<typeof Slider> = {
   title: 'Forms/Slider',

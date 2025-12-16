@@ -17,7 +17,7 @@ import { Grid } from '@/components/layout/Grid';
 const TOOLTIP_POSITIONS: TooltipPosition[] = ['top', 'bottom', 'left', 'right'];
 
 const meta: Meta<typeof Tooltip> = {
-  title: 'Overlay/Tooltip',
+  title: 'Overlays/Tooltip',
   component: Tooltip,
   parameters: {
     layout: 'centered',

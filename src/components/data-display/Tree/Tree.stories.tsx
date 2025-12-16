@@ -22,7 +22,7 @@ import { Flex } from '@/components/layout/Flex';
 import { Stack } from '@/components/layout/Stack';
 
 const meta = {
-  title: 'Experimental/Tree',
+  title: 'Data Display/Tree',
   component: Tree,
   parameters: {
     layout: 'padded',

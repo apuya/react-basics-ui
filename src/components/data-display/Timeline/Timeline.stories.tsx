@@ -19,7 +19,7 @@ import {
 } from 'react-icons/bi';
 
 const meta: Meta<typeof Timeline> = {
-  title: 'Experimental/Timeline',
+  title: 'Data Display/Timeline',
   component: Timeline,
   parameters: {
     layout: 'padded',

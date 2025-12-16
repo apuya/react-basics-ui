@@ -1,25 +1,25 @@
 import { cn } from '@/lib/cn';
 import { createComponentContext } from '@/lib/createComponentContext';
 import { forwardRef, memo, useMemo, type ElementType } from 'react';
-import { BASE_CLASSES, VARIANT_STYLES, GAP_STYLE } from './List.styles';
-import type { ListProps, ListContextValue } from './List.types';
-import { ListItem } from './ListItem';
+import { BASE_CLASSES, VARIANT_STYLES, GAP_STYLE } from './TextList.styles';
+import type { TextListProps, TextListContextValue } from './TextList.types';
+import { TextListItem } from './TextListItem';
 
 // =============================================================================
 // CONTEXT
 // =============================================================================
 
-const { Context: ListContext, useContext: useListContext } =
-  createComponentContext<ListContextValue>('List');
+const { Context: TextListContext, useContext: useTextListContext } =
+  createComponentContext<TextListContextValue>('TextList');
 
-export { useListContext };
+export { useTextListContext };
 
 // =============================================================================
 // COMPONENT
 // =============================================================================
 
-const ListRoot = memo(
-  forwardRef<HTMLUListElement | HTMLOListElement, ListProps>(
+const TextListRoot = memo(
+  forwardRef<HTMLUTextListElement | HTMLOTextListElement, TextListProps>(
     ({ variant = 'default', ordered = false, className, style, children, ...props }, ref) => {
       const Component = (ordered ? 'ol' : 'ul') as ElementType;
 
@@ -28,10 +28,10 @@ const ListRoot = memo(
         [variant, className]
       );
 
-      const contextValue = useMemo<ListContextValue>(() => ({ variant }), [variant]);
+      const contextValue = useMemo<TextListContextValue>(() => ({ variant }), [variant]);
 
       return (
-        <ListContext.Provider value={contextValue}>
+        <TextListContext.Provider value={contextValue}>
           <Component
             ref={ref}
             data-variant={variant}
@@ -44,13 +44,13 @@ const ListRoot = memo(
           >
             {children}
           </Component>
-        </ListContext.Provider>
+        </TextListContext.Provider>
       );
     }
   )
 );
-ListRoot.displayName = 'List';
+TextListRoot.displayName = 'TextList';
 
-export const List = Object.assign(ListRoot, {
-  Item: ListItem,
+export const TextList = Object.assign(TextListRoot, {
+  Item: TextListItem,
 });

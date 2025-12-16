@@ -6,7 +6,7 @@ import { Text } from '@/components/typography/Text/Text';
 import { Stack } from '@/components/layout/Stack/Stack';
 
 const meta: Meta<typeof Drawer> = {
-  title: 'Experimental/Drawer',
+  title: 'Overlays/Drawer',
   component: Drawer,
   parameters: {
     layout: 'centered',

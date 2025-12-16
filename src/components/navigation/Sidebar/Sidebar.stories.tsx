@@ -13,7 +13,7 @@ import { Heading } from '../../typography/Heading';
 import { Text } from '../../typography/Text';
 
 const meta: Meta<typeof Sidebar> = {
-  title: 'Experimental/Sidebar',
+  title: 'Navigation/Sidebar',
   component: Sidebar,
   parameters: {
     layout: 'fullscreen',

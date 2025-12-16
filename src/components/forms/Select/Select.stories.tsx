@@ -1,63 +1,151 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { BiStar, BiUser, BiFolder } from 'react-icons/bi';
+import { BiUser, BiFolder, BiStar, BiCreditCard, BiShield, BiRocket } from 'react-icons/bi';
 import { Select } from './Select';
-import { FormField } from '@/components/forms/FormField';
-import { Box } from '@/components/layout/Box';
 import { Stack } from '@/components/layout/Stack';
-import { Heading } from '@/components/typography/Heading';
 import { Text } from '@/components/typography/Text';
 import { Icon } from '@/components/utility/Icon';
 
 const meta: Meta<typeof Select> = {
   title: 'Forms/Select',
   component: Select,
+  subcomponents: {
+    'Select.Trigger': Select.Trigger as React.ComponentType<unknown>,
+    'Select.Menu': Select.Menu as React.ComponentType<unknown>,
+    'Select.Option': Select.Option as React.ComponentType<unknown>,
+  },
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'Custom select with compound pattern: Select.Trigger, Select.Menu, Select.Option. Supports controlled/uncontrolled modes, sizes, error states, keyboard navigation, and custom option content. Use with FormField for labels and helper text.',
+        component: `
+A compound select component for dropdown selection with full keyboard navigation and accessibility.
+
+## Features
+- **Compound Pattern**: \`Select.Trigger\`, \`Select.Menu\`, \`Select.Option\`
+- **Controlled/Uncontrolled**: Works both ways with \`value\`/\`onChange\` or \`defaultValue\`
+- **Sizes**: \`small\`, \`default\`, \`large\`
+- **States**: Normal, disabled, error
+- **Keyboard Navigation**: Arrow keys, Enter, Escape, Home/End
+- **Accessibility**: ARIA combobox pattern with proper roles
+
+## Compound Components
+| Component | Description |
+|-----------|-------------|
+| \`Select\` | Root wrapper managing state and context |
+| \`Select.Trigger\` | Button that opens the dropdown |
+| \`Select.Menu\` | Container for options (renders when open) |
+| \`Select.Option\` | Individual selectable option |
+
+## Usage
+\`\`\`tsx
+<Select value={value} onChange={setValue}>
+  <Select.Trigger placeholder="Select..." />
+  <Select.Menu>
+    <Select.Option value="1">Option 1</Select.Option>
+    <Select.Option value="2">Option 2</Select.Option>
+  </Select.Menu>
+</Select>
+\`\`\`
+        `,
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
-    size: { control: 'select', options: ['small', 'default', 'large'] },
-    error: { control: 'boolean' },
-    disabled: { control: 'boolean' },
+    value: {
+      control: false,
+      description: 'Controlled value (string)',
+      table: { category: 'State' },
+    },
+    defaultValue: {
+      control: 'text',
+      description: 'Default value for uncontrolled mode',
+      table: { category: 'State' },
+    },
+    onChange: {
+      action: 'changed',
+      description: 'Callback when selection changes',
+      table: { category: 'Events' },
+    },
+    size: {
+      control: 'select',
+      options: ['small', 'default', 'large'],
+      description: 'Size variant',
+      table: { category: 'Appearance', defaultValue: { summary: 'default' } },
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Disable the entire select',
+      table: { category: 'State', defaultValue: { summary: 'false' } },
+    },
+    error: {
+      control: 'boolean',
+      description: 'Show error state styling',
+      table: { category: 'State', defaultValue: { summary: 'false' } },
+    },
+    id: {
+      control: 'text',
+      description: 'Base ID for ARIA relationships',
+      table: { category: 'Accessibility' },
+    },
+    className: {
+      control: 'text',
+      description: 'Additional CSS classes',
+      table: { category: 'Styling' },
+    },
   },
-  decorators: [(Story) => <Box w="600px" minH="450px"><Story /></Box>],
+  decorators: [
+    (Story) => (
+      <div style={{ width: '320px', minHeight: '300px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
 type Story = StoryObj<typeof Select>;
 
 // =============================================================================
-// DEFAULT
+// PLAYGROUND (for autodocs controls)
 // =============================================================================
 
-export const Default: Story = {
-  render: () => (
-    <Select>
+export const Playground: Story = {
+  args: {
+    size: 'default',
+    disabled: false,
+    error: false,
+  },
+  render: (args) => (
+    <Select {...args}>
       <Select.Trigger placeholder="Select an option..." />
       <Select.Menu>
-        <Select.Option value="option1">Option 1</Select.Option>
-        <Select.Option value="option2">Option 2</Select.Option>
-        <Select.Option value="option3">Option 3</Select.Option>
+        <Select.Option value="apple">Apple</Select.Option>
+        <Select.Option value="banana">Banana</Select.Option>
+        <Select.Option value="cherry">Cherry</Select.Option>
+        <Select.Option value="grape">Grape</Select.Option>
       </Select.Menu>
     </Select>
   ),
 };
 
 // =============================================================================
-// ALL SIZES
+// SIZES
 // =============================================================================
 
-export const AllSizes: Story = {
+export const Sizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Select comes in three sizes: `small`, `default`, and `large`.',
+      },
+    },
+  },
   render: () => (
-    <Stack spacing="md">
-      <FormField label="Small">
+    <Stack direction="vertical" spacing="md">
+      <Stack direction="vertical" spacing="xs">
+        <Text size="small" weight="medium" color="secondary">Small</Text>
         <Select size="small">
           <Select.Trigger placeholder="Small select..." />
           <Select.Menu>
@@ -65,8 +153,9 @@ export const AllSizes: Story = {
             <Select.Option value="2">Option 2</Select.Option>
           </Select.Menu>
         </Select>
-      </FormField>
-      <FormField label="Default">
+      </Stack>
+      <Stack direction="vertical" spacing="xs">
+        <Text size="small" weight="medium" color="secondary">Default</Text>
         <Select size="default">
           <Select.Trigger placeholder="Default select..." />
           <Select.Menu>
@@ -74,8 +163,9 @@ export const AllSizes: Story = {
             <Select.Option value="2">Option 2</Select.Option>
           </Select.Menu>
         </Select>
-      </FormField>
-      <FormField label="Large">
+      </Stack>
+      <Stack direction="vertical" spacing="xs">
+        <Text size="small" weight="medium" color="secondary">Large</Text>
         <Select size="large">
           <Select.Trigger placeholder="Large select..." />
           <Select.Menu>
@@ -83,7 +173,7 @@ export const AllSizes: Story = {
             <Select.Option value="2">Option 2</Select.Option>
           </Select.Menu>
         </Select>
-      </FormField>
+      </Stack>
     </Stack>
   ),
 };
@@ -93,10 +183,27 @@ export const AllSizes: Story = {
 // =============================================================================
 
 export const States: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Select supports `disabled` and `error` states.',
+      },
+    },
+  },
   render: () => (
-    <Stack spacing="lg">
-      <Stack spacing="xs">
-        <Heading level="h6">Disabled</Heading>
+    <Stack direction="vertical" spacing="md">
+      <Stack direction="vertical" spacing="xs">
+        <Text size="small" weight="medium" color="secondary">Normal</Text>
+        <Select>
+          <Select.Trigger placeholder="Select option..." />
+          <Select.Menu>
+            <Select.Option value="1">Option 1</Select.Option>
+            <Select.Option value="2">Option 2</Select.Option>
+          </Select.Menu>
+        </Select>
+      </Stack>
+      <Stack direction="vertical" spacing="xs">
+        <Text size="small" weight="medium" color="secondary">Disabled</Text>
         <Select disabled>
           <Select.Trigger placeholder="Disabled select..." />
           <Select.Menu>
@@ -104,49 +211,17 @@ export const States: Story = {
           </Select.Menu>
         </Select>
       </Stack>
-      <Stack spacing="xs">
-        <Heading level="h6">Error</Heading>
-        <FormField label="Category" helperText="This field is required" error>
-          <Select error>
-            <Select.Trigger placeholder="Select a category..." />
-            <Select.Menu>
-              <Select.Option value="tech">Technology</Select.Option>
-              <Select.Option value="design">Design</Select.Option>
-            </Select.Menu>
-          </Select>
-        </FormField>
+      <Stack direction="vertical" spacing="xs">
+        <Text size="small" weight="medium" color="secondary">Error</Text>
+        <Select error>
+          <Select.Trigger placeholder="Error state..." />
+          <Select.Menu>
+            <Select.Option value="1">Option 1</Select.Option>
+            <Select.Option value="2">Option 2</Select.Option>
+          </Select.Menu>
+        </Select>
+        <Text size="small" color="error">This field is required</Text>
       </Stack>
-    </Stack>
-  ),
-};
-
-// =============================================================================
-// WITH LABEL & HELPER
-// =============================================================================
-
-export const WithLabelAndHelper: Story = {
-  render: () => (
-    <Stack spacing="md">
-      <FormField label="Country">
-        <Select>
-          <Select.Trigger placeholder="Select a country..." />
-          <Select.Menu>
-            <Select.Option value="us">United States</Select.Option>
-            <Select.Option value="ca">Canada</Select.Option>
-            <Select.Option value="uk">United Kingdom</Select.Option>
-          </Select.Menu>
-        </Select>
-      </FormField>
-      <FormField label="Plan" helperText="Choose the plan that works best for you">
-        <Select>
-          <Select.Trigger placeholder="Select a plan..." />
-          <Select.Menu>
-            <Select.Option value="free">Free</Select.Option>
-            <Select.Option value="pro">Pro</Select.Option>
-            <Select.Option value="enterprise">Enterprise</Select.Option>
-          </Select.Menu>
-        </Select>
-      </FormField>
     </Stack>
   ),
 };
@@ -156,278 +231,339 @@ export const WithLabelAndHelper: Story = {
 // =============================================================================
 
 export const Controlled: Story = {
-  render: function ControlledSelect() {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Use `value` and `onChange` for controlled mode. The parent component manages the state.',
+      },
+    },
+  },
+  render: function ControlledStory() {
     const [value, setValue] = useState('');
     return (
-      <Stack spacing="sm">
-        <FormField 
-          label="Fruit"
-          helperText={value ? `Selected: ${value}` : 'No selection'}
+      <Stack direction="vertical" spacing="sm">
+        <Select value={value} onChange={setValue}>
+          <Select.Trigger placeholder="Select a fruit..." />
+          <Select.Menu>
+            <Select.Option value="apple">Apple</Select.Option>
+            <Select.Option value="banana">Banana</Select.Option>
+            <Select.Option value="cherry">Cherry</Select.Option>
+          </Select.Menu>
+        </Select>
+        <Text size="small" color="secondary">
+          Selected: <Text as="span" weight="semibold">{value || 'none'}</Text>
+        </Text>
+        <button 
+          onClick={() => setValue('')}
+          style={{ 
+            padding: '4px 8px', 
+            fontSize: '12px',
+            cursor: 'pointer',
+            width: 'fit-content'
+          }}
         >
-          <Select value={value} onChange={setValue}>
-            <Select.Trigger placeholder="Select a fruit..." />
-            <Select.Menu>
-              <Select.Option value="apple">Apple</Select.Option>
-              <Select.Option value="banana">Banana</Select.Option>
-              <Select.Option value="cherry">Cherry</Select.Option>
-            </Select.Menu>
-          </Select>
-        </FormField>
-        {value && (
-          <Text size="small" color="secondary">
-            Current value: <Text as="span" weight="semibold">{value}</Text>
-          </Text>
-        )}
+          Clear
+        </button>
       </Stack>
     );
   },
 };
 
 // =============================================================================
-// WITH DISABLED OPTIONS
+// DISABLED OPTIONS
 // =============================================================================
 
-export const WithDisabledOptions: Story = {
-  decorators: [(Story) => <Box w="600px" minH="500px"><Story /></Box>],
-  render: () => (
-    <FormField label="Status">
-      <Select>
-        <Select.Trigger placeholder="Select status..." />
-        <Select.Menu>
-          <Select.Option value="active">Active</Select.Option>
-          <Select.Option value="pending" disabled>Pending (unavailable)</Select.Option>
-          <Select.Option value="inactive">Inactive</Select.Option>
-          <Select.Option value="archived" disabled>Archived (unavailable)</Select.Option>
-        </Select.Menu>
-      </Select>
-    </FormField>
-  ),
-};
-
-// =============================================================================
-// SCROLLABLE MENU (Many Options)
-// =============================================================================
-
-export const ScrollableMenu: Story = {
-  decorators: [(Story) => <Box w="600px" minH="550px"><Story /></Box>],
-  render: () => (
-    <FormField label="Month" helperText="Select a month from the list">
-      <Select>
-        <Select.Trigger placeholder="Select a month..." />
-        <Select.Menu className="max-h-48 overflow-y-auto">
-          <Select.Option value="jan">January</Select.Option>
-          <Select.Option value="feb">February</Select.Option>
-          <Select.Option value="mar">March</Select.Option>
-          <Select.Option value="apr">April</Select.Option>
-          <Select.Option value="may">May</Select.Option>
-          <Select.Option value="jun">June</Select.Option>
-          <Select.Option value="jul">July</Select.Option>
-          <Select.Option value="aug">August</Select.Option>
-          <Select.Option value="sep">September</Select.Option>
-          <Select.Option value="oct">October</Select.Option>
-          <Select.Option value="nov">November</Select.Option>
-          <Select.Option value="dec">December</Select.Option>
-        </Select.Menu>
-      </Select>
-    </FormField>
-  ),
-};
-
-// =============================================================================
-// WITH CUSTOM CONTENT (Icons)
-// =============================================================================
-
-export const WithIcons: Story = {
-  decorators: [(Story) => <Box w="600px" minH="500px"><Story /></Box>],
-  render: () => (
-    <FormField label="Category" helperText="Choose a category with icon">
-      <Select>
-        <Select.Trigger placeholder="Select category..." />
-        <Select.Menu>
-          <Select.Option value="user">
-            <Stack spacing="sm" direction="row" align="center">
-              <Icon icon={BiUser} size="sm" aria-hidden />
-              <Text>Users</Text>
-            </Stack>
-          </Select.Option>
-          <Select.Option value="folder">
-            <Stack spacing="sm" direction="row" align="center">
-              <Icon icon={BiFolder} size="sm" aria-hidden />
-              <Text>Documents</Text>
-            </Stack>
-          </Select.Option>
-          <Select.Option value="star">
-            <Stack spacing="sm" direction="row" align="center">
-              <Icon icon={BiStar} size="sm" aria-hidden />
-              <Text>Favorites</Text>
-            </Stack>
-          </Select.Option>
-        </Select.Menu>
-      </Select>
-    </FormField>
-  ),
-};
-
-// =============================================================================
-// WITH DESCRIPTIONS
-// =============================================================================
-
-export const WithDescriptions: Story = {
-  decorators: [(Story) => <Box w="600px" minH="600px"><Story /></Box>],
-  render: () => (
-    <FormField label="Plan" helperText="Choose your subscription plan">
-      <Select>
-        <Select.Trigger placeholder="Select a plan..." />
-        <Select.Menu>
-          <Select.Option value="free">
-            <Stack spacing="xs" direction="column">
-              <Text weight="medium">Free</Text>
-              <Text size="xs" color="secondary">Up to 5 users</Text>
-            </Stack>
-          </Select.Option>
-          <Select.Option value="pro">
-            <Stack spacing="xs" direction="column">
-              <Text weight="medium">Pro</Text>
-              <Text size="xs" color="secondary">Up to 25 users</Text>
-            </Stack>
-          </Select.Option>
-          <Select.Option value="enterprise">
-            <Stack spacing="xs" direction="column">
-              <Text weight="medium">Enterprise</Text>
-              <Text size="xs" color="secondary">Unlimited users</Text>
-            </Stack>
-          </Select.Option>
-        </Select.Menu>
-      </Select>
-    </FormField>
-  ),
-};
-
-// =============================================================================
-// LONG OPTION TEXT
-// =============================================================================
-
-export const LongOptionText: Story = {
-  decorators: [(Story) => <Box w="700px" minH="500px"><Story /></Box>],
-  render: () => (
-    <FormField label="Department">
-      <Select>
-        <Select.Trigger placeholder="Select department..." />
-        <Select.Menu>
-          <Select.Option value="eng">Engineering & Product Development</Select.Option>
-          <Select.Option value="marketing">Marketing & Communications</Select.Option>
-          <Select.Option value="hr">Human Resources & Administration</Select.Option>
-        </Select.Menu>
-      </Select>
-    </FormField>
-  ),
-};
-
-// =============================================================================
-// CUSTOM PLACEHOLDER
-// =============================================================================
-
-export const CustomPlaceholder: Story = {
+export const DisabledOptions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Individual options can be disabled using the `disabled` prop on `Select.Option`.',
+      },
+    },
+  },
+  decorators: [(Story) => <div style={{ width: '320px', minHeight: '350px' }}><Story /></div>],
   render: () => (
     <Select>
-      <Select.Trigger placeholder="🍎 Choose your favorite fruit..." />
+      <Select.Trigger placeholder="Select status..." />
       <Select.Menu>
-        <Select.Option value="apple">🍎 Apple</Select.Option>
-        <Select.Option value="banana">🍌 Banana</Select.Option>
-        <Select.Option value="cherry">🍒 Cherry</Select.Option>
-        <Select.Option value="grape">🍇 Grape</Select.Option>
+        <Select.Option value="active">Active</Select.Option>
+        <Select.Option value="pending" disabled>Pending (unavailable)</Select.Option>
+        <Select.Option value="inactive">Inactive</Select.Option>
+        <Select.Option value="archived" disabled>Archived (unavailable)</Select.Option>
+        <Select.Option value="deleted">Deleted</Select.Option>
       </Select.Menu>
     </Select>
   ),
 };
 
 // =============================================================================
-// STANDALONE (WITHOUT FORMFIELD)
+// WITH DEFAULT VALUE
 // =============================================================================
 
-export const Standalone: Story = {
+export const WithDefaultValue: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Use `defaultValue` for uncontrolled mode with an initial selection.',
+      },
+    },
+  },
   render: () => (
-    <Stack spacing="md">
-      <Heading level="h6">Select without FormField wrapper</Heading>
-      <Select>
-        <Select.Trigger placeholder="Standalone select..." />
-        <Select.Menu>
-          <Select.Option value="option1">Option 1</Select.Option>
-          <Select.Option value="option2">Option 2</Select.Option>
-          <Select.Option value="option3">Option 3</Select.Option>
-        </Select.Menu>
-      </Select>
-      <Text size="small" color="secondary">
-        Use Select alone when you don't need labels or helper text.
-      </Text>
-    </Stack>
+    <Select defaultValue="pro">
+      <Select.Trigger placeholder="Select plan..." />
+      <Select.Menu>
+        <Select.Option value="free">Free</Select.Option>
+        <Select.Option value="pro">Pro</Select.Option>
+        <Select.Option value="enterprise">Enterprise</Select.Option>
+      </Select.Menu>
+    </Select>
   ),
 };
 
 // =============================================================================
-// COMPOSITION PATTERNS
+// SCROLLABLE MENU
 // =============================================================================
 
-export const CompositionPatterns: Story = {
-  decorators: [(Story) => <Box w="600px" minH="1400px"><Story /></Box>],
+export const ScrollableMenu: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'For long lists, add scroll styling to `Select.Menu` via className.',
+      },
+    },
+  },
+  decorators: [(Story) => <div style={{ width: '320px', minHeight: '400px' }}><Story /></div>],
   render: () => (
-    <Stack spacing="lg">
-      <Heading level="h6">Select Composition Examples</Heading>
-      
-      {/* Pure compound - no FormField */}
-      <Stack spacing="xs">
-        <Text size="small" weight="semibold">Pure Compound (no label)</Text>
-        <Select>
-          <Select.Trigger placeholder="Just the select..." />
-          <Select.Menu>
-            <Select.Option value="1">Option 1</Select.Option>
-            <Select.Option value="2">Option 2</Select.Option>
-          </Select.Menu>
-        </Select>
-      </Stack>
+    <Select>
+      <Select.Trigger placeholder="Select a month..." />
+      <Select.Menu className="max-h-48 overflow-y-auto">
+        <Select.Option value="jan">January</Select.Option>
+        <Select.Option value="feb">February</Select.Option>
+        <Select.Option value="mar">March</Select.Option>
+        <Select.Option value="apr">April</Select.Option>
+        <Select.Option value="may">May</Select.Option>
+        <Select.Option value="jun">June</Select.Option>
+        <Select.Option value="jul">July</Select.Option>
+        <Select.Option value="aug">August</Select.Option>
+        <Select.Option value="sep">September</Select.Option>
+        <Select.Option value="oct">October</Select.Option>
+        <Select.Option value="nov">November</Select.Option>
+        <Select.Option value="dec">December</Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
+};
 
-      {/* With FormField - label only */}
-      <Stack spacing="xs">
-        <Text size="small" weight="semibold">With Label</Text>
-        <FormField label="Category">
-          <Select>
-            <Select.Trigger placeholder="Select category..." />
-            <Select.Menu>
-              <Select.Option value="tech">Technology</Select.Option>
-              <Select.Option value="design">Design</Select.Option>
-            </Select.Menu>
-          </Select>
-        </FormField>
-      </Stack>
+// =============================================================================
+// USE CASE: CUSTOM OPTION CONTENT (ICONS)
+// =============================================================================
 
-      {/* With FormField - label + helper */}
-      <Stack spacing="xs">
-        <Text size="small" weight="semibold">With Label + Helper</Text>
-        <FormField label="Priority" helperText="Choose the urgency level">
-          <Select>
-            <Select.Trigger placeholder="Select priority..." />
-            <Select.Menu>
-              <Select.Option value="low">Low</Select.Option>
-              <Select.Option value="medium">Medium</Select.Option>
-              <Select.Option value="high">High</Select.Option>
-            </Select.Menu>
-          </Select>
-        </FormField>
-      </Stack>
+export const WithIcons: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Options can contain custom content like icons. Use a flex container for layout.',
+      },
+    },
+  },
+  decorators: [(Story) => <div style={{ width: '320px', minHeight: '350px' }}><Story /></div>],
+  render: () => (
+    <Select>
+      <Select.Trigger placeholder="Select category..." />
+      <Select.Menu>
+        <Select.Option value="users">
+          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Icon icon={BiUser} size="sm" />
+            <span>Users</span>
+          </span>
+        </Select.Option>
+        <Select.Option value="documents">
+          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Icon icon={BiFolder} size="sm" />
+            <span>Documents</span>
+          </span>
+        </Select.Option>
+        <Select.Option value="favorites">
+          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Icon icon={BiStar} size="sm" />
+            <span>Favorites</span>
+          </span>
+        </Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
+};
 
-      {/* With FormField - error state */}
-      <Stack spacing="xs">
-        <Text size="small" weight="semibold">With Error</Text>
-        <FormField label="Department" helperText="This field is required" error>
-          <Select error>
-            <Select.Trigger placeholder="Select department..." />
-            <Select.Menu>
-              <Select.Option value="eng">Engineering</Select.Option>
-              <Select.Option value="sales">Sales</Select.Option>
-            </Select.Menu>
-          </Select>
-        </FormField>
-      </Stack>
-    </Stack>
+// =============================================================================
+// USE CASE: OPTIONS WITH DESCRIPTIONS
+// =============================================================================
+
+export const WithDescriptions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Options can include secondary description text for more context.',
+      },
+    },
+  },
+  decorators: [(Story) => <div style={{ width: '360px', minHeight: '400px' }}><Story /></div>],
+  render: () => (
+    <Select>
+      <Select.Trigger placeholder="Select a plan..." />
+      <Select.Menu>
+        <Select.Option value="free">
+          <span style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Icon icon={BiCreditCard} size="sm" />
+              <Text weight="medium">Free</Text>
+            </span>
+            <Text size="small" color="secondary">Up to 3 projects</Text>
+          </span>
+        </Select.Option>
+        <Select.Option value="pro">
+          <span style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Icon icon={BiShield} size="sm" />
+              <Text weight="medium">Pro</Text>
+            </span>
+            <Text size="small" color="secondary">Unlimited projects + analytics</Text>
+          </span>
+        </Select.Option>
+        <Select.Option value="enterprise">
+          <span style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Icon icon={BiRocket} size="sm" />
+              <Text weight="medium">Enterprise</Text>
+            </span>
+            <Text size="small" color="secondary">Custom limits + dedicated support</Text>
+          </span>
+        </Select.Option>
+      </Select.Menu>
+    </Select>
+  ),
+};
+
+// =============================================================================
+// USE CASE: FORM INTEGRATION
+// =============================================================================
+
+export const FormIntegration: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+Select integrates with forms using controlled state. Combine with other form components for complete forms.
+
+**Tips:**
+- Use \`value\` and \`onChange\` for form state management
+- Add \`error\` prop when validation fails
+- Pair with labels and error messages for accessibility
+        `,
+      },
+    },
+  },
+  render: function FormStory() {
+    const [formData, setFormData] = useState({
+      country: '',
+      role: '',
+    });
+    const [submitted, setSubmitted] = useState(false);
+
+    const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      setSubmitted(true);
+    };
+
+    return (
+      <form onSubmit={handleSubmit}>
+        <Stack direction="vertical" spacing="md">
+          <Stack direction="vertical" spacing="xs">
+            <Text as="label" size="small" weight="medium">Country *</Text>
+            <Select 
+              value={formData.country} 
+              onChange={(v) => setFormData(prev => ({ ...prev, country: v }))}
+              error={submitted && !formData.country}
+            >
+              <Select.Trigger placeholder="Select country..." />
+              <Select.Menu>
+                <Select.Option value="us">United States</Select.Option>
+                <Select.Option value="ca">Canada</Select.Option>
+                <Select.Option value="uk">United Kingdom</Select.Option>
+                <Select.Option value="de">Germany</Select.Option>
+              </Select.Menu>
+            </Select>
+            {submitted && !formData.country && (
+              <Text size="small" color="error">Country is required</Text>
+            )}
+          </Stack>
+
+          <Stack direction="vertical" spacing="xs">
+            <Text as="label" size="small" weight="medium">Role</Text>
+            <Select 
+              value={formData.role} 
+              onChange={(v) => setFormData(prev => ({ ...prev, role: v }))}
+            >
+              <Select.Trigger placeholder="Select role..." />
+              <Select.Menu>
+                <Select.Option value="developer">Developer</Select.Option>
+                <Select.Option value="designer">Designer</Select.Option>
+                <Select.Option value="manager">Manager</Select.Option>
+              </Select.Menu>
+            </Select>
+          </Stack>
+
+          <button 
+            type="submit"
+            style={{ 
+              padding: '8px 16px', 
+              cursor: 'pointer',
+              marginTop: '8px'
+            }}
+          >
+            Submit
+          </button>
+        </Stack>
+      </form>
+    );
+  },
+};
+
+// =============================================================================
+// KEYBOARD NAVIGATION
+// =============================================================================
+
+export const KeyboardNavigation: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+Select supports full keyboard navigation:
+
+| Key | Action |
+|-----|--------|
+| \`Enter\` / \`Space\` | Open menu / Select option |
+| \`Arrow Down\` | Move to next option |
+| \`Arrow Up\` | Move to previous option |
+| \`Home\` | Move to first option |
+| \`End\` | Move to last option |
+| \`Escape\` | Close menu |
+
+Try navigating with your keyboard!
+        `,
+      },
+    },
+  },
+  decorators: [(Story) => <div style={{ width: '320px', minHeight: '350px' }}><Story /></div>],
+  render: () => (
+    <Select>
+      <Select.Trigger placeholder="Use keyboard to navigate..." />
+      <Select.Menu>
+        <Select.Option value="first">First Option</Select.Option>
+        <Select.Option value="second">Second Option</Select.Option>
+        <Select.Option value="third">Third Option</Select.Option>
+        <Select.Option value="fourth">Fourth Option</Select.Option>
+        <Select.Option value="fifth">Fifth Option</Select.Option>
+      </Select.Menu>
+    </Select>
   ),
 };

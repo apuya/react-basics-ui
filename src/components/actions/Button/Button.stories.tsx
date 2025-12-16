@@ -6,7 +6,7 @@ import { BiCheck, BiX, BiPlus, BiSearch, BiDownload, BiMenu, BiHeart } from 'rea
 import { Flex } from '@/components/layout/Flex';
 
 const meta: Meta<typeof Button> = {
-  title: 'Forms/Button',
+  title: 'Actions/Button',
   component: Button,
   parameters: {
     layout: 'centered',

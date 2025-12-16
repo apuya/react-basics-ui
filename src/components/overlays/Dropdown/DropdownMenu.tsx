@@ -1,15 +1,15 @@
-import { forwardRef, useEffect, useRef, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, useEffect, useMemo, useRef, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
 import { useClickOutsideWithExclusions } from '@/hooks/useClickOutsideWithExclusions';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
-import { useMenuKeyboardNavigation } from '@/hooks/useMenuKeyboardNavigation';
 import { useResponsivePosition } from '@/hooks/useResponsivePosition';
+import { Menu } from '@/components/overlays/Menu';
+import { MenuContext } from '@/components/overlays/Menu/MenuContext';
 import { useDropdownContext, type DropdownAlign, type DropdownSide } from './Dropdown';
 import {
   ALIGN_STYLES,
   BASE_CLASSES,
-  MENU_WRAPPER_CLASSES,
   SIDE_GAP_STYLE,
   SIDE_STYLES,
   VERTICAL_ALIGN_STYLES,
@@ -98,17 +98,12 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
       const side = responsive ? responsiveSide : preferredSide;
       const align = responsive ? responsiveAlign : preferredAlign;
 
-      // Calculate menu wrapper style with optional max-height and scrolling
-      const menuWrapperStyle: React.CSSProperties = {
+      // Calculate positioning and animation styles
+      const menuStyle: React.CSSProperties = {
         maxHeight: maxHeight
           ? (typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight)
           : 'var(--component-dropdown-max-height)',
         overflowY: 'auto',
-      };
-
-      const menuStyle: React.CSSProperties = {
-        paddingInline: 'var(--component-dropdown-padding-inline)',
-        paddingBlock: 'var(--component-dropdown-padding-block)',
         ...(side === 'top' || side === 'bottom'
           ? { marginTop: SIDE_GAP_STYLE.marginTop, marginBottom: SIDE_GAP_STYLE.marginBottom }
           : { marginLeft: SIDE_GAP_STYLE.marginLeft, marginRight: SIDE_GAP_STYLE.marginRight }),
@@ -119,14 +114,13 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
         ? ALIGN_STYLES[align] 
         : VERTICAL_ALIGN_STYLES[align];
 
-      const menuClasses = cn(
+      const wrapperClasses = cn(
         BASE_CLASSES,
         SIDE_STYLES[side],
         alignStyles,
         enableAnimation && 'transition-all duration-[var(--component-dropdown-transition-duration)]',
         enableAnimation && !isOpen && 'scale-[var(--component-dropdown-animation-scale)]',
         isOpen && VISIBLE_CLASS,
-        className
       );
 
       // Close menu when clicking outside (excluding trigger) or pressing Escape
@@ -148,7 +142,7 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
         if (isOpen && !wasOpen && menuRef.current) {
           // Menu just opened - focus first enabled menu item
           const firstItem = menuRef.current.querySelector<HTMLButtonElement>(
-            '[role="menuitem"]:not([disabled]), [role="menuitemcheckbox"]:not([disabled])'
+            '[role="menuitem"]:not([disabled])'
           );
           
           if (firstItem) {
@@ -162,24 +156,30 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
         }
       }, [isOpen, triggerRef]);
 
-      // Keyboard navigation for menu items
-      useMenuKeyboardNavigation(menuRef, isOpen);
+      // Create menu context value directly (must be before early return)
+      const menuContextValue = useMemo(
+        () => ({
+          isOpen,
+          setIsOpen,
+          menuId,
+          closeOnAction: true,
+        }),
+        [isOpen, setIsOpen, menuId]
+      );
 
       if (!isOpen) return null;
 
       return (
         <div
           ref={mergedRef}
-          id={menuId}
-          role="menu"
-          aria-orientation="vertical"
-          className={menuClasses}
+          className={wrapperClasses}
           style={menuStyle}
-          {...props}
         >
-          <div className={MENU_WRAPPER_CLASSES} style={menuWrapperStyle}>
-            {children}
-          </div>
+          <MenuContext.Provider value={menuContextValue}>
+            <Menu.Container id={menuId} className={className} {...props}>
+              {children}
+            </Menu.Container>
+          </MenuContext.Provider>
         </div>
       );
     }

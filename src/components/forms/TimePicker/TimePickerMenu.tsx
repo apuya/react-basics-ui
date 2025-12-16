@@ -1,7 +1,7 @@
 import { forwardRef, memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { cn } from '@/lib/cn';
 import { useTimePickerContext } from './TimePickerContext';
-import { Button } from '@/components/forms/Button';
+import { Button } from '@/components/actions/Button';
 import {
   HOUR_OPTIONS,
   generateMinuteOptions,

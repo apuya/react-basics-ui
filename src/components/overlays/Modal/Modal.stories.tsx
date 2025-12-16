@@ -10,7 +10,7 @@ import { Text } from '@/components/typography/Text';
 import { Heading } from '@/components/typography/Heading';
 import { Stack } from '@/components/layout/Stack';
 import { Flex } from '@/components/layout/Flex';
-import { List } from '@/components/data-display/List';
+import { TextList } from '@/components/typography/TextList';
 
 // =============================================================================
 // Storybook Meta Configuration
@@ -19,7 +19,7 @@ import { List } from '@/components/data-display/List';
 const MODAL_SIZES: ModalSize[] = ['sm', 'md', 'lg', 'xl', 'full'];
 
 const meta: Meta<typeof Modal> = {
-  title: 'Overlay/Modal',
+  title: 'Overlays/Modal',
   component: Modal,
   parameters: {
     layout: 'centered',
@@ -326,11 +326,11 @@ export const MultiStepWizard: Story = {
       {
         title: 'Review',
         content: (
-          <List>
-            <List.Item>Username configured</List.Item>
-            <List.Item>Preferences set</List.Item>
-            <List.Item>Ready to get started</List.Item>
-          </List>
+          <TextList>
+            <TextList.Item>Username configured</TextList.Item>
+            <TextList.Item>Preferences set</TextList.Item>
+            <TextList.Item>Ready to get started</TextList.Item>
+          </TextList>
         ),
       },
     ];

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { BiSearch, BiHeart, BiTrash, BiShare } from 'react-icons/bi';
 import { VisuallyHidden } from './VisuallyHidden';
 import { Icon } from '@/components/utility/Icon';
-import { Button } from '@/components/forms/Button';
+import { Button } from '@/components/actions/Button';
 import { Input } from '@/components/forms/Input';
 import { Label } from '@/components/typography/Label';
 import { Text } from '@/components/typography/Text';

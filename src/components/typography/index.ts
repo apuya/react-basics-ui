@@ -15,3 +15,4 @@ export {
 export * from './Heading';
 export * from './Label';
 export * from './Text';
+export * from './TextList';

@@ -7,7 +7,6 @@ import {
 } from 'react';
 import { createComponentContext } from '@/lib/createComponentContext';
 import { useControlledState } from '@/hooks/useControlledState';
-import { TRIGGER_WRAPPER_CLASSES } from './Dropdown.styles';
 import { DropdownTrigger } from './DropdownTrigger';
 import { DropdownMenu } from './DropdownMenu';
 import { DropdownItem } from './DropdownItem';
@@ -55,7 +54,12 @@ export { DropdownContext, useDropdownContext };
  * Main Dropdown component using compound component pattern.
  * 
  * A fully accessible dropdown menu with keyboard navigation, click-outside detection,
- * and flexible positioning. Supports both controlled and uncontrolled modes.
+ * and flexible positioning. Composes with the Menu primitive for content rendering.
+ * 
+ * **Architecture:**
+ * - Uses Menu primitive for item rendering and keyboard navigation
+ * - Adds positioning, click-outside, escape key, and trigger management
+ * - Supports both controlled and uncontrolled modes
  * 
  * @example
  * ```tsx
@@ -65,18 +69,19 @@ export { DropdownContext, useDropdownContext };
  *     <Button>Menu</Button>
  *   </Dropdown.Trigger>
  *   <Dropdown.Menu>
- *     <Dropdown.Item>Option 1</Dropdown.Item>
- *     <Dropdown.Item>Option 2</Dropdown.Item>
+ *     <Dropdown.Item leadingIcon={<BiEdit />}>Edit</Dropdown.Item>
+ *     <Dropdown.Item leadingIcon={<BiTrash />} variant="danger">Delete</Dropdown.Item>
  *   </Dropdown.Menu>
  * </Dropdown>
  * 
- * // With icons and shortcuts
+ * // With shortcuts and variants
  * <Dropdown>
  *   <Dropdown.Trigger>
  *     <Button>Actions</Button>
  *   </Dropdown.Trigger>
  *   <Dropdown.Menu>
  *     <Dropdown.Item leadingIcon={<BiEdit />} shortcut="⌘E">Edit</Dropdown.Item>
+ *     <Dropdown.MenuItem variant="divider" />
  *     <Dropdown.Item leadingIcon={<BiTrash />} variant="danger">Delete</Dropdown.Item>
  *   </Dropdown.Menu>
  * </Dropdown>
@@ -105,7 +110,9 @@ const DropdownRoot = ({ children, defaultOpen = false, open, onOpenChange }: Dro
 
   return (
     <DropdownContext.Provider value={contextValue}>
-      <div className={TRIGGER_WRAPPER_CLASSES}>{children}</div>
+      <div className="relative inline-block">
+        {children}
+      </div>
     </DropdownContext.Provider>
   );
 };

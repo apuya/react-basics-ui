@@ -1,12 +1,10 @@
 import {
   memo,
-  useCallback,
   useMemo,
-  useState,
   type ReactNode,
 } from 'react';
-import { useControlledState } from '@/hooks/useControlledState';
 import { cn } from '@/lib/cn';
+import { List } from '@/components/overlays/List';
 import { SelectContext } from './SelectContext';
 import { SelectTrigger } from './SelectTrigger';
 import { SelectMenu } from './SelectMenu';
@@ -73,33 +71,7 @@ const SelectRoot = memo(function SelectRoot({
   className,
   id = 'select',
 }: SelectProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [optionLabels, setOptionLabels] = useState<Map<string, string>>(new Map());
-
-  const [value, setValue] = useControlledState(
-    controlledValue,
-    defaultValue || '',
-    (newValue: string) => {
-      onChange?.(newValue);
-      setIsOpen(false);
-    }
-  );
-
-  const getOptionLabel = useCallback(
-    (val: string) => optionLabels.get(val),
-    [optionLabels]
-  );
-
-  const registerOption = useCallback((optionValue: string, optionLabel: string) => {
-    setOptionLabels((prev) => {
-      const next = new Map(prev);
-      next.set(optionValue, optionLabel);
-      return next;
-    });
-  }, []);
-
   const triggerId = useMemo(() => `${id}-trigger`, [id]);
-  const menuId = useMemo(() => `${id}-menu`, [id]);
 
   const wrapperClasses = useMemo(
     () => cn('relative w-full', className),
@@ -108,32 +80,26 @@ const SelectRoot = memo(function SelectRoot({
 
   const contextValue = useMemo(
     () => ({
-      isOpen,
-      setIsOpen,
-      value,
-      setValue,
       disabled,
       error,
       size,
-      getOptionLabel,
-      registerOption,
       triggerId,
-      menuId,
     }),
-    [isOpen, value, setValue, disabled, error, size, getOptionLabel, registerOption, triggerId, menuId]
+    [disabled, error, size, triggerId]
   );
 
   return (
     <SelectContext.Provider value={contextValue}>
-      <div 
+      <List
+        value={controlledValue}
+        defaultValue={defaultValue}
+        onChange={onChange}
         className={wrapperClasses}
-        data-size={size}
-        data-error={error || undefined}
-        data-disabled={disabled || undefined}
-        data-open={isOpen}
+        id={id}
+        closeOnSelect
       >
         {children}
-      </div>
+      </List>
     </SelectContext.Provider>
   );
 });

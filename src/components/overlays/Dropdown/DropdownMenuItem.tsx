@@ -3,11 +3,8 @@ import { cn } from '@/lib/cn';
 import { Button } from '@/components/actions/Button';
 import { SearchBar } from '@/components/forms/SearchBar';
 import { Text } from '@/components/typography/Text';
+import { Menu } from '@/components/overlays/Menu';
 import { 
-  DESCRIPTION_TEXT_STYLE,
-  DIVIDER_CLASSES, 
-  HEADER_TEXT_STYLE,
-  MENU_ITEM_GAP_STYLE, 
   MENU_ITEM_PADDING_STYLE, 
   SEARCH_CONTAINER_PADDING_STYLE,
 } from './Dropdown.styles';
@@ -82,20 +79,12 @@ export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps
       },
       ref
     ) => {
-      // Divider variant
+      // Divider variant - delegate to Menu.Divider
       if (variant === 'divider') {
-        return (
-          <div
-            ref={ref}
-            role="separator"
-            className={cn(DIVIDER_CLASSES, className)}
-            style={MENU_ITEM_GAP_STYLE}
-            {...props}
-          />
-        );
+        return <Menu.Divider ref={ref as any} className={className} {...props} />;
       }
 
-      // Header variant
+      // Header variant - delegate to Menu.Label with description
       if (variant === 'header') {
         return (
           <div
@@ -105,20 +94,16 @@ export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps
             {...props}
           >
             {label && (
-              <div
-                className="overflow-hidden text-ellipsis whitespace-nowrap"
-                style={HEADER_TEXT_STYLE}
-              >
-                {label}
-              </div>
+              <Menu.Label>{label}</Menu.Label>
             )}
             {description && (
-              <div
+              <Text
+                size="small"
+                color="secondary"
                 className="overflow-hidden text-ellipsis whitespace-nowrap"
-                style={DESCRIPTION_TEXT_STYLE}
               >
                 {description}
-              </div>
+              </Text>
             )}
           </div>
         );

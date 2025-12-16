@@ -6,7 +6,7 @@ import { Flex } from '../../layout/Flex';
 import { Text } from '../../typography/Text';
 
 const meta = {
-  title: 'Data Display/Accordion',
+  title: 'Disclosure/Accordion',
   component: Accordion,
   parameters: {
     layout: 'padded',
