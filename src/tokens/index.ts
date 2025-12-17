@@ -175,6 +175,82 @@ export const zIndex = {
   max: 'var(--semantic-z-max)',
 } as const;
 
+// List component tokens
+export const list = {
+  bg: 'var(--component-list-bg)',
+  border: 'var(--component-list-border)',
+  item: {
+    bg: {
+      default: 'var(--component-list-item-bg-default)',
+      hover: 'var(--component-list-item-bg-hover)',
+      active: 'var(--component-list-item-bg-active)',
+      selected: 'var(--component-list-item-bg-selected)',
+      disabled: 'var(--component-list-item-bg-disabled)',
+      danger: {
+        default: 'var(--component-list-item-bg-danger-default)',
+        hover: 'var(--component-list-item-bg-danger-hover)',
+        active: 'var(--component-list-item-bg-danger-active)',
+      },
+      warning: {
+        default: 'var(--component-list-item-bg-warning-default)',
+        hover: 'var(--component-list-item-bg-warning-hover)',
+        active: 'var(--component-list-item-bg-warning-active)',
+      },
+      success: {
+        default: 'var(--component-list-item-bg-success-default)',
+        hover: 'var(--component-list-item-bg-success-hover)',
+        active: 'var(--component-list-item-bg-success-active)',
+      },
+      info: {
+        default: 'var(--component-list-item-bg-info-default)',
+        hover: 'var(--component-list-item-bg-info-hover)',
+        active: 'var(--component-list-item-bg-info-active)',
+      },
+    },
+    text: {
+      default: 'var(--component-list-item-text-default)',
+      hover: 'var(--component-list-item-text-hover)',
+      active: 'var(--component-list-item-text-active)',
+      disabled: 'var(--component-list-item-text-disabled)',
+      danger: 'var(--component-list-item-text-danger)',
+      warning: 'var(--component-list-item-text-warning)',
+      success: 'var(--component-list-item-text-success)',
+      info: 'var(--component-list-item-text-info)',
+    },
+    icon: {
+      default: 'var(--component-list-item-icon-default)',
+      hover: 'var(--component-list-item-icon-hover)',
+      active: 'var(--component-list-item-icon-active)',
+      disabled: 'var(--component-list-item-icon-disabled)',
+      danger: 'var(--component-list-item-icon-danger)',
+      warning: 'var(--component-list-item-icon-warning)',
+      success: 'var(--component-list-item-icon-success)',
+      info: 'var(--component-list-item-icon-info)',
+    },
+    radius: 'var(--component-list-item-radius)',
+    height: 'var(--component-list-item-height)',
+    paddingBlock: 'var(--component-list-item-padding-block)',
+    paddingInline: 'var(--component-list-item-padding-inline)',
+    gap: 'var(--component-list-item-gap)',
+  },
+  divider: 'var(--component-list-divider)',
+  paddingBlock: 'var(--component-list-padding-block)',
+  paddingInline: 'var(--component-list-padding-inline)',
+  gap: 'var(--component-list-gap)',
+  menuGap: 'var(--component-list-menu-gap)',
+  iconSize: 'var(--component-list-icon-size)',
+  iconCheckSize: 'var(--component-list-icon-check-size)',
+  minWidth: 'var(--component-list-min-width)',
+  maxWidth: 'var(--component-list-max-width)',
+  maxHeight: 'var(--component-list-max-height)',
+  radius: 'var(--component-list-radius)',
+  shadow: 'var(--component-list-shadow)',
+  borderWidth: 'var(--component-list-border-width)',
+  transitionDuration: 'var(--component-list-transition-duration)',
+  animationScale: 'var(--component-list-animation-scale)',
+  zIndex: 'var(--component-list-z-index)',
+} as const;
+
 // Export all tokens
 export const tokens = {
   colors,
@@ -184,6 +260,7 @@ export const tokens = {
   typography,
   animation,
   zIndex,
+  list,
 } as const;
 
 export default tokens;

@@ -8,4 +8,6 @@
  * Not recommended for production use.
  */
 
-export * from './components/experimental';
+// Currently all components are in the main export
+// This file is reserved for future experimental-only components
+export {};

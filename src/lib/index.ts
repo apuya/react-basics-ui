@@ -1,10 +1,9 @@
 export { cn } from './cn';
 export { createComponentContext } from './createComponentContext';
 export { generateFormId } from './generateFormId';
-export { getLabelClasses, getHelperClasses } from './sharedFormStyles';
 export { BaseOverlayDialog } from './BaseOverlayDialog';
 export type { BaseOverlayDialogProps } from './BaseOverlayDialog';
-export { createSubComponent, createTitleSubComponent } from './createSubComponent';
-export type { SubComponentStyleConfig, TitleSubComponentStyleConfig } from './createSubComponent';
-export { getPositionClasses, POSITION_STYLES } from './positionUtils';
+export { createTitleSubComponent } from './createSubComponent';
+export type { TitleSubComponentStyleConfig } from './createSubComponent';
+export { POSITION_STYLES } from './positionUtils';
 export type { PositionSide, PositionAlign } from './positionUtils';

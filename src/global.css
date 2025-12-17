@@ -1363,9 +1363,6 @@ svg {
   /* Badge - Common */
   --component-badge-radius: var(--semantic-radius-md);
 
-  --component-badge-close-icon-size: var(--semantic-icon-small);
-  --component-badge-close-icon-stroke-width: var(--semantic-border-width-default);
-
   /* Badge - States */
   --component-badge-hover-opacity: var(--semantic-opacity-hover);
   --component-badge-transition-duration: var(--semantic-duration-normal);
@@ -1444,9 +1441,6 @@ svg {
   --component-button-text-primary-hover: var(--semantic-accent-sand-dark);
   --component-button-text-primary-active: var(--semantic-accent-sand-dark);
   --component-button-text-primary-disabled: var(--semantic-accent-sand-light);
-  --component-button-icon-primary-default: var(--semantic-accent-sand-default);
-  --component-button-icon-primary-hover: var(--semantic-accent-sand-dark);
-  --component-button-icon-primary-disabled: var(--semantic-text-disabled);
 
   /* Button - Secondary Variant */
   --component-button-bg-secondary-default: var(--semantic-brand-primary-default);
@@ -1457,9 +1451,6 @@ svg {
   --component-button-text-secondary-hover: var(--semantic-brand-secondary-hover);
   --component-button-text-secondary-active: var(--semantic-brand-secondary-active);
   --component-button-text-secondary-disabled: var(--semantic-brand-secondary-disabled);
-  --component-button-icon-secondary-default: var(--semantic-brand-secondary-default);
-  --component-button-icon-secondary-hover: var(--semantic-brand-secondary-hover);
-  --component-button-icon-secondary-disabled: var(--semantic-text-disabled);
 
   /* Button - Tertiary Variant */
   --component-button-bg-tertiary-default: var(--semantic-surface-transparent);
@@ -1474,9 +1465,6 @@ svg {
   --component-button-text-tertiary-hover: var(--semantic-brand-secondary-hover);
   --component-button-text-tertiary-active: var(--semantic-brand-secondary-active);
   --component-button-text-tertiary-disabled: var(--semantic-brand-secondary-disabled);
-  --component-button-icon-tertiary-default: var(--semantic-brand-secondary-default);
-  --component-button-icon-tertiary-hover: var(--semantic-brand-secondary-hover);
-  --component-button-icon-tertiary-disabled: var(--semantic-text-disabled);
 
   /* Button - Ghost Variant */
   --component-button-bg-ghost-default: var(--semantic-surface-transparent);
@@ -1502,9 +1490,6 @@ svg {
   --component-button-text-destructive-default: var(--semantic-status-error-default);
   --component-button-text-destructive-hover: var(--semantic-status-error-dark);
   --component-button-text-destructive-disabled: var(--semantic-status-error-alpha);
-  --component-button-icon-destructive-default: var(--semantic-status-error-default);
-  --component-button-icon-destructive-hover: var(--semantic-status-error-dark);
-  --component-button-icon-destructive-disabled: var(--semantic-status-error-alpha);
 
   /* Button - Tabs Variant */
   --component-button-bg-tabs-default: var(--component-tabs-bg-default);
@@ -1546,8 +1531,6 @@ svg {
   --component-button-icon-size-small: var(--semantic-icon-small);
   --component-button-icon-size-default: var(--semantic-icon-medium);
   --component-button-icon-size-large: var(--semantic-icon-large);
-  --component-button-width-min: var(--semantic-width-xsmall);
-  --component-button-width-max: var(--semantic-width-full);
 
   /* Button - Typography */
   --component-button-font-size-small: var(--semantic-text-size-small);
@@ -1556,17 +1539,13 @@ svg {
   --component-button-font-weight-small: var(--semantic-text-weight-medium);
   --component-button-font-weight-default: var(--semantic-text-weight-medium);
   --component-button-font-weight-large: var(--semantic-text-weight-semibold);
-  --component-button-line-height: var(--semantic-line-height-tight);
 
   /* Button - States */
   --component-button-disabled-opacity: var(--semantic-opacity-disabled);
   --component-button-transition-duration: var(--semantic-duration-normal);
-  --component-button-focus-outline-width: var(--semantic-border-width-medium);
-  --component-button-focus-outline-offset: var(--semantic-border-width-medium);
   --component-button-focus-ring-width: var(--semantic-focus-ring-width);
   --component-button-focus-ring-offset: var(--semantic-focus-ring-offset);
   --component-button-focus-ring-color: var(--semantic-border-focus);
-  --component-button-loading-opacity: var(--semantic-opacity-hidden);
   --component-button-spinner-border-width: var(--semantic-border-width-medium);
 
   /* Icon Component */
@@ -1820,15 +1799,10 @@ svg {
   --component-select-icon-default: var(--semantic-text-primary);
   --component-select-icon-disabled: var(--semantic-text-disabled);
   --component-select-icon-check-size: var(--semantic-icon-sm);
-  --component-select-label-default: var(--semantic-text-primary);
-  --component-select-label-error: var(--semantic-text-error);
-  --component-select-helper-default: var(--semantic-text-secondary);
-  --component-select-helper-error: var(--semantic-text-error);
   --component-select-focus-ring-width: var(--semantic-focus-ring-width);
   --component-select-focus-ring-offset: var(--semantic-focus-ring-offset);
   --component-select-focus-ring-color: var(--semantic-border-focus);
   --component-select-disabled-opacity: var(--semantic-opacity-disabled);
-  --component-select-menu-gap: var(--semantic-space-sm);
 
   /* TimePicker Component */
   /* TimePicker - Trigger Colors */
@@ -1988,6 +1962,14 @@ svg {
   --component-card-shadow: var(--semantic-shadow-sm);
   --component-card-shadow-hover: var(--semantic-shadow-md);
 
+  /* BaseCardContainer Component - Structural foundation tokens */
+  --component-base-card-gap: 0;
+  --component-base-card-gap-compact: var(--semantic-space-compact);
+  --component-base-card-padding-inline: var(--semantic-space-default);
+  --component-base-card-padding-block: var(--semantic-space-compact);
+  --component-base-card-content-padding-block: var(--semantic-space-default);
+  --component-base-card-border: var(--semantic-border-subtle);
+  --component-base-card-radius: var(--semantic-radius-md);
 
   /* Table Component */
   /* Table - Colors */
@@ -2121,16 +2103,15 @@ svg {
   --component-tabs-panels-margin: var(--semantic-space-default);
   --component-tabs-transition: var(--semantic-duration-fast);
 
+  /* BaseAlertBox Component (shared base for Alert and Toast) */
+  --component-alertbox-radius: var(--semantic-radius-md);
+
   /* Alert Component */
   /* Alert - Colors */
   --component-alert-bg-info: var(--semantic-status-info-alpha);
   --component-alert-bg-success: var(--semantic-status-success-alpha);
   --component-alert-bg-warning: var(--semantic-status-warning-alpha);
   --component-alert-bg-error: var(--semantic-status-error-alpha);
-  --component-alert-border-info: var(--semantic-status-info-default);
-  --component-alert-border-success: var(--semantic-status-success-default);
-  --component-alert-border-warning: var(--semantic-status-warning-default);
-  --component-alert-border-error: var(--semantic-status-error-default);
   --component-alert-text-info: var(--semantic-status-info-dark);
   --component-alert-text-success: var(--semantic-status-success-dark);
   --component-alert-text-warning: var(--semantic-status-warning-dark);
@@ -2145,15 +2126,12 @@ svg {
   --component-alert-padding-inline: var(--semantic-space-default);
   --component-alert-gap: var(--semantic-space-compact);
   --component-alert-radius: var(--semantic-radius-md);
-  --component-alert-border-width: var(--semantic-border-width-default);
   --component-alert-icon-size: var(--semantic-icon-medium);
 
   /* Alert - Typography */
   --component-alert-title-size: var(--semantic-text-size-body);
-  --component-alert-title-weight: var(--semantic-text-weight-semibold);
   --component-alert-title-line-height: var(--semantic-line-height-tight);
   --component-alert-body-size: var(--semantic-text-size-small);
-  --component-alert-body-weight: var(--semantic-text-weight-regular);
   --component-alert-body-line-height: var(--semantic-line-height-normal);
   --component-alert-content-gap: var(--semantic-space-tight);
 
@@ -2188,7 +2166,6 @@ svg {
   --component-emptystate-padding-block: var(--semantic-space-comfortable);
   --component-emptystate-padding-inline: var(--semantic-space-default);
   --component-emptystate-icon-color: var(--semantic-text-tertiary);
-  --component-emptystate-icon-gap: var(--semantic-space-default);
   --component-emptystate-title-gap: var(--semantic-space-compact);
   --component-emptystate-description-gap: var(--semantic-space-default);
   --component-emptystate-action-gap: var(--semantic-space-compact);
@@ -2235,27 +2212,19 @@ svg {
   --component-toast-body-weight: var(--semantic-text-weight-regular);
   --component-toast-body-line-height: var(--semantic-text-line-height-normal);
   --component-toast-icon-size: var(--semantic-icon-size-default);
-  --component-toast-z-index: var(--semantic-z-toast);
 
   /* Modal Component */
   --component-modal-bg: var(--semantic-surface-elevated);
   --component-modal-overlay-bg: var(--semantic-surface-overlay);
   --component-modal-border: var(--semantic-border-subtle);
   --component-modal-text: var(--semantic-text-primary);
-  --component-modal-padding-block: var(--semantic-space-default);
-  --component-modal-padding-inline: var(--semantic-space-default);
-  --component-modal-gap-compact: var(--semantic-space-compact);
-  --component-modal-gap-default: var(--semantic-space-default);
   --component-modal-radius: var(--semantic-radius-md);
   --component-modal-shadow: var(--semantic-shadow-xl);
-  --component-modal-width-min: var(--semantic-width-medium);
   --component-modal-width-sm: var(--semantic-max-width-xs);
   --component-modal-width-md: var(--semantic-max-width-sm);
   --component-modal-width-lg: var(--semantic-max-width-md);
   --component-modal-width-xl: var(--semantic-max-width-lg);
   --component-modal-margin-inline: var(--semantic-space-default);
-  --component-modal-title-size: var(--semantic-text-size-h3);
-  --component-modal-title-weight: var(--semantic-text-weight-semibold);
   --component-modal-z-index: var(--semantic-z-modal);
   --component-modal-transition-duration: var(--semantic-duration-normal);
   --component-modal-border-width: var(--semantic-border-width-default);
@@ -2263,9 +2232,6 @@ svg {
   --component-modal-close-button-offset: var(--semantic-space-compact);
 
   /* ConfirmDialog Component */
-  --component-confirm-dialog-padding-block: var(--semantic-space-default);
-  --component-confirm-dialog-padding-inline: var(--semantic-space-default);
-  --component-confirm-dialog-gap: var(--semantic-space-compact);
   --component-confirm-dialog-icon-color-default: var(--semantic-text-info);
   --component-confirm-dialog-icon-color-destructive: var(--semantic-text-error);
   --component-confirm-dialog-icon-color-warning: var(--semantic-text-warning);
@@ -2362,114 +2328,133 @@ svg {
   --component-accordion-focus-outline-color: var(--semantic-border-focus);
 
   /* Autocomplete Component */
-  --component-autocomplete-bg: var(--semantic-surface-elevated);
-  --component-autocomplete-border: var(--semantic-border-subtle);
-  --component-autocomplete-option-bg-default: var(--semantic-surface-transparent);
-  --component-autocomplete-option-bg-hover: var(--semantic-surface-hover);
-  --component-autocomplete-option-bg-selected: var(--semantic-surface-active);
-  --component-autocomplete-option-text-default: var(--semantic-text-primary);
-  --component-autocomplete-option-text-selected: var(--semantic-brand-secondary-default);
   --component-autocomplete-empty-text: var(--semantic-text-tertiary);
   --component-autocomplete-input-padding-inline: var(--semantic-space-default);
-  --component-autocomplete-padding-block: var(--semantic-space-tight);
-  --component-autocomplete-padding-inline: var(--semantic-space-tight);
-  --component-autocomplete-option-padding-block: var(--semantic-space-compact);
-  --component-autocomplete-option-padding-inline: var(--semantic-space-default);
-  --component-autocomplete-option-gap: var(--semantic-space-compact);
-  --component-autocomplete-max-height: var(--semantic-max-height-dropdown);
-  --component-autocomplete-radius: var(--semantic-radius-lg);
-  --component-autocomplete-shadow: var(--semantic-shadow-lg);
-  --component-autocomplete-border-width: var(--semantic-border-width-default);
-  --component-autocomplete-z-index: var(--semantic-z-dropdown);
-  --component-autocomplete-transition-duration: var(--semantic-duration-fast);
 
-  /* Dropdown/Menu Component */
-  --component-dropdown-bg: var(--semantic-surface-elevated);
-  --component-dropdown-border: var(--semantic-border-subtle);
-  --component-dropdown-text: var(--semantic-text-primary);
-  /* Dropdown Item - Default Variant */
-  --component-dropdown-item-bg-default: var(--semantic-surface-transparent);
-  --component-dropdown-item-bg-hover: var(--semantic-surface-hover);
-  --component-dropdown-item-bg-active: var(--semantic-surface-pressed);
-  --component-dropdown-item-bg-selected: var(--semantic-surface-pressed);
-  --component-dropdown-item-bg-disabled: var(--semantic-surface-transparent);
-  --component-dropdown-item-text-default: var(--semantic-text-primary);
-  --component-dropdown-item-text-hover: var(--semantic-text-primary);
-  --component-dropdown-item-text-active: var(--semantic-text-primary);
-  --component-dropdown-item-text-disabled: var(--semantic-text-disabled);
-  --component-dropdown-item-icon-default: var(--semantic-text-tertiary);
-  --component-dropdown-item-icon-hover: var(--semantic-text-primary);
-  --component-dropdown-item-icon-active: var(--semantic-text-primary);
-  --component-dropdown-item-icon-disabled: var(--semantic-text-disabled);
-
-  /* Dropdown Item - Danger Variant */
-  --component-dropdown-item-bg-danger-default: var(--semantic-surface-transparent);
-  --component-dropdown-item-bg-danger-hover: var(--semantic-status-error-alpha);
-  --component-dropdown-item-bg-danger-active: var(--semantic-status-error-light);
-  --component-dropdown-item-text-danger: var(--semantic-text-error);
-  --component-dropdown-item-icon-danger: var(--semantic-text-error);
-
-  /* Dropdown Item - Warning Variant */
-  --component-dropdown-item-bg-warning-default: var(--semantic-surface-transparent);
-  --component-dropdown-item-bg-warning-hover: var(--semantic-status-warning-alpha);
-  --component-dropdown-item-bg-warning-active: var(--semantic-status-warning-light);
-  --component-dropdown-item-text-warning: var(--semantic-status-warning-default);
-  --component-dropdown-item-icon-warning: var(--semantic-status-warning-default);
-
-  /* Dropdown Item - Success Variant */
-  --component-dropdown-item-bg-success-default: var(--semantic-surface-transparent);
-  --component-dropdown-item-bg-success-hover: var(--semantic-status-success-alpha);
-  --component-dropdown-item-bg-success-active: var(--semantic-status-success-light);
-  --component-dropdown-item-text-success: var(--semantic-status-success-dark);
-  --component-dropdown-item-icon-success: var(--semantic-status-success-dark);
-
-  /* Dropdown Item - Info Variant */
-  --component-dropdown-item-bg-info-default: var(--semantic-surface-transparent);
-  --component-dropdown-item-bg-info-hover: var(--semantic-status-info-alpha);
-  --component-dropdown-item-bg-info-active: var(--semantic-status-info-light);
-  --component-dropdown-item-text-info: var(--semantic-text-link);
-  --component-dropdown-item-icon-info: var(--semantic-text-link);
-
-  --component-dropdown-item-radius: var(--semantic-radius-md);
-  --component-dropdown-divider: var(--semantic-border-disabled);
-  --component-dropdown-padding-block: var(--semantic-space-tight);
-  --component-dropdown-padding-inline: var(--semantic-space-tight);
+  /* Dropdown Component - Positioning & Layout Only */
+  /* Visual styling (bg, border, shadow) delegated to Menu component */
   --component-dropdown-gap: var(--semantic-space-tight);
-  --component-dropdown-item-height: var(--semantic-height-medium);
-  --component-dropdown-item-padding-block: var(--semantic-space-compact);
-  --component-dropdown-item-padding-inline: var(--semantic-space-default);
-  --component-dropdown-item-gap: var(--semantic-space-compact);
-  --component-dropdown-icon-size: var(--semantic-icon-small);
   --component-dropdown-min-width: var(--semantic-width-large);
   --component-dropdown-max-width: var(--semantic-width-xxlarge);
   --component-dropdown-max-height: var(--semantic-max-height-dropdown-large);
-  --component-dropdown-radius: var(--semantic-radius-md);
-  --component-dropdown-shadow: var(--semantic-shadow-lg);
-  --component-dropdown-border-width: var(--semantic-border-width-default);
-  --component-dropdown-item-font-size: var(--semantic-text-size-body);
-  --component-dropdown-item-font-weight: var(--semantic-text-weight-regular);
-  --component-dropdown-item-font-weight-selected: var(--semantic-text-weight-medium);
-  --component-dropdown-item-text-selected: var(--semantic-text-primary);
-  --component-dropdown-item-line-height: var(--semantic-line-height-normal);
-  --component-dropdown-font-size: var(--semantic-text-size-body);
-  --component-dropdown-font-weight: var(--semantic-text-weight-regular);
+  --component-dropdown-z-index: var(--semantic-z-dropdown);
   --component-dropdown-transition-duration: var(--semantic-duration-fast);
   --component-dropdown-animation-scale: var(--semantic-scale-shrink);
-  --component-dropdown-z-index: var(--semantic-z-dropdown);
+  --component-dropdown-padding-inline: var(--semantic-space-tight);
+  --component-dropdown-item-padding-block: var(--semantic-space-compact);
+  --component-dropdown-item-padding-inline: var(--semantic-space-default);
+  --component-dropdown-item-gap: var(--semantic-space-compact);
 
-  /* Dropdown Header/Section */
-  --component-dropdown-header-text-color: var(--semantic-text-secondary);
-  --component-dropdown-header-font-size: var(--semantic-text-size-small);
-  --component-dropdown-header-font-weight: var(--semantic-text-weight-medium);
-  --component-dropdown-header-line-height: var(--semantic-line-height-normal);
-  --component-dropdown-header-letter-spacing: var(--semantic-letter-spacing-normal);
+  /* List Component */
+  --component-list-bg: var(--semantic-surface-elevated);
+  --component-list-border: var(--semantic-border-subtle);
+  /* List Item - Default Variant */
+  --component-list-item-bg-default: var(--semantic-surface-transparent);
+  --component-list-item-bg-hover: var(--semantic-surface-hover);
+  --component-list-item-bg-active: var(--semantic-surface-pressed);
+  --component-list-item-bg-selected: var(--semantic-surface-pressed);
+  --component-list-item-bg-disabled: var(--semantic-surface-transparent);
+  --component-list-item-text-default: var(--semantic-text-primary);
+  --component-list-item-text-hover: var(--semantic-text-primary);
+  --component-list-item-text-active: var(--semantic-text-primary);
+  --component-list-item-text-disabled: var(--semantic-text-disabled);
+  --component-list-item-icon-default: var(--semantic-text-tertiary);
+  --component-list-item-icon-hover: var(--semantic-text-primary);
+  --component-list-item-icon-active: var(--semantic-text-primary);
+  --component-list-item-icon-disabled: var(--semantic-text-disabled);
 
-  /* Dropdown Description/Trailing Text */
-  --component-dropdown-description-text-color: var(--semantic-text-secondary);
-  --component-dropdown-description-font-size: var(--semantic-text-size-caption);
-  --component-dropdown-description-font-weight: var(--semantic-text-weight-regular);
-  --component-dropdown-description-line-height: var(--semantic-line-height-normal);
-  --component-dropdown-description-letter-spacing: var(--semantic-letter-spacing-normal);
+  /* List Item - Danger Variant */
+  --component-list-item-bg-danger-default: var(--semantic-surface-transparent);
+  --component-list-item-bg-danger-hover: var(--semantic-status-error-alpha);
+  --component-list-item-bg-danger-active: var(--semantic-status-error-light);
+  --component-list-item-text-danger: var(--semantic-text-error);
+  --component-list-item-icon-danger: var(--semantic-text-error);
+
+  /* List Item - Warning Variant */
+  --component-list-item-bg-warning-default: var(--semantic-surface-transparent);
+  --component-list-item-bg-warning-hover: var(--semantic-status-warning-alpha);
+  --component-list-item-bg-warning-active: var(--semantic-status-warning-light);
+  --component-list-item-text-warning: var(--semantic-status-warning-default);
+  --component-list-item-icon-warning: var(--semantic-status-warning-default);
+
+  /* List Item - Success Variant */
+  --component-list-item-bg-success-default: var(--semantic-surface-transparent);
+  --component-list-item-bg-success-hover: var(--semantic-status-success-alpha);
+  --component-list-item-bg-success-active: var(--semantic-status-success-light);
+  --component-list-item-text-success: var(--semantic-status-success-dark);
+  --component-list-item-icon-success: var(--semantic-status-success-dark);
+
+  /* List Item - Info Variant */
+  --component-list-item-bg-info-default: var(--semantic-surface-transparent);
+  --component-list-item-bg-info-hover: var(--semantic-status-info-alpha);
+  --component-list-item-bg-info-active: var(--semantic-status-info-light);
+  --component-list-item-text-info: var(--semantic-text-link);
+  --component-list-item-icon-info: var(--semantic-text-link);
+
+  --component-list-item-radius: var(--semantic-radius-md);
+  --component-list-divider: var(--semantic-border-disabled);
+  --component-list-padding-block: var(--semantic-space-tight);
+  --component-list-padding-inline: var(--semantic-space-tight);
+  --component-list-gap: var(--semantic-space-tight);
+  --component-list-item-height: var(--semantic-height-medium);
+  --component-list-item-padding-block: var(--semantic-space-compact);
+  --component-list-item-padding-inline: var(--semantic-space-default);
+  --component-list-item-gap: var(--semantic-space-compact);
+  --component-list-icon-size: var(--semantic-icon-small);
+  --component-list-icon-check-size: var(--semantic-icon-small);
+  --component-list-menu-gap: var(--semantic-space-tight);
+  --component-list-min-width: var(--semantic-width-large);
+  --component-list-max-width: var(--semantic-width-xxlarge);
+  --component-list-max-height: var(--semantic-max-height-dropdown-large);
+  --component-list-radius: var(--semantic-radius-md);
+  --component-list-shadow: var(--semantic-shadow-lg);
+  --component-list-border-width: var(--semantic-border-width-default);
+  --component-list-transition-duration: var(--semantic-duration-fast);
+  --component-list-animation-scale: var(--semantic-scale-shrink);
+  --component-list-z-index: var(--semantic-z-dropdown);
+
+  /* Menu Component (Action Menus - shares base values with List) */
+  --component-menu-bg: var(--semantic-surface-elevated);
+  --component-menu-border: var(--semantic-border-subtle);
+  --component-menu-border-width: var(--semantic-border-width-default);
+  --component-menu-radius: var(--semantic-radius-md);
+  --component-menu-shadow: var(--semantic-shadow-lg);
+  --component-menu-padding-block: var(--semantic-space-tight);
+  --component-menu-padding-inline: var(--semantic-space-tight);
+  --component-menu-divider: var(--semantic-border-disabled);
+  
+  /* Menu Item States */
+  --component-menu-item-bg-default: var(--semantic-surface-transparent);
+  --component-menu-item-bg-hover: var(--semantic-surface-hover);
+  --component-menu-item-bg-active: var(--semantic-surface-pressed);
+  --component-menu-item-bg-disabled: var(--semantic-surface-transparent);
+  --component-menu-item-text-default: var(--semantic-text-primary);
+  --component-menu-item-text-hover: var(--semantic-text-primary);
+  --component-menu-item-text-active: var(--semantic-text-primary);
+  --component-menu-item-text-disabled: var(--semantic-text-disabled);
+  
+  /* Menu Item Sizing */
+  --component-menu-item-height: var(--semantic-height-medium);
+  --component-menu-item-padding-block: var(--semantic-space-compact);
+  --component-menu-item-padding-inline: var(--semantic-space-default);
+  --component-menu-item-gap: var(--semantic-space-compact);
+  --component-menu-item-radius: var(--semantic-radius-md);
+
+  /* Menu Item Variants - Success */
+  --component-menu-item-bg-success-hover: var(--semantic-status-success-alpha);
+  --component-menu-item-text-success: var(--semantic-status-success-dark);
+  
+  /* Menu Item Variants - Info */
+  --component-menu-item-bg-info-hover: var(--semantic-status-info-alpha);
+  --component-menu-item-text-info: var(--semantic-text-link);
+  
+  /* Menu Item Variants - Warning */
+  --component-menu-item-bg-warning-hover: var(--semantic-status-warning-alpha);
+  --component-menu-item-text-warning: var(--semantic-status-warning-default);
+  
+  /* Menu Item Variants - Danger */
+  --component-menu-item-bg-danger-hover: var(--semantic-status-error-alpha);
+  --component-menu-item-text-danger: var(--semantic-text-error);
 
   /* Navbar Component */
   --component-navbar-bg: var(--primitive-color-gray-600);
@@ -2546,18 +2531,13 @@ svg {
   --component-pagination-font-size-lg: var(--semantic-text-size-body);
 
   /* Avatar Component */
-  --component-avatar-bg: var(--semantic-surface-base);
-  --component-avatar-text: var(--semantic-text-secondary);
-  --component-avatar-border: var(--semantic-border-subtle);
   --component-avatar-size-xs: var(--semantic-avatar-small);
   --component-avatar-size-sm: var(--semantic-avatar-small);
   --component-avatar-size-md: var(--semantic-avatar-medium);
   --component-avatar-size-lg: var(--semantic-avatar-large);
   --component-avatar-size-xl: var(--semantic-avatar-xlarge);
   --component-avatar-size-2xl: var(--semantic-avatar-2xlarge);
-  --component-avatar-radius: var(--semantic-radius-full);
   --component-avatar-radius-circular: var(--semantic-radius-full);
-  --component-avatar-radius-rounded: var(--semantic-radius-medium);
   --component-avatar-radius-square: var(--semantic-radius-small);
   --component-avatar-text-size-xs: 8px; /* Smallest size - no semantic token available */
   --component-avatar-text-size-sm: var(--semantic-text-size-caption);
@@ -2569,19 +2549,12 @@ svg {
   --component-avatar-bg-fallback: var(--semantic-surface-hover);
   --component-avatar-text-fallback: var(--semantic-text-secondary);
 
-  /* List Component */
-  --component-list-bg: var(--semantic-surface-transparent);
+  /* List Component (additional tokens) */
   --component-list-bg-hover: var(--semantic-surface-hover);
   --component-list-bg-active: var(--semantic-surface-active);
   --component-list-text-primary: var(--semantic-text-primary);
   --component-list-text-secondary: var(--semantic-text-secondary);
-  --component-list-border: var(--semantic-border-subtle);
   --component-list-divider-color: var(--semantic-border-subtle);
-  --component-list-gap: var(--semantic-space-none);
-  --component-list-radius: var(--semantic-radius-default);
-  --component-list-item-padding-block: var(--semantic-space-compact);
-  --component-list-item-padding-inline: var(--semantic-space-default);
-  --component-list-item-gap: var(--semantic-space-compact);
 
   /* Tag Component */
   --component-tag-height-sm: var(--semantic-height-xsmall);
