@@ -1,6 +1,5 @@
 import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { BiCheck } from 'react-icons/bi';
-import { cn } from '@/lib/cn';
 import { Icon } from '@/components/utility/Icon';
 import { Text } from '@/components/typography/Text';
 import { Menu, type MenuItemProps } from '@/components/overlays/Menu';

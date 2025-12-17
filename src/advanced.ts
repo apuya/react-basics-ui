@@ -6,4 +6,6 @@
  * and advanced state management.
  */
 
-export * from './components/advanced';
+// Currently all components are in the main export
+// This file is reserved for future advanced-only components
+export {};

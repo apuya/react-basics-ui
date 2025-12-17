@@ -55,8 +55,8 @@ export const TimePickerMenu = memo(
   forwardRef<HTMLDivElement, TimePickerMenuProps>(function TimePickerMenu(
     {
       className,
-      min,
-      max,
+      min: _min,
+      max: _max,
       step = 1800,
       showConfirmation = false,
       cancelLabel = 'Cancel',
@@ -70,7 +70,7 @@ export const TimePickerMenu = memo(
       isOpen,
       setIsOpen,
       menuId,
-      labelId,
+      triggerId,
       selectedHour,
       selectedMinute,
       selectedMeridiem,
@@ -132,7 +132,7 @@ export const TimePickerMenu = memo(
         ref={ref}
         id={menuId}
         role="listbox"
-        aria-labelledby={labelId}
+        aria-labelledby={triggerId}
         aria-multiselectable="false"
         className={menuClasses}
         style={MENU_STYLE}

@@ -21,40 +21,10 @@ export const VARIANT_STYLES: Record<CardVariant, string> = {
 };
 
 // =============================================================================
-// SUBCOMPONENT STYLES
-// =============================================================================
-
-export const HEADER_CLASSES = 'flex flex-col';
-
-export const CONTENT_CLASSES = 'flex-1';
-
-export const FOOTER_CLASSES = 'flex items-center';
-
-// =============================================================================
 // STATIC STYLE OBJECTS
 // =============================================================================
 
-/** Static gap style for card container - uses CSS custom properties */
+/** Card-specific gap style override */
 export const GAP_STYLE: React.CSSProperties = {
   gap: 'var(--component-card-gap)',
-};
-
-/** Static padding style for card header */
-export const HEADER_PADDING_STYLE: React.CSSProperties = {
-  paddingInline: 'var(--component-card-header-padding-inline)',
-  paddingBlock: 'var(--component-card-header-padding-block)',
-  gap: 'var(--component-card-gap-compact)',
-};
-
-/** Static padding style for card content */
-export const CONTENT_PADDING_STYLE: React.CSSProperties = {
-  paddingInline: 'var(--component-card-padding-inline)',
-  paddingBlock: 'var(--component-card-padding-block)',
-};
-
-/** Static padding style for card footer */
-export const FOOTER_PADDING_STYLE: React.CSSProperties = {
-  paddingInline: 'var(--component-card-footer-padding-inline)',
-  paddingBlock: 'var(--component-card-footer-padding-block)',
-  gap: 'var(--component-card-gap-compact)',
 };

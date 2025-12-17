@@ -1,21 +1,12 @@
-import { cn } from '@/lib/cn';
 import { forwardRef, memo } from 'react';
-import { FOOTER_CLASSES, FOOTER_PADDING_STYLE } from './Card.styles';
+import { BaseCardFooter } from '@/components/layout/BaseCardContainer';
 import type { CardFooterProps } from './Card.types';
 
 export const CardFooter = memo(
   forwardRef<HTMLDivElement, CardFooterProps>(({ className, style, children, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(FOOTER_CLASSES, className)}
-      style={{
-        ...FOOTER_PADDING_STYLE,
-        ...style,
-      }}
-      {...props}
-    >
+    <BaseCardFooter ref={ref} className={className} style={style} {...props}>
       {children}
-    </div>
+    </BaseCardFooter>
   ))
 );
 CardFooter.displayName = 'Card.Footer';

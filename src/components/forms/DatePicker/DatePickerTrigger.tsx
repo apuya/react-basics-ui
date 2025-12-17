@@ -1,6 +1,6 @@
 import { forwardRef, memo, useCallback } from 'react';
 import { HiOutlineCalendar } from 'react-icons/hi';
-import { Button } from '../Button';
+import { Button, type ButtonSize } from '../../actions/Button';
 import { Icon } from '../../utility/Icon';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { useDatePickerContext } from './DatePickerContext';
@@ -10,7 +10,6 @@ import {
   TRIGGER_ERROR_CLASSES,
 } from './DatePicker.styles';
 import type { DatePickerTriggerProps, DateRange } from './DatePicker.types';
-import type { ButtonSize } from '../Button';
 import { cn } from '@/lib/cn';
 
 /**

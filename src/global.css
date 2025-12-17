@@ -1962,6 +1962,14 @@ svg {
   --component-card-shadow: var(--semantic-shadow-sm);
   --component-card-shadow-hover: var(--semantic-shadow-md);
 
+  /* BaseCardContainer Component - Structural foundation tokens */
+  --component-base-card-gap: 0;
+  --component-base-card-gap-compact: var(--semantic-space-compact);
+  --component-base-card-padding-inline: var(--semantic-space-default);
+  --component-base-card-padding-block: var(--semantic-space-compact);
+  --component-base-card-content-padding-block: var(--semantic-space-default);
+  --component-base-card-border: var(--semantic-border-subtle);
+  --component-base-card-radius: var(--semantic-radius-md);
 
   /* Table Component */
   /* Table - Colors */
@@ -2210,20 +2218,13 @@ svg {
   --component-modal-overlay-bg: var(--semantic-surface-overlay);
   --component-modal-border: var(--semantic-border-subtle);
   --component-modal-text: var(--semantic-text-primary);
-  --component-modal-padding-block: var(--semantic-space-default);
-  --component-modal-padding-inline: var(--semantic-space-default);
-  --component-modal-gap-compact: var(--semantic-space-compact);
-  --component-modal-gap-default: var(--semantic-space-default);
   --component-modal-radius: var(--semantic-radius-md);
   --component-modal-shadow: var(--semantic-shadow-xl);
-  --component-modal-width-min: var(--semantic-width-medium);
   --component-modal-width-sm: var(--semantic-max-width-xs);
   --component-modal-width-md: var(--semantic-max-width-sm);
   --component-modal-width-lg: var(--semantic-max-width-md);
   --component-modal-width-xl: var(--semantic-max-width-lg);
   --component-modal-margin-inline: var(--semantic-space-default);
-  --component-modal-title-size: var(--semantic-text-size-h3);
-  --component-modal-title-weight: var(--semantic-text-weight-semibold);
   --component-modal-z-index: var(--semantic-z-modal);
   --component-modal-transition-duration: var(--semantic-duration-normal);
   --component-modal-border-width: var(--semantic-border-width-default);
@@ -2231,9 +2232,6 @@ svg {
   --component-modal-close-button-offset: var(--semantic-space-compact);
 
   /* ConfirmDialog Component */
-  --component-confirm-dialog-padding-block: var(--semantic-space-default);
-  --component-confirm-dialog-padding-inline: var(--semantic-space-default);
-  --component-confirm-dialog-gap: var(--semantic-space-compact);
   --component-confirm-dialog-icon-color-default: var(--semantic-text-info);
   --component-confirm-dialog-icon-color-destructive: var(--semantic-text-error);
   --component-confirm-dialog-icon-color-warning: var(--semantic-text-warning);

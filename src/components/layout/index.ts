@@ -1,4 +1,5 @@
 export * from './AspectRatio';
+export * from './BaseCardContainer';
 export * from './Box';
 export * from './Container';
 export * from './Divider';

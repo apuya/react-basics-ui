@@ -2,9 +2,10 @@ import type { CSSProperties } from 'react';
 
 /**
  * Generates base input classes with dynamic CSS variable prefix
+ * Note: border-radius is applied via inline style in getInputPadding for JIT compatibility
  */
 export const getBaseInputClasses = (cssPrefix: string, variant: 'input' | 'searchbar') => {
-  const common = `w-full rounded-[length:var(--component-${cssPrefix}-radius)] border transition-colors duration-[var(--component-${cssPrefix}-transition-duration)] placeholder:text-[color:var(--component-${cssPrefix}-text-placeholder)] focus:outline-none focus-visible:ring-[length:var(--semantic-focus-ring-width)] focus-visible:ring-offset-[length:var(--semantic-focus-ring-offset)] disabled:cursor-not-allowed disabled:opacity-[var(--semantic-opacity-disabled)]`;
+  const common = `w-full border transition-colors placeholder:text-[color:var(--component-${cssPrefix}-text-placeholder)] focus:outline-none focus-visible:ring-[length:var(--semantic-focus-ring-width)] focus-visible:ring-offset-[length:var(--semantic-focus-ring-offset)] disabled:cursor-not-allowed disabled:opacity-[var(--semantic-opacity-disabled)]`;
   
   if (variant === 'searchbar') {
     return `${common} focus-visible:ring-[color:var(--component-${cssPrefix}-focus-ring-color)] disabled:bg-[color:var(--component-${cssPrefix}-bg-disabled)] disabled:text-[color:var(--component-${cssPrefix}-text-disabled)] [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none`;
@@ -41,7 +42,7 @@ export const getStateClasses = (cssPrefix: string, error: boolean, variant: 'inp
  * Generates icon wrapper classes with dynamic CSS variable prefix
  */
 export const getIconWrapperClasses = (cssPrefix: string, size: 'small' | 'default' | 'large') => 
-  `absolute top-1/2 -translate-y-1/2 w-[length:var(--component-${cssPrefix}-icon-size-${size})] h-[length:var(--component-${cssPrefix}-icon-size-${size})]`;
+  `absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-[length:var(--component-${cssPrefix}-icon-size-${size})] h-[length:var(--component-${cssPrefix}-icon-size-${size})] pointer-events-none [&>*]:h-full [&>*]:w-full [&>*]:text-inherit`;
 
 /**
  * Generates leading icon styles with dynamic CSS variable prefix
@@ -71,7 +72,7 @@ export const getSuffixStyle = (cssPrefix: string): CSSProperties => ({
 });
 
 /**
- * Calculates dynamic padding based on icons and suffix
+ * Calculates dynamic padding and other inline styles based on icons and suffix
  */
 export const getInputPadding = (
   cssPrefix: string,
@@ -84,6 +85,8 @@ export const getInputPadding = (
   
   return {
     height: `var(--component-${cssPrefix}-height-${size})`,
+    borderRadius: `var(--component-${cssPrefix}-radius)`,
+    transitionDuration: `var(--component-${cssPrefix}-transition-duration)`,
     paddingLeft: hasLeadingIcon
       ? `calc(var(--component-${cssPrefix}-padding-inline) * 2 + var(--component-${cssPrefix}-icon-size-${size}))`
       : `var(--component-${cssPrefix}-padding-inline)`,

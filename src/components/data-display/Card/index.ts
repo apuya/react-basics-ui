@@ -7,4 +7,6 @@ export type {
   CardHeaderProps,
   CardContentProps,
   CardFooterProps,
+  CardTitleProps,
+  CardDescriptionProps,
 } from './Card.types';

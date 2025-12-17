@@ -3,7 +3,6 @@ export { MenuContainer } from './MenuContainer';
 export { MenuItem } from './MenuItem';
 export { MenuDivider } from './MenuDivider';
 export { MenuLabel } from './MenuLabel';
-export * from './Menu.styles';
 
 export type { MenuProps } from './Menu';
 export type { MenuContainerProps } from './MenuContainer';

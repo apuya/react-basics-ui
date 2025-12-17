@@ -92,6 +92,11 @@ export interface ModalFooterProps extends ComponentPropsWithoutRef<'div'> {}
 
 /**
  * Props for the Modal.Title sub-component.
- * Renders the modal title as an h2 heading.
+ * Renders the modal title as a heading element.
  */
-export interface ModalTitleProps extends ComponentPropsWithoutRef<'h2'> {}
+export interface ModalTitleProps extends ComponentPropsWithoutRef<'h2'> {
+  /** Heading element to render (h1-h6) */
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  /** Visual styling level (independent of HTML element). Allows semantic and visual hierarchy to differ. */
+  level?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+}

@@ -147,7 +147,7 @@ export const TimelineStatus = memo(
                   </Text>
                 )}
                 {description && (
-                  <Text as="div" size={TEXT_SIZE_MAP[size]} weight="regular" color="secondary">
+                  <Text as="div" size={TEXT_SIZE_MAP[size]} weight="normal" color="secondary">
                     {description}
                   </Text>
                 )}

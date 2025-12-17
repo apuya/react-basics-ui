@@ -1,4 +1,4 @@
-export { Stepper, StepperRoot } from './Stepper';
+export { Stepper } from './Stepper';
 export type { StepperProps } from './Stepper';
 
 export { StepperStep } from './StepperStep';

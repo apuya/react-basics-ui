@@ -19,7 +19,7 @@ export { useTextListContext };
 // =============================================================================
 
 const TextListRoot = memo(
-  forwardRef<HTMLUTextListElement | HTMLOTextListElement, TextListProps>(
+  forwardRef<HTMLUListElement | HTMLOListElement, TextListProps>(
     ({ variant = 'default', ordered = false, className, style, children, ...props }, ref) => {
       const Component = (ordered ? 'ol' : 'ul') as ElementType;
 

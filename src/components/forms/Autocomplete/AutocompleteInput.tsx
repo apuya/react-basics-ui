@@ -6,11 +6,11 @@ import {
 } from 'react';
 import { useMergedRefs } from '@/hooks/useMergedRefs';
 import { useAutocompleteContext } from './Autocomplete.context';
-import { BaseInputField } from '../BaseInputField';
+import { BaseInputField, type BaseInputSize } from '../BaseInputField';
 import { Spinner } from '@/components/feedback/Spinner';
 import { IoClose, IoChevronDown } from 'react-icons/io5';
 
-export interface AutocompleteInputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'value' | 'onChange'> {
+export interface AutocompleteInputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'value' | 'onChange' | 'size'> {
   placeholder?: string;
 }
 
@@ -139,7 +139,7 @@ export const AutocompleteInput = memo(
         <BaseInputField
           ref={mergedRef}
           type="text"
-          size={size}
+          size={size as BaseInputSize}
           variant="input"
           error={error}
           disabled={disabled}

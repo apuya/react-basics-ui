@@ -3,30 +3,72 @@ import { Card } from './Card';
 import { Button } from '@/components/actions/Button/Button';
 import { Badge } from '@/components/data-display/Badge/Badge';
 import { Text } from '@/components/typography/Text/Text';
-import { Heading } from '@/components/typography/Heading/Heading';
 import { Stack } from '@/components/layout/Stack';
 import { Flex } from '@/components/layout/Flex';
 import { Grid } from '@/components/layout/Grid';
 import { Avatar } from '@/components/data-display/Avatar/Avatar';
 
+/**
+ * `Card` is a versatile container component for grouping related content.
+ * 
+ * ## Architecture
+ * Card is a **thin wrapper** around `BaseCardContainer`. It inherits all structural
+ * styling (padding, gap, border, border-radius) from the base component and only adds
+ * Card-specific visual styling (background, text color, shadow variants).
+ * 
+ * ## Features
+ * - **Compound pattern**: `Card.Header`, `Card.Content`, `Card.Footer`, `Card.Title`, `Card.Description`
+ * - **Visual variants**: default, elevated, outlined, interactive
+ * - **Inherits from BaseCardContainer**: Padding, gap, border, border-radius
+ * - **Flexible**: Use any combination of sub-components
+ * 
+ * ## Sub-components
+ * | Component | Purpose |
+ * |-----------|---------|
+ * | `Card.Header` | Top section with title and description |
+ * | `Card.Content` | Main content area (scrollable if needed) |
+ * | `Card.Footer` | Bottom section with actions |
+ * | `Card.Title` | Heading element (h1-h6) |
+ * | `Card.Description` | Secondary text below title |
+ * 
+ * ## Usage
+ * ```tsx
+ * <Card variant="elevated">
+ *   <Card.Header>
+ *     <Card.Title>Card Title</Card.Title>
+ *     <Card.Description>Supporting text</Card.Description>
+ *   </Card.Header>
+ *   <Card.Content>Main content here</Card.Content>
+ *   <Card.Footer>
+ *     <Button>Action</Button>
+ *   </Card.Footer>
+ * </Card>
+ * ```
+ */
 const meta: Meta<typeof Card> = {
   title: 'Data Display/Card',
   component: Card,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
-    docs: {
-      description: {
-        component:
-          'A versatile container component for grouping related content. Built using the compound component pattern with `Card.Header`, `Card.Content`, and `Card.Footer` subcomponents. Use `Heading` and `Text` components within headers for consistent typography.',
-      },
-    },
   },
-  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: 'select',
       options: ['default', 'elevated', 'outlined', 'interactive'],
-      description: 'Visual style variant',
+      description: 'Visual style variant of the card',
+      table: {
+        type: { summary: "'default' | 'elevated' | 'outlined' | 'interactive'" },
+        defaultValue: { summary: 'default' },
+      },
+    },
+    children: {
+      description: 'Card sub-components (Header, Content, Footer)',
+      table: { type: { summary: 'ReactNode' } },
+    },
+    className: {
+      description: 'Additional CSS classes',
+      table: { type: { summary: 'string' } },
     },
   },
   decorators: [
@@ -42,27 +84,25 @@ export default meta;
 type Story = StoryObj<typeof Card>;
 
 // =============================================================================
-// SHARED DATA
-// =============================================================================
-
-const CARD_VARIANTS = ['default', 'elevated', 'outlined', 'interactive'] as const;
-
-// =============================================================================
-// BASIC USAGE
+// PRIMARY STORY
 // =============================================================================
 
 /**
- * Default card with header, content, and footer.
+ * Default card with all sub-components. Uses `Card.Title` and `Card.Description`
+ * for semantic header content.
  */
 export const Default: Story = {
-  render: () => (
-    <Card>
+  args: {
+    variant: 'default',
+  },
+  render: (args) => (
+    <Card {...args}>
       <Card.Header>
-        <Heading as="h3" level="h5">Card Title</Heading>
-        <Text size="body" color="secondary">This is a card description</Text>
+        <Card.Title>Card Title</Card.Title>
+        <Card.Description>This is a supporting description</Card.Description>
       </Card.Header>
       <Card.Content>
-        <Text size="body">Card content goes here. This is the main content area of the card.</Text>
+        <Text>Card content goes here. This is the main content area of the card.</Text>
       </Card.Content>
       <Card.Footer>
         <Button variant="secondary" size="small">Cancel</Button>
@@ -72,95 +112,19 @@ export const Default: Story = {
   ),
 };
 
-/**
- * Card without header - content only.
- */
-export const ContentOnly: Story = {
-  render: () => (
-    <Card>
-      <Card.Content>
-        <Text size="body">Simple card with only content, no header or footer.</Text>
-      </Card.Content>
-    </Card>
-  ),
-};
-
-/**
- * Card with header and content, no footer.
- */
-export const NoFooter: Story = {
-  render: () => (
-    <Card>
-      <Card.Header>
-        <Heading as="h3" level="h5">Information Card</Heading>
-        <Text size="body" color="secondary">Additional context</Text>
-      </Card.Header>
-      <Card.Content>
-        <Text size="body">Card without footer actions.</Text>
-      </Card.Content>
-    </Card>
-  ),
-};
-
 // =============================================================================
 // VARIANTS
 // =============================================================================
 
 /**
- * Elevated variant with prominent shadow.
+ * All visual variants displayed together for comparison.
+ * 
+ * - **default**: Subtle background, minimal styling
+ * - **elevated**: Prominent shadow for emphasis
+ * - **outlined**: Border-based definition
+ * - **interactive**: Hover effects for clickable cards
  */
-export const Elevated: Story = {
-  render: () => (
-    <Card variant="elevated">
-      <Card.Header>
-        <Heading as="h3" level="h5">Elevated Card</Heading>
-        <Text size="body" color="secondary">Prominent shadow effect</Text>
-      </Card.Header>
-      <Card.Content>
-        <Text size="body">The elevated variant makes the card appear lifted from the page.</Text>
-      </Card.Content>
-    </Card>
-  ),
-};
-
-/**
- * Outlined variant with border instead of shadow.
- */
-export const Outlined: Story = {
-  render: () => (
-    <Card variant="outlined">
-      <Card.Header>
-        <Heading as="h3" level="h5">Outlined Card</Heading>
-        <Text size="body" color="secondary">Border-based definition</Text>
-      </Card.Header>
-      <Card.Content>
-        <Text size="body">The outlined variant uses a border for definition rather than shadows.</Text>
-      </Card.Content>
-    </Card>
-  ),
-};
-
-/**
- * Interactive variant with hover states.
- */
-export const Interactive: Story = {
-  render: () => (
-    <Card variant="interactive">
-      <Card.Header>
-        <Heading as="h3" level="h5">Interactive Card</Heading>
-        <Text size="body" color="secondary">Hover to see effect</Text>
-      </Card.Header>
-      <Card.Content>
-        <Text size="body">Interactive cards respond to hover and are clickable.</Text>
-      </Card.Content>
-    </Card>
-  ),
-};
-
-/**
- * All variant styles in a grid for comparison.
- */
-export const AllVariants: Story = {
+export const Variants: Story = {
   decorators: [
     (Story) => (
       <div style={{ padding: '1rem', width: '700px' }}>
@@ -169,41 +133,108 @@ export const AllVariants: Story = {
     ),
   ],
   render: () => (
-    <Grid cols={2} gap="md">
-      {CARD_VARIANTS.map((variant) => (
+    <Grid cols={2} spacing="md">
+      {(['default', 'elevated', 'outlined', 'interactive'] as const).map((variant) => (
         <Card key={variant} variant={variant}>
           <Card.Header>
-            <Heading as="h3" level="h5">{variant.charAt(0).toUpperCase() + variant.slice(1)}</Heading>
-            <Text size="body" color="secondary">variant=&quot;{variant}&quot;</Text>
+            <Card.Title>{variant.charAt(0).toUpperCase() + variant.slice(1)}</Card.Title>
+            <Card.Description>variant="{variant}"</Card.Description>
           </Card.Header>
           <Card.Content>
-            <Text size="body">Card content for the {variant} variant.</Text>
+            <Text>Example content for the {variant} variant.</Text>
           </Card.Content>
         </Card>
       ))}
     </Grid>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Compare all visual variants side by side. Hover over the interactive variant to see the effect.',
+      },
+    },
+  },
 };
 
 // =============================================================================
-// REAL-WORLD EXAMPLES
+// COMPOSITION EXAMPLES
 // =============================================================================
 
 /**
- * Dashboard metrics card.
+ * Cards can use any combination of sub-components.
  */
-export const StatsCard: Story = {
+export const Compositions: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '1rem', width: '700px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: () => (
+    <Stack spacing="md">
+      {/* Content only */}
+      <Card>
+        <Card.Content>
+          <Text weight="medium">Content Only</Text>
+          <Text color="secondary">Simple card with just content, no header or footer.</Text>
+        </Card.Content>
+      </Card>
+
+      {/* Header + Content */}
+      <Card>
+        <Card.Header>
+          <Card.Title>Header + Content</Card.Title>
+        </Card.Header>
+        <Card.Content>
+          <Text>Card without footer actions.</Text>
+        </Card.Content>
+      </Card>
+
+      {/* Full card */}
+      <Card>
+        <Card.Header>
+          <Card.Title>Full Card</Card.Title>
+          <Card.Description>With all sections</Card.Description>
+        </Card.Header>
+        <Card.Content>
+          <Text>Complete card with header, content, and footer.</Text>
+        </Card.Content>
+        <Card.Footer>
+          <Button size="small">Action</Button>
+        </Card.Footer>
+      </Card>
+    </Stack>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Cards are flexible - use only the sub-components you need.',
+      },
+    },
+  },
+};
+
+// =============================================================================
+// USE CASES
+// =============================================================================
+
+/**
+ * Dashboard metric cards display key performance indicators prominently.
+ */
+export const UseCaseStats: Story = {
+  name: 'Use Case: Stats Dashboard',
   render: () => (
     <Card variant="elevated">
       <Card.Header>
-        <Heading as="h3" level="h5">Monthly Revenue</Heading>
+        <Card.Title>Monthly Revenue</Card.Title>
       </Card.Header>
       <Card.Content>
-        <Stack gap="sm" align="center">
-          <Heading as="h2" level="h2">$45,231</Heading>
-          <Flex align="center" justify="center" gap="xs">
-            <Text size="body" color="success" weight="medium">↑ 12.5%</Text>
-            <Text size="body" color="secondary">from last month</Text>
+        <Stack spacing="sm" align="center">
+          <Text size="3xl" weight="bold">$45,231</Text>
+          <Flex align="center" justify="center" spacing="xs">
+            <Text color="success" weight="medium">↑ 12.5%</Text>
+            <Text color="secondary">from last month</Text>
           </Flex>
         </Stack>
       </Card.Content>
@@ -212,22 +243,21 @@ export const StatsCard: Story = {
 };
 
 /**
- * User profile card.
+ * User profile cards combine avatar, text content, and actions.
  */
-export const ProfileCard: Story = {
+export const UseCaseProfile: Story = {
+  name: 'Use Case: Profile Card',
   render: () => (
     <Card variant="outlined">
       <Card.Content>
-        <Flex gap="md" align="start">
+        <Flex spacing="md" align="start">
           <Avatar size="lg">
             <Avatar.Fallback>JD</Avatar.Fallback>
           </Avatar>
-          <Stack gap="xs" className="flex-1 min-w-0">
-            <Heading as="h3" level="h4">John Doe</Heading>
-            <Text size="body" color="secondary">Senior Software Engineer</Text>
-            <Text as="p" size="body">
-              Passionate about building scalable web applications and mentoring junior developers.
-            </Text>
+          <Stack spacing="xs" className="flex-1 min-w-0">
+            <Card.Title as="h4">John Doe</Card.Title>
+            <Text color="secondary">Senior Software Engineer</Text>
+            <Text>Passionate about building scalable web applications.</Text>
           </Stack>
         </Flex>
       </Card.Content>
@@ -240,33 +270,34 @@ export const ProfileCard: Story = {
 };
 
 /**
- * Project dashboard card with badge.
+ * Project cards display status, metrics, and available actions.
  */
-export const ProjectCard: Story = {
+export const UseCaseProject: Story = {
+  name: 'Use Case: Project Card',
   render: () => (
     <Card variant="elevated">
       <Card.Header>
-        <Flex justify="between" align="start">
-          <Stack gap="xs">
-            <Heading as="h3" level="h5">Project Dashboard</Heading>
-            <Text size="body" color="secondary">Overview of project metrics</Text>
+        <Flex justify="between" align="start" className="w-full">
+          <Stack spacing="xs">
+            <Card.Title>Project Dashboard</Card.Title>
+            <Card.Description>Overview of project metrics</Card.Description>
           </Stack>
           <Badge variant="success">Active</Badge>
         </Flex>
       </Card.Header>
       <Card.Content>
-        <Stack gap="sm">
+        <Stack spacing="sm">
           <Flex justify="between">
-            <Text size="body" weight="medium">Tasks Completed:</Text>
-            <Text size="body">24/30</Text>
+            <Text weight="medium">Tasks Completed:</Text>
+            <Text>24/30</Text>
           </Flex>
           <Flex justify="between">
-            <Text size="body" weight="medium">Team Members:</Text>
-            <Text size="body">8</Text>
+            <Text weight="medium">Team Members:</Text>
+            <Text>8</Text>
           </Flex>
           <Flex justify="between">
-            <Text size="body" weight="medium">Deadline:</Text>
-            <Text size="body">Dec 31, 2025</Text>
+            <Text weight="medium">Deadline:</Text>
+            <Text>Dec 31, 2025</Text>
           </Flex>
         </Stack>
       </Card.Content>
@@ -279,9 +310,10 @@ export const ProjectCard: Story = {
 };
 
 /**
- * Multiple cards in a grid layout.
+ * Pricing cards in a grid layout for comparing options.
  */
-export const CardGrid: Story = {
+export const UseCaseProductGrid: Story = {
+  name: 'Use Case: Product Grid',
   decorators: [
     (Story) => (
       <div style={{ padding: '1rem', width: '800px' }}>
@@ -290,17 +322,65 @@ export const CardGrid: Story = {
     ),
   ],
   render: () => (
-    <Grid cols={3} gap="md">
-      {(['default', 'elevated', 'outlined'] as const).map((variant) => (
-        <Card key={variant} variant={variant}>
+    <Grid cols={3} spacing="md">
+      {[
+        { name: 'Basic Plan', price: '$9', features: '5 projects' },
+        { name: 'Pro Plan', price: '$29', features: 'Unlimited projects' },
+        { name: 'Enterprise', price: '$99', features: 'Custom solutions' },
+      ].map((plan) => (
+        <Card key={plan.name} variant="outlined">
           <Card.Header>
-            <Heading as="h3" level="h5">{variant.charAt(0).toUpperCase() + variant.slice(1)}</Heading>
+            <Card.Title as="h4">{plan.name}</Card.Title>
           </Card.Header>
           <Card.Content>
-            <Text size="body">Card {variant === 'default' ? 'first' : variant === 'elevated' ? 'second' : 'third'} in grid.</Text>
+            <Stack spacing="sm" align="center">
+              <Text size="3xl" weight="bold">{plan.price}</Text>
+              <Text color="secondary">/month</Text>
+              <Text>{plan.features}</Text>
+            </Stack>
           </Card.Content>
+          <Card.Footer>
+            <Button size="small" block>Choose Plan</Button>
+          </Card.Footer>
         </Card>
       ))}
     </Grid>
+  ),
+};
+
+/**
+ * Interactive cards function as clickable list items or navigation links.
+ */
+export const UseCaseInteractiveList: Story = {
+  name: 'Use Case: Clickable Cards',
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '1rem', width: '400px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: () => (
+    <Stack spacing="sm">
+      {['Getting Started', 'Advanced Topics', 'API Reference'].map((title) => (
+        <Card 
+          key={title} 
+          variant="interactive"
+          onClick={() => console.log(`Clicked: ${title}`)}
+          role="button"
+          tabIndex={0}
+        >
+          <Card.Content>
+            <Flex justify="between" align="center">
+              <Stack spacing="xs">
+                <Card.Title as="h4">{title}</Card.Title>
+                <Card.Description>Learn more about {title.toLowerCase()}</Card.Description>
+              </Stack>
+              <Text color="secondary">→</Text>
+            </Flex>
+          </Card.Content>
+        </Card>
+      ))}
+    </Stack>
   ),
 };

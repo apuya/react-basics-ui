@@ -1,30 +1,18 @@
-import { cn } from '@/lib/cn';
-import { forwardRef, memo, useMemo } from 'react';
-import { FOOTER_CLASSES } from './Modal.styles';
+import { forwardRef, memo } from 'react';
+import { BaseCardFooter } from '@/components/layout/BaseCardContainer';
 import type { ModalFooterProps } from './Modal.types';
 
-// Static style object
-const FOOTER_STYLE = {
-  gap: 'var(--component-modal-gap-compact)',
-} as const;
-
 export const ModalFooter = memo(
-  forwardRef<HTMLDivElement, ModalFooterProps>(({ className, children, style, ...props }, ref) => {
-    const footerStyle = useMemo(
-      () => (style ? { ...FOOTER_STYLE, ...style } : FOOTER_STYLE),
-      [style]
-    );
-
-    return (
-      <div
-        ref={ref}
-        className={cn(FOOTER_CLASSES, className)}
-        style={footerStyle}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  })
+  forwardRef<HTMLDivElement, ModalFooterProps>(({ className, style, children, ...props }, ref) => (
+    <BaseCardFooter
+      ref={ref}
+      baseClasses="flex items-center justify-end shrink-0"
+      className={className}
+      style={style}
+      {...props}
+    >
+      {children}
+    </BaseCardFooter>
+  ))
 );
 ModalFooter.displayName = 'Modal.Footer';

@@ -4,12 +4,7 @@ import { BiErrorCircle, BiCheckCircle, BiInfoCircle } from 'react-icons/bi';
 import { Modal } from '@/components/overlays/Modal';
 import { createComponentContext } from '@/lib/createComponentContext';
 import { ConfirmDialogHeader } from './ConfirmDialogHeader';
-import { ConfirmDialogIcon } from './ConfirmDialogIcon';
-import { ConfirmDialogTitle } from './ConfirmDialogTitle';
 import { ConfirmDialogContent } from './ConfirmDialogContent';
-import { ConfirmDialogFooter } from './ConfirmDialogFooter';
-import { ConfirmDialogCancelButton } from './ConfirmDialogCancelButton';
-import { ConfirmDialogConfirmButton } from './ConfirmDialogConfirmButton';
 
 // =============================================================================
 // Types
@@ -46,6 +41,10 @@ interface ConfirmDialogContextValue {
   isLoading: boolean;
   onClose: () => void;
   onConfirm?: () => void;
+  /** Button variant based on dialog variant */
+  buttonVariant: 'primary' | 'destructive';
+  /** Icon component for the variant */
+  variantIcon: IconType;
 }
 
 export interface ConfirmDialogProps {
@@ -78,21 +77,26 @@ const { Context: ConfirmDialogContext, useContext: useConfirmDialogContext } =
 
 /**
  * ConfirmDialog root component with compound pattern.
- * Provides context to all child components.
+ * A thin wrapper around Modal providing variant context.
+ * 
+ * Use `useConfirmDialogContext()` to access `variant`, `onClose`, `onConfirm`, 
+ * `isLoading`, `buttonVariant`, and `variantIcon` for building dialogs.
  *
  * @example
  * ```tsx
+ * const { variant, variantIcon } = useConfirmDialogContext();
+ * 
  * <ConfirmDialog isOpen={isOpen} onClose={handleClose} variant="destructive">
  *   <ConfirmDialog.Header>
- *     <ConfirmDialog.Icon />
- *     <ConfirmDialog.Title>Delete Item</ConfirmDialog.Title>
+ *     <Icon icon={variantIcon} size="lg" />
+ *     <Modal.Title as="h2" level="h4">Delete Item</Modal.Title>
  *   </ConfirmDialog.Header>
  *   <ConfirmDialog.Content>
  *     Are you sure you want to delete this item?
  *   </ConfirmDialog.Content>
  *   <ConfirmDialog.Footer>
- *     <ConfirmDialog.CancelButton />
- *     <ConfirmDialog.ConfirmButton />
+ *     <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+ *     <Button variant="destructive" onClick={handleConfirm}>Delete</Button>
  *   </ConfirmDialog.Footer>
  * </ConfirmDialog>
  * ```
@@ -108,7 +112,14 @@ const ConfirmDialogRoot = memo(
     children,
   }: ConfirmDialogProps) => {
     const contextValue = useMemo(
-      () => ({ variant, isLoading, onClose, onConfirm }),
+      () => ({
+        variant,
+        isLoading,
+        onClose,
+        onConfirm,
+        buttonVariant: VARIANT_CONFIG[variant].buttonVariant,
+        variantIcon: VARIANT_CONFIG[variant].icon,
+      }),
       [variant, isLoading, onClose, onConfirm]
     );
 
@@ -134,11 +145,11 @@ ConfirmDialogRoot.displayName = 'ConfirmDialog';
 // Exports
 // =============================================================================
 
-// Export context hook for sub-components
+// Export context hook for building custom buttons
 export { useConfirmDialogContext };
 
-// Export VARIANT_CONFIG for sub-components
-export { VARIANT_CONFIG };
+// Re-export variant icon classes for styling
+export { VARIANT_ICON_CLASSES } from './ConfirmDialog.styles';
 
 // =============================================================================
 // Compound Component
@@ -146,10 +157,6 @@ export { VARIANT_CONFIG };
 
 export const ConfirmDialog = Object.assign(ConfirmDialogRoot, {
   Header: ConfirmDialogHeader,
-  Icon: ConfirmDialogIcon,
-  Title: ConfirmDialogTitle,
   Content: ConfirmDialogContent,
-  Footer: ConfirmDialogFooter,
-  CancelButton: ConfirmDialogCancelButton,
-  ConfirmButton: ConfirmDialogConfirmButton,
+  Footer: Modal.Footer,
 });

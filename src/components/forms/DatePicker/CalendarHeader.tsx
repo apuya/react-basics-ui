@@ -17,7 +17,7 @@ import {
   HEADER_SELECT_CLASSES,
   HEADER_SELECT_STYLE,
 } from './DatePicker.styles';
-import { Button } from '@/components/forms/Button';
+import { Button } from '@/components/actions/Button';
 
 const DEFAULT_MONTH_LABELS = [
   'January', 'February', 'March', 'April', 'May', 'June',

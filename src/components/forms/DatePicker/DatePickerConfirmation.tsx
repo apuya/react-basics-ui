@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn';
 import { forwardRef, memo } from 'react';
 import type { DatePickerConfirmationProps } from './DatePicker.types';
-import { Button } from '../Button';
+import { Button } from '../../actions/Button';
 import { Input } from '../Input';
 import { Icon } from '../../utility/Icon';
 import { HiArrowNarrowRight } from 'react-icons/hi';

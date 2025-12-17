@@ -108,7 +108,7 @@ export const TableActionBar = memo(
                   <Button 
                     size="small" 
                     variant="tertiary"
-                    leadingIcon={dropdownTriggerIcon ? <Icon icon={dropdownTriggerIcon} size="sm" /> : undefined}
+                    leadingVisual={dropdownTriggerIcon ? <Icon icon={dropdownTriggerIcon} size="sm" /> : undefined}
                   >
                     {dropdownTriggerLabel}
                   </Button>
@@ -136,7 +136,7 @@ export const TableActionBar = memo(
               variant="tertiary"
               onClick={secondaryAction.onClick}
               disabled={secondaryAction.disabled}
-              leadingIcon={secondaryAction.icon ? <Icon icon={secondaryAction.icon} size="sm" /> : undefined}
+              leadingVisual={secondaryAction.icon ? <Icon icon={secondaryAction.icon} size="sm" /> : undefined}
             >
               {secondaryAction.label}
             </Button>
@@ -147,7 +147,7 @@ export const TableActionBar = memo(
               variant="tertiary"
               onClick={primaryAction.onClick}
               disabled={primaryAction.disabled}
-              leadingIcon={primaryAction.icon ? <Icon icon={primaryAction.icon} size="sm" /> : undefined}
+              leadingVisual={primaryAction.icon ? <Icon icon={primaryAction.icon} size="sm" /> : undefined}
             >
               {primaryAction.label}
             </Button>

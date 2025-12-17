@@ -34,7 +34,7 @@ export const PaginationNext = memo(
           aria-label="Go to next page"
           disabled={isDisabled}
           onClick={handleClick}
-          trailingIcon={<Icon icon={BiChevronRight} size={PAGINATION_SIZE_MAPPINGS[size].icon} color="inherit" />}
+          trailingVisual={<Icon icon={BiChevronRight} size={PAGINATION_SIZE_MAPPINGS[size].icon} color="inherit" />}
           className={className}
           {...props}
         >
